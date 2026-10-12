@@ -272,7 +272,10 @@ fn recents_show_more_exposes_next_page(cx: &mut TestAppContext) {
     });
     cx.update_window(window, |_, window, cx| {
         window.render_frame(cx);
-        app.update(cx, |s, cx| { s.recents_scroll.scroll_to_bottom(); cx.notify(); });
+        app.update(cx, |s, cx| {
+            s.recents_scroll.scroll_to_bottom();
+            cx.notify();
+        });
         window.render_frame(cx);
         window.click(("nav", 901usize), cx);
         window.render_frame(cx);
@@ -608,7 +611,10 @@ fn composer_popup_geometry_tracks_composer_and_model_contract(cx: &mut TestAppCo
             let composer = app.read(cx).composer_bounds.get();
             let popup = window.find("composer-menu-focus").bounds();
             assert_eq!(popup.size.width, composer.size.width);
-            assert!((popup.origin.x - composer.origin.x).abs() <= px(0.5), "Pixel rounding must not detach the popup from the composer");
+            assert!(
+                (popup.origin.x - composer.origin.x).abs() <= px(0.5),
+                "Pixel rounding must not detach the popup from the composer"
+            );
             assert_eq!(
                 popup.origin.y + popup.size.height,
                 composer.origin.y - px(4.)
@@ -826,68 +832,247 @@ fn share_preview_blocks_links_and_abandoned_creation(cx: &mut TestAppContext) {
 }
 
 #[gpui_kit::test]
-fn conversation_markers_navigate_real_messages_and_keyboard_survives_hidden_rail(cx: &mut TestAppContext) {
+fn conversation_markers_navigate_real_messages_and_keyboard_survives_hidden_rail(
+    cx: &mut TestAppContext,
+) {
     let storage = Storage::new();
     let mut settings = native_settings::Settings::default();
     settings.reduced_motion = true;
     settings.save(&storage.0.join("settings.json")).unwrap();
     let (handle, app) = open(cx, &storage);
-    let ids = cx.update_window(handle, |_, window, cx| {
-        let ids = app.update(cx, |s, cx| {
-            let chat = s.workspace.create_conversation();
-            let mut ids = Vec::new();
-            for i in 0..3 {
-                ids.push(s.workspace.append_message(&chat, native_core::MessageRole::User, &format!("Question {i}")).unwrap());
-                s.workspace.append_message(&chat, native_core::MessageRole::Assistant, &"A long response paragraph.\n\n".repeat(40)).unwrap();
-            }
-            s.switch_chat(chat, window, cx);
-            s.transcript.set_offset(point(px(0.),px(0.)));
+    let ids = cx
+        .update_window(handle, |_, window, cx| {
+            let ids = app.update(cx, |s, cx| {
+                let chat = s.workspace.create_conversation();
+                let mut ids = Vec::new();
+                for i in 0..3 {
+                    ids.push(
+                        s.workspace
+                            .append_message(
+                                &chat,
+                                native_core::MessageRole::User,
+                                &format!("Question {i}"),
+                            )
+                            .unwrap(),
+                    );
+                    s.workspace
+                        .append_message(
+                            &chat,
+                            native_core::MessageRole::Assistant,
+                            &"A long response paragraph.\n\n".repeat(40),
+                        )
+                        .unwrap();
+                }
+                s.switch_chat(chat, window, cx);
+                s.transcript.set_offset(point(px(0.), px(0.)));
+                ids
+            });
+            window.render_frame(cx);
+            app.update(cx, |s, cx| {
+                s.transcript.set_offset(point(px(0.), px(0.)));
+                cx.notify();
+            });
+            window.render_frame(cx);
+            assert!(window.try_find("conversation-navigation-rail").is_none());
+            let composer = app.read(cx).composer.clone();
+            window.click(("input", composer.entity_id()), cx);
+            window.press("alt-down", cx);
+            window.render_frame(cx);
+            assert!(app.read(cx).transcript.offset().y < px(-100.));
+            let offset = app.read(cx).transcript.offset();
+            window.press("alt-shift-down", cx);
+            window.render_frame(cx);
+            assert_eq!(app.read(cx).transcript.offset(), offset);
+            window.press("alt-up", cx);
+            window.render_frame(cx);
+            assert!(app.read(cx).transcript.offset().y > offset.y);
+            let fourth = app.update(cx, |s, cx| {
+                let chat = s.active.clone();
+                let id = s
+                    .workspace
+                    .append_message(&chat, native_core::MessageRole::User, "Question four")
+                    .unwrap();
+                s.workspace
+                    .append_message(
+                        &chat,
+                        native_core::MessageRole::Assistant,
+                        &"Final answer.\n\n".repeat(40),
+                    )
+                    .unwrap();
+                cx.notify();
+                id
+            });
+            window.render_frame(cx);
+            assert_eq!(
+                window
+                    .find("conversation-navigation-rail")
+                    .bounds()
+                    .size
+                    .width,
+                px(36.)
+            );
+            window.hover(
+                gpui_kit::SharedString::from(format!("conversation-marker-{}", fourth)),
+                cx,
+            );
+            window.render_frame(cx);
+            assert_eq!(
+                app.read(cx).navigation_hover.as_deref(),
+                Some(fourth.as_str())
+            );
+            window.click(
+                gpui_kit::SharedString::from(format!("conversation-marker-{}", fourth)),
+                cx,
+            );
+            window.render_frame(cx);
+            let s = app.read(cx);
+            let target = s.transcript.bounds_for_item(6).unwrap().top() + s.transcript.offset().y;
+            assert!((target - s.transcript.bounds().top()).abs() <= px(1.));
             ids
-        });
-        window.render_frame(cx);
-        app.update(cx, |s,cx| { s.transcript.set_offset(point(px(0.),px(0.))); cx.notify(); });
-        window.render_frame(cx);
-        assert!(window.try_find("conversation-navigation-rail").is_none());
-        let composer = app.read(cx).composer.clone();
-        window.click(("input",composer.entity_id()),cx);
-        window.press("alt-down",cx);
-        window.render_frame(cx);
-        assert!(app.read(cx).transcript.offset().y < px(-100.));
-        let offset = app.read(cx).transcript.offset();
-        window.press("alt-shift-down",cx);
-        window.render_frame(cx);
-        assert_eq!(app.read(cx).transcript.offset(),offset);
-        window.press("alt-up",cx);
-        window.render_frame(cx);
-        assert!(app.read(cx).transcript.offset().y > offset.y);
-        let fourth = app.update(cx, |s,cx| {
-            let chat = s.active.clone();
-            let id = s.workspace.append_message(&chat,native_core::MessageRole::User,"Question four").unwrap();
-            s.workspace.append_message(&chat,native_core::MessageRole::Assistant,&"Final answer.\n\n".repeat(40)).unwrap();
-            cx.notify();
-            id
-        });
-        window.render_frame(cx);
-        assert_eq!(window.find("conversation-navigation-rail").bounds().size.width,px(36.));
-        window.hover(gpui_kit::SharedString::from(format!("conversation-marker-{}",fourth)),cx);
-        window.render_frame(cx);
-        assert_eq!(app.read(cx).navigation_hover.as_deref(),Some(fourth.as_str()));
-        window.click(gpui_kit::SharedString::from(format!("conversation-marker-{}",fourth)),cx);
-        window.render_frame(cx);
-        let s=app.read(cx);
-        let target=s.transcript.bounds_for_item(6).unwrap().top()+s.transcript.offset().y;
-        assert!((target-s.transcript.bounds().top()).abs() <= px(1.));
-        ids
-    }).unwrap();
-    assert_eq!(ids.len(),3);
-    cx.simulate_window_resize(handle,size(px(1211.),px(1000.)));
-    cx.update_window(handle,|_,window,cx| {
+        })
+        .unwrap();
+    assert_eq!(ids.len(), 3);
+    cx.simulate_window_resize(handle, size(px(1211.), px(1000.)));
+    cx.update_window(handle, |_, window, cx| {
         window.render_frame(cx);
         assert!(window.try_find("conversation-navigation-rail").is_none());
-    }).unwrap();
-    cx.simulate_window_resize(handle,size(px(1212.),px(1000.)));
-    cx.update_window(handle,|_,window,cx| {
+    })
+    .unwrap();
+    cx.simulate_window_resize(handle, size(px(1212.), px(1000.)));
+    cx.update_window(handle, |_, window, cx| {
         window.render_frame(cx);
         assert!(window.try_find("conversation-navigation-rail").is_some());
-    }).unwrap();
+    })
+    .unwrap();
+}
+
+#[gpui_kit::test]
+fn conversation_preview_delay_focus_and_pointer_capture(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    let ids = cx
+        .update_window(handle, |_, window, cx| {
+            window.activate_window();
+            let ids = app.update(cx, |s, cx| {
+                let chat = s.workspace.create_conversation();
+                let mut ids = Vec::new();
+                for i in 0..5 {
+                    ids.push(
+                        s.workspace
+                            .append_message(
+                                &chat,
+                                native_core::MessageRole::User,
+                                &format!("Prompt {i}"),
+                            )
+                            .unwrap(),
+                    );
+                    s.workspace
+                        .append_message(
+                            &chat,
+                            native_core::MessageRole::Assistant,
+                            &"Response line.\n\n".repeat(30),
+                        )
+                        .unwrap();
+                }
+                s.switch_chat(chat, window, cx);
+                ids
+            });
+            window.render_frame(cx);
+            window.hover(
+                gpui_kit::SharedString::from(format!("conversation-marker-{}", ids[0])),
+                cx,
+            );
+            assert_eq!(
+                app.read(cx).navigation_hover.as_deref(),
+                Some(ids[0].as_str()),
+                "initial hover"
+            );
+            assert!(window.try_find("conversation-navigation-preview").is_none());
+            ids
+        })
+        .unwrap();
+    cx.run_until_parked();
+    cx.update_window(handle, |_, window, cx| {
+        window.hover(
+            gpui_kit::SharedString::from(format!("conversation-marker-{}", ids[0])),
+            cx,
+        );
+    })
+    .unwrap();
+    cx.run_until_parked();
+    cx.background_executor
+        .advance_clock(Duration::from_millis(149));
+    cx.run_until_parked();
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        assert!(window.try_find("conversation-navigation-preview").is_none());
+    })
+    .unwrap();
+    cx.background_executor
+        .advance_clock(Duration::from_millis(1));
+    cx.run_until_parked();
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        assert!(
+            app.read(cx).navigation_ui.preview.is_some(),
+            "preview state absent; hover={:?}",
+            app.read(cx).navigation_hover
+        );
+        let preview = window.find("conversation-navigation-preview").bounds();
+        let marker = window
+            .find(gpui_kit::SharedString::from(format!(
+                "conversation-marker-{}",
+                ids[0]
+            )))
+            .bounds();
+        assert_eq!(preview.size.width, px(320.));
+        assert_eq!(marker.size.height, px(10.));
+        assert!((preview.center().y - marker.center().y).abs() <= px(1.));
+        assert_eq!(preview.left(), marker.right());
+        window.hover("application-titlebar", cx);
+        window.render_frame(cx);
+        assert!(window.try_find("conversation-navigation-preview").is_none());
+        let from = window
+            .find(gpui_kit::SharedString::from(format!(
+                "conversation-marker-{}",
+                ids[0]
+            )))
+            .bounds()
+            .center();
+        let to = window
+            .find(gpui_kit::SharedString::from(format!(
+                "conversation-marker-{}",
+                ids[3]
+            )))
+            .bounds()
+            .center();
+        window.drag(from, to, cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).navigation_ui.scrub.is_none());
+        assert!(
+            app.read(cx).navigation_motion.is_none(),
+            "Scrub release must not start a follow-up smooth click"
+        );
+        let s = app.read(cx);
+        let target = s.transcript.bounds_for_item(6).unwrap().top() + s.transcript.offset().y;
+        assert!((target - s.transcript.bounds().top()).abs() <= px(1.));
+        assert_eq!(s.navigation_ui.preview.as_deref(), Some(ids[3].as_str()));
+        // Keyboard focus moves to the next native button and reveals immediately.
+        window.press("tab", cx);
+        window.render_frame(cx);
+        assert!(window.try_find("conversation-navigation-preview").is_some());
+        window.hover("application-titlebar", cx);
+        app.update(cx, |s, cx| s.act(super::Action::New, window, cx));
+        window.render_frame(cx);
+        assert!(window.try_find("conversation-navigation-preview").is_none());
+    })
+    .unwrap();
+    cx.background_executor
+        .advance_clock(Duration::from_millis(200));
+    cx.run_until_parked();
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        assert!(app.read(cx).navigation_ui.preview.is_none());
+    })
+    .unwrap();
 }

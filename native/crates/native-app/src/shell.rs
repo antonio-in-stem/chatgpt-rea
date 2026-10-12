@@ -863,6 +863,12 @@ impl Render for WorkspaceApp {
                     ),
             );
         }
+        if self.navigation_ui.scrub.is_some() {
+            root = root.child(div().id("navigation-pointer-capture").test_support()
+                .absolute().inset_0().occlude()
+                .on_mouse_move(cx.listener(|s,event,_,cx| s.navigation_scrub_move(event,cx)))
+                .on_mouse_up(MouseButton::Left,cx.listener(|s,_,_,cx| { s.navigation_scrub_finish(cx); cx.stop_propagation(); })));
+        }
         if let Some(dialog) = self.dialog {
             root = root.child(
                 if matches!(

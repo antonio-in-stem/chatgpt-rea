@@ -154,6 +154,7 @@ pub struct WorkspaceApp {
     recent_limit: usize,
     transcript: ScrollHandle,
     navigation_hover: Option<String>,
+    navigation_ui: conversation_navigation::NavigationUi,
     navigation_motion: Option<Task<()>>,
     message_actions: HashMap<String, Entity<ChatMessageActions>>,
     recents_scroll: ScrollHandle,
@@ -293,6 +294,7 @@ impl WorkspaceApp {
             recent_limit: 30,
             transcript: ScrollHandle::new(),
             navigation_hover: None,
+            navigation_ui: Default::default(),
             navigation_motion: None,
             message_actions: HashMap::new(),
             recents_scroll: ScrollHandle::new(),
@@ -406,6 +408,7 @@ impl WorkspaceApp {
         self.stop();
         self.navigation_motion.take();
         self.navigation_hover = None;
+        self.navigation_ui = Default::default();
         self.active = id;
         self.route = Route::Chat;
         self.edit_message = None;
