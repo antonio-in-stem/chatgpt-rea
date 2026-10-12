@@ -38,3 +38,9 @@ pub fn focus_ring(dark: bool) -> Hsla {
     color.a = if dark { 0.70 } else { 1.0 };
     color
 }
+
+/// Electron dialog scrim: --color-dialog-overlay, app-shared CSS5688.
+/// The separate extension-host override does not apply to the Windows app.
+pub fn dialog_overlay() -> Hsla {
+    gpui_kit::rgba(0x00000022).into()
+}

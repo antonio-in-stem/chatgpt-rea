@@ -84,3 +84,7 @@ App tests35 passed; workspace Windows build passed. Owned HWND capture qa/native
 
 - native-workspace.exe: 55904256 bytes; SHA-256 `a249a2d4903a4aac0aef63a4649975bcb54f708872d63ae83f672d5f82e68e03`.
 - native-web-host.exe: 2359296 bytes; SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.
+
+## Dialog scrim source correction — 2026-10-12
+
+All three native modal backdrops now consume the source Electron `#0002` token. `cargo build --bin native-workspace` passed (existing unused Action variants warning). Package SHA-256: `4462f0dcee849895edbd636c04b6bd05502816661fe94b0749cfd42b300b198e`. The isolated preview launched and was captured. Synthetic Share clicks produced hover only, so those captures do not verify the modal scrim pixels; no original-window parity claim is made. No behavior was changed and no new behavior tests were added.

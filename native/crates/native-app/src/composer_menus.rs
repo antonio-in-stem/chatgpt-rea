@@ -518,7 +518,7 @@ impl WorkspaceApp {
         div()
             .absolute()
             .inset_0()
-            .bg(rgba(0x00000044))
+            .bg(native_ui::tokens::dialog_overlay())
             .flex()
             .items_center()
             .justify_center()

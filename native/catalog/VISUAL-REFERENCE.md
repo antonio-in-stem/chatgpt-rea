@@ -336,3 +336,7 @@ GPUI Windows already exposes WindowBackgroundAppearance::MicaBackdrop, but the t
 
 
 Menu follow-up: pointer tests exposed a submenu hit-test issue outside its parent bounds; the submenu now stops backdrop mouse-down locally. Brand/profile triggers own native stable focus handles and keyboard activation, allowing actual focus return on Escape (toolkit Button intentionally avoids focus on mouse-down). Chat More popup is now aligned to More's right edge using the current native caption group138px plus8px gap, right146/top46. This is a shell-geometry correction, not a measured upstream offset: route Jh delegates to Be/zh context-menu machinery; exact popup offset, default width (currently248px) and collision policy remain unverified. Brand menu240px width is separately source-confirmed.
+
+## Electron dialog scrim correction
+
+The shared CSS line 5688 defines `--color-dialog-overlay: #0002` (black, alpha 2/15). The dialog primitive consumes it at app-shared JS272559/273213. CSS6029–6034 overrides it only for the extension host, not Electron. All three native modal backdrops now use `native_ui::tokens::dialog_overlay()` instead of unrelated alpha 0x44/0x88 approximations. This corrects backdrop opacity only; panel surfaces, shadows and original-window pixel comparison remain separate verification work.
