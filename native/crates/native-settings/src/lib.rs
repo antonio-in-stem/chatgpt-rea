@@ -314,6 +314,21 @@ impl SettingsSurface {
     pub fn current_settings(&self) -> &Settings {
         &self.config
     }
+    /// Navigate to an existing settings section without replacing its unsaved draft.
+    pub fn show_section(
+        &mut self,
+        name: &str,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> bool {
+        let Some(index) = SECTIONS.iter().position(|section| *section == name) else {
+            return false;
+        };
+        self.section = index;
+        window.focus(&self.section_focus[index], cx);
+        cx.notify();
+        true
+    }
     pub fn toggle_theme(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if self.load_blocked {
             self.message =
@@ -435,11 +450,11 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
         let foreground: Hsla = rgb(if dark { 0xdfdfdf } else { 0x1a1c1f }).into();
         let sidebar: Hsla = rgb(if dark { 0x181818 } else { 0xf9f9f9 }).into();
         let muted: Hsla = rgb(if dark { 0x303030 } else { 0xf9f9f9 }).into();
-        let subtle: Hsla = rgb(if dark { 0xafafaf } else { 0x5d5d5d }).into();
-        let border: Hsla = rgb(if dark { 0x414141 } else { 0xdfdfdf }).into();
+        let subtle = native_ui::tokens::secondary_text(dark);
+        let border = native_ui::tokens::border(dark);
         let primary: Hsla = rgb(if dark { 0xededed } else { 0x212121 }).into();
         let on_primary: Hsla = rgb(if dark { 0x181818 } else { 0xffffff }).into();
-        let hover: Hsla = rgb(if dark { 0x414141 } else { 0xededed }).into();
+        let hover = native_ui::tokens::secondary_hover(dark);
         let c = &mut theme.colors;
         c.background = background;
         c.foreground = foreground;
@@ -457,19 +472,19 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
         c.muted = muted;
         c.muted_foreground = subtle;
         c.border = border;
-        c.input = border;
-        c.secondary = muted;
+        c.input = native_ui::tokens::border_heavy(dark);
+        c.secondary = native_ui::tokens::secondary(dark);
         c.secondary_foreground = foreground;
         c.secondary_hover = hover;
-        c.secondary_active = hover;
+        c.secondary_active = native_ui::tokens::secondary_active(dark);
         c.accent = hover;
         c.accent_foreground = foreground;
         c.popover = background;
         c.popover_foreground = foreground;
         c.list = background;
-        c.list_hover = muted;
-        c.list_active = muted;
-        c.ring = primary;
+        c.list_hover = hover;
+        c.list_active = native_ui::tokens::secondary_active(dark);
+        c.ring = native_ui::tokens::focus_ring(dark);
         c.skeleton = muted;
         c.slider_bar = primary;
         c.slider_thumb = primary;

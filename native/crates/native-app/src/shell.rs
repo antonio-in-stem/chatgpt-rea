@@ -8,6 +8,86 @@ fn clamp_sidebar_width(width: Pixels, viewport: Pixels) -> Pixels {
     width.min(px(520.)).min(viewport - px(240.)).max(px(240.))
 }
 impl WorkspaceApp {
+    fn open_shell_menu(&mut self, dialog: Dialog, window: &mut Window, cx: &mut Context<Self>) {
+        if self.dialog.is_none() {
+            self.previous_focus = match dialog {
+                Dialog::BrandMenu => Some(self.shell_trigger_focus[0].clone()),
+                Dialog::AccountMenu => Some(self.shell_trigger_focus[1].clone()),
+                _ => window.focused(cx),
+            };
+        }
+        self.dialog = Some(dialog);
+        self.shell_menu_index = if dialog == Dialog::HelpMenu { 2 } else { 0 };
+        window.focus(&self.shell_menu_focus[self.shell_menu_index], cx);
+        cx.notify();
+    }
+    fn shell_menu_key(
+        &mut self,
+        event: &KeyDownEvent,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> bool {
+        let Some(dialog) = self.dialog else {
+            return false;
+        };
+        let count = match dialog {
+            Dialog::BrandMenu => 1,
+            Dialog::AccountMenu => 2,
+            Dialog::HelpMenu => 3,
+            Dialog::ChatMenu => 5,
+            _ => return false,
+        };
+        let next = match event.keystroke.key.as_str() {
+            "down" => Some((self.shell_menu_index + 1) % count),
+            "up" => Some((self.shell_menu_index + count - 1) % count),
+            "home" => Some(0),
+            "end" => Some(count - 1),
+            "right" if dialog == Dialog::AccountMenu && self.shell_menu_index == 1 => {
+                self.open_shell_menu(Dialog::HelpMenu, window, cx);
+                cx.stop_propagation();
+                return true;
+            }
+            "left" if dialog == Dialog::HelpMenu => {
+                self.dialog = Some(Dialog::AccountMenu);
+                self.shell_menu_index = 1;
+                window.focus(&self.shell_menu_focus[1], cx);
+                cx.notify();
+                cx.stop_propagation();
+                return true;
+            }
+            "enter" | "space" => {
+                let action = match dialog {
+                    Dialog::BrandMenu => Action::Close,
+                    Dialog::AccountMenu | Dialog::HelpMenu => match self.shell_menu_index {
+                        0 => Action::Route(Route::Settings),
+                        1 => Action::HelpMenu,
+                        _ => Action::KeyboardSettings,
+                    },
+                    Dialog::ChatMenu => match self.shell_menu_index {
+                        0 => Action::Rename,
+                        1 => Action::Pin,
+                        2 => Action::AssignProject,
+                        3 => Action::Archive,
+                        _ => Action::DeleteChat,
+                    },
+                    _ => unreachable!(),
+                };
+                self.act(action, window, cx);
+                cx.stop_propagation();
+                return true;
+            }
+            _ => None,
+        };
+        if let Some(next) = next {
+            self.shell_menu_index = next;
+            window.focus(&self.shell_menu_focus[next], cx);
+            cx.notify();
+            cx.stop_propagation();
+            true
+        } else {
+            false
+        }
+    }
     fn finish_sidebar_resize(&mut self, cx: &mut Context<Self>) {
         if self.sidebar_resize.take().is_some() {
             self.persist();
@@ -131,11 +211,43 @@ impl WorkspaceApp {
             .items_center()
             .justify_between()
             .child(
-                div().flex().items_center().gap(px(8.)).child(
-                    native_ui::icon("wordmark", 18.)
-                        .w(px(77.13))
-                        .text_color(cx.theme().colors.foreground),
-                ),
+                div()
+                    .id("brand-menu")
+                    .aria_label("Switch mode, current mode: ChatGPT")
+                    .test_support()
+                    .track_focus(&self.shell_trigger_focus[0])
+                    .flex()
+                    .items_center()
+                    .tab_stop(true)
+                    .role(Role::Button)
+                    .hover(|s| s.bg(cx.theme().colors.secondary))
+                    .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
+                        if matches!(event.keystroke.key.as_str(), "enter" | "space") {
+                            this.act(Action::BrandMenu, window, cx);
+                            cx.stop_propagation();
+                        }
+                    }))
+                    .h(px(32.))
+                    .px(px(8.))
+                    .rounded(px(10.))
+                    .child(
+                        div()
+                            .flex()
+                            .items_center()
+                            .gap(px(4.))
+                            .child(
+                                native_ui::icon("wordmark", 18.)
+                                    .w(px(77.13))
+                                    .text_color(cx.theme().colors.foreground),
+                            )
+                            .child(
+                                native_ui::icon("chevron-down", 12.)
+                                    .text_color(cx.theme().colors.muted_foreground),
+                            ),
+                    )
+                    .on_click(
+                        cx.listener(|this, _, window, cx| this.act(Action::BrandMenu, window, cx)),
+                    ),
             )
             .child(
                 div()
@@ -172,6 +284,14 @@ impl WorkspaceApp {
                 self.route == Route::Library,
                 cx,
             ));
+        recents = recents.child(self.sidebar_row(
+            "scheduled",
+            "Scheduled",
+            5,
+            Action::Route(Route::Tool(0)),
+            self.route == Route::Tool(0),
+            cx,
+        ));
         let muted = cx.theme().colors.muted_foreground;
         let section = |label: &'static str| {
             div()
@@ -241,14 +361,27 @@ impl WorkspaceApp {
             .child(self.sidebar_row("new-chat", "New chat", 0, Action::New, false, cx))
             .child(recents)
             .child(
-                Button::new("profile-menu")
-                    .ghost()
+                div()
+                    .id("profile-menu")
+                    .aria_label("Profile and settings")
+                    .test_support()
+                    .track_focus(&self.shell_trigger_focus[1])
+                    .flex()
+                    .items_center()
+                    .tab_stop(true)
+                    .role(Role::Button)
+                    .hover(|s| s.bg(cx.theme().colors.secondary))
+                    .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
+                        if matches!(event.keystroke.key.as_str(), "enter" | "space") {
+                            this.act(Action::AccountMenu, window, cx);
+                            cx.stop_propagation();
+                        }
+                    }))
                     .w_full()
                     .h(px(44.))
                     .px(px(8.))
                     .rounded(px(10.))
                     .justify_start()
-                    .accessibility_label("Profile and settings")
                     .child(
                         div()
                             .w_full()
@@ -276,9 +409,20 @@ impl WorkspaceApp {
                     ),
             )
     }
-    fn shell_menu(&self, dialog: Dialog, cx: &mut Context<Self>) -> AnyElement {
+    fn shell_menu(&self, dialog: Dialog, window: &Window, cx: &mut Context<Self>) -> AnyElement {
         let mut panel = div()
-            .w(px(248.))
+            .w(
+                if matches!(dialog, Dialog::AccountMenu | Dialog::HelpMenu) {
+                    clamp_sidebar_width(
+                        px(self.workspace.settings.sidebar_width as f32),
+                        window.viewport_size().width,
+                    ) - px(16.)
+                } else if dialog == Dialog::BrandMenu {
+                    px(240.)
+                } else {
+                    px(248.)
+                },
+            )
             .p(px(6.))
             .rounded(px(14.))
             .border_1()
@@ -288,8 +432,73 @@ impl WorkspaceApp {
             .flex()
             .flex_col()
             .gap(px(2.));
-        let items: Vec<(&'static str, &'static str, usize, Action)> = if dialog == Dialog::ChatMenu
+        if matches!(dialog, Dialog::AccountMenu | Dialog::HelpMenu) {
+            let name = self
+                .settings
+                .read(cx)
+                .current_settings()
+                .display_name
+                .trim();
+            panel = panel.child(
+                div()
+                    .px(px(8.))
+                    .py(px(10.))
+                    .flex()
+                    .flex_col()
+                    .child(if name.is_empty() {
+                        "User".to_owned()
+                    } else {
+                        name.to_owned()
+                    })
+                    .child(
+                        div()
+                            .text_size(px(12.))
+                            .text_color(cx.theme().colors.muted_foreground)
+                            .child("Personal account"),
+                    ),
+            );
+        }
+        if dialog == Dialog::BrandMenu {
+            // Dns: ChatGPT item only; Codex capability is false in this local fixture.
+            panel = panel.child(
+                div()
+                    .id(("shell-menu-focus", 0usize))
+                    .test_support()
+                    .track_focus(&self.shell_menu_focus[0])
+                    .child(
+                        Button::new("brand-chatgpt")
+                            .tab_stop(false)
+                            .ghost()
+                            .w_full()
+                            .h(px(60.))
+                            .px(px(8.))
+                            .rounded(px(8.))
+                            .accessibility_label("ChatGPT — Create, learn, and explore")
+                            .child(
+                                div()
+                                    .w_full()
+                                    .flex()
+                                    .flex_col()
+                                    .items_start()
+                                    .gap(px(4.))
+                                    .child(div().text_size(px(14.)).child("ChatGPT"))
+                                    .child(
+                                        div()
+                                            .text_size(px(12.))
+                                            .text_color(cx.theme().colors.muted_foreground)
+                                            .child("Create, learn, and explore"),
+                                    ),
+                            )
+                            .on_click(cx.listener(|this, _, window, cx| {
+                                this.act(Action::Close, window, cx)
+                            })),
+                    ),
+            );
+        }
+        let items: Vec<(&'static str, &'static str, usize, Action)> = if dialog == Dialog::BrandMenu
         {
+            vec![]
+        } else if dialog == Dialog::ChatMenu {
             let pinned = self
                 .workspace
                 .conversation(&self.active)
@@ -309,47 +518,121 @@ impl WorkspaceApp {
         } else {
             vec![
                 ("settings", "Settings", 4, Action::Route(Route::Settings)),
-                ("image", "Appearance", 701, Action::Theme),
+                ("help", "Help", 712, Action::HelpMenu),
             ]
         };
-        for (name, label, key, action) in items {
+        for (index, (name, label, key, action)) in items.into_iter().enumerate() {
             panel = panel.child(
-                Button::new(("app-btn", key))
-                    .ghost()
-                    .accessibility_label(label)
+                div()
+                    .id(("shell-menu-focus", index))
+                    .test_support()
+                    .track_focus(&self.shell_menu_focus[index])
                     .child(
-                        div()
-                            .w_full()
-                            .flex()
-                            .items_center()
-                            .gap(px(8.))
+                        Button::new(("app-btn", key))
+                            .tab_stop(false)
+                            .when(self.shell_menu_index == index, |b| {
+                                b.bg(cx.theme().colors.secondary)
+                            })
+                            .ghost()
+                            .accessibility_label(label)
                             .child(
-                                native_ui::icon(name, 18.).text_color(cx.theme().colors.foreground),
+                                div()
+                                    .w_full()
+                                    .flex()
+                                    .items_center()
+                                    .gap(px(8.))
+                                    .when(!name.is_empty(), |row| {
+                                        row.child(
+                                            native_ui::icon(name, 18.)
+                                                .text_color(cx.theme().colors.foreground),
+                                        )
+                                    })
+                                    .child(label)
+                                    .when(key == 712, |row| {
+                                        row.child(div().flex_1())
+                                            .child(native_ui::icon("chevron-right", 12.))
+                                    }),
                             )
-                            .child(label),
-                    )
-                    .w_full()
-                    .h(px(32.))
-                    .px(px(8.))
-                    .justify_start()
-                    .rounded(px(8.))
-                    .text_size(px(13.))
-                    .on_click(cx.listener(move |this, _, window, cx| {
-                        this.dialog = None;
-                        this.act(action.clone(), window, cx);
-                    })),
+                            .w_full()
+                            .h(px(32.))
+                            .px(px(8.))
+                            .justify_start()
+                            .rounded(px(8.))
+                            .text_size(px(13.))
+                            .on_click(cx.listener(move |this, _, window, cx| {
+                                if !matches!(action, Action::HelpMenu) {
+                                    this.dialog = None;
+                                }
+                                this.act(action.clone(), window, cx);
+                            })),
+                    ),
             );
         }
         let anchored = div()
             .absolute()
             .when(dialog == Dialog::ChatMenu, |d| {
-                d.top(px(44.)).right(px(12.))
+                // Align with More's right edge:138px caption controls +8px gap.
+                // Popup-specific gap/width remain pending source/runtime confirmation.
+                d.top(px(46.)).right(px(146.))
             })
-            .when(dialog == Dialog::AccountMenu, |d| {
-                d.bottom(px(56.)).left(px(12.))
+            .when(
+                matches!(dialog, Dialog::AccountMenu | Dialog::HelpMenu),
+                |d| d.bottom(px(58.)).left(px(8.)),
+            )
+            .when(dialog == Dialog::BrandMenu, |d| {
+                d.top(px(44.)).left(px(16.))
             })
             .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation())
-            .child(panel.focus_trap("shell-menu", &self.modal_focus));
+            .child(panel)
+            .when(dialog == Dialog::HelpMenu, |anchor| {
+                anchor.child(
+                    div()
+                        .absolute()
+                        .bottom_0()
+                        .left(
+                            clamp_sidebar_width(
+                                px(self.workspace.settings.sidebar_width as f32),
+                                window.viewport_size().width,
+                            ) - px(10.),
+                        )
+                        .w(px(240.))
+                        .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation())
+                        .p(px(6.))
+                        .rounded(px(14.))
+                        .border_1()
+                        .border_color(cx.theme().colors.border)
+                        .bg(cx.theme().colors.popover)
+                        .shadow_lg()
+                        .child(
+                            div()
+                                .id(("shell-menu-focus", 2usize))
+                                .test_support()
+                                .track_focus(&self.shell_menu_focus[2])
+                                .child(
+                                    Button::new(("app-btn", 713usize))
+                                        .tab_stop(false)
+                                        .ghost()
+                                        .w_full()
+                                        .h(px(32.))
+                                        .px(px(8.))
+                                        .accessibility_label("Keyboard shortcuts")
+                                        .child(
+                                            div()
+                                                .w_full()
+                                                .flex()
+                                                .items_center()
+                                                .gap(px(8.))
+                                                .child(native_ui::icon("keyboard", 18.))
+                                                .child("Keyboard shortcuts"),
+                                        )
+                                        .on_click(cx.listener(|this, _, window, cx| {
+                                            this.act(Action::KeyboardSettings, window, cx)
+                                        })),
+                                ),
+                        ),
+                )
+            })
+            .focus_trap("shell-menu", &self.modal_focus);
         div()
             .absolute()
             .inset_0()
@@ -479,7 +762,7 @@ impl Render for WorkspaceApp {
         let body = match self.route {
             Route::Chat => self.chat_view(window, cx),
             Route::Projects => self.projects_view(cx),
-            Route::Library => self.library_view(cx),
+            Route::Library => self.library_view(window, cx),
             Route::Settings => self.settings.clone().into_any_element(),
             Route::Rich(i) => self.rich[i].clone().into_any_element(),
             Route::Tool(i) => self.tools[i].clone().into_any_element(),
@@ -522,9 +805,11 @@ impl Render for WorkspaceApp {
                 MouseButton::Left,
                 cx.listener(|this, _, _, cx| this.finish_sidebar_resize(cx)),
             )
-            .capture_key_down(
-                cx.listener(|this, event, window, cx| this.handle_key(event, window, cx)),
-            )
+            .capture_key_down(cx.listener(|this, event, window, cx| {
+                if !this.shell_menu_key(event, window, cx) {
+                    this.handle_key(event, window, cx);
+                }
+            }))
             .key_context("Workspace")
             .relative()
             .size_full()
@@ -560,7 +845,16 @@ impl Render for WorkspaceApp {
             );
         }
         if let Some(dialog) = self.dialog {
-            root = root.child(self.dialog_view(dialog, cx));
+            root = root.child(
+                if matches!(
+                    dialog,
+                    Dialog::ChatMenu | Dialog::AccountMenu | Dialog::BrandMenu | Dialog::HelpMenu
+                ) {
+                    self.shell_menu(dialog, window, cx)
+                } else {
+                    self.dialog_view(dialog, cx)
+                },
+            );
         }
         root
     }

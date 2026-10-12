@@ -108,18 +108,34 @@ impl WorkspaceApp {
     }
     fn chat_composer_view(&self, cx: &mut Context<Self>) -> AnyElement {
         use gpui_kit::component::button::ButtonVariants;
+        let measured = self.composer_bounds.clone();
         let mut composer = div()
+            .relative()
+            .child(
+                canvas(move |bounds, _, _| measured.set(bounds), |_, _, _, _| {})
+                    .absolute()
+                    .inset_0(),
+            )
             .w_full()
             .max_w(px(768.))
             .mx_auto()
             .rounded(px(22.))
-            .border_1()
-            .border_color(cx.theme().colors.border)
-            .bg(cx.theme().colors.background)
+            .shadow_lg()
+            .bg(native_ui::tokens::composer_surface(
+                cx.theme().mode.is_dark(),
+            ))
             .p(px(8.))
             .flex()
             .flex_col()
             .gap(px(4.));
+        if let Some(tool) = self.composer_tools.get(&self.active) {
+            composer = composer.child(self.button(
+                format!("{tool} ×"),
+                760,
+                Action::ComposerTool(tool),
+                cx,
+            ));
+        }
         if self.edit_message.is_some() {
             composer = composer.child(
                 div()
@@ -604,6 +620,84 @@ impl WorkspaceApp {
             .child(content)
             .into_any_element()
     }
+    fn library_columns(width: f32) -> u16 {
+        // Recovered @sm/@xl/@3xl/@5xl/@7xl container thresholds (24/36/48/64/80rem).
+        1 + [384., 576., 768., 1024., 1280.]
+            .iter()
+            .filter(|threshold| width >= **threshold)
+            .count() as u16
+    }
+    fn library_filters(&self, cx: &mut Context<Self>) -> AnyElement {
+        use gpui_kit::component::{
+            button::{Button, ButtonVariants},
+            checkbox::Checkbox,
+            popover::Popover,
+        };
+        let parent = cx.entity();
+        let count = self.library_categories.count_ones();
+        Popover::new("library-filter-popover")
+            .anchor(Anchor::TopRight)
+            .trigger(
+                Button::new("library-filter-trigger")
+                    .ghost()
+                    .child(
+                        div()
+                            .flex()
+                            .items_center()
+                            .gap(px(4.))
+                            .child(
+                                native_ui::icon("library-filter", 20.)
+                                    .text_color(cx.theme().colors.foreground),
+                            )
+                            .when(count > 0, |d| d.child(count.to_string())),
+                    )
+                    .accessibility_label(format!("Open filters, {count} active filters")),
+            )
+            .content(move |_, _, cx| {
+                let selected = parent.read(cx).library_categories;
+                let popover = cx.entity();
+                let mut menu = div().w(px(224.)).flex().flex_col().gap(px(2.)).child(
+                    div()
+                        .px(px(8.))
+                        .py(px(6.))
+                        .text_size(px(12.))
+                        .text_color(cx.theme().colors.muted_foreground)
+                        .child("File type"),
+                );
+                for (i, name) in [
+                    (2usize, "Images"),
+                    (1, "Documents"),
+                    (3, "Spreadsheets"),
+                    (4, "Presentations"),
+                    (5, "PDFs"),
+                ] {
+                    let target = parent.clone();
+                    let popover = popover.clone();
+                    menu = menu.child(
+                        Checkbox::new(("library-filter", i))
+                            .w_full()
+                            .px(px(8.))
+                            .py(px(7.))
+                            .label(name)
+                            .checked(selected & (1 << i) != 0)
+                            .on_change(move |checked, _, cx| {
+                                target.update(cx, |s, cx| {
+                                    if *checked {
+                                        s.library_categories |= 1 << i;
+                                    } else {
+                                        s.library_categories &= !(1 << i);
+                                    }
+                                    cx.notify();
+                                });
+                                popover.update(cx, |_, cx| cx.notify());
+                            }),
+                    );
+                }
+                menu
+            })
+            .into_any_element()
+    }
+
     fn library_file_card(
         &self,
         index: usize,
@@ -611,6 +705,7 @@ impl WorkspaceApp {
         kind: &str,
         preview: &str,
         action: Action,
+        card_width: f32,
         cx: &mut Context<Self>,
     ) -> AnyElement {
         use gpui_kit::component::button::{Button, ButtonVariants};
@@ -625,7 +720,8 @@ impl WorkspaceApp {
             .on_click(cx.listener(move |s, _, w, cx| s.act(action.clone(), w, cx)));
         if self.library_grid {
             card = card
-                .w(px(242.))
+                .w_full()
+                .min_w_0()
                 .h_auto()
                 .border_1()
                 .border_color(colors.border)
@@ -637,7 +733,7 @@ impl WorkspaceApp {
                         .flex_col()
                         .child(
                             div()
-                                .h(px(136.))
+                                .h(px(card_width * 9. / 16.))
                                 .rounded_t(px(15.))
                                 .w_full()
                                 .overflow_hidden()
@@ -733,7 +829,7 @@ impl WorkspaceApp {
         }
         card.into_any_element()
     }
-    fn library_view(&self, cx: &mut Context<Self>) -> AnyElement {
+    fn library_view(&self, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
         use gpui_kit::component::button::{Button, ButtonVariants};
         let colors = cx.theme().colors.clone();
         let mut library = div()
@@ -835,43 +931,86 @@ impl WorkspaceApp {
                                     cx.notify();
                                 })),
                         )
+                        .child(self.library_filters(cx))
                         .child(self.button("Create", 400, Action::NewDocument, cx)),
                 ),
         );
-        let mut filters = div().id("library-filters").flex().flex_wrap().gap(px(8.));
-        for (i, name) in [
-            "All",
-            "Documents",
-            "Images",
-            "Spreadsheets",
-            "Presentations",
-            "PDFs",
-        ]
-        .iter()
-        .enumerate()
-        {
-            filters = filters.child(
-                Button::new(("library-filter", i))
+        let mut navigation = div()
+            .id("library-navigation")
+            .flex()
+            .flex_wrap()
+            .gap(px(8.));
+        for (i, name) in ["All", "Images"].iter().enumerate() {
+            navigation = navigation.child(
+                Button::new(("library-tab", i))
                     .ghost()
                     .rounded(px(999.))
                     .h(px(32.))
                     .px(px(12.))
-                    .when(self.library_category == i, |b| b.bg(colors.muted))
+                    .when(self.library_images_only == (i == 1), |b| b.bg(colors.muted))
                     .label(*name)
-                    .on_click(cx.listener(move |s, _, _, cx| {
-                        s.library_category = i;
+                    .on_click(cx.listener(move |s, _, window, cx| {
+                        s.library_images_only = i == 1;
+                        s.library_categories = 0;
+                        s.library_search
+                            .update(cx, |input, cx| input.set_value("", window, cx));
                         cx.notify();
                     })),
             );
         }
-        library = library.child(filters);
+        library = library.child(navigation);
+        if self.library_categories != 0 {
+            let mut tags = div()
+                .id("library-active-filters")
+                .flex()
+                .flex_wrap()
+                .gap(px(8.));
+            for (i, name) in [
+                (2usize, "Images"),
+                (1, "Documents"),
+                (3, "Spreadsheets"),
+                (4, "Presentations"),
+                (5, "PDFs"),
+            ] {
+                if self.library_categories & (1 << i) == 0 {
+                    continue;
+                }
+                tags = tags.child(
+                    Button::new(("library-clear-filter", i))
+                        .label(name)
+                        .accessibility_label(format!("Clear {name} filter"))
+                        .child(native_ui::icon("close", 12.).text_color(colors.foreground))
+                        .on_click(cx.listener(move |s, _, _, cx| {
+                            s.library_categories &= !(1 << i);
+                            cx.notify();
+                        })),
+                );
+            }
+            library = library.child(tags);
+        }
+        let sidebar = if self.sidebar {
+            f32::from(clamp_sidebar_width(
+                px(self.workspace.settings.sidebar_width as f32),
+                window.viewport_size().width,
+            ))
+        } else {
+            0.
+        };
+        let available = (f32::from(window.viewport_size().width) - sidebar - 40.).max(64.);
+        let columns = Self::library_columns(available);
+        let gap = if f32::from(window.viewport_size().width) >= 640. {
+            16.
+        } else {
+            12.
+        };
+        let card_width = (available - gap * (columns - 1) as f32) / columns as f32;
         let query = self.library_search.read(cx).value().trim().to_lowercase();
         let mut files = div()
             .id("library-files")
-            .flex()
-            .gap(px(16.))
-            .when(self.library_grid, |d| d.flex_wrap())
-            .when(!self.library_grid, |d| d.flex_col());
+            .gap(px(gap))
+            .items_start()
+            .when(self.library_grid, |d| d.grid().grid_cols(columns))
+            .when(!self.library_grid, |d| d.flex().flex_col());
         let mut count = 0;
         for (i, d) in self.workspace.documents.iter().enumerate() {
             let (category, kind) = match d.kind {
@@ -880,7 +1019,8 @@ impl WorkspaceApp {
                 DocumentKind::Drawing => (2, "Image"),
                 _ => (1, "Document"),
             };
-            if (self.library_category != 0 && self.library_category != category)
+            if (self.library_images_only && category != 2)
+                || (self.library_categories != 0 && self.library_categories & (1 << category) == 0)
                 || (!query.is_empty()
                     && !format!("{} {kind}", d.title)
                         .to_lowercase()
@@ -896,6 +1036,7 @@ impl WorkspaceApp {
                 kind,
                 &preview,
                 Action::Document(d.id.clone()),
+                card_width,
                 cx,
             ));
         }
@@ -970,7 +1111,8 @@ impl WorkspaceApp {
             ),
         ];
         for (i, (title, kind, preview, category)) in samples.iter().enumerate() {
-            if (self.library_category != 0 && self.library_category != *category)
+            if (self.library_images_only && *category != 2)
+                || (self.library_categories != 0 && self.library_categories & (1 << *category) == 0)
                 || (!query.is_empty() && !format!("{title} {kind}").to_lowercase().contains(&query))
             {
                 continue;
@@ -982,6 +1124,7 @@ impl WorkspaceApp {
                 kind,
                 preview,
                 Action::Route(Route::Rich(i)),
+                card_width,
                 cx,
             ));
         }
@@ -1106,11 +1249,14 @@ impl WorkspaceApp {
     }
 
     fn dialog_view(&self, dialog: Dialog, cx: &mut Context<Self>) -> AnyElement {
+        if dialog == Dialog::ComposerLibrary {
+            return self.composer_library_view(cx);
+        }
+        if matches!(dialog, Dialog::Model | Dialog::Attachments) {
+            return self.composer_menu_view(dialog, cx);
+        }
         if dialog == Dialog::ProjectEditor {
             return self.project_dialog(cx);
-        }
-        if matches!(dialog, Dialog::ChatMenu | Dialog::AccountMenu) {
-            return self.shell_menu(dialog, cx);
         }
         let mut content = div()
             .w(px(610.))
@@ -1124,7 +1270,11 @@ impl WorkspaceApp {
             .flex_col()
             .gap_4();
         match dialog {
-            Dialog::ChatMenu | Dialog::AccountMenu | Dialog::ProjectEditor => unreachable!(),
+            Dialog::ChatMenu
+            | Dialog::AccountMenu
+            | Dialog::BrandMenu
+            | Dialog::HelpMenu
+            | Dialog::ProjectEditor => unreachable!(),
             Dialog::Search => {
                 content = content
                     .child(div().text_xl().child("Search chats"))
@@ -1176,19 +1326,7 @@ impl WorkspaceApp {
                     .child("The local conversation will be removed. This cannot be undone.")
                     .child(self.button("Delete chat", 602, Action::ConfirmDelete, cx));
             }
-            Dialog::Model => {
-                content = content
-                    .child("Choose a demo response mode")
-                    .child("All modes use the same local fixture; no provider is contacted.");
-                for (i, label) in MODELS.iter().enumerate() {
-                    content = content.child(self.button(
-                        format!("{}{}", if i == self.model_index { "✓ " } else { "" }, label),
-                        750 + i,
-                        Action::ChooseModel(i),
-                        cx,
-                    ));
-                }
-            }
+            Dialog::Model | Dialog::ComposerLibrary => unreachable!(),
             Dialog::Project => {
                 content = content.child("Move chat to a project").child(self.button(
                     "No project",
@@ -1209,21 +1347,7 @@ impl WorkspaceApp {
                         content.child(self.button("Create a project", 850, Action::NewProject, cx));
                 }
             }
-            Dialog::Attachments => {
-                content = content
-                    .child("Choose a demo attachment")
-                    .child("These are sample attachment chips; no files are uploaded.");
-                for (i, name) in [
-                    "design-notes.md",
-                    "reference-image.png",
-                    "quarterly-data.csv",
-                ]
-                .iter()
-                .enumerate()
-                {
-                    content = content.child(self.button(*name, 610 + i, Action::Fixture(i), cx));
-                }
-            }
+            Dialog::Attachments => unreachable!(),
         }
         content = content.child(self.button("Close", 699, Action::Close, cx));
         div()

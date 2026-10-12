@@ -1,5 +1,6 @@
 //! Shipped vector geometry rendered by the native GPUI SVG renderer.
 //! No webview or JavaScript runtime participates in these controls.
+pub mod tokens;
 use gpui_kit::{prelude::*, *};
 
 pub fn icon_data(name: &str) -> &'static [u8] {
@@ -33,6 +34,18 @@ pub fn icon_data(name: &str) -> &'static [u8] {
         "document" => include_bytes!("../assets/file_document-c15c8075d55c.svg"),
         "spreadsheet" => include_bytes!("../assets/file_spreadsheet-88eaa777523b.svg"),
         "presentation" => include_bytes!("../assets/file_presentation-bb201ec30014.svg"),
+        "check" => include_bytes!("../assets/check-56cbce595426.svg"),
+        "paperclip" => include_bytes!("../assets/paperclip_attach-fc9fac23c1a5.svg"),
+        "globe" => include_bytes!("../assets/globe_real_time_search-ce40aa9e913b.svg"),
+        "sliders" => include_bytes!("../assets/sliders-79c556d00732.svg"),
+        "brain" => include_bytes!("../assets/brain-9069679dc06a.svg"),
+        "sparkles" => include_bytes!("../assets/sparkles-45085c6ed846.svg"),
+        "help" => include_bytes!("../assets/question_mark_circle-d5293e0405f8.svg"),
+        "keyboard" => include_bytes!("../assets/keyboard_shortcut-1e0656de5d91.svg"),
+        "scheduled" => include_bytes!("../assets/tasks-f059f3631d29.svg"),
+        "grid" => include_bytes!("../assets/grid-9233444e81da.svg"),
+        "list" => include_bytes!("../assets/list-ea876c3c4e37.svg"),
+        "library-filter" => include_bytes!("../assets/filter-light-20.svg"),
         _ => &[],
     }
 }

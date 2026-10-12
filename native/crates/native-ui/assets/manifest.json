@@ -207,5 +207,90 @@
     "sha256": "8d7469460a1aa55276187406d82841a56309176b1a136b34225f90d952c5a660",
     "bytes": 2245,
     "role": "shipped glyph; per-control binding pending verification"
+  },
+  {
+    "name": "check",
+    "source": "extracted/webview/assets/check-56cbce595426.svg",
+    "sha256": "f22437f8d7b0e4c0d522336bca56f6c04ea52ee4011c1336b2826d0a1092709d",
+    "bytes": 299,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "paperclip",
+    "source": "extracted/webview/assets/paperclip_attach-fc9fac23c1a5.svg",
+    "sha256": "b3affb2d264b401db1a786378e4b69eb2afc83c055348dab7c45da01d1b348c9",
+    "bytes": 573,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "globe",
+    "source": "extracted/webview/assets/globe_real_time_search-ce40aa9e913b.svg",
+    "sha256": "78a5286928dceacc07b10370adcb078701e9ac9cccfd30e200a0f05401342279",
+    "bytes": 1469,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "sliders",
+    "source": "extracted/webview/assets/sliders-79c556d00732.svg",
+    "sha256": "257a88823d33fef2421d7f97cce6b74c1250a7d8361f3383c6e8950a608172b3",
+    "bytes": 536,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "brain",
+    "source": "extracted/webview/assets/brain-9069679dc06a.svg",
+    "sha256": "ee09947a5a098ec7001ea64ee6f8d7b8d9dabc82f7b0ca7a78fa58d276840785",
+    "bytes": 3273,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "sparkles",
+    "source": "extracted/webview/assets/sparkles-45085c6ed846.svg",
+    "sha256": "186c4d249dcd029c1e1045ecb33e09d154b006d4dd384ac1b7ad68332f39670b",
+    "bytes": 794,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "help",
+    "source": "extracted/webview/assets/question_mark_circle-d5293e0405f8.svg",
+    "sha256": "e3020b6d439d0956ca5901c463fb67fcf325e762783f21c553e89dbc24dd5be9",
+    "bytes": 1050,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "keyboard",
+    "source": "extracted/webview/assets/keyboard_shortcut-1e0656de5d91.svg",
+    "sha256": "4ddbcb93a995cdb1b585047966e1de2e7b069be3eb6c4c6d0e29f7e6bdcfffeb",
+    "bytes": 2337,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "scheduled",
+    "source": "extracted/webview/assets/tasks-f059f3631d29.svg",
+    "sha256": "6f918d45791accd44b388488a8d5f34e9e2a0fa16ae5a6d2b363f3f03d7986f7",
+    "bytes": 1161,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "grid",
+    "source": "extracted/webview/assets/grid-9233444e81da.svg",
+    "sha256": "9c6184bcc04424b316db17b40556398ef9d0b2e3c486fc31f228f44637e5bec2",
+    "bytes": 554,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "list",
+    "source": "extracted/webview/assets/list-ea876c3c4e37.svg",
+    "sha256": "894efb90cd80a5b30877da853e870981d625cbe24e0738691d4f03f3d98d0cab",
+    "bytes": 315,
+    "role": "shipped glyph candidate; binding not yet proven"
+  },
+  {
+    "name": "library-filter",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "sourceLine": 70238,
+    "sha256": "911854f7201d49307857324f8dd458b96ebb76c9996e41d262e50618543f8ffa",
+    "bytes": 751,
+    "role": "literal body recovered without execution; Library na -> be/Zet -> _7n filter-light-20"
   }
 ]

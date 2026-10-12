@@ -17,9 +17,13 @@ The installed ChatGPT.exe belongs to OpenAI.Codex_26.1007.2314.0 and hosts the c
 ## Explicitly unfinished acceptance areas
 
 - Original-window capture: PrintWindow returned blank surfaces; two HWND-scoped WGC attempts produced no frames despite successful session creation. See ignored qa/wgc-reference-result.json. No pixel comparison has passed.
-- All source routes and feature-gated frontend states, account/workspace switching, app brand menu, full profile menu, project sorting/multiple expansion/sticky headers, complete library providers/folders/favorites/trash/selection and source filter popovers.
+- All source routes and feature-gated frontend states, account/workspace switching, full brand/profile menu capability variants, project sorting/multiple expansion/sticky headers, complete library providers/folders/favorites/trash/selection and full source filter popover variants (basic file-type multiselect is now ported).
 - Every message/content/attachment state, context menu, keyboard and accessibility variant; rich editors and tool screens still contain prototype compositions and are not visually matched. Some retained tool entities require source-correct navigation integration after removing the generic tool gallery.
 - Theme alpha/backdrop cascade, transparent versus opaque Electron frame behavior, exact font configuration, all DPI/compact layouts, overlay positions and complete animation inventory.
 - Per-screen Windows rendered comparison with source/reference evidence, interaction coverage at the corresponding scope, and the complete reusable component/public API mapping.
 
 Passing behavioral tests, a successful executable launch or a single improved home screenshot cannot close these requirements. Keep the goal active until each original surface and state has been implemented and verified.
+
+## Latest partial coverage
+
+Native brand/profile/help popups now preserve focus and support keyboard navigation; Help opens the retained keyboard settings section. Scheduled routes to the retained automation surface. Plus/model popups, native file picker and in-chat Library selection are implemented with local fixtures. Library includes file-type multiselect, removable tags and source-derived column breakpoints. Alpha theme tokens are partially bound; Mica composition remains absent. See COMPOSER-MENUS.md for model power and Library picker gaps. Verified checkpoint: 83 tests and a Windows build, with owned-window screenshots; exact visual parity remains unproven.

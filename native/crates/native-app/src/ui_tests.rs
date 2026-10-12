@@ -2,8 +2,8 @@
 use super::{Dialog, WorkspaceApp};
 use gpui_kit::test::TestWindowExt;
 use gpui_kit::{
-    AnyWindowHandle, AppContext, Bounds, Entity, TestAppContext, WindowBounds, WindowOptions,
-    point, px, size,
+    point, px, size, AnyWindowHandle, AppContext, Bounds, Entity, TestAppContext, WindowBounds,
+    WindowOptions,
 };
 use std::{
     path::PathBuf,
@@ -153,11 +153,9 @@ fn multiline_send_and_stop_cancel_future_stream_updates(cx: &mut TestAppContext)
         let app = app.read(cx);
         assert!(app.streaming);
         let messages = &app.workspace.conversation(&app.active).unwrap().messages;
-        assert!(
-            messages[messages.len() - 2]
-                .content
-                .contains("First line\nSecond line")
-        );
+        assert!(messages[messages.len() - 2]
+            .content
+            .contains("First line\nSecond line"));
         assert!(composer.read(cx).value().is_empty());
     });
     cx.background_executor
@@ -289,9 +287,11 @@ fn attachment_retry_cancel_and_conversation_isolation(cx: &mut TestAppContext) {
         window.render_frame(cx);
         window.click(("app-btn", 200usize), cx);
         window.render_frame(cx);
-        window.click(("app-btn", 612usize), cx);
+        window.click(("app-btn", 610usize), cx);
     })
     .unwrap();
+    assert!(cx.did_prompt_for_paths());
+    cx.simulate_path_prompt_response(|_| Some(vec![PathBuf::from("quarterly-data.csv")]));
     cx.run_until_parked();
     cx.background_executor
         .advance_clock(Duration::from_millis(400));
@@ -349,16 +349,15 @@ fn reduced_motion_renders_response_without_streaming(cx: &mut TestAppContext) {
     cx.update(|cx| {
         let app = app.read(cx);
         assert!(!app.streaming);
-        assert!(
-            app.workspace
-                .conversation(&app.active)
-                .unwrap()
-                .messages
-                .last()
-                .unwrap()
-                .content
-                .contains("No animation please")
-        );
+        assert!(app
+            .workspace
+            .conversation(&app.active)
+            .unwrap()
+            .messages
+            .last()
+            .unwrap()
+            .content
+            .contains("No animation please"));
     });
 }
 #[gpui_kit::test]
@@ -439,6 +438,11 @@ fn cancel_queued_attachment_does_not_resurrect_when_preparation_finishes(cx: &mu
         window.click(("app-btn", 200usize), cx);
         window.render_frame(cx);
         window.click(("app-btn", 610usize), cx);
+    })
+    .unwrap();
+    cx.simulate_path_prompt_response(|_| Some(vec![PathBuf::from("design-notes.md")]));
+    cx.run_until_parked();
+    cx.update_window(window, |_, window, cx| {
         window.render_frame(cx);
         window.click(("app-btn", 2000usize), cx);
         assert!(app.read(cx).current_attachments().is_empty());
@@ -508,4 +512,118 @@ fn user_message_actions_reveal_for_pointer_and_keyboard_focus(cx: &mut TestAppCo
     .unwrap();
     cx.run_until_parked();
     cx.update(|cx| assert!(!toolbar.read(cx).focused && !toolbar.read(cx).visible()));
+}
+
+#[gpui_kit::test]
+fn composer_popup_keyboard_selection_and_tool_isolation(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (window, app) = open(cx, &storage);
+    cx.update_window(window, |_, window, cx| {
+        window.render_frame(cx);
+        window.click(("app-btn", 201usize), cx);
+        window.render_frame(cx);
+        window.press("end", cx);
+        window.press("enter", cx);
+        assert_eq!(app.read(cx).model_index, 2);
+        assert!(app.read(cx).dialog.is_none());
+        window.render_frame(cx);
+        window.click(("app-btn", 200usize), cx);
+        window.render_frame(cx);
+        window.press("end", cx);
+        window.press("enter", cx);
+        let active = app.read(cx).active.clone();
+        assert_eq!(
+            app.read(cx).composer_tools.get(&active),
+            Some(&"Web search")
+        );
+        app.update(cx, |app, cx| app.act(super::Action::New, window, cx));
+        assert!(!app
+            .read(cx)
+            .composer_tools
+            .contains_key(&app.read(cx).active));
+    })
+    .unwrap();
+}
+#[gpui_kit::test]
+fn file_picker_cancellation_preserves_attachments(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (window, app) = open(cx, &storage);
+    cx.update_window(window, |_, window, cx| {
+        window.render_frame(cx);
+        window.click(("app-btn", 200usize), cx);
+        window.render_frame(cx);
+        window.click(("app-btn", 610usize), cx);
+    })
+    .unwrap();
+    assert!(cx.did_prompt_for_paths());
+    cx.simulate_path_prompt_response(|options| {
+        assert!(options.files && options.multiple && !options.directories);
+        None
+    });
+    cx.run_until_parked();
+    cx.update(|cx| assert!(app.read(cx).current_attachments().is_empty()));
+}
+#[gpui_kit::test]
+fn library_picker_attaches_selection_without_leaving_chat(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (window, app) = open(cx, &storage);
+    let active = cx.update(|cx| app.read(cx).active.clone());
+    cx.update_window(window, |_, window, cx| {
+        window.render_frame(cx);
+        window.click(("app-btn", 200usize), cx);
+        window.render_frame(cx);
+        window.click(("app-btn", 611usize), cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).dialog == Some(Dialog::ComposerLibrary));
+        window.click(("composer-library-file", 0usize), cx);
+        window.render_frame(cx);
+        window.click(("app-btn", 770usize), cx);
+        assert!(app.read(cx).dialog.is_none());
+        assert!(app.read(cx).route == super::Route::Chat);
+        assert_eq!(app.read(cx).active, active);
+        assert_eq!(app.read(cx).current_attachments().len(), 1);
+        assert_eq!(
+            app.read(cx).current_attachments()[0].name,
+            app.read(cx).workspace.documents[0].title
+        );
+    })
+    .unwrap();
+}
+
+#[gpui_kit::test]
+fn composer_popup_geometry_tracks_composer_and_model_contract(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        for sidebar in [true, false] {
+            app.update(cx, |s, cx| {
+                s.sidebar = sidebar;
+                cx.notify();
+            });
+            window.render_frame(cx);
+            window.click(("app-btn", 200usize), cx);
+            window.render_frame(cx);
+            let composer = app.read(cx).composer_bounds.get();
+            let popup = window.find("composer-menu-focus").bounds();
+            assert_eq!(popup.size.width, composer.size.width);
+            assert_eq!(popup.origin.x, composer.origin.x);
+            assert_eq!(
+                popup.origin.y + popup.size.height,
+                composer.origin.y - px(4.)
+            );
+            window.press("escape", cx);
+            window.render_frame(cx);
+            window.click(("app-btn", 201usize), cx);
+            window.render_frame(cx);
+            let popup = window.find("composer-menu-focus").bounds();
+            assert_eq!(popup.size.width, px(254.));
+            assert_eq!(
+                popup.origin.y + popup.size.height,
+                composer.origin.y - px(8.)
+            );
+            window.press("escape", cx);
+            window.render_frame(cx);
+        }
+    })
+    .unwrap();
 }

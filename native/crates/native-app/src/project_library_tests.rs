@@ -49,11 +49,15 @@ fn library_filters_list_search_and_open_retained_spreadsheet(cx: &mut TestAppCon
     cx.update_window(handle, |_, window, cx| {
         app.update(cx, |s, cx| s.act(Action::Route(Route::Library), window, cx));
         window.render_frame(cx);
+        window.click("library-filter-trigger", cx);
+        window.render_frame(cx);
         window.click(("library-filter", 3usize), cx);
         window.render_frame(cx);
-        assert_eq!(app.read(cx).library_category, 3);
+        assert_eq!(app.read(cx).library_categories, 1 << 3);
         assert!(window.try_find(("library-file", 1001usize)).is_some());
         assert!(window.try_find(("library-file", 1003usize)).is_none());
+        window.press("escape", cx);
+        window.render_frame(cx);
         window.click("library-view-toggle", cx);
         window.render_frame(cx);
         assert!(!app.read(cx).library_grid);
@@ -144,4 +148,92 @@ fn project_modal_escape_cancel_and_focus_restore_do_not_save(cx: &mut TestAppCon
         assert_eq!(app.read(cx).workspace.projects.len(), initial_count);
     })
     .unwrap();
+}
+
+#[gpui_kit::test]
+fn library_popover_multiselect_tags_and_browse_reset(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        app.update(cx, |s, cx| s.act(Action::Route(Route::Library), window, cx));
+        window.render_frame(cx);
+        window.click("library-filter-trigger", cx);
+        window.render_frame(cx);
+        window.click(("library-filter", 3usize), cx);
+        window.render_frame(cx);
+        window.click(("library-filter", 5usize), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).library_categories, (1 << 3) | (1 << 5));
+        window.press("escape", cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("library-file", 1001usize)).is_some());
+        assert!(window.try_find(("library-file", 1007usize)).is_some());
+        assert!(window.try_find(("library-file", 1003usize)).is_none());
+        window.click(("library-clear-filter", 3usize), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).library_categories, 1 << 5);
+        assert!(window.try_find(("library-file", 1001usize)).is_none());
+        window.click(("library-tab", 1usize), cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).library_images_only);
+        assert_eq!(app.read(cx).library_categories, 0);
+        assert!(window.try_find(("library-file", 1003usize)).is_some());
+        assert!(window.try_find(("library-file", 1007usize)).is_none());
+        let search = app.read(cx).library_search.clone();
+        window.click(("input", search.entity_id()), cx);
+        window.input("missing file", cx);
+        window.render_frame(cx);
+        window.click(("library-tab", 0usize), cx);
+        window.render_frame(cx);
+        assert!(!app.read(cx).library_images_only);
+        assert!(search.read(cx).value().is_empty());
+        assert!(window.try_find(("library-file", 1007usize)).is_some());
+    })
+    .unwrap();
+}
+#[gpui_kit::test]
+fn library_grid_reflows_at_source_container_breakpoint(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        app.update(cx, |s, cx| s.act(Action::Route(Route::Library), window, cx));
+        window.render_frame(cx);
+        let first = window.find(("library-file", 0usize)).bounds();
+        let fifth = window.find(("library-file", 1003usize)).bounds();
+        let sixth = window.find(("library-file", 1004usize)).bounds();
+        assert_eq!(
+            first.origin.y, fifth.origin.y,
+            "1060px content must use five columns"
+        );
+        assert!(sixth.origin.y > first.origin.y);
+        app.update(cx, |s, cx| {
+            s.sidebar = false;
+            cx.notify();
+        });
+        window.render_frame(cx);
+        let first = window.find(("library-file", 0usize)).bounds();
+        let sixth = window.find(("library-file", 1004usize)).bounds();
+        assert_eq!(
+            first.origin.y, sixth.origin.y,
+            "1400px content must use six columns"
+        );
+    })
+    .unwrap();
+}
+#[test]
+fn library_css_container_thresholds_match_extracted_tokens() {
+    for (width, expected) in [
+        (383., 1),
+        (384., 2),
+        (575., 2),
+        (576., 3),
+        (767., 3),
+        (768., 4),
+        (1023., 4),
+        (1024., 5),
+        (1279., 5),
+        (1280., 6),
+    ] {
+        assert_eq!(WorkspaceApp::library_columns(width), expected);
+    }
 }

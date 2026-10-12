@@ -51,3 +51,15 @@ Latest build and package: `cargo build --workspace --locked --offline` passed; `
 Targeted PrintWindow captures `qa/native-home-port-3.png`, `qa/native-projects-port-3.png`, and `qa/native-library-port-3.png` show the current real Windows render. Projects alignment and visible SVGs, and Library corner clipping, were visually inspected after correction. The prior modal capture `qa/native-project-dialog-port-2.png` predates the close-icon tint fix. Capture storage uses an isolated LOCALAPPDATA profile. Original-app pixel parity remains unverified.
 
 Build retains a dead-code warning for Route::Tool: retained tool surfaces need source-correct navigation integration. This is a known unfinished workflow, not a reason to hide the warning or claim completeness.
+
+## Source-derived menus and Library checkpoint (2026-10-12)
+
+Workspace tests: **83 passed**, zero failed: core10, rich19, settings12, tools9, app33. Command: `cargo test --workspace --all-features --locked --offline`. Build: `cargo build --workspace --locked --offline`, passed. Warnings: unused Theme/Fixture action variants remain.
+
+New geometry assertion measures actual GPUI popup bounds with sidebar shown/hidden: Plus matches composer width/left and 4px gap; model uses254px and8px. Existing keyboard, cancellation, selection and per-conversation isolation tests pass. This is bounded layout/behavior coverage, not pixel parity.
+
+Owned Windows preview captures: `qa/native-home-port-4.png`, `qa/native-plus-port-4.png`, `qa/native-library-picker-port-4.png`. Captured by HWND only; visually inspected. Native menu click required activating the owned preview before synthetic pointer messages. No original-window comparison is available. Library picker content remains a partial implementation.
+
+Repackaged binaries:
+- native-workspace.exe: 55824896 bytes; SHA-256 `de941dfabd7309120e9056c96301fc9e08228d86f3487e76df2951d7959ad69d`.
+- native-web-host.exe: 2359296 bytes; SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.

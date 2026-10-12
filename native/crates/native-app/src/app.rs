@@ -36,6 +36,9 @@ enum Action {
     Theme,
     ChatMenu,
     AccountMenu,
+    BrandMenu,
+    HelpMenu,
+    KeyboardSettings,
     Search,
     Close,
     Pin,
@@ -51,6 +54,11 @@ enum Action {
     Share,
     Model,
     Attach,
+    PickFiles,
+    ComposerLibrary,
+    ComposerLibraryToggle(String),
+    ComposerLibraryConfirm,
+    ComposerTool(&'static str),
     RemoveAttachment(u64),
     RetryAttachment(u64),
     ChooseModel(usize),
@@ -73,10 +81,13 @@ enum Action {
 enum Dialog {
     ChatMenu,
     AccountMenu,
+    BrandMenu,
+    HelpMenu,
     Search,
     Rename,
     Delete,
     Attachments,
+    ComposerLibrary,
     Model,
     Project,
     ProjectEditor,
@@ -107,6 +118,9 @@ pub struct WorkspaceApp {
     dialog: Option<Dialog>,
     focus: FocusHandle,
     modal_focus: FocusHandle,
+    shell_menu_focus: Vec<FocusHandle>,
+    shell_menu_index: usize,
+    shell_trigger_focus: Vec<FocusHandle>,
     previous_focus: Option<FocusHandle>,
     composer: Entity<TextareaState>,
     search: Entity<InputState>,
@@ -119,7 +133,8 @@ pub struct WorkspaceApp {
     project_editing: bool,
     project_search: Entity<InputState>,
     library_search: Entity<InputState>,
-    library_category: usize,
+    library_categories: u8,
+    library_images_only: bool,
     library_grid: bool,
     document: Option<String>,
     doc_preview: bool,
@@ -134,6 +149,11 @@ pub struct WorkspaceApp {
     generation: u64,
     streaming: bool,
     model_index: usize,
+    composer_menu_index: usize,
+    composer_library_query: Entity<InputState>,
+    composer_library_selection: Vec<String>,
+    composer_bounds: std::rc::Rc<std::cell::Cell<Bounds<Pixels>>>,
+    composer_tools: HashMap<String, &'static str>,
     settings: Entity<SettingsSurface>,
     rich: Vec<Entity<RichSurface>>,
     tools: Vec<Entity<ToolSurface>>,
@@ -215,6 +235,9 @@ impl WorkspaceApp {
             dialog: None,
             focus: cx.focus_handle(),
             modal_focus: cx.focus_handle(),
+            shell_menu_focus: (0..5).map(|_| cx.focus_handle()).collect(),
+            shell_menu_index: 0,
+            shell_trigger_focus: (0..2).map(|_| cx.focus_handle()).collect(),
             previous_focus: None,
             composer: composer.clone(),
             search: cx
@@ -236,7 +259,8 @@ impl WorkspaceApp {
             project_editing: false,
             project_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search projects")),
             library_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search files")),
-            library_category: 0,
+            library_categories: 0,
+            library_images_only: false,
             library_grid: true,
             document: None,
             doc_preview: false,
@@ -251,10 +275,20 @@ impl WorkspaceApp {
             generation: 0,
             streaming: false,
             model_index: 0,
+            composer_menu_index: 0,
+            composer_library_query: cx
+                .new(|cx| InputState::new(window, cx).placeholder("Search Library")),
+            composer_library_selection: Vec::new(),
+            composer_bounds: Default::default(),
+            composer_tools: HashMap::new(),
             settings,
             rich,
             tools,
         };
+        cx.subscribe(&app.composer_library_query, |_, _, _: &InputEvent, cx| {
+            cx.notify()
+        })
+        .detach();
         cx.subscribe_in(
             &composer,
             window,
@@ -292,6 +326,9 @@ impl WorkspaceApp {
         {
             self.act(Action::Close, window, cx);
             cx.stop_propagation();
+            return;
+        }
+        if self.composer_menu_key(event, window, cx) {
             return;
         }
         if self.dialog == Some(Dialog::ProjectEditor) {
@@ -526,14 +563,22 @@ impl WorkspaceApp {
             Action::Send => self.send(window, cx),
             Action::Stop => self.stop(),
             Action::ChatMenu => {
-                self.previous_focus = window.focused(cx);
-                self.dialog = Some(Dialog::ChatMenu);
-                window.focus(&self.modal_focus, cx);
+                self.open_shell_menu(Dialog::ChatMenu, window, cx);
             }
-            Action::AccountMenu => {
-                self.previous_focus = window.focused(cx);
-                self.dialog = Some(Dialog::AccountMenu);
-                window.focus(&self.modal_focus, cx);
+            Action::AccountMenu | Action::BrandMenu | Action::HelpMenu => {
+                let dialog = match action {
+                    Action::BrandMenu => Dialog::BrandMenu,
+                    Action::HelpMenu => Dialog::HelpMenu,
+                    _ => Dialog::AccountMenu,
+                };
+                self.open_shell_menu(dialog, window, cx);
+            }
+            Action::KeyboardSettings => {
+                self.dialog = None;
+                self.route = Route::Settings;
+                self.settings.update(cx, |settings, cx| {
+                    settings.show_section("Keyboard shortcuts", window, cx);
+                });
             }
             Action::Sidebar => self.sidebar = !self.sidebar,
             Action::Theme => {
@@ -670,6 +715,7 @@ impl WorkspaceApp {
             }
             Action::Model => {
                 self.previous_focus = window.focused(cx);
+                self.composer_menu_index = self.model_index;
                 self.dialog = Some(Dialog::Model);
                 window.focus(&self.modal_focus, cx);
             }
@@ -682,8 +728,59 @@ impl WorkspaceApp {
             Action::ShowMoreChats => self.recent_limit = self.recent_limit.saturating_add(30),
             Action::Attach => {
                 self.previous_focus = window.focused(cx);
+                self.composer_menu_index = 0;
                 self.dialog = Some(Dialog::Attachments);
                 window.focus(&self.modal_focus, cx);
+            }
+            Action::PickFiles => self.composer_pick_files(window, cx),
+            Action::ComposerLibrary => {
+                self.composer_library_selection.clear();
+                self.composer_library_query.update(cx, |input, cx| {
+                    input.set_value("", window, cx);
+                    input.focus(window, cx);
+                });
+                self.dialog = Some(Dialog::ComposerLibrary);
+            }
+            Action::ComposerLibraryToggle(id) => {
+                if self.composer_library_selection.contains(&id) {
+                    self.composer_library_selection.retain(|value| value != &id);
+                } else {
+                    self.composer_library_selection.push(id);
+                }
+            }
+            Action::ComposerLibraryConfirm => {
+                let names: Vec<String> = self
+                    .workspace
+                    .documents
+                    .iter()
+                    .filter(|d| self.composer_library_selection.contains(&d.id))
+                    .map(|d| d.title.clone())
+                    .collect();
+                for name in names {
+                    if self.current_attachments().iter().any(|a| a.name == name) {
+                        continue;
+                    }
+                    self.attachment_sequence += 1;
+                    self.attachments
+                        .entry(self.active.clone())
+                        .or_default()
+                        .push(Attachment {
+                            id: self.attachment_sequence,
+                            name,
+                            status: AttachmentStatus::Ready,
+                            attempt: 0,
+                        });
+                }
+                self.composer_library_selection.clear();
+                self.act(Action::Close, window, cx);
+            }
+            Action::ComposerTool(tool) => {
+                if self.composer_tools.get(&self.active) == Some(&tool) {
+                    self.composer_tools.remove(&self.active);
+                } else {
+                    self.composer_tools.insert(self.active.clone(), tool);
+                }
+                self.act(Action::Close, window, cx);
             }
             Action::Fixture(i) => {
                 let names = [
@@ -854,6 +951,7 @@ impl WorkspaceApp {
     }
 }
 include!("views.rs");
+include!("composer_menus.rs");
 include!("shell.rs");
 
 fn matches_shortcut(shortcut: &str, key: &Keystroke) -> bool {
@@ -908,3 +1006,7 @@ mod project_library_tests;
 #[cfg(all(test, feature = "ui-tests"))]
 #[path = "sidebar_tests.rs"]
 mod sidebar_tests;
+
+#[cfg(all(test, feature = "ui-tests"))]
+#[path = "shell_menu_tests.rs"]
+mod shell_menu_tests;
