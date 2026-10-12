@@ -350,3 +350,9 @@ Source app-initial:449756/449966 also scales UI tokens by round(base * UI / 14);
 ## UI typography scale wired to native renderers
 
 `native-ui::typography::TextRole` evaluates the source formula `round(base * ui / 14)` for caption12, small13, body14, large16 and headings18/20/24/28. Shell/navigation, conversation controls, projects/library, composer menus, share dialog and settings use these roles for their corresponding existing text sizes. The 32px home headline and fixed leading/spacing/icon dimensions remain unchanged because they are not OVs font-size substitutions. Remaining unported typography includes custom font families, source font-step commands, independent window zoom and prototype rich/tool-specific styles. This is source-derived scaling, not pixel equivalence proof.
+
+## Font input correction (supersedes the slider implementation)
+
+Source general-settings-161845fad443.js Cc8015/wc8142 uses number inputs, not sliders: width64, height28, suffix px with gap8, labels/descriptions now reproduced. The native controls now accept decimal preferences and commit on Enter/Blur, restoring the last committed value on invalid input. Each commit merges only that font preference into persisted settings, preserving unrelated unsaved edits. The synthetic preview sentence was removed.
+
+Remaining differences: native number spin buttons/arrow stepping, pointer-up commit, exact compact input background/border/tabular numerals and desktop Blur validation. The headless test performs real input and Enter but manually emits Blur after confirming focus transfer because native focus notifications were not delivered by that harness. Host step-font-size has a receiver but no emitter was found in extracted .vite/build JavaScript; source Ctrl+Plus/Minus/0 belong to window zoom, so no invented font shortcut was installed.

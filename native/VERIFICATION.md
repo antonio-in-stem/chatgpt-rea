@@ -186,3 +186,7 @@ All three native modal backdrops now consume the source Electron `#0002` token. 
 ## Source typography scaling — 2026-10-12
 
 Native-ui formula test passes for all eight connected roles at 11/14/16px preferences. Existing interaction suites pass: native-workspace 37, native-settings 13. Windows build passed with the existing unused Action variants warning. Package SHA-256 `261e9fc7fd701c8239954103989b6de52b17e55d6c3b32381121e73687bde309`, 55,955,456 bytes. These checks cover scaling arithmetic and retained interactions, not original-window visual equivalence.
+
+## Numeric font controls — 2026-10-12
+
+13 native-settings tests passed with decimal Enter commit, invalid-value restore, independent preference persistence and explicit Blur event-handler coverage. Desktop blur notification remains unverified. Windows native-workspace build passed. See dist/windows/manifest.json for this package hash.

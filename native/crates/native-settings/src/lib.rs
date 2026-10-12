@@ -1,9 +1,8 @@
 use gpui_kit::component::{
     ActiveTheme, IndexPath, Theme, ThemeMode,
     button::{Button, ButtonVariants},
-    input::{Input, InputState},
+    input::{Input, InputEvent, InputState},
     select::{Select, SelectState},
-    slider::{Slider, SliderState, SliderValue},
     switch::Switch,
 };
 use gpui_kit::{prelude::*, *};
@@ -19,8 +18,8 @@ pub struct Settings {
     pub display_name: String,
     pub instructions: String,
     pub theme: String,
-    pub font_size: u8,
-    pub code_font_size: u8,
+    pub font_size: f32,
+    pub code_font_size: f32,
     pub reduced_motion: bool,
     pub notifications: bool,
     pub sound: bool,
@@ -36,8 +35,8 @@ impl Default for Settings {
             display_name: "Alex".into(),
             instructions: "Keep answers clear and concise.".into(),
             theme: "Dark".into(),
-            font_size: 14,
-            code_font_size: 12,
+            font_size: 14.,
+            code_font_size: 12.,
             reduced_motion: false,
             notifications: true,
             sound: false,
@@ -61,10 +60,10 @@ impl Default for Settings {
 }
 impl Settings {
     pub fn validate(&self) -> Result<(), String> {
-        if !(11..=16).contains(&self.font_size) {
+        if !(11.0..=16.0).contains(&self.font_size) {
             return Err("UI font size must be between 11 and 16.".into());
         }
-        if !(8..=24).contains(&self.code_font_size) {
+        if !(8.0..=24.0).contains(&self.code_font_size) {
             return Err("Code font size must be between 8 and 24.".into());
         }
         if !["Light", "Dark"].contains(&self.theme.as_str()) {
@@ -111,8 +110,8 @@ impl Settings {
         let mut value: Self = serde_json::from_value(document).map_err(|e| e.to_string())?;
         // Earlier demo builds allowed 12-24px UI text. Normalize only that
         // known legacy range; malformed values still enter explicit recovery.
-        if legacy_fonts && (12..=24).contains(&value.font_size) {
-            value.font_size = value.font_size.clamp(11, 16);
+        if legacy_fonts && (12.0..=24.0).contains(&value.font_size) {
+            value.font_size = value.font_size.clamp(11., 16.);
         }
         value.validate()?;
         Ok(value)
@@ -202,8 +201,8 @@ pub struct SettingsSurface {
     theme: Choice,
     voice: Choice,
     language: Choice,
-    font: Entity<SliderState>,
-    code_font: Entity<SliderState>,
+    font: Entity<InputState>,
+    code_font: Entity<InputState>,
     pending_connection: Option<String>,
     voice_preview: bool,
     load_blocked: bool,
@@ -269,20 +268,20 @@ impl SettingsSurface {
             window,
             cx,
         );
-        let font = cx.new(|_| {
-            SliderState::new()
-                .min(11.)
-                .max(16.)
-                .step(1.)
-                .default_value(config.font_size as f32)
-        });
-        let code_font = cx.new(|_| {
-            SliderState::new()
-                .min(8.)
-                .max(24.)
-                .step(1.)
-                .default_value(config.code_font_size as f32)
-        });
+        let font = field(&config.font_size.to_string(), window, cx);
+        let code_font = field(&config.code_font_size.to_string(), window, cx);
+        for (input, code) in [(&font, false), (&code_font, true)] {
+            cx.subscribe_in(
+                input,
+                window,
+                move |this, _, event: &InputEvent, window, cx| {
+                    if matches!(event, InputEvent::Blur | InputEvent::PressEnter { .. }) {
+                        this.commit_font(code, window, cx);
+                    }
+                },
+            )
+            .detach();
+        }
         Self {
             section_focus: SECTIONS.iter().map(|_| cx.focus_handle()).collect(),
             storage_path,
@@ -329,12 +328,6 @@ impl SettingsSurface {
             .selected_value()
             .map(|x| x.to_string())
             .unwrap_or("English".into());
-        if let SliderValue::Single(v) = self.font.read(cx).value() {
-            self.config.font_size = v.round() as u8;
-        }
-        if let SliderValue::Single(v) = self.code_font.read(cx).value() {
-            self.config.code_font_size = v.round() as u8;
-        }
     }
     pub fn current_settings(&self) -> &Settings {
         &self.config
@@ -375,6 +368,60 @@ impl SettingsSurface {
                 self.error = true;
             }
         }
+        cx.notify();
+    }
+    fn commit_font(&mut self, code: bool, window: &mut Window, cx: &mut Context<Self>) {
+        let input = if code {
+            self.code_font.clone()
+        } else {
+            self.font.clone()
+        };
+        let previous = if code {
+            self.config.code_font_size
+        } else {
+            self.config.font_size
+        };
+        let raw = input.read(cx).value().to_string();
+        let range = if code { 8.0..=24.0 } else { 11.0..=16.0 };
+        let value = raw
+            .trim()
+            .parse::<f32>()
+            .ok()
+            .filter(|n| n.is_finite() && range.contains(n));
+        let mut committed = previous;
+        if !self.load_blocked {
+            if let Some(value) = value.filter(|n| *n != previous) {
+                let result = Settings::load(&self.storage_path).and_then(|mut saved| {
+                    if code {
+                        saved.code_font_size = value;
+                    } else {
+                        saved.font_size = value;
+                    }
+                    saved.save(&self.storage_path)?;
+                    Ok(saved)
+                });
+                match result {
+                    Ok(saved) => {
+                        committed = value;
+                        if code {
+                            self.config.code_font_size = value;
+                        } else {
+                            self.config.font_size = value;
+                        }
+                        apply_theme(&saved, window, cx);
+                        cx.emit(SettingsChanged { settings: saved });
+                        self.error = false;
+                    }
+                    Err(error) => {
+                        self.error = true;
+                        self.message = format!("Could not save font size: {error}");
+                    }
+                }
+            }
+        }
+        input.update(cx, |input, cx| {
+            input.set_value(committed.to_string(), window, cx)
+        });
         cx.notify();
     }
     fn did_save(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -445,19 +492,11 @@ impl SettingsSurface {
             window,
             cx,
         );
-        self.font = cx.new(|_| {
-            SliderState::new()
-                .min(11.)
-                .max(16.)
-                .step(1.)
-                .default_value(config.font_size as f32)
+        self.font.update(cx, |input, cx| {
+            input.set_value(config.font_size.to_string(), window, cx)
         });
-        self.code_font = cx.new(|_| {
-            SliderState::new()
-                .min(8.)
-                .max(24.)
-                .step(1.)
-                .default_value(config.code_font_size as f32)
+        self.code_font.update(cx, |input, cx| {
+            input.set_value(config.code_font_size.to_string(), window, cx)
         });
         self.config = config;
     }
@@ -527,6 +566,23 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
 }
 // Extracted SettingsRow: XBi/nVi in app-shared-737655e1fb23.js.
 // Physical pixel values follow the Electron host's 13px text-sm and 4px spacing.
+fn font_control(input: &Entity<InputState>, title: &'static str, cx: &App) -> Div {
+    div()
+        .flex()
+        .items_center()
+        .gap(px(8.))
+        .child(
+            div()
+                .w(px(64.))
+                .child(Input::new(input).h(px(28.)).aria_label(title)),
+        )
+        .child(
+            div()
+                .text_size(native_ui::typography::TextRole::Small.in_app(cx))
+                .text_color(cx.theme().muted_foreground)
+                .child("px"),
+        )
+}
 fn label(text: impl Into<SharedString>, cx: &App) -> Div {
     div()
         .text_size(native_ui::typography::TextRole::Small.in_app(cx))
@@ -634,23 +690,15 @@ impl Render for SettingsSurface {
                 .child(settings_divider(cx))
                 .child(settings_row(
                     "UI font size",
-                    "11–16 px",
-                    Slider::new(&self.font),
+                    "Adjust the base size used for ChatGPT",
+                    font_control(&self.font, "Sans font size", cx),
                     cx,
                 ))
-                .child(
-                    div()
-                        .px(px(16.))
-                        .pb(px(12.))
-                        .text_color(muted)
-                        .text_size(px(self.font.read(cx).value().start()))
-                        .child("The quick brown fox jumps over the lazy dog."),
-                )
                 .child(settings_divider(cx))
                 .child(settings_row(
                     "Code font size",
-                    "8–24 px",
-                    Slider::new(&self.code_font),
+                    "Adjust the base size used for code across chats and diffs",
+                    font_control(&self.code_font, "Code font size", cx),
                     cx,
                 ))
                 .child(settings_divider(cx))
@@ -1051,16 +1099,16 @@ mod tests {
         let original = br#"{"font_size":24}"#;
         std::fs::write(&path, original).unwrap();
         let loaded = Settings::load(&path).unwrap();
-        assert_eq!(loaded.font_size, 16);
-        assert_eq!(loaded.code_font_size, 12);
+        assert_eq!(loaded.font_size, 16.);
+        assert_eq!(loaded.code_font_size, 12.);
         assert_eq!(std::fs::read(&path).unwrap(), original);
         std::fs::remove_file(path).unwrap();
         let mut settings = Settings::default();
-        for value in [8, 24] {
+        for value in [8., 24.] {
             settings.code_font_size = value;
             assert!(settings.validate().is_ok());
         }
-        for value in [7, 25] {
+        for value in [7., 25.] {
             settings.code_font_size = value;
             assert!(settings.validate().is_err());
         }
@@ -1068,7 +1116,7 @@ mod tests {
     #[test]
     fn invalid_font_rejected() {
         let mut s = Settings::default();
-        s.font_size = 80;
+        s.font_size = 80.;
         assert!(s.validate().is_err());
     }
     #[test]
@@ -1084,7 +1132,7 @@ mod tests {
         let initial = Settings::default();
         initial.save(&path).unwrap();
         let mut invalid = initial.clone();
-        invalid.font_size = 255;
+        invalid.font_size = 255.;
         assert!(invalid.save(&path).is_err());
         assert_eq!(Settings::load(&path).unwrap(), initial);
         std::fs::remove_file(path).unwrap();
@@ -1115,9 +1163,9 @@ mod tests {
         ));
         let mut settings = Settings::default();
         settings.save(&path).unwrap();
-        settings.font_size = 16;
+        settings.font_size = 16.;
         settings.save(&path).unwrap();
-        assert_eq!(Settings::load(&path).unwrap().font_size, 16);
+        assert_eq!(Settings::load(&path).unwrap().font_size, 16.);
         std::fs::remove_file(path).unwrap();
     }
     #[test]
