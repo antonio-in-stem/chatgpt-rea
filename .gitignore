@@ -1,0 +1,6 @@
+/extracted/
+/supplemental/
+/reports/*.json
+/reports/files.csv
+/.worktrees/
+/target/
