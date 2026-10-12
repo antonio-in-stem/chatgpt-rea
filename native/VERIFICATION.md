@@ -214,3 +214,15 @@ The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previ
 ## Conversation navigation checkpoint
 
 47native-workspace tests pass. Real pointer/keyboard/resize checks cover marker visibility, jump alignment and hidden-rail shortcuts. Build+Package succeed; native-workspace.exe56154624bytes SHA25604d589f1fd507772f81c273a051015f6f17f34cb01543a873341b34d6c34896e. Inspected qa/native-navigation-11.png. Remaining fidelity limitations catalog/SHELL-REFERENCE.md.
+
+
+## 2026-10-12 navigation preview checkpoint
+- native-workspace with ui-tests: 48 passed, zero failed.
+- Native Windows debug build and packaging succeeded.
+- native-workspace.exe: 56,231,936 bytes; SHA256 6e4babf689b8c8ad42188790f6ebaf0343516e06adb516a0f4ada43bd9abcda1.
+- New event test checks 149/150 ms delay, 320 px preview geometry, drag alignment, duplicate-click suppression, keyboard focus and conversation-change cancellation.
+- No new comparison capture of the installed original was obtained; exact shell/canvas fidelity remains unverified and incomplete.
+
+
+## 2026-10-12 flexible header checkpoint
+49 native-workspace tests pass. Debug build/package succeeded. Binary SHA2566afddbce363f0e8fa461a06148cd7240ee4a5e4d3fbb95d1610c314be46c2f64,56230912bytes. Own-window capture qa/native-header-12.png (PID12528,HWND3738300) inspected: valid full frame; title/actions remain in their allocated areas. Capture also confirms major outstanding parity gaps in rail inventory, sidebar density, and the Codex transcript/composer. Goal remains incomplete.

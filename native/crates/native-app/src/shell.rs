@@ -672,7 +672,7 @@ impl Render for WorkspaceApp {
             Route::Rich(i) => RICH_LABELS[i].into(),
             Route::Tool(i) => TOOL_LABELS[i].into(),
         };
-        let mut start = div().flex().items_center().gap(px(4.)).min_w_0();
+        let mut start = div().flex_1().flex().items_center().gap(px(4.)).min_w_0();
         if !self.sidebar {
             start =
                 start.child(self.shell_icon("sidebar", "Open sidebar", 700, Action::Sidebar, cx));
@@ -682,14 +682,15 @@ impl Render for WorkspaceApp {
         if self.route != Route::Chat || self.workspace.conversation(&self.active).is_ok_and(|c| !c.messages.is_empty()) {
             start = start.child(
                 div()
-                    .max_w(px(320.))
+                    .id("conversation-title").test_support()
+                    .flex_1().min_w_0()
                     .truncate()
                     .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .font_weight(FontWeight::MEDIUM)
                     .child(title),
             );
         }
-        let mut end = div().flex().items_center().gap(px(6.));
+        let mut end = div().id("conversation-header-actions").test_support().flex_shrink_0().flex().items_center().gap(px(6.));
         if self.route == Route::Chat
             && self
                 .workspace
@@ -748,24 +749,16 @@ impl Render for WorkspaceApp {
             }),
         );
         let header = div()
-            .id("conversation-toolbar")
-            .h(px(46.))
+            .id("conversation-toolbar").test_support()
+            .h(px(52.))
             .flex_shrink_0()
             .pl(px(16.))
             .flex()
             .items_center()
-            .justify_between()
+            .justify_between().gap(px(6.))
             .pr(px(12.))
             .child(start)
-            .child(
-                div()
-                    .h_full()
-                    .flex()
-                    .items_center()
-                    .gap(px(8.))
-                    .child(end)
-                    ,
-            );
+            .child(end);
         let body = match self.route {
             Route::Chat => self.chat_view(window, cx),
             Route::Projects => self.projects_view(window, cx),

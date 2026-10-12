@@ -1076,3 +1076,34 @@ fn conversation_preview_delay_focus_and_pointer_capture(cx: &mut TestAppContext)
     })
     .unwrap();
 }
+
+#[gpui_kit::test]
+fn conversation_title_uses_available_header_space_without_displacing_actions(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage);
+    cx.update_window(handle,|_,_window,cx| {
+        app.update(cx,|s,cx| {
+            let id=s.active.clone();
+            let chat=s.workspace.conversations.iter_mut().find(|c| c.id==id).unwrap();
+            chat.title="A long conversation title that should use the available header space ".repeat(8);
+            cx.notify();
+        });
+    }).unwrap();
+    for width in [1440.,900.,600.] {
+        cx.simulate_window_resize(handle,size(px(width),px(1000.)));
+        cx.update_window(handle,|_,window,cx| {
+            window.render_frame(cx);
+            let header=window.find("conversation-toolbar").bounds();
+            let title=window.find("conversation-title").bounds();
+            let actions=window.find("conversation-header-actions").bounds();
+            assert_eq!(header.size.height,px(52.));
+            assert!(title.right()<=actions.left(),"Title overlaps actions at {width}");
+            assert!(actions.right()<=header.right(),"Actions escape header at {width}");
+            assert!(title.size.width>px(0.));
+            if width==1440. { assert!(title.size.width>px(320.)); }
+            window.click(("app-btn",708usize),cx);
+            assert!(app.read(cx).dialog==Some(Dialog::ChatMenu));
+            window.press("escape",cx);
+        }).unwrap();
+    }
+}
