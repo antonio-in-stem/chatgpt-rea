@@ -627,3 +627,40 @@ fn composer_popup_geometry_tracks_composer_and_model_contract(cx: &mut TestAppCo
     })
     .unwrap();
 }
+
+#[gpui_kit::test]
+fn library_picker_layout_search_and_clear_preserve_dialog(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        app.update(cx, |s, cx| {
+            s.act(super::Action::ComposerLibrary, window, cx)
+        });
+        window.render_frame(cx);
+        assert!(window.try_find("composer-library-footer").is_none());
+        let row = window.find(("composer-library-file", 0usize)).bounds();
+        assert_eq!(row.size.height, px(50.));
+        window.click(("composer-library-file", 0usize), cx);
+        window.render_frame(cx);
+        assert!(window.try_find("composer-library-footer").is_some());
+        window.click("composer-library-layout", cx);
+        window.render_frame(cx);
+        let card = window.find(("composer-library-file", 0usize)).bounds();
+        assert_eq!(card.size.width, card.size.height);
+        assert!((f32::from(card.size.width) - (640. - 24.) / 3.).abs() < 1.);
+        assert_eq!(app.read(cx).composer_library_selection.len(), 1);
+        let search = app.read(cx).composer_library_query.clone();
+        search.update(cx, |s, cx| s.set_value("not a matching file", window, cx));
+        window.render_frame(cx);
+        assert!(window.try_find(("composer-library-file", 0usize)).is_none());
+        assert!(window.try_find("composer-library-footer").is_some());
+        window.click("composer-library-clear", cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).dialog == Some(Dialog::ComposerLibrary));
+        assert!(app.read(cx).composer_library_selection.is_empty());
+        assert!(window.try_find("composer-library-footer").is_none());
+        assert_eq!(search.read(cx).value().as_str(), "not a matching file");
+    })
+    .unwrap();
+}

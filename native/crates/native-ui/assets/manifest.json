@@ -292,5 +292,25 @@
     "sha256": "911854f7201d49307857324f8dd458b96ebb76c9996e41d262e50618543f8ffa",
     "bytes": 751,
     "role": "literal body recovered without execution; Library na -> be/Zet -> _7n filter-light-20"
+  },
+  {
+    "name": "picker-grid",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "sourceLine": 203432,
+    "sourceCharacterOffset": 4694169,
+    "sha256": "e3b098c1641cead0871b3a1bf9b6a575d421c3534c5d12049a22e479af6f8870",
+    "bytes": 1977,
+    "role": "literal body recovered without execution; picker ke=sat -> S_r=$(xor) -> square-grid-2x2-light-20; library-file-picker-dialog-content-2f9fc6ac6d23.js toolbar binding",
+    "characterOffsetSource": "extracted/webview/assets/app-shared-737655e1fb23.js"
+  },
+  {
+    "name": "picker-list",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "sourceLine": 198313,
+    "sourceCharacterOffset": 4356689,
+    "sha256": "e7fbf4de0317e4e4875fdef674f45c1b99769ec05645340c85b43cf1ad296012",
+    "bytes": 1517,
+    "role": "literal body recovered without execution; picker Se=fnt -> $dr=$(Ner) -> list-bullet-light-20; library-file-picker-dialog-content-2f9fc6ac6d23.js toolbar binding",
+    "characterOffsetSource": "extracted/webview/assets/app-shared-737655e1fb23.js"
   }
 ]

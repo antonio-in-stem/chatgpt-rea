@@ -1,6 +1,6 @@
 use super::{Action, Dialog, Route, WorkspaceApp};
 use gpui_kit::test::TestWindowExt;
-use gpui_kit::{AppContext, Bounds, TestAppContext, WindowBounds, WindowOptions, point, px, size};
+use gpui_kit::{point, px, size, AppContext, Bounds, TestAppContext, WindowBounds, WindowOptions};
 use std::sync::atomic::{AtomicU64, Ordering};
 static SEQUENCE: AtomicU64 = AtomicU64::new(0);
 fn fixture(

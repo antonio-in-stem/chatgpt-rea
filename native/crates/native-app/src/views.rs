@@ -1248,9 +1248,14 @@ impl WorkspaceApp {
             .into_any_element()
     }
 
-    fn dialog_view(&self, dialog: Dialog, cx: &mut Context<Self>) -> AnyElement {
+    fn dialog_view(
+        &self,
+        dialog: Dialog,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> AnyElement {
         if dialog == Dialog::ComposerLibrary {
-            return self.composer_library_view(cx);
+            return self.composer_library_view(window, cx);
         }
         if matches!(dialog, Dialog::Model | Dialog::Attachments) {
             return self.composer_menu_view(dialog, cx);

@@ -27,3 +27,5 @@ Passing behavioral tests, a successful executable launch or a single improved ho
 ## Latest partial coverage
 
 Native brand/profile/help popups now preserve focus and support keyboard navigation; Help opens the retained keyboard settings section. Scheduled routes to the retained automation surface. Plus/model popups, native file picker and in-chat Library selection are implemented with local fixtures. Library includes file-type multiselect, removable tags and source-derived column breakpoints. Alpha theme tokens are partially bound; Mica composition remains absent. See COMPOSER-MENUS.md for model power and Library picker gaps. Verified checkpoint: 83 tests and a Windows build, with owned-window screenshots; exact visual parity remains unproven.
+
+Library picker now includes source-derived list/grid layouts, shipped view-toggle glyphs, conditional selection footer and clear-without-close behavior. App suite34 passed and Windows build/captures verified; full picker parity remains open as detailed in COMPOSER-MENUS.md.

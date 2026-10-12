@@ -1,9 +1,9 @@
 //! Pointer dispatch and durable sidebar layout; no implementation-only mock drag.
-use super::{WorkspaceApp, clamp_sidebar_width};
+use super::{clamp_sidebar_width, WorkspaceApp};
 use gpui_kit::test::TestWindowExt;
 use gpui_kit::{
-    AnyWindowHandle, AppContext, Bounds, Entity, TestAppContext, WindowBounds, WindowOptions,
-    point, px, size,
+    point, px, size, AnyWindowHandle, AppContext, Bounds, Entity, TestAppContext, WindowBounds,
+    WindowOptions,
 };
 use std::{
     path::PathBuf,

@@ -5,9 +5,9 @@ mod chat_motion;
 use chat_actions::ChatMessageActions;
 use gpui_kit::base::FocusTrapElement;
 use gpui_kit::component::{
-    ActiveTheme,
     input::{Input, InputEvent, InputState, Textarea, TextareaState},
     text::TextView,
+    ActiveTheme,
 };
 use gpui_kit::{prelude::*, *};
 use native_core::{DocumentKind, MessageRole, Workspace};
@@ -58,6 +58,8 @@ enum Action {
     ComposerLibrary,
     ComposerLibraryToggle(String),
     ComposerLibraryConfirm,
+    ComposerLibraryClear,
+    ComposerLibraryLayout,
     ComposerTool(&'static str),
     RemoveAttachment(u64),
     RetryAttachment(u64),
@@ -152,6 +154,7 @@ pub struct WorkspaceApp {
     composer_menu_index: usize,
     composer_library_query: Entity<InputState>,
     composer_library_selection: Vec<String>,
+    composer_library_grid: bool,
     composer_bounds: std::rc::Rc<std::cell::Cell<Bounds<Pixels>>>,
     composer_tools: HashMap<String, &'static str>,
     settings: Entity<SettingsSurface>,
@@ -279,6 +282,7 @@ impl WorkspaceApp {
             composer_library_query: cx
                 .new(|cx| InputState::new(window, cx).placeholder("Search Library")),
             composer_library_selection: Vec::new(),
+            composer_library_grid: false,
             composer_bounds: Default::default(),
             composer_tools: HashMap::new(),
             settings,
@@ -740,6 +744,10 @@ impl WorkspaceApp {
                     input.focus(window, cx);
                 });
                 self.dialog = Some(Dialog::ComposerLibrary);
+            }
+            Action::ComposerLibraryClear => self.composer_library_selection.clear(),
+            Action::ComposerLibraryLayout => {
+                self.composer_library_grid = !self.composer_library_grid
             }
             Action::ComposerLibraryToggle(id) => {
                 if self.composer_library_selection.contains(&id) {

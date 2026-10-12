@@ -1,4 +1,4 @@
-use gpui_kit::base::{Disableable, Selectable};
+use gpui_kit::base::Selectable;
 // Source: app-primary-19fe57fd8c00.js S5e/D5e/O5e and ChatGPT plus items.
 // The installed bundle receives model names from server data; MODELS is a local catalog fixture.
 impl WorkspaceApp {
@@ -121,7 +121,7 @@ impl WorkspaceApp {
     }
     fn composer_menu_view(&self, dialog: Dialog, cx: &mut Context<Self>) -> AnyElement {
         use gpui_kit::component::button::{Button, ButtonVariants};
-        let colors = &cx.theme().colors;
+        let colors = cx.theme().colors.clone();
         let bounds = self.composer_bounds.get();
         let is_model = dialog == Dialog::Model;
         let mut menu = div()
@@ -219,21 +219,32 @@ impl WorkspaceApp {
 }
 // LibraryFilePickerDialog source: size=xwide; inner height560/gap16/header20.
 impl WorkspaceApp {
-    fn composer_library_view(&self, cx: &mut Context<Self>) -> AnyElement {
-        use gpui_kit::component::{
-            button::{Button, ButtonVariants},
-            checkbox::Checkbox,
-        };
-        let colors = &cx.theme().colors;
+    fn composer_library_view(&self, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
+        use gpui_kit::component::button::{Button, ButtonVariants};
+        let colors = cx.theme().colors.clone();
         let query = self.composer_library_query.read(cx).value().to_lowercase();
+        let viewport = f32::from(window.viewport_size().width);
+        let panel_width = 680_f32.min(viewport * 0.92);
+        let columns = if viewport >= 1024. {
+            3
+        } else if viewport >= 640. {
+            2
+        } else {
+            1
+        };
+        let card_width = (panel_width - 40. - 12. * (columns - 1) as f32) / columns as f32;
         let mut rows = div()
             .id("composer-library-results")
             .flex_1()
             .min_h_0()
             .overflow_y_scroll()
-            .flex()
-            .flex_col()
-            .gap(px(4.));
+            .px(px(20.));
+        let mut content = div().w_full().py(px(8.)).flex();
+        content = if self.composer_library_grid {
+            content.flex_wrap().items_start().gap(px(12.))
+        } else {
+            content.flex_col().gap(px(2.))
+        };
         let mut count = 0;
         for (i, document) in self
             .workspace
@@ -244,32 +255,165 @@ impl WorkspaceApp {
         {
             count += 1;
             let id = document.id.clone();
+            let selected = self.composer_library_selection.contains(&id);
+            let (icon, kind) = match document.kind {
+                DocumentKind::Spreadsheet => ("spreadsheet", "Spreadsheet"),
+                DocumentKind::Presentation => ("presentation", "Presentation"),
+                DocumentKind::Drawing => ("image", "Image"),
+                _ => ("document", "Document"),
+            };
+            let indicator = div()
+                .size(px(20.))
+                .rounded_full()
+                .border_1()
+                .border_color(if selected {
+                    colors.foreground
+                } else {
+                    colors.border
+                })
+                .flex()
+                .items_center()
+                .justify_center()
+                .when(selected, |d| {
+                    d.bg(colors.foreground)
+                        .child(native_ui::icon("check", 14.).text_color(colors.background))
+                });
+            let mut item = Button::new(("composer-library-file", i))
+                .ghost()
+                .accessibility_label(format!("Select {}", document.title))
+                .selected(selected)
+                .p_0()
+                .h_auto()
+                .on_click(cx.listener(move |app, _, window, cx| {
+                    app.act(Action::ComposerLibraryToggle(id.clone()), window, cx)
+                }));
+            if self.composer_library_grid {
+                item = item
+                    .w(px(card_width))
+                    .h(px(card_width))
+                    .rounded(px(16.))
+                    .border_1()
+                    .border_color(if selected {
+                        colors.foreground
+                    } else {
+                        colors.border
+                    })
+                    .child(
+                        div()
+                            .relative()
+                            .size_full()
+                            .text_left()
+                            .child(
+                                div()
+                                    .absolute()
+                                    .top(px(16.))
+                                    .left(px(16.))
+                                    .right(px(16.))
+                                    .text_size(px(14.))
+                                    .line_height(px(20.))
+                                    .font_weight(FontWeight::MEDIUM)
+                                    .whitespace_normal()
+                                    .child(document.title.clone()),
+                            )
+                            .child(
+                                div()
+                                    .size_full()
+                                    .flex()
+                                    .items_center()
+                                    .justify_center()
+                                    .child(
+                                        native_ui::icon(icon, 40.).text_color(colors.foreground),
+                                    ),
+                            )
+                            .child(
+                                div()
+                                    .absolute()
+                                    .bottom(px(16.))
+                                    .left(px(16.))
+                                    .right(px(48.))
+                                    .text_size(px(12.))
+                                    .text_color(colors.muted_foreground)
+                                    .child(kind),
+                            )
+                            .child(
+                                div()
+                                    .absolute()
+                                    .bottom(px(16.))
+                                    .right(px(16.))
+                                    .child(indicator),
+                            ),
+                    );
+            } else {
+                item = item.w_full().rounded(px(12.)).child(
+                    div()
+                        .w_full()
+                        .text_left()
+                        .px(px(8.))
+                        .py(px(5.))
+                        .flex()
+                        .items_center()
+                        .gap(px(8.))
+                        .child(
+                            div()
+                                .size(px(32.))
+                                .flex_shrink_0()
+                                .rounded(px(8.))
+                                .border_1()
+                                .border_color(colors.border)
+                                .flex()
+                                .items_center()
+                                .justify_center()
+                                .child(native_ui::icon(icon, 20.).text_color(colors.foreground)),
+                        )
+                        .child(
+                            div()
+                                .flex_1()
+                                .min_w_0()
+                                .flex()
+                                .flex_col()
+                                .child(
+                                    div()
+                                        .text_size(px(14.))
+                                        .line_height(px(24.))
+                                        .truncate()
+                                        .child(document.title.clone()),
+                                )
+                                .child(
+                                    div()
+                                        .text_size(px(12.))
+                                        .line_height(px(16.))
+                                        .text_color(colors.muted_foreground)
+                                        .child("—"),
+                                ),
+                        )
+                        .child(indicator),
+                );
+            }
+            content = content.child(item);
+        }
+        rows = rows.child(content);
+        if count == 0 {
             rows = rows.child(
-                div().px(px(12.)).py(px(10.)).rounded(px(8.)).child(
-                    Checkbox::new(("composer-library-file", i))
-                        .label(document.title.clone())
-                        .checked(self.composer_library_selection.contains(&id))
-                        .on_click(cx.listener(move |app, _, window, cx| {
-                            app.act(Action::ComposerLibraryToggle(id.clone()), window, cx)
-                        })),
-                ),
+                div()
+                    .min_h(px(240.))
+                    .py(px(24.))
+                    .flex()
+                    .items_center()
+                    .justify_center()
+                    .text_size(px(14.))
+                    .text_color(colors.muted_foreground)
+                    .child(if query.is_empty() {
+                        "No recent files yet"
+                    } else {
+                        "No matching files"
+                    }),
             );
         }
-        if count == 0 {
-            rows = rows.child(div().p(px(24.)).text_color(colors.muted_foreground).child(
-                if query.is_empty() {
-                    "No recent files yet"
-                } else {
-                    "No matching files"
-                },
-            ));
-        }
-        let panel = div()
+        let mut panel = div()
             .w(px(680.))
             .max_w(relative(0.92))
             .h(px(560.))
             .max_h(relative(0.9))
-            .p(px(20.))
             .rounded(px(20.))
             .bg(colors.popover)
             .shadow_lg()
@@ -279,6 +423,8 @@ impl WorkspaceApp {
             .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation())
             .child(
                 div()
+                    .px(px(20.))
+                    .pt(px(20.))
                     .flex()
                     .justify_between()
                     .items_center()
@@ -290,19 +436,85 @@ impl WorkspaceApp {
                     )
                     .child(self.chat_icon_button("close", "Close", 769, Action::Close, cx)),
             )
-            .child(Input::new(&self.composer_library_query).aria_label("Search Library"))
-            .child(rows)
             .child(
-                div().flex().justify_end().child(
-                    Button::new(("app-btn", 770usize))
-                        .primary()
-                        .label("Add to chat")
-                        .disabled(self.composer_library_selection.is_empty())
-                        .on_click(cx.listener(|app, _, window, cx| {
-                            app.act(Action::ComposerLibraryConfirm, window, cx)
-                        })),
-                ),
+                div()
+                    .px(px(20.))
+                    .flex()
+                    .items_center()
+                    .gap(px(8.))
+                    .child(div().flex_1().min_w_0().child(
+                        Input::new(&self.composer_library_query).aria_label("Search Library"),
+                    ))
+                    .child(
+                        Button::new("composer-library-layout")
+                            .ghost()
+                            .rounded_full()
+                            .size(px(32.))
+                            .accessibility_label(if self.composer_library_grid {
+                                "List view"
+                            } else {
+                                "Grid view"
+                            })
+                            .tooltip(if self.composer_library_grid {
+                                "List view"
+                            } else {
+                                "Grid view"
+                            })
+                            .child(
+                                native_ui::icon(
+                                    if self.composer_library_grid {
+                                        "picker-list"
+                                    } else {
+                                        "picker-grid"
+                                    },
+                                    20.,
+                                )
+                                .text_color(colors.foreground),
+                            )
+                            .on_click(cx.listener(|app, _, window, cx| {
+                                app.act(Action::ComposerLibraryLayout, window, cx)
+                            })),
+                    ),
+            )
+            .child(rows);
+        if !self.composer_library_selection.is_empty() {
+            panel = panel.child(
+                div()
+                    .id("composer-library-footer")
+                    .test_support()
+                    .px(px(20.))
+                    .pb(px(20.))
+                    .flex()
+                    .items_center()
+                    .gap(px(8.))
+                    .child(
+                        div()
+                            .flex_1()
+                            .text_size(px(14.))
+                            .text_color(colors.muted_foreground)
+                            .child(format!(
+                                "{} selected",
+                                self.composer_library_selection.len()
+                            )),
+                    )
+                    .child(
+                        Button::new("composer-library-clear")
+                            .ghost()
+                            .label("Cancel")
+                            .on_click(cx.listener(|app, _, window, cx| {
+                                app.act(Action::ComposerLibraryClear, window, cx)
+                            })),
+                    )
+                    .child(
+                        Button::new(("app-btn", 770usize))
+                            .primary()
+                            .label("Add to chat")
+                            .on_click(cx.listener(|app, _, window, cx| {
+                                app.act(Action::ComposerLibraryConfirm, window, cx)
+                            })),
+                    ),
             );
+        }
         div()
             .absolute()
             .inset_0()

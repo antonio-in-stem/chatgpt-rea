@@ -63,3 +63,10 @@ Owned Windows preview captures: `qa/native-home-port-4.png`, `qa/native-plus-por
 Repackaged binaries:
 - native-workspace.exe: 55824896 bytes; SHA-256 `de941dfabd7309120e9056c96301fc9e08228d86f3487e76df2951d7959ad69d`.
 - native-web-host.exe: 2359296 bytes; SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.
+
+## Library picker list/grid checkpoint
+
+`cargo test -p native-workspace --all-features --locked --offline`: 34 passed. Full workspace build passed. Changes touch app rendering/state and static native-ui assets; other crate tests were not rerun this checkpoint (previous full suite83 passed). Windows list/selected-grid captures inspected; original comparison unavailable.
+
+- native-workspace.exe: 55846912 bytes, SHA-256 `b071308f45cf1c717084b235d4f6762609bedf290adf0e190ed6b6a309afbef3`.
+- native-web-host.exe: 2359296 bytes, SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.

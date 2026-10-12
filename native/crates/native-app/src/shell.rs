@@ -852,7 +852,7 @@ impl Render for WorkspaceApp {
                 ) {
                     self.shell_menu(dialog, window, cx)
                 } else {
-                    self.dialog_view(dialog, cx)
+                    self.dialog_view(dialog, window, cx)
                 },
             );
         }
