@@ -410,12 +410,14 @@ impl WorkspaceApp {
                 .border_color(colors.border)
                 .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                 .text_color(colors.muted_foreground)
-                .child(div().flex_1().child("Name"))
-                .child(div().w(px(64.)).child("Updated"))
+                .child(div().flex_1().child(self.project_sort_header("Name", ProjectSortKey::Name, cx)))
+                .child(div().w(px(64.)).child(self.project_sort_header("Updated", ProjectSortKey::Modified, cx)))
                 .child(div().w(px(128.))),
         );
         let mut visible = 0;
-        for (i, p) in self.workspace.projects.iter().enumerate() {
+        let mut rows = self.workspace.projects.iter().enumerate().collect::<Vec<_>>();
+        rows.sort_by(|(_, a), (_, b)| self.project_sort.compare(a, b));
+        for (i, p) in rows {
             let chats = self
                 .workspace
                 .conversations
@@ -1372,5 +1374,21 @@ impl WorkspaceApp {
             .child(content.focus_trap("workspace-dialog", &self.modal_focus))
             .occlude()
             .into_any_element()
+    }
+}
+
+impl WorkspaceApp {
+    fn project_sort_header(&self, label: &'static str, key: ProjectSortKey, cx: &mut Context<Self>) -> impl IntoElement {
+        use gpui_kit::component::button::{Button, ButtonVariants};
+        let active = self.project_sort.key == key;
+        Button::new(if key == ProjectSortKey::Name { "project-sort-name" } else { "project-sort-modified" })
+            .ghost().h(px(24.)).px_0().gap(px(4.))
+            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
+            .text_color(if active { cx.theme().foreground } else { native_ui::tokens::tertiary_text(cx.theme().mode.is_dark()) })
+            .accessibility_label(format!("Sort by {label}{}", if active { if self.project_sort.descending { ", descending" } else { ", ascending" } } else { "" }))
+            .child(label)
+            .when(active, |button| button.child(native_ui::icon("project-sort", 16.)
+                .when(self.project_sort.descending, |icon| icon.with_transformation(gpui_kit::Transformation::rotate(gpui_kit::radians(std::f32::consts::PI))))))
+            .on_click(cx.listener(move |app, _, _, cx| { app.project_sort.select(key); cx.notify(); }))
     }
 }

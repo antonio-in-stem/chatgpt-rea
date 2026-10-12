@@ -48,6 +48,7 @@ pub fn icon_data(name: &str) -> &'static [u8] {
         "list" => include_bytes!("../assets/list-ea876c3c4e37.svg"),
         "library-filter" => include_bytes!("../assets/filter-light-20.svg"),
         "picker-grid" => include_bytes!("../assets/square-grid-2x2-light-20.svg"),
+        "project-sort" => include_bytes!("../assets/arrow-up-md-light-16.svg"),
         "picker-list" => include_bytes!("../assets/list-bullet-light-20.svg"),
         _ => &[],
     }

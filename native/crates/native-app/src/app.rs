@@ -1,3 +1,6 @@
+#[path = "project_sort.rs"]
+mod project_sort;
+use project_sort::{ProjectSort, ProjectSortKey};
 #[path = "chat_actions.rs"]
 mod chat_actions;
 #[path = "chat_motion.rs"]
@@ -135,6 +138,7 @@ pub struct WorkspaceApp {
     doc_editor: Entity<TextareaState>,
     project: Option<String>,
     expanded_projects: HashSet<String>,
+    project_sort: ProjectSort,
     project_editing: bool,
     project_search: Entity<InputState>,
     library_search: Entity<InputState>,
@@ -269,6 +273,7 @@ impl WorkspaceApp {
             }),
             project: None,
             expanded_projects: HashSet::new(),
+            project_sort: ProjectSort::default(),
             project_editing: false,
             project_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search projects")),
             library_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search files")),

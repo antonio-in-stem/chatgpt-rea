@@ -295,3 +295,36 @@ fn projects_expand_independently_and_search_restores_manual_state(cx: &mut TestA
         assert_eq!(app.read(cx).expanded_projects.len(), 1);
     }).unwrap();
 }
+
+#[gpui_kit::test]
+fn project_headers_sort_rows_and_preserve_expansion(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        app.update(cx, |app, cx| {
+            app.workspace.create_project("Alpha").unwrap();
+            app.workspace.create_project("Zulu").unwrap();
+            app.act(Action::Route(Route::Projects), window, cx);
+        });
+        window.render_frame(cx);
+        let alpha_y = window.find(("project-open", 1usize)).bounds().origin.y;
+        let zulu_y = window.find(("project-open", 2usize)).bounds().origin.y;
+        assert!(zulu_y < alpha_y, "Missing dates tie-break by descending name");
+        window.click(("project-open", 1usize), cx);
+        window.render_frame(cx);
+        window.click("project-sort-name", cx);
+        window.render_frame(cx);
+        assert!(window.find(("project-open", 1usize)).bounds().origin.y < window.find(("project-open", 2usize)).bounds().origin.y);
+        assert!(window.try_find(("project-remove", 1usize)).is_some());
+        window.click("project-sort-name", cx);
+        window.render_frame(cx);
+        assert!(window.find(("project-open", 2usize)).bounds().origin.y < window.find(("project-open", 1usize)).bounds().origin.y);
+        window.click("project-sort-modified", cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).project_sort.descending);
+        window.click("project-sort-modified", cx);
+        window.render_frame(cx);
+        assert!(!app.read(cx).project_sort.descending);
+        assert!(window.find(("project-open", 1usize)).bounds().origin.y < window.find(("project-open", 2usize)).bounds().origin.y);
+    }).unwrap();
+}

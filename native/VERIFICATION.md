@@ -198,3 +198,7 @@ The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previ
 ## Projects independent expansion — 2026-10-12
 
 38 native-workspace tests passed, including a pointer/keyboard sequence for simultaneous row expansion, search-forced matching children, name-only search, restoring manual expansion and deleting the correct row. Windows build and packaging passed. Source evidence: projects-index-page-39541e9a312e.js1089–1092,1220–1246,1807–1828. No original-window pixel equivalence claim.
+
+## Projects sortable headers — 2026-10-12
+
+41 native-workspace tests passed. Added checks verify actual row positions after header clicks, expansion retention, direction defaults, stable ID ties and Windows case/accent comparison. Windows build passed with the existing unused Action variants warning. Package SHA-256 `dc3aea61d57e9397970b84498299c843c3d80d9365d24d6afb978b25453fd490`. Full ICU locale equivalence, actual project dates and original-window pixel comparison remain unverified.

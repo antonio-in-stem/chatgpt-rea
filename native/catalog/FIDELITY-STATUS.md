@@ -17,7 +17,7 @@ The installed ChatGPT.exe belongs to OpenAI.Codex_26.1007.2314.0 and hosts the c
 ## Explicitly unfinished acceptance areas
 
 - Original-window capture: PrintWindow returned blank surfaces; two HWND-scoped WGC attempts produced no frames despite successful session creation. See ignored qa/wgc-reference-result.json. No pixel comparison has passed.
-- All source routes and feature-gated frontend states, account/workspace switching, full brand/profile menu capability variants, project sorting/sticky headers, complete library providers/folders/favorites/trash/selection and full source filter popover variants (basic file-type multiselect is now ported).
+- All source routes and feature-gated frontend states, account/workspace switching, full brand/profile menu capability variants, project modification timestamps/locale-perfect sorting/sticky headers, complete library providers/folders/favorites/trash/selection and full source filter popover variants (basic file-type multiselect is now ported).
 - Every message/content/attachment state, context menu, keyboard and accessibility variant; rich editors and tool screens still contain prototype compositions and are not visually matched. Some retained tool entities require source-correct navigation integration after removing the generic tool gallery.
 - Theme alpha/backdrop cascade, transparent versus opaque Electron frame behavior, exact font configuration, all DPI/compact layouts, overlay positions and complete animation inventory.
 - Per-screen Windows rendered comparison with source/reference evidence, interaction coverage at the corresponding scope, and the complete reusable component/public API mapping.
@@ -35,3 +35,5 @@ Personal conversation Share now opens the recovered non-social dialog compositio
 Personal Share now has local async create/copy/update, busy dismissal lock, blocked/create/copy failures, retry and readonly URL recovery. App tests37 passed and Windows copy-failure capture inspected. Remaining share scope is updated in SHARE-DIALOG.md; whole-app parity remains incomplete.
 
 Projects now retain independent manual expansion for multiple rows. Child-title search forces only matching rows open and filters their child list, preserving manual state when cleared. Name-only matches stay collapsed unless manually expanded. Sorting, sticky layout and project-detail route remain unfinished.
+
+Project Name/Updated headers now toggle source default directions, reorder rows and retain expansion. Updated uses the source missing-date fallback because the local model has no project timestamps. The source sort arrow is embedded. NLS collation is a Windows approximation to Intl.Collator and remains an explicit fidelity gap.

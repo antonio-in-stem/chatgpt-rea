@@ -16,3 +16,6 @@ ui-tests = ["gpui-kit/test-support"]
 
 [build-dependencies]
 embed-resource = "=3.0.12"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61.2", features = ["Win32_Globalization"] }

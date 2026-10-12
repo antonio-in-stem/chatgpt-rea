@@ -312,5 +312,13 @@
     "bytes": 1517,
     "role": "literal body recovered without execution; picker Se=fnt -> $dr=$(Ner) -> list-bullet-light-20; library-file-picker-dialog-content-2f9fc6ac6d23.js toolbar binding",
     "characterOffsetSource": "extracted/webview/assets/app-shared-737655e1fb23.js"
+  },
+  {
+    "name": "project-sort",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "sourceLine": 192393,
+    "sha256": "42d0aa713b22d1e78b01935fca512b0dae389323b4302bbcde0b4c8296b61d07",
+    "bytes": 547,
+    "role": "Projects vi -> N/T7 -> nfr=$(D4n), arrow-up-md-light-16; rotates 180 degrees for descending"
   }
 ]

@@ -8,7 +8,7 @@ This patch replaces the previous generic split project editor and component gall
 - `extracted/webview/assets/app-initial-b8e1c8014bb4.js`: shared page contentWidth `extraWide` resolves1440px maximum; compact header uses24px responsive48px gutters.
 - `recovered-frontend/readable/assets/chatgpt-project-settings-dialog-99331eebb4cd.js`: named Name/Instructions form, native-sized multiline instruction control and Save operation. Original is a dialog, including service-backed memory/access fields. Native editor now uses the same centered modal composition; backend-only memory/access fields remain absent.
 
-Native implementation: max1440px table, flexible Name +64px Updated +128px action columns,70px rows, child chat expansion, actual name/chat-title search, create/edit/save/cancel/remove and chat opening. No timestamps are invented; local model has none, so Updated displays an em dash. Expansion now uses an independent set, following source lines1089–1092. Search forces expansion only for matching child conversations (lines1220–1246), displays those matches and leaves the manual set intact; name-only matches do not force expansion. Sorting by name/modified remains incomplete. Header is currently scrollable with its parent rather than collapsing sticky.20px shell gutter remains a native adaptation.
+Native implementation: max1440px table, flexible Name +64px Updated +128px action columns,70px rows, child chat expansion, actual name/chat-title search, create/edit/save/cancel/remove and chat opening. No timestamps are invented; local model has none, so Updated displays an em dash. Expansion now uses an independent set, following source lines1089–1092. Search forces expansion only for matching child conversations (lines1220–1246), displays those matches and leaves the manual set intact; name-only matches do not force expansion. Sortable headers are implemented; actual modification timestamps and complete locale equivalence remain incomplete. Header is currently scrollable with its parent rather than collapsing sticky.20px shell gutter remains a native adaptation.
 
 ## Library evidence
 
@@ -52,3 +52,9 @@ Additional tests (not yet executed by this agent): source breakpoint boundaries;
 ## Independent expansion verification
 
 Selection for editing is separate from the expansion set. Deletion removes the clicked project from that set and retains other expanded rows. Search-forced rows hide their toggle, matching xi at source lines1807–1828; the parent row still lacks the original project-detail navigation. A native pointer/keyboard test covers two simultaneous expansions, manual collapse, child-title search, hidden nonmatching chats, name-only matches, clearing search and deleting the correct row.
+
+## Sortable project headers
+
+Source Kr/Xr/Zr at610–690 and header vi at1370–1408 define modified-descending initially, name-ascending on first selection, toggling on repeated selection and deterministic name/ID ties. Native headers now implement that state machine and keep row identity/expansion through reordering. The original arrow-up-md-light-16 descriptor is embedded with its hash and source binding.
+
+Local Project has no modifiedAt, so Updated sorting follows the original absent-date value0 and name/ID fallback; dates remain an em dash. Windows NLS CompareStringEx with IGNORECASE/IGNORENONSPACE approximates source Intl.Collator base sensitivity; exhaustive ICU/locale equivalence is unverified. Other platforms use a lowercase fallback and are outside current Windows fidelity scope.
