@@ -77,3 +77,10 @@ App tests35 passed; workspace Windows build passed. Owned HWND capture qa/native
 
 - native-workspace.exe: 55876608 bytes; SHA-256 `eaa6b8a3d4faf282c7e5836c0a68535654807fdbb19e10ab7bd1cd3f099b1c78`.
 - native-web-host.exe: 2359296 bytes; SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.
+
+## Share async/error states checkpoint
+
+37 native-app tests passed; workspace Windows build passed. Owned HWND screenshot qa/native-share-copy-failed-7.png inspected. Non-app crate tests unchanged and not rerun. Fixture error transport and coverage boundaries: catalog/SHARE-DIALOG.md.
+
+- native-workspace.exe: 55904256 bytes; SHA-256 `a249a2d4903a4aac0aef63a4649975bcb54f708872d63ae83f672d5f82e68e03`.
+- native-web-host.exe: 2359296 bytes; SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.

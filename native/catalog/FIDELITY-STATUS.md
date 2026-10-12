@@ -31,3 +31,5 @@ Native brand/profile/help popups now preserve focus and support keyboard navigat
 Library picker now includes source-derived list/grid layouts, shipped view-toggle glyphs, conditional selection footer and clear-without-close behavior. App suite34 passed and Windows build/captures verified; full picker parity remains open as detailed in COMPOSER-MENUS.md.
 
 Personal conversation Share now opens the recovered non-social dialog composition instead of copying JSON. Local snapshot and explicit demo link flow implemented; loading/errors/update and other sharing variants remain open. See SHARE-DIALOG.md. App tests35 passed and Windows capture inspected.
+
+Personal Share now has local async create/copy/update, busy dismissal lock, blocked/create/copy failures, retry and readonly URL recovery. App tests37 passed and Windows copy-failure capture inspected. Remaining share scope is updated in SHARE-DIALOG.md; whole-app parity remains incomplete.

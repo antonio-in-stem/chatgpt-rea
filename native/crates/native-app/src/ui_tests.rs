@@ -665,19 +665,20 @@ fn library_picker_layout_search_and_clear_preserve_dialog(cx: &mut TestAppContex
     .unwrap();
 }
 
+fn finish_share_demo(cx: &mut TestAppContext) {
+    cx.run_until_parked();
+    cx.background_executor
+        .advance_clock(Duration::from_millis(350));
+    cx.run_until_parked();
+}
 #[gpui_kit::test]
-fn share_preview_cancel_and_commit_do_not_publish_or_mutate_chat(cx: &mut TestAppContext) {
+fn share_cancel_busy_commit_update_and_private_draft(cx: &mut TestAppContext) {
     let storage = Storage::new();
     let (handle, app) = open(cx, &storage);
+    let id = cx.update(|cx| app.read(cx).active.clone());
     cx.update_window(handle, |_, window, cx| {
         window.render_frame(cx);
         cx.write_to_clipboard(gpui_kit::ClipboardItem::new_string("unchanged".into()));
-        let original = app
-            .read(cx)
-            .workspace
-            .conversation(&app.read(cx).active)
-            .unwrap()
-            .clone();
         app.update(cx, |s, cx| s.act(super::Action::Share, window, cx));
         window.render_frame(cx);
         assert_eq!(window.find("share-dialog").bounds().size.width, px(520.));
@@ -685,53 +686,139 @@ fn share_preview_cancel_and_commit_do_not_publish_or_mutate_chat(cx: &mut TestAp
             cx.read_from_clipboard().and_then(|i| i.text()),
             Some("unchanged".to_owned())
         );
-        assert!(app.read(cx).share_snapshots.is_empty());
         window.press("escape", cx);
         assert!(app.read(cx).dialog.is_none());
-        assert!(app.read(cx).share_preview.is_none());
         app.update(cx, |s, cx| s.act(super::Action::Share, window, cx));
         window.render_frame(cx);
         window.click("share-submit", cx);
         window.render_frame(cx);
+        assert_eq!(app.read(cx).share_phase, super::SharePhase::Creating);
+        assert!(window.try_find(("app-btn", 780usize)).is_none());
+        window.press("escape", cx);
+        assert!(app.read(cx).dialog == Some(Dialog::Share));
+        assert!(app.read(cx).share_snapshots.is_empty());
+    })
+    .unwrap();
+    finish_share_demo(cx);
+    cx.update_window(handle, |_, window, cx| {
         assert!(app.read(cx).dialog.is_none());
         assert_eq!(
             cx.read_from_clipboard().and_then(|i| i.text()),
-            Some(format!(
-                "https://chatgpt-demo.invalid/share/{}",
-                original.id
-            ))
-        );
-        assert_eq!(
-            app.read(cx).workspace.conversation(&original.id).unwrap(),
-            &original
-        );
-        assert_eq!(
-            app.read(cx).share_snapshots.get(&original.id),
-            Some(&original)
+            Some(format!("https://chatgpt-demo.invalid/share/{id}"))
         );
         app.update(cx, |s, cx| {
             s.workspace
                 .conversations
                 .iter_mut()
-                .find(|c| c.id == original.id)
+                .find(|c| c.id == id)
                 .unwrap()
                 .draft = "private later draft".into();
             s.act(super::Action::Share, window, cx);
         });
+        assert_eq!(app.read(cx).share_action_label(), "Copy link");
+        assert!(app
+            .read(cx)
+            .share_preview
+            .as_ref()
+            .unwrap()
+            .draft
+            .is_empty());
+        app.update(cx, |s, cx| {
+            s.act(super::Action::Close, window, cx);
+            s.workspace
+                .append_message(&id, native_core::MessageRole::User, "A later message")
+                .unwrap();
+            s.act(super::Action::Share, window, cx);
+        });
+        assert_eq!(app.read(cx).share_action_label(), "Update link");
         window.render_frame(cx);
         window.click("share-submit", cx);
-        assert_eq!(
-            app.read(cx).share_snapshots.get(&original.id),
-            Some(&original)
-        );
-        assert_eq!(
-            app.read(cx)
-                .workspace
-                .conversation(&original.id)
-                .unwrap()
-                .draft,
-            "private later draft"
-        );
     })
     .unwrap();
+    finish_share_demo(cx);
+    cx.update(|cx| {
+        let snapshot = app.read(cx).share_snapshots.get(&id).unwrap();
+        assert_eq!(snapshot.messages.last().unwrap().content, "A later message");
+        assert!(snapshot.draft.is_empty());
+        assert_eq!(
+            app.read(cx).workspace.conversation(&id).unwrap().draft,
+            "private later draft"
+        );
+    });
+}
+#[gpui_kit::test]
+fn share_failures_retry_and_readonly_recovery(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    for outcome in [
+        super::ShareDemoOutcome::CreateFailed,
+        super::ShareDemoOutcome::CopyFailed,
+        super::ShareDemoOutcome::Blocked,
+    ] {
+        cx.update_window(handle, |_, window, cx| {
+            app.update(cx, |s, cx| {
+                s.share_demo_outcome = outcome;
+                s.act(super::Action::Share, window, cx);
+            });
+            window.render_frame(cx);
+            window.click("share-submit", cx);
+        })
+        .unwrap();
+        finish_share_demo(cx);
+        cx.update_window(handle, |_, window, cx| {
+            window.render_frame(cx);
+            assert!(app.read(cx).dialog == Some(Dialog::Share));
+            if outcome == super::ShareDemoOutcome::Blocked {
+                assert!(window.try_find("share-blocked").is_some());
+                assert!(window.try_find("share-preview").is_none());
+                assert_eq!(app.read(cx).share_action_label(), "Close");
+            } else {
+                assert!(window.try_find("share-error").is_some());
+                if outcome == super::ShareDemoOutcome::CopyFailed {
+                    let input = app.read(cx).share_recovery_url.clone();
+                    let before = input.read(cx).value();
+                    window.click(("input", input.entity_id()), cx);
+                    window.input("must not modify", cx);
+                    assert_eq!(input.read(cx).value(), before);
+                    assert!(before.starts_with("https://chatgpt-demo.invalid/share/"));
+                }
+            }
+            window.click("share-submit", cx);
+        })
+        .unwrap();
+        finish_share_demo(cx);
+        cx.update(|cx| assert!(app.read(cx).dialog.is_none()));
+    }
+}
+
+#[gpui_kit::test]
+fn share_preview_blocks_links_and_abandoned_creation(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        app.update(cx, |s, cx| {
+            let id = s.active.clone();
+            let chat = s
+                .workspace
+                .conversations
+                .iter_mut()
+                .find(|c| c.id == id)
+                .unwrap();
+            chat.messages.truncate(1);
+            chat.messages[0].role = native_core::MessageRole::Assistant;
+            chat.messages[0].content = "[Preview link](https://example.invalid/preview)".into();
+            s.act(super::Action::Share, window, cx);
+        });
+        window.render_frame(cx);
+        window.click_at("share-preview", point(px(30.), px(28.)), cx);
+        window.click("share-submit", cx);
+        app.update(cx, |s, cx| s.act(super::Action::New, window, cx));
+    })
+    .unwrap();
+    finish_share_demo(cx);
+    assert!(cx.opened_url().is_none());
+    cx.update(|cx| {
+        assert!(app.read(cx).share_snapshots.is_empty());
+        assert!(app.read(cx).dialog.is_none());
+    });
 }

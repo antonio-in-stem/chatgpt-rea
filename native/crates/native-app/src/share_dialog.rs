@@ -1,7 +1,104 @@
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum SharePhase {
+    Idle,
+    Creating,
+    CreateFailed,
+    CopyFailed,
+    Blocked,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum ShareDemoOutcome {
+    Success,
+    CreateFailed,
+    CopyFailed,
+    Blocked,
+}
+impl ShareDemoOutcome {
+    fn from_environment() -> Self {
+        match std::env::var("NATIVE_SHARE_DEMO_OUTCOME").as_deref() {
+            Ok("create-failed") => Self::CreateFailed,
+            Ok("copy-failed") => Self::CopyFailed,
+            Ok("blocked") => Self::Blocked,
+            _ => Self::Success,
+        }
+    }
+}
+impl WorkspaceApp {
+    fn share_action_label(&self) -> &'static str {
+        if self.share_phase == SharePhase::Blocked {
+            return "Close";
+        }
+        let Some(snapshot) = &self.share_preview else {
+            return "Create link";
+        };
+        match self.share_snapshots.get(&snapshot.id) {
+            None => "Create link",
+            Some(existing)
+                if existing.messages.last().map(|m| &m.id)
+                    != snapshot.messages.last().map(|m| &m.id) =>
+            {
+                "Update link"
+            }
+            Some(_) => "Copy link",
+        }
+    }
+    fn begin_share(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+        if self.dialog != Some(Dialog::Share) || self.share_phase == SharePhase::Creating {
+            return;
+        }
+        if self.share_phase == SharePhase::Blocked {
+            self.act(Action::Close, window, cx);
+            return;
+        }
+        let Some(snapshot) = self.share_preview.clone() else {
+            return;
+        };
+        self.share_phase = SharePhase::Creating;
+        let generation = self.share_generation;
+        let outcome = std::mem::replace(&mut self.share_demo_outcome, ShareDemoOutcome::Success);
+        cx.spawn_in(window, async move |this, cx| {
+            cx.background_executor()
+                .timer(Duration::from_millis(300))
+                .await;
+            let _ = this.update_in(cx, |app, window, cx| {
+                if app.dialog != Some(Dialog::Share) || app.share_generation != generation {
+                    return;
+                }
+                app.share_phase = match outcome {
+                    ShareDemoOutcome::CreateFailed => SharePhase::CreateFailed,
+                    ShareDemoOutcome::Blocked => SharePhase::Blocked,
+                    ShareDemoOutcome::CopyFailed => SharePhase::CopyFailed,
+                    ShareDemoOutcome::Success => SharePhase::Idle,
+                };
+                if matches!(
+                    outcome,
+                    ShareDemoOutcome::Success | ShareDemoOutcome::CopyFailed
+                ) {
+                    let id = snapshot.id.clone();
+                    let url = format!("https://chatgpt-demo.invalid/share/{id}");
+                    app.share_snapshots.insert(id, snapshot);
+                    if outcome == ShareDemoOutcome::CopyFailed {
+                        app.share_recovery_url
+                            .update(cx, |input, cx| input.set_value(url, window, cx));
+                    } else {
+                        cx.write_to_clipboard(ClipboardItem::new_string(url));
+                        app.act(Action::Close, window, cx);
+                        app.notice =
+                            "Demo link copied. This conversation has not been published.".into();
+                    }
+                }
+                cx.notify();
+            });
+        })
+        .detach();
+    }
+}
+
 // Personal conversation branch of the recovered thread-dialog and thread-preview.
 // Demo snapshots are in memory only. The .invalid address never publishes user data.
 impl WorkspaceApp {
     fn share_dialog_view(&self, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
+        use gpui_kit::base::Disableable;
         use gpui_kit::component::button::Button;
         let colors = cx.theme().colors.clone();
         let Some(snapshot) = self.share_preview.as_ref() else {
@@ -28,10 +125,10 @@ impl WorkspaceApp {
                             .py(px(8.))
                             .bg(colors.secondary)
                     })
-                    .child(TextView::markdown(
-                        ("share-message", index),
-                        message.content.clone(),
-                    )),
+                    .child(
+                        TextView::markdown(("share-message", index), message.content.clone())
+                            .selectable(false),
+                    ),
             );
         }
         let preview = div()
@@ -49,6 +146,13 @@ impl WorkspaceApp {
             .child(
                 div()
                     .absolute()
+                    .inset_0()
+                    .occlude()
+                    .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation()),
+            )
+            .child(
+                div()
+                    .absolute()
                     .left_0()
                     .right_0()
                     .bottom_0()
@@ -59,8 +163,9 @@ impl WorkspaceApp {
                         linear_color_stop(colors.background.opacity(0.), 1.),
                     )),
             );
-        let body = div()
+        let mut body = div()
             .id("share-body")
+            .test_support()
             .min_h_0()
             .overflow_y_scroll()
             .py(px(20.))
@@ -81,6 +186,39 @@ impl WorkspaceApp {
                     .text_color(colors.muted_foreground)
                     .child("Local demo · no public link is created"),
             );
+        if self.share_phase == SharePhase::Blocked {
+            body = div()
+                .id("share-blocked")
+                .test_support()
+                .py(px(40.))
+                .text_size(px(14.))
+                .child("This conversation can't be shared");
+        } else if matches!(
+            self.share_phase,
+            SharePhase::CreateFailed | SharePhase::CopyFailed
+        ) {
+            body = body.child(
+                div()
+                    .id("share-error")
+                    .test_support()
+                    .text_size(px(14.))
+                    .text_color(colors.danger)
+                    .whitespace_normal()
+                    .child(if self.share_phase == SharePhase::CopyFailed {
+                        "Share link created, but it could not be copied"
+                    } else {
+                        "Could not create share link"
+                    }),
+            );
+            if self.share_phase == SharePhase::CopyFailed {
+                body = body.child(
+                    Input::new(&self.share_recovery_url)
+                        .readonly(true)
+                        .aria_label("Share link"),
+                );
+            }
+        }
+        let busy = self.share_phase == SharePhase::Creating;
         let panel = div()
             .relative()
             .w(px(width))
@@ -116,13 +254,15 @@ impl WorkspaceApp {
                             .child("Your name and any messages you add after sharing stay private"),
                     ),
             )
-            .child(
-                div()
-                    .absolute()
-                    .top(px(16.))
-                    .right(px(16.))
-                    .child(self.chat_icon_button("close", "Close", 780, Action::Close, cx)),
-            )
+            .when(!busy, |panel| {
+                panel.child(
+                    div()
+                        .absolute()
+                        .top(px(16.))
+                        .right(px(16.))
+                        .child(self.chat_icon_button("close", "Close", 780, Action::Close, cx)),
+                )
+            })
             .child(body)
             .child(
                 div()
@@ -134,11 +274,9 @@ impl WorkspaceApp {
                     .child(
                         Button::new("share-submit")
                             .outline()
-                            .label(if self.share_snapshots.contains_key(&snapshot.id) {
-                                "Copy link"
-                            } else {
-                                "Create link"
-                            })
+                            .label(self.share_action_label())
+                            .disabled(busy)
+                            .loading(busy)
                             .on_click(cx.listener(|app, _, window, cx| {
                                 app.act(Action::ShareCommit, window, cx)
                             })),
