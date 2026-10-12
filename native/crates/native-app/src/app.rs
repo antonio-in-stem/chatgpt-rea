@@ -60,6 +60,9 @@ enum Action {
     Share,
     ShareCommit,
     Model,
+    Permissions,
+    ChoosePermissions(native_core::DemoPermissions),
+    ConfirmFullAccess,
     Attach,
     PickFiles,
     ComposerLibrary,
@@ -98,6 +101,8 @@ enum Dialog {
     Delete,
     Attachments,
     ComposerLibrary,
+    Permissions,
+    FullAccessConfirm,
     Model,
     Project,
     ProjectEditor,
@@ -776,6 +781,29 @@ impl WorkspaceApp {
                 }
             }
             Action::ShareCommit => self.begin_share(window, cx),
+            Action::Permissions => {
+                self.previous_focus=window.focused(cx);
+                self.composer_menu_index=self.permission_index();
+                self.dialog=Some(Dialog::Permissions);
+                window.focus(&self.modal_focus,cx);
+            }
+            Action::ChoosePermissions(mode) => {
+                if mode==native_core::DemoPermissions::FullAccess {
+                    self.dialog=Some(Dialog::FullAccessConfirm);
+                    window.focus(&self.modal_focus,cx);
+                } else {
+                    if let Ok(chat)=self.workspace.conversation_mut(&self.active) { chat.demo_permissions=mode; }
+                    self.persist();
+                    self.act(Action::Close,window,cx);
+                }
+            }
+            Action::ConfirmFullAccess => {
+                if self.dialog==Some(Dialog::FullAccessConfirm) {
+                    if let Ok(chat)=self.workspace.conversation_mut(&self.active) { chat.demo_permissions=native_core::DemoPermissions::FullAccess; }
+                    self.persist();
+                    self.act(Action::Close,window,cx);
+                }
+            }
             Action::Model => {
                 self.previous_focus = window.focused(cx);
                 self.composer_menu_index = self.model_index;
@@ -1081,3 +1109,5 @@ mod sidebar_tests;
 mod shell_menu_tests;
 
 include!("share_dialog.rs");
+
+include!("permissions_demo.rs");

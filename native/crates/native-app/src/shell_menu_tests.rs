@@ -162,3 +162,49 @@ fn codex_surface_switch_preserves_draft_and_moves_model_to_trailing_controls(cx:
     }).unwrap();
     let _=std::fs::remove_dir_all(path);
 }
+
+#[gpui_kit::test]
+fn permissions_selection_confirmation_and_chat_isolation(cx: &mut TestAppContext) {
+    use native_core::DemoPermissions as P;
+    let (handle,app,path)=fixture(cx);
+    cx.update_window(handle,|_,window,cx| {
+        app.update(cx,|s,cx|s.act(Action::Surface(true),window,cx));
+        window.render_frame(cx);
+        let first=app.read(cx).active.clone();
+        window.click("composer-permissions",cx);
+        window.press("down",cx);
+        window.press("enter",cx);
+        assert!(app.read(cx).dialog.is_none());
+        assert_eq!(app.read(cx).workspace.conversation(&first).unwrap().demo_permissions,P::GuardianApprovals);
+        window.click("composer-permissions",cx);
+        window.click(("app-btn",782usize),cx);
+        assert!(app.read(cx).dialog==Some(Dialog::FullAccessConfirm));
+        assert_eq!(app.read(cx).workspace.conversation(&first).unwrap().demo_permissions,P::GuardianApprovals);
+        window.press("escape",cx);
+        assert_eq!(app.read(cx).workspace.conversation(&first).unwrap().demo_permissions,P::GuardianApprovals);
+        window.click("composer-permissions",cx);
+        window.click(("app-btn",782usize),cx);
+        window.click("permissions-cancel",cx);
+        assert_eq!(app.read(cx).workspace.conversation(&first).unwrap().demo_permissions,P::GuardianApprovals);
+        window.click("composer-permissions",cx);
+        window.click(("app-btn",782usize),cx);
+        window.click("permissions-confirm",cx);
+        assert_eq!(app.read(cx).workspace.conversation(&first).unwrap().demo_permissions,P::FullAccess);
+        let saved=native_core::Workspace::load(path.join("workspace.json")).unwrap();
+        assert_eq!(saved.conversation(&first).unwrap().demo_permissions,P::FullAccess);
+        app.update(cx,|s,cx|s.act(Action::New,window,cx));
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).permission_index(),0);
+        // Abandoning a pending confirmation cannot apply it to the next chat.
+        window.click("composer-permissions",cx);
+        window.click(("app-btn",782usize),cx);
+        app.update(cx,|s,cx| {
+            s.act(Action::New,window,cx);
+            s.act(Action::ConfirmFullAccess,window,cx);
+        });
+        assert_eq!(app.read(cx).permission_index(),0);
+        app.update(cx,|s,cx|s.act(Action::Chat(first),window,cx));
+        assert_eq!(app.read(cx).permission_index(),2);
+    }).unwrap();
+    let _=std::fs::remove_dir_all(path);
+}

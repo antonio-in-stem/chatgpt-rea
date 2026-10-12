@@ -235,3 +235,6 @@ Existing49 workspace tests pass after pagination changes. New independent-pages 
 
 ## 2026-10-12 Codex surface selection
 Existing52 workspace tests passed after mode integration; new mode/draft/geometry UI test passed after fixing draft flush (53 tests defined). Native-core11 tests passed. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56255488, 'sha256': 'a2f58f50880b34e4e42b4cdb08d38c1aaca944d6742d639ba6ba653d3071ef78'}. No full visual parity claim.
+
+## 2026-10-12 permissions demo
+54 workspace tests and11 native-core tests pass. Real UI test covers keyboard choice, Escape, Go back, explicit confirmation, stored per-chat selection and abandoned confirmation on chat change. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56297472, 'sha256': '6874fafd2d7ed3c9f59475407f0b03c83ac173b5dd72244a019d2cca7ed31e16'}. Valid own-window capture native-codex-14 inspected; exact visual fidelity remains incomplete.

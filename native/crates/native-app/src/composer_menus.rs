@@ -6,6 +6,13 @@ impl WorkspaceApp {
         &self,
         dialog: Dialog,
     ) -> Vec<(&'static str, &'static str, Action, usize)> {
+        if dialog == Dialog::Permissions {
+            return vec![
+                ("Ask for approval","",Action::ChoosePermissions(native_core::DemoPermissions::Ask),780),
+                ("Approve for me","",Action::ChoosePermissions(native_core::DemoPermissions::GuardianApprovals),781),
+                ("Full access","",Action::ChoosePermissions(native_core::DemoPermissions::FullAccess),782),
+            ];
+        }
         if dialog == Dialog::Model {
             MODELS
                 .iter()
@@ -37,7 +44,7 @@ impl WorkspaceApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> bool {
-        let Some(dialog @ (Dialog::Model | Dialog::Attachments)) = self.dialog else {
+        let Some(dialog @ (Dialog::Model | Dialog::Attachments | Dialog::Permissions)) = self.dialog else {
             return false;
         };
         let rows = self.composer_menu_actions(dialog);

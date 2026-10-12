@@ -256,7 +256,14 @@ impl WorkspaceApp {
         let mut leading=div().id("composer-leading-controls").test_support().flex().items_center().gap(px(5.))
             .child(self.chat_icon_button("plus","Add photos and files",200,Action::Attach,cx));
         let mut trailing=div().id("composer-trailing-controls").test_support().min_w_0().flex().items_center().gap(px(6.));
-        if codex { trailing=trailing.child(model); } else { leading=leading.child(model); }
+        if codex {
+            leading=leading.child(gpui_kit::component::button::Button::new("composer-permissions").ghost()
+                .h(px(28.)).px(px(6.)).rounded(px(8.))
+                .text_size(native_ui::typography::TextRole::Small.in_app(cx))
+                .label(self.permission_label()).accessibility_label("Change permissions")
+                .on_click(cx.listener(|s,_,w,cx|s.act(Action::Permissions,w,cx))));
+            trailing=trailing.child(model);
+        } else { leading=leading.child(model); }
         trailing=trailing.child(self.chat_icon_button(if codex { "mic" } else { "voice" },
             if codex { "Dictate" } else { "Use voice" },202,Action::Route(Route::Rich(4)),cx)).child(send);
         composer
@@ -1249,6 +1256,7 @@ impl WorkspaceApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> AnyElement {
+        if matches!(dialog,Dialog::Permissions|Dialog::FullAccessConfirm) { return self.permissions_view(dialog,window,cx); }
         if dialog == Dialog::Share { return self.share_dialog_view(window, cx); }
         if dialog == Dialog::ComposerLibrary {
             return self.composer_library_view(window, cx);
@@ -1328,7 +1336,7 @@ impl WorkspaceApp {
                     .child("The local conversation will be removed. This cannot be undone.")
                     .child(self.button("Delete chat", 602, Action::ConfirmDelete, cx));
             }
-            Dialog::Model | Dialog::ComposerLibrary => unreachable!(),
+            Dialog::Model | Dialog::ComposerLibrary | Dialog::Permissions | Dialog::FullAccessConfirm => unreachable!(),
             Dialog::Project => {
                 content = content.child("Move chat to a project").child(self.button(
                     "No project",

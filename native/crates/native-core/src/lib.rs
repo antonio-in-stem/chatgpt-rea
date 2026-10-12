@@ -50,8 +50,14 @@ pub struct ChatMessage {
     pub content: String,
     pub parent_id: Option<String>,
 }
+/// Presentation-only demo choice. Never grants host permissions.
+#[derive(Debug, Default, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all="kebab-case")]
+pub enum DemoPermissions { #[default] Ask, GuardianApprovals, FullAccess }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Conversation {
+    #[serde(default)]
+    pub demo_permissions: DemoPermissions,
     pub id: String,
     pub title: String,
     pub project_id: Option<String>,
@@ -132,6 +138,7 @@ impl Workspace {
     pub fn create_conversation(&mut self) -> String {
         let id = id();
         self.conversations.push(Conversation {
+            demo_permissions: DemoPermissions::default(),
             id: id.clone(),
             title: "New chat".into(),
             project_id: None,
