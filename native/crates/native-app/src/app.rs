@@ -14,7 +14,7 @@ use native_core::{DocumentKind, MessageRole, Workspace};
 use native_rich::{RichKind, RichSurface};
 use native_settings::SettingsSurface;
 use native_tools::{ToolKind, ToolSurface};
-use std::{collections::HashMap, path::PathBuf, time::Duration};
+use std::{collections::{HashMap, HashSet}, path::PathBuf, time::Duration};
 gpui_kit::actions!(workspace, [NewChat, Search, Escape]);
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Route {
@@ -134,6 +134,7 @@ pub struct WorkspaceApp {
     doc_title: Entity<InputState>,
     doc_editor: Entity<TextareaState>,
     project: Option<String>,
+    expanded_projects: HashSet<String>,
     project_editing: bool,
     project_search: Entity<InputState>,
     library_search: Entity<InputState>,
@@ -267,6 +268,7 @@ impl WorkspaceApp {
                     .placeholder("Write Markdown here…")
             }),
             project: None,
+            expanded_projects: HashSet::new(),
             project_editing: false,
             project_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search projects")),
             library_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search files")),
@@ -895,6 +897,7 @@ impl WorkspaceApp {
                 match result {
                     Ok(()) => {
                         self.project_editing = false;
+                        if let Some(id) = &self.project { self.expanded_projects.insert(id.clone()); }
                         self.notice = "Project saved".into();
                         self.persist();
                         self.act(Action::Close, window, cx);
@@ -905,6 +908,7 @@ impl WorkspaceApp {
             Action::DeleteProject => {
                 self.project_editing = false;
                 if let Some(id) = self.project.take() {
+                    self.expanded_projects.remove(&id);
                     let _ = self.workspace.delete_project(&id);
                     self.notice = "Project removed; its chats are preserved".into();
                     self.persist();

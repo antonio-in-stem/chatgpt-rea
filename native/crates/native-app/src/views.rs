@@ -431,7 +431,8 @@ impl WorkspaceApp {
                 continue;
             }
             visible += 1;
-            let expanded = self.project.as_deref() == Some(p.id.as_str()) || !query.is_empty();
+            let search_expanded = !query.is_empty() && chats.iter().any(|c| c.title.to_lowercase().contains(&query));
+            let expanded = self.expanded_projects.contains(&p.id) || search_expanded;
             let project_id = p.id.clone();
             content = content.child(
                 div()
@@ -451,11 +452,11 @@ impl WorkspaceApp {
                             .justify_start()
                             .gap(px(12.))
                             .rounded(px(8.))
-                            .accessibility_label(format!(
-                                "{} {}",
-                                if expanded { "Collapse" } else { "Expand" },
-                                p.name
-                            ))
+                            .accessibility_label(if search_expanded {
+                                format!("Search matches in {}", p.name)
+                            } else {
+                                format!("{} {}", if expanded { "Collapse" } else { "Expand" }, p.name)
+                            })
                             .child(
                                 div()
                                     .w_full()
@@ -463,7 +464,7 @@ impl WorkspaceApp {
                                     .items_center()
                                     .gap(px(12.))
                                     .text_left()
-                                    .child(
+                                    .when(!search_expanded, |row| row.child(
                                         native_ui::icon(
                                             if expanded {
                                                 "chevron-down"
@@ -473,7 +474,7 @@ impl WorkspaceApp {
                                             16.,
                                         )
                                         .text_color(colors.foreground),
-                                    )
+                                    ))
                                     .child(
                                         native_ui::icon("projects", 20.)
                                             .text_color(colors.foreground),
@@ -495,11 +496,11 @@ impl WorkspaceApp {
                                             ),
                                     ),
                             )
-                            .on_click(cx.listener(move |s, _, w, cx| {
-                                if s.project.as_deref() == Some(project_id.as_str()) {
-                                    s.project = None;
-                                } else {
-                                    s.act(Action::Project(project_id.clone()), w, cx);
+                            .on_click(cx.listener(move |s, _, _, cx| {
+                                if !search_expanded {
+                                    if !s.expanded_projects.remove(&project_id) {
+                                        s.expanded_projects.insert(project_id.clone());
+                                    }
                                 }
                                 cx.notify();
                             })),
@@ -568,6 +569,7 @@ impl WorkspaceApp {
                     );
                 }
                 for (j, chat) in chats.iter().enumerate() {
+                    if search_expanded && !chat.title.to_lowercase().contains(&query) { continue; }
                     children = children.child(
                         Button::new(("project-child", i * 10000 + j))
                             .ghost()
@@ -582,7 +584,7 @@ impl WorkspaceApp {
                             })),
                     );
                 }
-                if self.project.as_deref() == Some(p.id.as_str()) {
+                {
                     children = children.child(
                         Button::new(("project-remove", i))
                             .ghost()
@@ -592,7 +594,10 @@ impl WorkspaceApp {
                             .child(div().w_full().text_left().child("Remove project"))
                             .tooltip("Remove project and keep its chats")
                             .on_click(
-                                cx.listener(|s, _, w, cx| s.act(Action::DeleteProject, w, cx)),
+                                cx.listener({ let id = p.id.clone(); move |s, _, w, cx| {
+                                    s.act(Action::Project(id.clone()), w, cx);
+                                    s.act(Action::DeleteProject, w, cx);
+                                }}),
                             ),
                     );
                 }

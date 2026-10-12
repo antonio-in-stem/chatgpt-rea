@@ -98,13 +98,14 @@ fn projects_create_then_collapse_and_expand_saved_row(cx: &mut TestAppContext) {
             .iter()
             .position(|p| p.name == "Native component research")
             .unwrap();
-        assert!(app.read(cx).project.is_some());
+        let id = app.read(cx).workspace.projects[index].id.clone();
+        assert!(app.read(cx).expanded_projects.contains(&id));
         window.click(("project-open", index), cx);
         window.render_frame(cx);
-        assert!(app.read(cx).project.is_none());
+        assert!(!app.read(cx).expanded_projects.contains(&id));
         window.click(("project-open", index), cx);
         window.render_frame(cx);
-        assert!(app.read(cx).project.is_some());
+        assert!(app.read(cx).expanded_projects.contains(&id));
     })
     .unwrap();
 }
@@ -236,4 +237,61 @@ fn library_css_container_thresholds_match_extracted_tokens() {
     ] {
         assert_eq!(WorkspaceApp::library_columns(width), expected);
     }
+}
+
+#[gpui_kit::test]
+fn projects_expand_independently_and_search_restores_manual_state(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        app.update(cx, |app, cx| {
+            let first = app.workspace.projects[0].id.clone();
+            for name in ["Needle conversation", "Unrelated conversation"] {
+                let chat = app.workspace.create_conversation();
+                app.workspace.rename_conversation(&chat, name).unwrap();
+                app.workspace.assign_project(&chat, Some(&first)).unwrap();
+            }
+            app.workspace.create_project("Second project").unwrap();
+            app.workspace.create_project("NameOnly project").unwrap();
+            app.act(Action::Route(Route::Projects), window, cx);
+        });
+        window.render_frame(cx);
+        window.click(("project-open", 0usize), cx);
+        window.render_frame(cx);
+        window.click(("project-open", 1usize), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).expanded_projects.len(), 2);
+        window.click(("project-open", 0usize), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).expanded_projects.len(), 1);
+        let search = app.read(cx).project_search.clone();
+        window.click(("input", search.entity_id()), cx);
+        window.input("Needle", cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("project-child", 1usize)).is_some());
+        assert!(window.try_find(("project-child", 0usize)).is_none());
+        assert!(window.try_find(("project-child", 2usize)).is_none());
+        // Forced search expansion does not modify the manual expansion set.
+        window.click(("project-open", 0usize), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).expanded_projects.len(), 1);
+        window.click(("input", search.entity_id()), cx);
+        window.press("ctrl-a", cx);
+        window.input("NameOnly", cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("project-open", 2usize)).is_some());
+        assert!(window.try_find(("project-remove", 2usize)).is_none());
+        window.press("ctrl-a", cx);
+        window.press("backspace", cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("project-remove", 1usize)).is_some());
+        assert!(window.try_find(("project-remove", 0usize)).is_none());
+        window.click(("project-open", 0usize), cx);
+        window.render_frame(cx);
+        window.click(("project-remove", 0usize), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).workspace.projects.len(), 2);
+        assert_eq!(app.read(cx).workspace.projects[0].name, "Second project");
+        assert_eq!(app.read(cx).expanded_projects.len(), 1);
+    }).unwrap();
 }
