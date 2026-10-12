@@ -136,7 +136,7 @@ impl WorkspaceApp {
             .h(px(30.))
             .px(px(8.))
             .rounded(px(10.))
-            .text_size(px(13.))
+            .text_size(native_ui::typography::TextRole::Small.in_app(cx))
             .child(row)
             .when(selected, |b| b.bg(cx.theme().colors.secondary))
             .on_click(cx.listener(move |this, _, window, cx| this.act(action.clone(), window, cx)))
@@ -293,12 +293,13 @@ impl WorkspaceApp {
             cx,
         ));
         let muted = cx.theme().colors.muted_foreground;
+        let caption_size = native_ui::typography::TextRole::Caption.in_app(cx);
         let section = |label: &'static str| {
             div()
                 .mt(px(16.))
                 .mb(px(4.))
                 .px(px(8.))
-                .text_size(px(12.))
+                .text_size(caption_size)
                 .text_color(muted)
                 .child(label)
         };
@@ -397,10 +398,10 @@ impl WorkspaceApp {
                                     .flex()
                                     .items_center()
                                     .justify_center()
-                                    .text_size(px(12.))
+                                    .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                                     .child(profile_initial),
                             )
-                            .child(div().text_size(px(13.)).child(display_name)),
+                            .child(div().text_size(native_ui::typography::TextRole::Small.in_app(cx)).child(display_name)),
                     )
                     .on_click(
                         cx.listener(|this, _, window, cx| {
@@ -452,7 +453,7 @@ impl WorkspaceApp {
                     })
                     .child(
                         div()
-                            .text_size(px(12.))
+                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                             .text_color(cx.theme().colors.muted_foreground)
                             .child("Personal account"),
                     ),
@@ -481,10 +482,10 @@ impl WorkspaceApp {
                                     .flex_col()
                                     .items_start()
                                     .gap(px(4.))
-                                    .child(div().text_size(px(14.)).child("ChatGPT"))
+                                    .child(div().text_size(native_ui::typography::TextRole::Body.in_app(cx)).child("ChatGPT"))
                                     .child(
                                         div()
-                                            .text_size(px(12.))
+                                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                                             .text_color(cx.theme().colors.muted_foreground)
                                             .child("Create, learn, and explore"),
                                     ),
@@ -558,7 +559,7 @@ impl WorkspaceApp {
                             .px(px(8.))
                             .justify_start()
                             .rounded(px(8.))
-                            .text_size(px(13.))
+                            .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                             .on_click(cx.listener(move |this, _, window, cx| {
                                 if !matches!(action, Action::HelpMenu) {
                                     this.dialog = None;
@@ -677,7 +678,7 @@ impl Render for WorkspaceApp {
                 div()
                     .max_w(px(320.))
                     .truncate()
-                    .text_size(px(14.))
+                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .font_weight(FontWeight::MEDIUM)
                     .child(title),
             );
@@ -697,7 +698,7 @@ impl Render for WorkspaceApp {
                         .label("Share")
                         .h(px(28.))
                         .rounded(px(8.))
-                        .text_size(px(13.))
+                        .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                         .on_click(
                             cx.listener(|this, _, window, cx| this.act(Action::Share, window, cx)),
                         ),
@@ -787,7 +788,7 @@ impl Render for WorkspaceApp {
                 div()
                     .px_4()
                     .py_2()
-                    .text_size(px(13.))
+                    .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                     .text_color(cx.theme().colors.muted_foreground)
                     .child(self.notice.clone()),
             );

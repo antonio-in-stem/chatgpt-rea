@@ -186,7 +186,7 @@ impl WorkspaceApp {
                     .h(px(36.))
                     .px(px(8.))
                     .rounded(px(6.))
-                    .text_size(px(14.))
+                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .accessibility_label(label)
                     .selected(index == self.composer_menu_index)
                     .child(row)
@@ -309,7 +309,7 @@ impl WorkspaceApp {
                                     .top(px(16.))
                                     .left(px(16.))
                                     .right(px(16.))
-                                    .text_size(px(14.))
+                                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                                     .line_height(px(20.))
                                     .font_weight(FontWeight::MEDIUM)
                                     .whitespace_normal()
@@ -331,7 +331,7 @@ impl WorkspaceApp {
                                     .bottom(px(16.))
                                     .left(px(16.))
                                     .right(px(48.))
-                                    .text_size(px(12.))
+                                    .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                                     .text_color(colors.muted_foreground)
                                     .child(kind),
                             )
@@ -373,14 +373,14 @@ impl WorkspaceApp {
                                 .flex_col()
                                 .child(
                                     div()
-                                        .text_size(px(14.))
+                                        .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                                         .line_height(px(24.))
                                         .truncate()
                                         .child(document.title.clone()),
                                 )
                                 .child(
                                     div()
-                                        .text_size(px(12.))
+                                        .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                                         .line_height(px(16.))
                                         .text_color(colors.muted_foreground)
                                         .child("—"),
@@ -400,7 +400,7 @@ impl WorkspaceApp {
                     .flex()
                     .items_center()
                     .justify_center()
-                    .text_size(px(14.))
+                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .text_color(colors.muted_foreground)
                     .child(if query.is_empty() {
                         "No recent files yet"
@@ -430,7 +430,7 @@ impl WorkspaceApp {
                     .items_center()
                     .child(
                         div()
-                            .text_size(px(20.))
+                            .text_size(native_ui::typography::TextRole::HeadingMedium.in_app(cx))
                             .font_weight(FontWeight::MEDIUM)
                             .child("Add from Library"),
                     )
@@ -490,7 +490,7 @@ impl WorkspaceApp {
                     .child(
                         div()
                             .flex_1()
-                            .text_size(px(14.))
+                            .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                             .text_color(colors.muted_foreground)
                             .child(format!(
                                 "{} selected",

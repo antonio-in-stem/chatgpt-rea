@@ -527,8 +527,10 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
 }
 // Extracted SettingsRow: XBi/nVi in app-shared-737655e1fb23.js.
 // Physical pixel values follow the Electron host's 13px text-sm and 4px spacing.
-fn label(text: impl Into<SharedString>) -> Div {
-    div().text_size(px(13.)).child(text.into())
+fn label(text: impl Into<SharedString>, cx: &App) -> Div {
+    div()
+        .text_size(native_ui::typography::TextRole::Small.in_app(cx))
+        .child(text.into())
 }
 fn settings_row(title: &str, description: &str, control: impl IntoElement, cx: &App) -> Div {
     div()
@@ -547,14 +549,14 @@ fn settings_row(title: &str, description: &str, control: impl IntoElement, cx: &
                 .gap(px(2.))
                 .child(
                     div()
-                        .text_size(px(13.))
+                        .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                         .font_weight(FontWeight::MEDIUM)
                         .child(title.to_owned()),
                 )
                 .when(!description.is_empty(), |el| {
                     el.child(
                         div()
-                            .text_size(px(12.))
+                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                             .text_color(cx.theme().muted_foreground)
                             .child(description.to_owned()),
                     )
@@ -672,7 +674,7 @@ impl Render for SettingsSurface {
                         .flex()
                         .flex_col()
                         .gap(px(8.))
-                        .child(label("Custom instructions"))
+                        .child(label("Custom instructions", cx))
                         .child(Input::new(&self.instructions)),
                 )
                 .child(settings_divider(cx))
@@ -801,9 +803,12 @@ impl Render for SettingsSurface {
                             .flex()
                             .flex_col()
                             .gap(px(12.))
-                            .child(label(format!(
-                                "Allow {p} in this demo? This changes only local sample state."
-                            )))
+                            .child(label(
+                                format!(
+                                    "Allow {p} in this demo? This changes only local sample state."
+                                ),
+                                cx,
+                            ))
                             .child(
                                 div()
                                     .flex()
@@ -849,7 +854,7 @@ impl Render for SettingsSurface {
             .bg(bg)
             .text_color(fg)
             .flex()
-            .text_size(px(13.))
+            .text_size(native_ui::typography::TextRole::Small.in_app(cx))
             .gap_0()
             .child(
                 div()
@@ -865,7 +870,7 @@ impl Render for SettingsSurface {
                         div()
                             .h(px(30.))
                             .px(px(8.))
-                            .text_size(px(13.))
+                            .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                             .font_weight(FontWeight::MEDIUM)
                             .child("Settings"),
                     )
@@ -941,7 +946,7 @@ impl Render for SettingsSurface {
                             .max_w(px(768.))
                             .mx_auto()
                             .pb(px(12.))
-                            .text_size(px(24.))
+                            .text_size(native_ui::typography::TextRole::HeadingLarge.in_app(cx))
                             .font_weight(FontWeight::NORMAL)
                             .child(SECTIONS[self.section]),
                     )
@@ -1002,7 +1007,7 @@ impl Render for SettingsSurface {
                             .max_w(px(768.))
                             .mx_auto()
                             .py(px(12.))
-                            .text_size(px(12.))
+                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                             .text_color(if self.error {
                                 rgb(0xe56b6f).into()
                             } else {
@@ -1039,8 +1044,10 @@ mod tests {
     }
     #[test]
     fn legacy_font_range_migrates_without_rewriting_original() {
-        let path =
-            std::env::temp_dir().join(format!("native-font-migration-{}.json", super::unique_stamp()));
+        let path = std::env::temp_dir().join(format!(
+            "native-font-migration-{}.json",
+            super::unique_stamp()
+        ));
         let original = br#"{"font_size":24}"#;
         std::fs::write(&path, original).unwrap();
         let loaded = Settings::load(&path).unwrap();

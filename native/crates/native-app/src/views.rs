@@ -77,7 +77,7 @@ impl WorkspaceApp {
         });
         let hover_target = toolbar.clone();
         let bubble = div()
-            .text_size(px(14.))
+            .text_size(native_ui::typography::TextRole::Body.in_app(cx))
             .line_height(px(24.))
             .when(user, |s| {
                 s.ml_auto()
@@ -141,7 +141,7 @@ impl WorkspaceApp {
                 div()
                     .px(px(12.))
                     .py(px(4.))
-                    .text_size(px(12.))
+                    .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                     .text_color(cx.theme().colors.muted_foreground)
                     .child("Editing message"),
             );
@@ -170,7 +170,7 @@ impl WorkspaceApp {
                         div()
                             .flex()
                             .flex_col()
-                            .text_size(px(12.))
+                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                             .child(item.name.clone())
                             .child(
                                 div()
@@ -203,7 +203,7 @@ impl WorkspaceApp {
                     .appearance(false)
                     .bordered(false)
                     .w_full()
-                    .text_size(px(14.))
+                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .line_height(px(20.))
                     .aria_label("Ask ChatGPT"),
             ),
@@ -213,7 +213,7 @@ impl WorkspaceApp {
             .h(px(28.))
             .px(px(6.))
             .rounded(px(8.))
-            .text_size(px(13.))
+            .text_size(native_ui::typography::TextRole::Small.in_app(cx))
             .label(MODELS[self.model_index])
             .child(
                 native_ui::icon("chevron-down", 12.).text_color(cx.theme().colors.muted_foreground),
@@ -381,7 +381,7 @@ impl WorkspaceApp {
                 .gap(px(16.))
                 .child(
                     div()
-                        .text_size(px(24.))
+                        .text_size(native_ui::typography::TextRole::HeadingLarge.in_app(cx))
                         .font_weight(FontWeight::MEDIUM)
                         .child("Projects"),
                 )
@@ -408,7 +408,7 @@ impl WorkspaceApp {
                 .gap(px(16.))
                 .border_b_1()
                 .border_color(colors.border)
-                .text_size(px(12.))
+                .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                 .text_color(colors.muted_foreground)
                 .child(div().flex_1().child("Name"))
                 .child(div().w(px(64.)).child("Updated"))
@@ -486,10 +486,10 @@ impl WorkspaceApp {
                                             .flex_col()
                                             .items_start()
                                             .gap(px(3.))
-                                            .child(div().text_size(px(14.)).child(p.name.clone()))
+                                            .child(div().text_size(native_ui::typography::TextRole::Body.in_app(cx)).child(p.name.clone()))
                                             .child(
                                                 div()
-                                                    .text_size(px(12.))
+                                                    .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                                                     .text_color(colors.muted_foreground)
                                                     .child(format!("{} chats", chats.len())),
                                             ),
@@ -507,7 +507,7 @@ impl WorkspaceApp {
                     .child(
                         div()
                             .w(px(64.))
-                            .text_size(px(12.))
+                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                             .text_color(colors.muted_foreground)
                             .child("—"),
                     )
@@ -562,7 +562,7 @@ impl WorkspaceApp {
                     children = children.child(
                         div()
                             .py(px(8.))
-                            .text_size(px(13.))
+                            .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                             .text_color(colors.muted_foreground)
                             .child("No chats"),
                     );
@@ -587,7 +587,7 @@ impl WorkspaceApp {
                         Button::new(("project-remove", i))
                             .ghost()
                             .justify_start()
-                            .text_size(px(12.))
+                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                             .accessibility_label("Remove project")
                             .child(div().w_full().text_left().child("Remove project"))
                             .tooltip("Remove project and keep its chats")
@@ -660,7 +660,7 @@ impl WorkspaceApp {
                     div()
                         .px(px(8.))
                         .py(px(6.))
-                        .text_size(px(12.))
+                        .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                         .text_color(cx.theme().colors.muted_foreground)
                         .child("File type"),
                 );
@@ -756,7 +756,7 @@ impl WorkspaceApp {
                                 )
                                 .child(
                                     div()
-                                        .text_size(px(12.))
+                                        .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                                         .text_color(colors.muted_foreground)
                                         .whitespace_normal()
                                         .child(preview.to_owned()),
@@ -772,13 +772,13 @@ impl WorkspaceApp {
                                 .items_start()
                                 .child(
                                     div()
-                                        .text_size(px(14.))
+                                        .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                                         .font_weight(FontWeight::MEDIUM)
                                         .child(title.to_owned()),
                                 )
                                 .child(
                                     div()
-                                        .text_size(px(12.))
+                                        .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                                         .text_color(colors.muted_foreground)
                                         .child(kind.to_owned()),
                                 ),
@@ -815,13 +815,13 @@ impl WorkspaceApp {
                             div()
                                 .flex_1()
                                 .min_w_0()
-                                .text_size(px(14.))
+                                .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                                 .child(title.to_owned()),
                         )
                         .child(
                             div()
                                 .w(px(160.))
-                                .text_size(px(13.))
+                                .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                                 .text_color(colors.muted_foreground)
                                 .child(kind.to_owned()),
                         ),
@@ -908,7 +908,7 @@ impl WorkspaceApp {
                 .gap(px(16.))
                 .child(
                     div()
-                        .text_size(px(24.))
+                        .text_size(native_ui::typography::TextRole::HeadingLarge.in_app(cx))
                         .font_weight(FontWeight::MEDIUM)
                         .child("Library"),
                 )
@@ -1167,7 +1167,7 @@ impl WorkspaceApp {
                     .gap(px(16.))
                     .child(
                         div()
-                            .text_size(px(20.))
+                            .text_size(native_ui::typography::TextRole::HeadingMedium.in_app(cx))
                             .font_weight(FontWeight::MEDIUM)
                             .child(if self.project.is_some() {
                                 "Edit project"
@@ -1196,7 +1196,7 @@ impl WorkspaceApp {
                     .flex()
                     .flex_col()
                     .gap(px(8.))
-                    .child(div().text_size(px(13.)).child("Name"))
+                    .child(div().text_size(native_ui::typography::TextRole::Small.in_app(cx)).child("Name"))
                     .child(Input::new(&self.project_name)),
             )
             .child(
@@ -1204,13 +1204,13 @@ impl WorkspaceApp {
                     .flex()
                     .flex_col()
                     .gap(px(8.))
-                    .child(div().text_size(px(13.)).child("Instructions"))
+                    .child(div().text_size(native_ui::typography::TextRole::Small.in_app(cx)).child("Instructions"))
                     .child(Textarea::new(&self.project_instructions)),
             )
             .when(!self.notice.is_empty(), |d| {
                 d.child(
                     div()
-                        .text_size(px(12.))
+                        .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                         .text_color(cx.theme().colors.muted_foreground)
                         .child(self.notice.clone()),
                 )

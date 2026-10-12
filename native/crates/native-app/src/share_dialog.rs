@@ -115,7 +115,7 @@ impl WorkspaceApp {
             let user = message.role == MessageRole::User;
             transcript = transcript.child(
                 div()
-                    .text_size(px(14.))
+                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .line_height(px(20.))
                     .when(user, |d| {
                         d.ml_auto()
@@ -175,14 +175,14 @@ impl WorkspaceApp {
             .child(preview)
             .child(
                 div()
-                    .text_size(px(14.))
+                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .text_color(colors.muted_foreground)
                     .whitespace_normal()
                     .child("Anyone with the link can view this chat"),
             )
             .child(
                 div()
-                    .text_size(px(12.))
+                    .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                     .text_color(colors.muted_foreground)
                     .child("Local demo · no public link is created"),
             );
@@ -191,7 +191,7 @@ impl WorkspaceApp {
                 .id("share-blocked")
                 .test_support()
                 .py(px(40.))
-                .text_size(px(14.))
+                .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                 .child("This conversation can't be shared");
         } else if matches!(
             self.share_phase,
@@ -201,7 +201,7 @@ impl WorkspaceApp {
                 div()
                     .id("share-error")
                     .test_support()
-                    .text_size(px(14.))
+                    .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .text_color(colors.danger)
                     .whitespace_normal()
                     .child(if self.share_phase == SharePhase::CopyFailed {
@@ -240,7 +240,7 @@ impl WorkspaceApp {
                     .gap(px(4.))
                     .child(
                         div()
-                            .text_size(px(18.))
+                            .text_size(native_ui::typography::TextRole::HeadingSmall.in_app(cx))
                             .line_height(px(28.))
                             .font_weight(FontWeight::SEMIBOLD)
                             .truncate()
@@ -248,7 +248,7 @@ impl WorkspaceApp {
                     )
                     .child(
                         div()
-                            .text_size(px(14.))
+                            .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                             .text_color(colors.muted_foreground)
                             .whitespace_normal()
                             .child("Your name and any messages you add after sharing stay private"),

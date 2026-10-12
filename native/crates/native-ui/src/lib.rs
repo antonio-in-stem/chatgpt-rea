@@ -1,6 +1,7 @@
 //! Shipped vector geometry rendered by the native GPUI SVG renderer.
 //! No webview or JavaScript runtime participates in these controls.
 pub mod tokens;
+pub mod typography;
 use gpui_kit::{prelude::*, *};
 
 pub fn icon_data(name: &str) -> &'static [u8] {
