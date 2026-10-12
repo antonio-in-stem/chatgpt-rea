@@ -80,10 +80,15 @@ fn theme_and_font_apply_from_native_controls_and_persist(cx: &mut TestAppContext
     let storage = Storage::new();
     Settings::default().save(&storage.file()).unwrap();
     let (handle, view) = open(cx, &storage);
+    let name = cx.update(|cx| view.read(cx).name.clone());
     let font = cx.update(|cx| view.read(cx).font.clone());
     let code_font = cx.update(|cx| view.read(cx).code_font.clone());
     cx.update_window(handle, |_, window, cx| {
+        window.activate_window();
         window.render_frame(cx);
+        window.click(("input", name.entity_id()), cx);
+        window.press("ctrl-a", cx);
+        window.input("Unsaved profile name", cx);
         window.within("settings-sections").click(1usize, cx);
         window.render_frame(cx);
         window.click(("input", font.entity_id()), cx);
@@ -94,6 +99,11 @@ fn theme_and_font_apply_from_native_controls_and_persist(cx: &mut TestAppContext
     .unwrap();
     cx.run_until_parked();
     assert_eq!(Settings::load(&storage.file()).unwrap().font_size, 15.5);
+    assert_eq!(
+        Settings::load(&storage.file()).unwrap().display_name,
+        "Alex"
+    );
+    cx.update(|cx| assert_eq!(name.read(cx).value().as_ref(), "Unsaved profile name"));
     cx.update_window(handle, |_, window, cx| {
         assert_eq!(cx.theme().font_size, px(15.5));
         window.render_frame(cx);
@@ -105,15 +115,11 @@ fn theme_and_font_apply_from_native_controls_and_persist(cx: &mut TestAppContext
     .unwrap();
     cx.run_until_parked();
     cx.update_window(handle, |_, window, cx| {
-        // This headless harness does not deliver InputState blur notifications.
-        // Exercise the emitted event separately after the real focus transfer.
+        // A real focus transfer commits the field without pressing Save.
         window.render_frame(cx);
         window.click(("input", font.entity_id()), cx);
         window.render_frame(cx);
         assert!(font.read(cx).focus_handle(cx).is_focused(window));
-        code_font.update(cx, |_, cx| {
-            cx.emit(gpui_kit::component::input::InputEvent::Blur)
-        });
     })
     .unwrap();
     cx.run_until_parked();
@@ -146,6 +152,10 @@ fn theme_and_font_apply_from_native_controls_and_persist(cx: &mut TestAppContext
     })
     .unwrap();
     assert_eq!(Settings::load(&storage.file()).unwrap().theme, "Light");
+    assert_eq!(
+        Settings::load(&storage.file()).unwrap().display_name,
+        "Unsaved profile name"
+    );
 }
 
 #[gpui_kit::test]

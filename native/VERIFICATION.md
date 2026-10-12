@@ -190,3 +190,7 @@ Native-ui formula test passes for all eight connected roles at 11/14/16px prefer
 ## Numeric font controls — 2026-10-12
 
 13 native-settings tests passed with decimal Enter commit, invalid-value restore, independent preference persistence and explicit Blur event-handler coverage. Desktop blur notification remains unverified. Windows native-workspace build passed. See dist/windows/manifest.json for this package hash.
+
+## Font Blur verification corrected — 2026-10-12
+
+The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previous/current focus paths when a window is inactive. Activating the headless test window enables genuine InputEvent::Blur delivery on pointer focus transfer. All 13 native-settings tests pass; the font test now also verifies that automatic font persistence does not save an unrelated profile-name draft, which remains editable and is saved only by the existing Save action. No production binary change in this checkpoint. Desktop preview PID73884/HWND657674 was captured using PrintWindow but Windows denied foreground focus; no keyboard events were sent while another window held focus.
