@@ -111,6 +111,7 @@ impl WorkspaceApp {
         let codex=self.workspace.settings.codex_surface;
         let measured = self.composer_bounds.clone();
         let mut composer = div()
+            .id("composer-frame").test_support()
             .relative()
             .child(
                 canvas(move |bounds, _, _| measured.set(bounds), |_, _, _, _| {})
@@ -121,11 +122,13 @@ impl WorkspaceApp {
             .max_w(px(768.))
             .mx_auto()
             .rounded(px(22.))
-            .shadow_lg()
+            .when(!codex || !cx.theme().mode.is_dark(), |s| s.shadow_lg())
             .bg(native_ui::tokens::composer_surface(
                 cx.theme().mode.is_dark(),
             ))
-            .p(px(8.))
+            // Recovered multiline layout: empty attachment spacer is 8 + 6 px.
+            .p(px(if codex { 0. } else { 8. }))
+            .when(codex, |s| s.pt(px(14.)))
             .flex()
             .flex_col()
             .gap(px(4.));
@@ -199,7 +202,9 @@ impl WorkspaceApp {
             composer = composer.child(files);
         }
         composer = composer.child(
-            div().min_h(px(44.)).px(px(4.)).flex().items_center().child(
+            div().id("composer-editor-region").test_support()
+                .min_h(px(44.)).px(px(if codex { 12. } else { 4. })).flex()
+                .when(!codex, |s| s.items_center()).child(
                 Textarea::new(&self.composer)
                     .appearance(false)
                     .bordered(false)
@@ -275,10 +280,12 @@ impl WorkspaceApp {
         composer
             .child(
                 div()
+                    .id("composer-footer").test_support()
                     .flex()
                     .items_center()
                     .justify_between()
-                    .px(px(2.))
+                    .px(px(if codex { 8. } else { 2. }))
+                    .when(codex, |s| s.mb(px(8.)))
                     .child(leading)
                     .child(trailing),
             )

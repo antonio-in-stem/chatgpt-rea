@@ -44,3 +44,25 @@ Own-window capture qa/native-codex-14.png (PID24468 HWND3672576) was inspected. 
 DW (app-primary44088) resolves a backend-driven model catalog and per-thread model/effort; eF/tF13868 filters supported efforts and resolves a compatible selection. Reasoning labels JH39460 use Light/Medium/High/Extra High/Max/Ultra. The DW trigger450xx combines model and effort; R5e45198 is end-aligned and supports simple/advanced menu views.
 Native Codex now has per-conversation serialized CodexModel/ReasoningEffort, defaults Astra/Medium, separate from the legacy ChatGPT Auto/Fast/Thinking fixture. The local catalog Astra/Sol/Luna and six effort levels is explicit DEMO data, not recovered live server availability. The trigger shows both labels; its popup is end-anchored, allows model choice and a native stepped effort slider. Arrow keys/Home/End work when the effort control is focused. Chat changes restore the saved selection/slider. Programmatic slider synchronization does not emit user changes.
 This is a functional initial port, not exact R5e rendering: the flat model rows plus slider are provisional. Pending simple/advanced selection views, model metadata compatibility/fallback variants, service tiers, loading/error/locked states, exact popup/slider tokens, release-versus-drag persistence semantics and trigger-relative anchoring under every size. Effort currently saves on each native change; model selection leaves the menu open.
+
+
+### Composer frame checkpoint (2026-10-12)
+Recovered `app-initial-99e8b4b455fa.css:414,446,548` and
+`app-shared-9a94b907ed47.css:48025-48031`: default multiline empty attachment
+spacer totals 14 px, editor wrapper inline padding 12 px, input/footer gap 4 px,
+footer inline padding and bottom margin 8 px. Codex mode now uses these wrapper
+measurements instead of uniform outer padding. ChatGPT mode retains its prior layout.
+Dark Codex no longer uses the generic large exterior shadow; the original inset
+1 px white shadow remains unported. Source radius remains 22 px for this shell.
+
+Verification: 55 workspace tests passed; the existing mode-switch test now checks
+real rendered top/gap/bottom/leading-control bounds and passes. Windows debug build
+and package succeeded. Executable SHA256:
+`58eff718bab4a35525ea3641d7a919717da947ab2ab08d486f9beaa222fbca22`.
+Own-app capture `qa/native-composer-16-visible.png` was inspected. Initial hidden
+capture `qa/native-composer-16.png` is black and is not visual evidence.
+
+Remaining: native Textarea internal inset/placeholder baseline, attachment layout,
+source inset shadow, screenshot background color discrepancy, Codex transcript
+activity/tool rows, full rail/sidebar inventories, titlebar menus and home layout.
+This checkpoint does not establish visual parity.

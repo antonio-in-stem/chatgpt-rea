@@ -146,6 +146,15 @@ fn codex_surface_switch_preserves_draft_and_moves_model_to_trailing_controls(cx:
         assert_eq!(app.read(cx).active,active);
         let model=window.find(("app-btn",201usize)).bounds();
         let trailing=window.find("composer-trailing-controls").bounds();
+        let frame=window.find("composer-frame").bounds();
+        let editor=window.find("composer-editor-region").bounds();
+        let footer=window.find("composer-footer").bounds();
+        assert_eq!(editor.top()-frame.top(),px(14.));
+        assert_eq!(footer.top()-editor.bottom(),px(4.));
+        assert_eq!(frame.bottom()-footer.bottom(),px(8.));
+        let leading=window.find("composer-leading-controls").bounds();
+        assert_eq!(leading.left()-frame.left(),px(8.));
+
         assert!(model.left()>=trailing.left() && model.right()<=trailing.right());
         let saved=native_core::Workspace::load(path.join("workspace.json")).unwrap();
         assert!(saved.settings.codex_surface);

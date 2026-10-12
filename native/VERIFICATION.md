@@ -241,3 +241,25 @@ Existing52 workspace tests passed after mode integration; new mode/draft/geometr
 
 ## 2026-10-12 model/effort demo
 55 workspace tests and11 core tests passed. Native event test covers model selection, pointer movement to the slider end, keyboard decrement/Home, Escape, persisted values and chat-switch synchronization. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56344064, 'sha256': '617600fc0a65b3dd65b64ba37b4d31274eeb7a1c3fbf215ee9951e9e4fa1925c'}. PID24468 of the previous demo was stopped after path verification before building. Exact original model picker visual parity remains incomplete.
+
+
+### Composer frame checkpoint (2026-10-12)
+Recovered `app-initial-99e8b4b455fa.css:414,446,548` and
+`app-shared-9a94b907ed47.css:48025-48031`: default multiline empty attachment
+spacer totals 14 px, editor wrapper inline padding 12 px, input/footer gap 4 px,
+footer inline padding and bottom margin 8 px. Codex mode now uses these wrapper
+measurements instead of uniform outer padding. ChatGPT mode retains its prior layout.
+Dark Codex no longer uses the generic large exterior shadow; the original inset
+1 px white shadow remains unported. Source radius remains 22 px for this shell.
+
+Verification: 55 workspace tests passed; the existing mode-switch test now checks
+real rendered top/gap/bottom/leading-control bounds and passes. Windows debug build
+and package succeeded. Executable SHA256:
+`58eff718bab4a35525ea3641d7a919717da947ab2ab08d486f9beaa222fbca22`.
+Own-app capture `qa/native-composer-16-visible.png` was inspected. Initial hidden
+capture `qa/native-composer-16.png` is black and is not visual evidence.
+
+Remaining: native Textarea internal inset/placeholder baseline, attachment layout,
+source inset shadow, screenshot background color discrepancy, Codex transcript
+activity/tool rows, full rail/sidebar inventories, titlebar menus and home layout.
+This checkpoint does not establish visual parity.
