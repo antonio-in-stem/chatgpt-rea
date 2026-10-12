@@ -22,11 +22,19 @@ fn id() -> String {
         NEXT_ID.fetch_add(1, Ordering::Relaxed)
     )
 }
+fn timestamp_ms() -> Option<u64> {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .ok()
+        .and_then(|elapsed| u64::try_from(elapsed.as_millis()).ok())
+}
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Project {
     pub id: String,
     pub name: String,
     pub instructions: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub modified_at_ms: Option<u64>,
 }
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -138,6 +146,7 @@ impl Workspace {
             id: id.clone(),
             name,
             instructions: String::new(),
+            modified_at_ms: timestamp_ms(),
         });
         Ok(id)
     }
@@ -208,6 +217,9 @@ impl Workspace {
             .iter_mut()
             .find(|p| p.id == id)
             .ok_or("Project not found")?;
+        if p.name != name || p.instructions != instructions {
+            p.modified_at_ms = timestamp_ms();
+        }
         p.name = name;
         p.instructions = instructions.into();
         Ok(())
@@ -476,6 +488,28 @@ fn atomic_replace(source: &Path, destination: &Path) -> std::io::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn project_dates_preserve_legacy_unknown_and_track_edits() {
+        let old: Project =
+            serde_json::from_str(r#"{"id":"legacy","name":"Old","instructions":""}"#).unwrap();
+        assert_eq!(old.modified_at_ms, None);
+        assert!(
+            !serde_json::to_string(&old)
+                .unwrap()
+                .contains("modified_at_ms")
+        );
+        let mut workspace = Workspace::default();
+        let id = workspace.create_project("New").unwrap();
+        assert!(workspace.projects[0].modified_at_ms.is_some());
+        workspace.projects[0].modified_at_ms = Some(1);
+        workspace.update_project(&id, "New", "").unwrap();
+        assert_eq!(workspace.projects[0].modified_at_ms, Some(1));
+        workspace.update_project(&id, "Renamed", "Notes").unwrap();
+        assert!(workspace.projects[0].modified_at_ms.unwrap() > 1);
+        let serialized = serde_json::to_string(&workspace).unwrap();
+        let restored: Workspace = serde_json::from_str(&serialized).unwrap();
+        assert_eq!(restored.projects, workspace.projects);
+    }
     struct Storage(std::path::PathBuf);
     impl Storage {
         fn new() -> Self {

@@ -512,7 +512,7 @@ impl WorkspaceApp {
                             .w(px(64.))
                             .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
                             .text_color(colors.muted_foreground)
-                            .child("—"),
+                            .child(project_sort::modified_label(p.modified_at_ms, chrono::Local::now())),
                     )
                     .child(
                         div()

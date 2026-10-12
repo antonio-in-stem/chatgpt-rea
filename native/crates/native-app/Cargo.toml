@@ -6,6 +6,7 @@ edition.workspace = true
 native-ui = { path = "../native-ui" }
 gpui-kit = "=0.7.3"
 serde_json = "1"
+chrono = "0.4.45"
 native-core = { path = "../native-core" }
 native-settings = { path = "../native-settings" }
 native-rich = { path = "../native-rich" }

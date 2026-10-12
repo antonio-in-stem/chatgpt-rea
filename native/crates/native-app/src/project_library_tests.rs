@@ -304,6 +304,7 @@ fn project_headers_sort_rows_and_preserve_expansion(cx: &mut TestAppContext) {
         app.update(cx, |app, cx| {
             app.workspace.create_project("Alpha").unwrap();
             app.workspace.create_project("Zulu").unwrap();
+            for project in &mut app.workspace.projects { project.modified_at_ms = None; }
             app.act(Action::Route(Route::Projects), window, cx);
         });
         window.render_frame(cx);

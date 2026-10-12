@@ -4787,6 +4787,7 @@ dependencies = [
 name = "native-workspace"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "embed-resource",
  "gpui-kit",
  "native-core",

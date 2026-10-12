@@ -343,6 +343,12 @@ impl WorkspaceApp {
             |_, _, _: &native_settings::SettingsChanged, cx| cx.notify(),
         )
         .detach();
+        cx.spawn(async move |this, cx| {
+            loop {
+                cx.background_executor().timer(Duration::from_secs(60)).await;
+                if this.update(cx, |app, cx| { if app.route == Route::Projects { cx.notify(); } }).is_err() { break; }
+            }
+        }).detach();
         app.composer.update(cx, |input, cx| input.focus(window, cx));
         app
     }

@@ -202,3 +202,7 @@ The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previ
 ## Projects sortable headers — 2026-10-12
 
 41 native-workspace tests passed. Added checks verify actual row positions after header clicks, expansion retention, direction defaults, stable ID ties and Windows case/accent comparison. Windows build passed with the existing unused Action variants warning. Package SHA-256 `dc3aea61d57e9397970b84498299c843c3d80d9365d24d6afb978b25453fd490`. Full ICU locale equivalence, actual project dates and original-window pixel comparison remain unverified.
+
+## Project modification dates — 2026-10-12
+
+11 native-core and43 native-workspace tests passed. Coverage includes legacy missing dates, nonmutating unchanged edits, persisted edit dates, date-priority sorting, future/under-one-minute labels, all compact unit boundaries and local-calendar versus elapsed-day behavior. Windows build and packaging passed; SHA-256 `aa11329848869f193d216e16e1b583f8776e4bdeea2d56cb738520ead4df8b0c`. Localization, original clock scheduling and original-window pixel comparison remain open.
