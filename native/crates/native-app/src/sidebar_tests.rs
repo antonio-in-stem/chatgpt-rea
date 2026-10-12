@@ -146,3 +146,57 @@ fn rail_persists_when_sidebar_collapses_and_project_groups_open_chats(cx: &mut T
         assert!(window.try_find("sidebar").is_some());
     }).unwrap();
 }
+
+#[gpui_kit::test]
+fn sidebar_project_pages_are_independent_of_recents_and_each_other(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage,1280.);
+    cx.simulate_window_resize(handle,size(px(1280.),px(1600.)));
+    cx.update_window(handle,|_,window,cx| {
+        let projects=app.update(cx,|s,cx| {
+            s.workspace.conversations.clear();
+            s.workspace.projects.clear();
+            for i in 0..30 {
+                let id=s.workspace.create_conversation();
+                s.workspace.append_message(&id,native_core::MessageRole::User,&format!("Ungrouped {i}")).unwrap();
+            }
+            let mut projects=Vec::new();
+            for name in ["First","Second"] {
+                let project=s.workspace.create_project(name).unwrap();
+                for i in 0..7 {
+                    let id=s.workspace.create_conversation();
+                    s.workspace.append_message(&id,native_core::MessageRole::User,&format!("{name} {i}")).unwrap();
+                    s.workspace.assign_project(&id,Some(&project)).unwrap();
+                }
+                projects.push(project);
+            }
+            cx.notify();
+            projects
+        });
+        window.render_frame(cx);
+        // Global rows30+ must still render in their project, beyond the global page.
+        assert!(window.try_find(("nav",130usize)).is_some());
+        assert!(window.try_find(("nav",134usize)).is_some());
+        assert!(window.try_find(("nav",135usize)).is_none());
+        assert!(window.try_find(("nav",137usize)).is_some());
+        assert!(window.try_find(("nav",142usize)).is_none());
+        window.click(("sidebar-project-more",0usize),cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("nav",136usize)).is_some());
+        assert!(window.try_find(("nav",142usize)).is_none());
+        assert_eq!(app.read(cx).recent_limit,10);
+        assert_eq!(app.read(cx).sidebar_project_limits.get(&projects[0]),Some(&15));
+        assert!(app.read(cx).sidebar_project_limits.get(&projects[1]).is_none());
+        window.click(("sidebar-project",0usize),cx);
+        window.click(("sidebar-project",0usize),cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("nav",136usize)).is_some());
+        window.click(("nav",136usize),cx);
+        assert_eq!(app.read(cx).active,app.read(cx).workspace.conversations[36].id);
+        window.click(("nav",901usize),cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).recent_limit,20);
+        assert!(window.try_find(("nav",119usize)).is_some());
+        assert!(window.try_find(("nav",142usize)).is_none());
+    }).unwrap();
+}

@@ -279,7 +279,7 @@ fn recents_show_more_exposes_next_page(cx: &mut TestAppContext) {
         window.render_frame(cx);
         window.click(("nav", 901usize), cx);
         window.render_frame(cx);
-        assert_eq!(app.read(cx).recent_limit, 60);
+        assert_eq!(app.read(cx).recent_limit, 20);
     })
     .unwrap();
 }

@@ -345,17 +345,17 @@ impl WorkspaceApp {
             .filter(|c| !c.archived && !c.messages.is_empty())
             .collect::<Vec<_>>();
         chats.sort_by_key(|c| !c.pinned);
-        let visible_chats = chats.iter().take(self.recent_limit).enumerate().collect::<Vec<_>>();
+        let all_chats = chats.iter().enumerate().collect::<Vec<_>>();
         for pinned in [true, false] {
-            let rows = visible_chats.iter().filter(|(_, c)| c.pinned == pinned && (pinned || c.project_id.is_none())).collect::<Vec<_>>();
+            let rows = all_chats.iter().filter(|(_, c)| c.pinned == pinned && (pinned || c.project_id.is_none())).collect::<Vec<_>>();
             if !rows.is_empty() { recents = recents.child(section(if pinned { "Pinned" } else { "Chats" })); }
-            for (i, chat) in rows {
+            for (i, chat) in rows.iter().take(if pinned { usize::MAX } else { self.recent_limit }) {
                 recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
                     Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx));
             }
-        }
-        if chats.len() > self.recent_limit {
-            recents = recents.child(self.nav("Show more", 901, Action::ShowMoreChats, false, cx));
+            if !pinned && rows.len() > self.recent_limit {
+                recents = recents.child(self.nav("Show more", 901, Action::ShowMoreChats, false, cx));
+            }
         }
         if !self.workspace.projects.is_empty() { recents = recents.child(section("Projects")); }
         for (index, project) in self.workspace.projects.iter().enumerate() {
@@ -374,9 +374,24 @@ impl WorkspaceApp {
                     cx.notify();
                 })));
             if !collapsed {
-                for (i, chat) in visible_chats.iter().filter(|(_, c)| !c.pinned && c.project_id.as_deref() == Some(project.id.as_str())) {
+                let rows = all_chats.iter().filter(|(_, c)| !c.pinned && c.project_id.as_deref() == Some(project.id.as_str())).collect::<Vec<_>>();
+                let limit = self.sidebar_project_limits.get(&project.id).copied().unwrap_or(5);
+                for (i, chat) in rows.iter().take(limit) {
                     recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
                         Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx).pl(px(32.)));
+                }
+                if rows.len() > limit {
+                    let project_id = project.id.clone();
+                    recents = recents.child(Button::new(("sidebar-project-more", index)).ghost()
+                        .w_full().h(px(30.)).pl(px(32.)).pr(px(8.)).rounded(px(10.))
+                        .justify_start().text_size(native_ui::typography::TextRole::Small.in_app(cx))
+                        .text_color(cx.theme().colors.muted_foreground)
+                        .label("Show more").accessibility_label(format!("Show more chats in {}",project.name))
+                        .on_click(cx.listener(move |s,_,_,cx| {
+                            let limit=s.sidebar_project_limits.entry(project_id.clone()).or_insert(5);
+                            *limit=limit.saturating_add(10);
+                            cx.notify();
+                        })));
                 }
             }
         }

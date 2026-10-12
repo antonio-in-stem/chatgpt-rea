@@ -160,6 +160,7 @@ pub struct WorkspaceApp {
     recents_scroll: ScrollHandle,
     projects_scroll: ScrollHandle,
     collapsed_sidebar_projects: HashSet<String>,
+    sidebar_project_limits: HashMap<String, usize>,
     edit_message: Option<String>,
     stream: Option<Task<()>>,
     generation: u64,
@@ -291,7 +292,7 @@ impl WorkspaceApp {
             doc_preview: false,
             attachments: HashMap::new(),
             attachment_sequence: 0,
-            recent_limit: 30,
+            recent_limit: 10,
             transcript: ScrollHandle::new(),
             navigation_hover: None,
             navigation_ui: Default::default(),
@@ -300,6 +301,7 @@ impl WorkspaceApp {
             recents_scroll: ScrollHandle::new(),
             projects_scroll: ScrollHandle::new(),
             collapsed_sidebar_projects: HashSet::new(),
+            sidebar_project_limits: HashMap::new(),
             edit_message: None,
             stream: None,
             generation: 0,
@@ -777,7 +779,7 @@ impl WorkspaceApp {
                     self.act(Action::Close, window, cx);
                 }
             }
-            Action::ShowMoreChats => self.recent_limit = self.recent_limit.saturating_add(30),
+            Action::ShowMoreChats => self.recent_limit = self.recent_limit.saturating_add(10),
             Action::Attach => {
                 self.previous_focus = window.focused(cx);
                 self.composer_menu_index = 0;

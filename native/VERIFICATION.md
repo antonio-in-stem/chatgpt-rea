@@ -226,3 +226,6 @@ The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previ
 
 ## 2026-10-12 flexible header checkpoint
 49 native-workspace tests pass. Debug build/package succeeded. Binary SHA2566afddbce363f0e8fa461a06148cd7240ee4a5e4d3fbb95d1610c314be46c2f64,56230912bytes. Own-window capture qa/native-header-12.png (PID12528,HWND3738300) inspected: valid full frame; title/actions remain in their allocated areas. Capture also confirms major outstanding parity gaps in rail inventory, sidebar density, and the Codex transcript/composer. Goal remains incomplete.
+
+## 2026-10-12 independent sidebar lists
+Existing49 workspace tests pass after pagination changes. New independent-pages UI test passes separately (50 total defined). It checks30 ungrouped chats and two7-chat projects, per-project expansion, collapse/reopen retention and real chat activation. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56245760, 'sha256': '40cb0ef3b630057aa73a47201deeba2f0f147565698209c4fdcd550f9188dc5e'}

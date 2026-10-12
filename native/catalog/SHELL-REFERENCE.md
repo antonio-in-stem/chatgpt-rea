@@ -64,3 +64,9 @@ Verified using actual GPUI hover, Tab, drag and release events. This does not es
 ## Header space allocation checkpoint
 Recovered app-initial lines225466,225506–225552 define min-w-0/flex-1 title content and shrink-0 end actions. The native title now uses remaining header space instead of an arbitrary320px cap; end actions retain intrinsic width. The page-surface header uses52px, from CSS sidebar-navigation-header-height and its app-shell-header-height alias (4135), matching the screenshot's vertical center66px below a40px outer titlebar. No claim is made that this applies to every original mode.
 49 workspace tests pass. A real-window geometry test checks1440/900/600px widths, title/action non-overlap and working chat menu. Missing original panel actions and the original Codex transcript/composer remain separate incomplete requirements.
+
+
+## Independent sidebar pagination
+The previous global take(30) wrongly clipped project children before grouping. Each project now selects its own unpinned children from the complete local catalog. Recents starts at10; project children start at5; expansion adds10 independently and survives group collapse/reopen during the session. Pinned chats are not consumed by the recents page.
+Source: app-initial426580 recents maxItems10;422897 grouped thread maxItems=uxs;424285 uxs=5;377988 g1o forwards to kPo;352050–352420 kPo owns per-list expansion and10-item increment on the non-bounded branch. Local data has no backend paging.
+Remaining: forced-visible active item, one-item tail handling, persisted expansion, bounded/infinite paging branches, list animations, sections/reorder and complete original row actions. These are not claimed complete.
