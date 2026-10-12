@@ -1254,6 +1254,7 @@ impl WorkspaceApp {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> AnyElement {
+        if dialog == Dialog::Share { return self.share_dialog_view(window, cx); }
         if dialog == Dialog::ComposerLibrary {
             return self.composer_library_view(window, cx);
         }
@@ -1275,7 +1276,8 @@ impl WorkspaceApp {
             .flex_col()
             .gap_4();
         match dialog {
-            Dialog::ChatMenu
+            Dialog::Share
+            | Dialog::ChatMenu
             | Dialog::AccountMenu
             | Dialog::BrandMenu
             | Dialog::HelpMenu

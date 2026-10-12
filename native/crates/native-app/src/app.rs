@@ -52,6 +52,7 @@ enum Action {
     Branch(String),
     Regenerate(String),
     Share,
+    ShareCommit,
     Model,
     Attach,
     PickFiles,
@@ -81,6 +82,7 @@ enum Action {
 }
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Dialog {
+    Share,
     ChatMenu,
     AccountMenu,
     BrandMenu,
@@ -155,6 +157,8 @@ pub struct WorkspaceApp {
     composer_library_query: Entity<InputState>,
     composer_library_selection: Vec<String>,
     composer_library_grid: bool,
+    share_preview: Option<native_core::Conversation>,
+    share_snapshots: HashMap<String, native_core::Conversation>,
     composer_bounds: std::rc::Rc<std::cell::Cell<Bounds<Pixels>>>,
     composer_tools: HashMap<String, &'static str>,
     settings: Entity<SettingsSurface>,
@@ -283,6 +287,8 @@ impl WorkspaceApp {
                 .new(|cx| InputState::new(window, cx).placeholder("Search Library")),
             composer_library_selection: Vec::new(),
             composer_library_grid: false,
+            share_preview: None,
+            share_snapshots: HashMap::new(),
             composer_bounds: Default::default(),
             composer_tools: HashMap::new(),
             settings,
@@ -598,6 +604,7 @@ impl WorkspaceApp {
                 if self.dialog == Some(Dialog::ProjectEditor) {
                     self.project_editing = false;
                 }
+                if self.dialog == Some(Dialog::Share) { self.share_preview = None; }
                 let had_dialog = self.dialog.take().is_some();
                 if !had_dialog && self.edit_message.take().is_some() {
                     let draft = self
@@ -706,14 +713,22 @@ impl WorkspaceApp {
             }
             Action::Share => {
                 if let Ok(chat) = self.workspace.conversation(&self.active) {
-                    match serde_json::to_string_pretty(chat) {
-                        Ok(snapshot) => {
-                            cx.write_to_clipboard(ClipboardItem::new_string(snapshot));
-                            self.notice =
-                                "Local chat snapshot copied as JSON. No public link was created."
-                                    .into();
-                        }
-                        Err(e) => self.notice = e.to_string(),
+                    self.share_preview = Some(chat.clone());
+                    self.previous_focus = window.focused(cx);
+                    self.dialog = Some(Dialog::Share);
+                    window.focus(&self.modal_focus, cx);
+                }
+            }
+            Action::ShareCommit => {
+                if self.dialog == Some(Dialog::Share) {
+                    if let Some(snapshot) = self.share_preview.take() {
+                        let id = snapshot.id.clone();
+                        self.share_snapshots.entry(id.clone()).or_insert(snapshot);
+                        cx.write_to_clipboard(ClipboardItem::new_string(format!(
+                            "https://chatgpt-demo.invalid/share/{id}"
+                        )));
+                        self.act(Action::Close, window, cx);
+                        self.notice = "Demo link copied. This conversation has not been published.".into();
                     }
                 }
             }
@@ -1018,3 +1033,5 @@ mod sidebar_tests;
 #[cfg(all(test, feature = "ui-tests"))]
 #[path = "shell_menu_tests.rs"]
 mod shell_menu_tests;
+
+include!("share_dialog.rs");

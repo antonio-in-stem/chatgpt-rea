@@ -664,3 +664,74 @@ fn library_picker_layout_search_and_clear_preserve_dialog(cx: &mut TestAppContex
     })
     .unwrap();
 }
+
+#[gpui_kit::test]
+fn share_preview_cancel_and_commit_do_not_publish_or_mutate_chat(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        cx.write_to_clipboard(gpui_kit::ClipboardItem::new_string("unchanged".into()));
+        let original = app
+            .read(cx)
+            .workspace
+            .conversation(&app.read(cx).active)
+            .unwrap()
+            .clone();
+        app.update(cx, |s, cx| s.act(super::Action::Share, window, cx));
+        window.render_frame(cx);
+        assert_eq!(window.find("share-dialog").bounds().size.width, px(520.));
+        assert_eq!(
+            cx.read_from_clipboard().and_then(|i| i.text()),
+            Some("unchanged".to_owned())
+        );
+        assert!(app.read(cx).share_snapshots.is_empty());
+        window.press("escape", cx);
+        assert!(app.read(cx).dialog.is_none());
+        assert!(app.read(cx).share_preview.is_none());
+        app.update(cx, |s, cx| s.act(super::Action::Share, window, cx));
+        window.render_frame(cx);
+        window.click("share-submit", cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).dialog.is_none());
+        assert_eq!(
+            cx.read_from_clipboard().and_then(|i| i.text()),
+            Some(format!(
+                "https://chatgpt-demo.invalid/share/{}",
+                original.id
+            ))
+        );
+        assert_eq!(
+            app.read(cx).workspace.conversation(&original.id).unwrap(),
+            &original
+        );
+        assert_eq!(
+            app.read(cx).share_snapshots.get(&original.id),
+            Some(&original)
+        );
+        app.update(cx, |s, cx| {
+            s.workspace
+                .conversations
+                .iter_mut()
+                .find(|c| c.id == original.id)
+                .unwrap()
+                .draft = "private later draft".into();
+            s.act(super::Action::Share, window, cx);
+        });
+        window.render_frame(cx);
+        window.click("share-submit", cx);
+        assert_eq!(
+            app.read(cx).share_snapshots.get(&original.id),
+            Some(&original)
+        );
+        assert_eq!(
+            app.read(cx)
+                .workspace
+                .conversation(&original.id)
+                .unwrap()
+                .draft,
+            "private later draft"
+        );
+    })
+    .unwrap();
+}

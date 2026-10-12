@@ -70,3 +70,10 @@ Repackaged binaries:
 
 - native-workspace.exe: 55846912 bytes, SHA-256 `b071308f45cf1c717084b235d4f6762609bedf290adf0e190ed6b6a309afbef3`.
 - native-web-host.exe: 2359296 bytes, SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.
+
+## Personal Share dialog checkpoint
+
+App tests35 passed; workspace Windows build passed. Owned HWND capture qa/native-share-dialog-6.png inspected. Only app state/rendering changed; unchanged crate tests not rerun. Source branch scope/gaps in catalog/SHARE-DIALOG.md.
+
+- native-workspace.exe: 55876608 bytes; SHA-256 `eaa6b8a3d4faf282c7e5836c0a68535654807fdbb19e10ab7bd1cd3f099b1c78`.
+- native-web-host.exe: 2359296 bytes; SHA-256 `38f8d1f14ae1414a46207413d278a37e027f8ecef4078a1a4ff03b853ba6e357`.
