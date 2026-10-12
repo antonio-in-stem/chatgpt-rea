@@ -1,0 +1,7 @@
+/target/
+/dist/
+/run-data/
+/catalog/source-inventory.csv
+
+qa/
+Cargo.lock.before-ui-tests

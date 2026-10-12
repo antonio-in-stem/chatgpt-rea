@@ -1,3 +1,4 @@
+> Estado actualizado: este documento conserva la propuesta inicial. La implementación actual usa un workspace de siete crates, GPUI Kit 0.7.3 y un host WebView2 separado únicamente para contenido web. Windows está confirmado como plataforma; todas las funciones de backend son demos. Consulta [arquitectura implementada](../native/README.md) y [cobertura auditada](../native/catalog/COVERAGE.md). El mapa inicial no es una declaración de paridad alcanzada.
 # Mapa de migración a Rust nativo
 Propuesta inicial · 2026-10-12 · Basada en [FRONTEND.md](FRONTEND.md).
 

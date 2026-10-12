@@ -1,0 +1,4188 @@
+{
+  "schema_version": 1,
+  "purpose": "Evidence catalog for functional Windows-native DEMO frontend with fixture state, not a gallery or backend clone.",
+  "source_root": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\extracted",
+  "gpui_package": {
+    "name": "gpui-component",
+    "version": "0.7.3",
+    "source_root": "C:\\Users\\PC\\.cargo\\registry\\src\\index.crates.io-1949cf8c6b5b557f\\gpui-component-0.7.3\\src",
+    "note": "gpui-kit 0.7.3 is the real application dependency; its component feature reexports gpui-component as gpui_kit::component. The inspected resolved component version is 0.7.3.",
+    "facade": {
+      "name": "gpui-kit",
+      "version": "0.7.3",
+      "reexport": "pub use ::gpui_component as component;",
+      "source": "gpui-kit-0.7.3/src/lib.rs:165"
+    }
+  },
+  "source_maps_available": false,
+  "native_status_definition": "No native implementation is supplied or validated by this catalog; implementation elsewhere is not assessed.",
+  "coverage_limits": [
+    "All filenames scanned for families; representative content statically inspected.",
+    "No complete original source or exhaustive native parity claim.",
+    "All acceptance tests proposed, not run.",
+    "WebView2 allowed for web content only.",
+    "No model backend transcription upload or network service required by UI acceptance targets."
+  ],
+  "families": [
+    {
+      "id": "theme",
+      "proposed_rust_types": [
+        "theme::Theme"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-9a94b907ed47.css",
+          "needle": "--color-token-text-primary",
+          "snippet": "r(--app-color-text-foreground-tertiary);--color-token-text-primary:var(--color-token-foreground);--color-token-text-secondary:var(--color-token-foreground);--color-token-text-tertiary:var(--color-"
+        }
+      ],
+      "observed_behaviors": [
+        "Semantic theme color variables and configurable font tokens"
+      ],
+      "shared_dependencies": [
+        "rendering",
+        "assets"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "theme",
+          "presence": "verified_source",
+          "source_files": [
+            "theme/color.rs",
+            "theme/mod.rs",
+            "theme/mono_font.rs",
+            "theme/motion.rs",
+            "theme/registry.rs",
+            "theme/schema.rs",
+            "theme/system_font.rs",
+            "theme/theme_color.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Colorize",
+              "path": "theme/color.rs",
+              "line": 20
+            },
+            {
+              "symbol": "ColorName",
+              "path": "theme/color.rs",
+              "line": 375
+            },
+            {
+              "symbol": "ActiveTheme",
+              "path": "theme/mod.rs",
+              "line": 44
+            },
+            {
+              "symbol": "Theme",
+              "path": "theme/mod.rs",
+              "line": 147
+            },
+            {
+              "symbol": "ThemeMode",
+              "path": "theme/mod.rs",
+              "line": 807
+            },
+            {
+              "symbol": "MotionTokens",
+              "path": "theme/motion.rs",
+              "line": 8
+            },
+            {
+              "symbol": "ThemeRegistry",
+              "path": "theme/registry.rs",
+              "line": 76
+            },
+            {
+              "symbol": "ThemeSet",
+              "path": "theme/schema.rs",
+              "line": 24
+            },
+            {
+              "symbol": "ThemeConfig",
+              "path": "theme/schema.rs",
+              "line": 38
+            },
+            {
+              "symbol": "SemanticThemeConfig",
+              "path": "theme/schema.rs",
+              "line": 86
+            },
+            {
+              "symbol": "SemanticThemeConfigFile",
+              "path": "theme/schema.rs",
+              "line": 100
+            },
+            {
+              "symbol": "SemanticColorConfig",
+              "path": "theme/schema.rs",
+              "line": 106
+            },
+            {
+              "symbol": "SemanticRadiusConfig",
+              "path": "theme/schema.rs",
+              "line": 128
+            },
+            {
+              "symbol": "SemanticSpacingConfig",
+              "path": "theme/schema.rs",
+              "line": 139
+            },
+            {
+              "symbol": "SemanticTextStyleConfig",
+              "path": "theme/schema.rs",
+              "line": 151
+            },
+            {
+              "symbol": "SemanticTypographyConfig",
+              "path": "theme/schema.rs",
+              "line": 159
+            },
+            {
+              "symbol": "SemanticShadowConfig",
+              "path": "theme/schema.rs",
+              "line": 172
+            },
+            {
+              "symbol": "ThemeConfigColors",
+              "path": "theme/schema.rs",
+              "line": 253
+            },
+            {
+              "symbol": "ThemeToken",
+              "path": "theme/theme_color.rs",
+              "line": 11
+            },
+            {
+              "symbol": "ThemeColor",
+              "path": "theme/theme_color.rs",
+              "line": 59
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Change semantic theme and verify all surfaces update"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "typography",
+      "proposed_rust_types": [
+        "text::TextStyle"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-9a94b907ed47.css",
+          "needle": "OpenAISans-Regular-c56711d328c4.woff2",
+          "snippet": "-face{font-family:OpenAI Sans;src:url(./OpenAISans-Regular-c56711d328c4.woff2)format(\"woff2\");font-style:normal;font-weight:400;font-display:swap}@font-face{font-family:OpenAI Sans;src:url(./OpenAISans-Mediu"
+        }
+      ],
+      "observed_behaviors": [
+        "OpenAI Sans font-face declarations regular medium semibold and system fallbacks"
+      ],
+      "shared_dependencies": [
+        "rendering",
+        "assets"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "text",
+          "presence": "verified_source",
+          "source_files": [
+            "text/compat.rs",
+            "text/frontmatter.rs",
+            "text/mod.rs",
+            "text/style.rs",
+            "text/window_selection.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "TextView",
+              "path": "text/compat.rs",
+              "line": 40
+            },
+            {
+              "symbol": "TextViewLayoutState",
+              "path": "text/compat.rs",
+              "line": 218
+            },
+            {
+              "symbol": "TextViewPrepaintState",
+              "path": "text/compat.rs",
+              "line": 223
+            },
+            {
+              "symbol": "TextViewPlugin",
+              "path": "text/compat.rs",
+              "line": 399
+            },
+            {
+              "symbol": "Text",
+              "path": "text/compat.rs",
+              "line": 415
+            },
+            {
+              "symbol": "FrontmatterPlugin",
+              "path": "text/frontmatter.rs",
+              "line": 39
+            },
+            {
+              "symbol": "TextViewStyle",
+              "path": "text/style.rs",
+              "line": 13
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Render Unicode and font weights at three DPI levels"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "button",
+      "proposed_rust_types": [
+        "controls::Button"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/button-52dfb42b12be.js",
+          "needle": "aria-busy",
+          "snippet": "icon:e,\"aria-label\":V,\"aria-pressed\":N,\"aria-busy\":I,disabled:n,loading:I,onClick:R,children:r}),t[25]=N,t[26]=I,t[27]=V,t[28]=R,t[29]=n,t[30]=i):i=t[30],i}let G=!M||N,K;t[31]!==N"
+        }
+      ],
+      "observed_behaviors": [
+        "Busy pressed disabled and uniform icon button properties"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "button",
+          "presence": "verified_source",
+          "source_files": [
+            "button/button.rs",
+            "button/button_group.rs",
+            "button/button_icon.rs",
+            "button/dropdown_button.rs",
+            "button/mod.rs",
+            "button/toggle.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ButtonRounded",
+              "path": "button/button.rs",
+              "line": 24
+            },
+            {
+              "symbol": "ButtonCustomVariant",
+              "path": "button/button.rs",
+              "line": 40
+            },
+            {
+              "symbol": "ButtonVariants",
+              "path": "button/button.rs",
+              "line": 48
+            },
+            {
+              "symbol": "ButtonVariant",
+              "path": "button/button.rs",
+              "line": 146
+            },
+            {
+              "symbol": "Button",
+              "path": "button/button.rs",
+              "line": 190
+            },
+            {
+              "symbol": "ButtonGroup",
+              "path": "button/button_group.rs",
+              "line": 18
+            },
+            {
+              "symbol": "ButtonIcon",
+              "path": "button/button_icon.rs",
+              "line": 7
+            },
+            {
+              "symbol": "ButtonIconVariant",
+              "path": "button/button_icon.rs",
+              "line": 55
+            },
+            {
+              "symbol": "DropdownButton",
+              "path": "button/dropdown_button.rs",
+              "line": 26
+            },
+            {
+              "symbol": "ToggleVariant",
+              "path": "button/toggle.rs",
+              "line": 14
+            },
+            {
+              "symbol": "ToggleVariants",
+              "path": "button/toggle.rs",
+              "line": 20
+            },
+            {
+              "symbol": "Toggle",
+              "path": "button/toggle.rs",
+              "line": 34
+            },
+            {
+              "symbol": "ToggleGroup",
+              "path": "button/toggle.rs",
+              "line": 230
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Loading disabled and pressed states; pointer/key activation once"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "checkbox",
+      "proposed_rust_types": [
+        "controls::Checkbox"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "indeterminate",
+          "snippet": "==`function`}function jv(e){return e===`indeterminate`}function nOe(e){return jv(e)?`indeterminate`:e?`checked`:`unchecked`}var Mv,Nv,rOe,Pv,iOe,aOe,oOe,sOe,cOe,lOe,uOe,dOe,fOe,pOe,mO"
+        }
+      ],
+      "observed_behaviors": [
+        "Checked unchecked indeterminate states and form integration"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "checkbox",
+          "presence": "verified_source",
+          "source_files": [
+            "checkbox.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Checkbox",
+              "path": "checkbox.rs",
+              "line": 17
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Represent unchecked checked mixed; disabled blocks change"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "switch",
+      "proposed_rust_types": [
+        "controls::Switch"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "role:`switch`",
+          "snippet": "w?(T=(0,d7.jsx)(`button`,{type:`button`,role:`switch`,\"aria-checked\":i,\"aria-label\":n,id:o,className:C,\"data-state\":_,...r,onClick:x,disabled:m,children:w}),t[29]=n,t[30]=r,t[31]=i,t["
+        }
+      ],
+      "observed_behaviors": [
+        "Switch role aria-checked accessible label and disabled click handling"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "switch",
+          "presence": "verified_source",
+          "source_files": [
+            "switch.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Switch",
+              "path": "switch.rs",
+              "line": 15
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Toggle checked state by keyboard and pointer"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "radio_group",
+      "proposed_rust_types": [
+        "controls::RadioGroup"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/radio-group-434f5f94e777.js",
+          "needle": "onValueChange",
+          "snippet": "ata-w-component\":s?`radio-group`:void 0,onValueChange:e,disabled:a,...c,children:t})})},b=({value:e,disabled:t=!1,id:n,required:i,children:a,className:s,block:c=!1,...l})=>{let{disabl"
+        }
+      ],
+      "observed_behaviors": [
+        "Directional group item/group disabled required and label association"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "radio",
+          "presence": "verified_source",
+          "source_files": [
+            "radio.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Radio",
+              "path": "radio.rs",
+              "line": 19
+            },
+            {
+              "symbol": "RadioGroup",
+              "path": "radio.rs",
+              "line": 285
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Select single enabled option and retain labels"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "toggle_group",
+      "proposed_rust_types": [
+        "controls::ToggleGroup"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "__scopeToggleGroup",
+          "snippet": "ller:cx});return(0,ox.jsx)(CIe,{scope:e.__scopeToggleGroup,type:`single`,value:ax.useMemo(()=>o?[o]:[],[o]),onItemActivate:s,onItemDeactivate:ax.useCallback(()=>s(``),[s]),children:(0,ox.j"
+        }
+      ],
+      "observed_behaviors": [
+        "Single toggle activation and deactivation branches"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "button",
+          "presence": "verified_source",
+          "source_files": [
+            "button/button.rs",
+            "button/button_group.rs",
+            "button/button_icon.rs",
+            "button/dropdown_button.rs",
+            "button/mod.rs",
+            "button/toggle.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ButtonRounded",
+              "path": "button/button.rs",
+              "line": 24
+            },
+            {
+              "symbol": "ButtonCustomVariant",
+              "path": "button/button.rs",
+              "line": 40
+            },
+            {
+              "symbol": "ButtonVariants",
+              "path": "button/button.rs",
+              "line": 48
+            },
+            {
+              "symbol": "ButtonVariant",
+              "path": "button/button.rs",
+              "line": 146
+            },
+            {
+              "symbol": "Button",
+              "path": "button/button.rs",
+              "line": 190
+            },
+            {
+              "symbol": "ButtonGroup",
+              "path": "button/button_group.rs",
+              "line": 18
+            },
+            {
+              "symbol": "ButtonIcon",
+              "path": "button/button_icon.rs",
+              "line": 7
+            },
+            {
+              "symbol": "ButtonIconVariant",
+              "path": "button/button_icon.rs",
+              "line": 55
+            },
+            {
+              "symbol": "DropdownButton",
+              "path": "button/dropdown_button.rs",
+              "line": 26
+            },
+            {
+              "symbol": "ToggleVariant",
+              "path": "button/toggle.rs",
+              "line": 14
+            },
+            {
+              "symbol": "ToggleVariants",
+              "path": "button/toggle.rs",
+              "line": 20
+            },
+            {
+              "symbol": "Toggle",
+              "path": "button/toggle.rs",
+              "line": 34
+            },
+            {
+              "symbol": "ToggleGroup",
+              "path": "button/toggle.rs",
+              "line": 230
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Activate/deactivate single option with one change event"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "segmented_control",
+      "proposed_rust_types": [
+        "controls::SegmentedControl"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/SegmentedControl-23a4006850e2.js",
+          "needle": "_SegmentedControlThumb_",
+          "snippet": "_SegmentedControlOption_1is40_152`,ppe=`_SegmentedControlThumb_1is40_265`,J9={SegmentedControl:dpe,SegmentedControlOption:fpe,SegmentedControlThumb:ppe}})))()}var Y9,X9,Z9,Q9,hpe;function $9(){"
+        }
+      ],
+      "observed_behaviors": [
+        "Distinct control option and thumb styling parts"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "button",
+          "presence": "verified_source",
+          "source_files": [
+            "button/button.rs",
+            "button/button_group.rs",
+            "button/button_icon.rs",
+            "button/dropdown_button.rs",
+            "button/mod.rs",
+            "button/toggle.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ButtonRounded",
+              "path": "button/button.rs",
+              "line": 24
+            },
+            {
+              "symbol": "ButtonCustomVariant",
+              "path": "button/button.rs",
+              "line": 40
+            },
+            {
+              "symbol": "ButtonVariants",
+              "path": "button/button.rs",
+              "line": 48
+            },
+            {
+              "symbol": "ButtonVariant",
+              "path": "button/button.rs",
+              "line": 146
+            },
+            {
+              "symbol": "Button",
+              "path": "button/button.rs",
+              "line": 190
+            },
+            {
+              "symbol": "ButtonGroup",
+              "path": "button/button_group.rs",
+              "line": 18
+            },
+            {
+              "symbol": "ButtonIcon",
+              "path": "button/button_icon.rs",
+              "line": 7
+            },
+            {
+              "symbol": "ButtonIconVariant",
+              "path": "button/button_icon.rs",
+              "line": 55
+            },
+            {
+              "symbol": "DropdownButton",
+              "path": "button/dropdown_button.rs",
+              "line": 26
+            },
+            {
+              "symbol": "ToggleVariant",
+              "path": "button/toggle.rs",
+              "line": 14
+            },
+            {
+              "symbol": "ToggleVariants",
+              "path": "button/toggle.rs",
+              "line": 20
+            },
+            {
+              "symbol": "Toggle",
+              "path": "button/toggle.rs",
+              "line": 34
+            },
+            {
+              "symbol": "ToggleGroup",
+              "path": "button/toggle.rs",
+              "line": 230
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Selected thumb aligns during resize"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "slider",
+      "proposed_rust_types": [
+        "controls::Slider"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "aria-valuemin",
+          "snippet": "lider`,\"aria-label\":e[`aria-label`]||f,\"aria-valuemin\":i.min,\"aria-valuenow\":s,\"aria-valuemax\":i.max,\"aria-orientation\":i.orientation,\"data-orientation\":i.orientation,\"data-disabled\":"
+        }
+      ],
+      "observed_behaviors": [
+        "Slider role range current value orientation and disabled properties"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "slider",
+          "presence": "verified_source",
+          "source_files": [
+            "slider.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Slider",
+              "path": "slider.rs",
+              "line": 86
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Clamp current value to min/max and expose orientation"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "range_input",
+      "proposed_rust_types": [
+        "controls::RangeInput"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/range-slider-5c9566973ec1.js",
+          "needle": "::-moz-range-thumb",
+          "snippet": "e rounded-full bg-border text-default [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border [&::-moz-range-thumb]:border-trans"
+        }
+      ],
+      "observed_behaviors": [
+        "HTML range input with browser thumb styling"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "slider",
+          "presence": "verified_source",
+          "source_files": [
+            "slider.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Slider",
+              "path": "slider.rs",
+              "line": 86
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Keep thumb synchronized with endpoint values"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "number_input",
+      "proposed_rust_types": [
+        "forms::NumberInput"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/format-number-input-b026fe0339b2.js",
+          "needle": "maxFractionDigits",
+          "snippet": "pCount===t.maxAlignedWindowStepCount&&e.maxFractionDigits===t.maxFractionDigits&&e.maxPreciseWindowStepCount===t.maxPreciseWindowStepCount&&e.minWindowStepHeadroom===t.minWindowStepHeadro"
+        }
+      ],
+      "observed_behaviors": [
+        "Precision min/max step and local number-window calculations"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "input",
+          "presence": "verified_source",
+          "source_files": [
+            "input/clear_button.rs",
+            "input/content_type.rs",
+            "input/editor.rs",
+            "input/group/button_element.rs",
+            "input/group/tests.rs",
+            "input/group.rs",
+            "input/input.rs",
+            "input/language_config.rs",
+            "input/mod.rs",
+            "input/number_input.rs",
+            "input/otp_input.rs",
+            "input/overlay.rs",
+            "input/popovers/caret_anchored.rs",
+            "input/popovers/code_action_menu.rs",
+            "input/popovers/completion_menu.rs",
+            "input/popovers/diagnostic_popover.rs",
+            "input/popovers/hover_popover.rs",
+            "input/popovers/mod.rs",
+            "input/search.rs",
+            "input/state.rs",
+            "input/syntax_context.rs",
+            "input/textarea.rs",
+            "input/token.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "InputContentType",
+              "path": "input/content_type.rs",
+              "line": 7
+            },
+            {
+              "symbol": "Editor",
+              "path": "input/editor.rs",
+              "line": 18
+            },
+            {
+              "symbol": "InputGroup",
+              "path": "input/group.rs",
+              "line": 36
+            },
+            {
+              "symbol": "InputGroupAddonAlignment",
+              "path": "input/group.rs",
+              "line": 331
+            },
+            {
+              "symbol": "InputGroupAddon",
+              "path": "input/group.rs",
+              "line": 344
+            },
+            {
+              "symbol": "InputGroupInput",
+              "path": "input/group.rs",
+              "line": 449
+            },
+            {
+              "symbol": "InputGroupTextarea",
+              "path": "input/group.rs",
+              "line": 453
+            },
+            {
+              "symbol": "InputGroupControl",
+              "path": "input/group.rs",
+              "line": 456
+            },
+            {
+              "symbol": "InputGroupButton",
+              "path": "input/group.rs",
+              "line": 474
+            },
+            {
+              "symbol": "InputGroupText",
+              "path": "input/group.rs",
+              "line": 681
+            },
+            {
+              "symbol": "Input",
+              "path": "input/input.rs",
+              "line": 111
+            },
+            {
+              "symbol": "Tree",
+              "path": "input/mod.rs",
+              "line": 21
+            },
+            {
+              "symbol": "NumberInput",
+              "path": "input/number_input.rs",
+              "line": 21
+            },
+            {
+              "symbol": "OtpInput",
+              "path": "input/otp_input.rs",
+              "line": 22
+            },
+            {
+              "symbol": "CodeActionMenu",
+              "path": "input/popovers/code_action_menu.rs",
+              "line": 141
+            },
+            {
+              "symbol": "CompletionMenu",
+              "path": "input/popovers/completion_menu.rs",
+              "line": 171
+            },
+            {
+              "symbol": "DiagnosticPopover",
+              "path": "input/popovers/diagnostic_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "HoverPopover",
+              "path": "input/popovers/hover_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "AnyInputState",
+              "path": "input/state.rs",
+              "line": 17
+            },
+            {
+              "symbol": "Textarea",
+              "path": "input/textarea.rs",
+              "line": 14
+            },
+            {
+              "symbol": "InputToken",
+              "path": "input/token.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Preserve partial decimal text and enforce precision on commit"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "text_input",
+      "proposed_rust_types": [
+        "forms::TextInput"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/input-474eb7f2698c.js",
+          "needle": "placeholder",
+          "snippet": ",onStopAddressEditing:de,panelTarget:fe,placeholder:pe,rightPanelLayoutTick:me,showAddressSuggestionsRef:he,shouldKeepAddressSelectedRef:b,submittedAddressStillPending:ge}=e,_e=a(),"
+        }
+      ],
+      "observed_behaviors": [
+        "Placeholder editable address input focus alignment and suggestion geometry tracking"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "input",
+          "presence": "verified_source",
+          "source_files": [
+            "input/clear_button.rs",
+            "input/content_type.rs",
+            "input/editor.rs",
+            "input/group/button_element.rs",
+            "input/group/tests.rs",
+            "input/group.rs",
+            "input/input.rs",
+            "input/language_config.rs",
+            "input/mod.rs",
+            "input/number_input.rs",
+            "input/otp_input.rs",
+            "input/overlay.rs",
+            "input/popovers/caret_anchored.rs",
+            "input/popovers/code_action_menu.rs",
+            "input/popovers/completion_menu.rs",
+            "input/popovers/diagnostic_popover.rs",
+            "input/popovers/hover_popover.rs",
+            "input/popovers/mod.rs",
+            "input/search.rs",
+            "input/state.rs",
+            "input/syntax_context.rs",
+            "input/textarea.rs",
+            "input/token.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "InputContentType",
+              "path": "input/content_type.rs",
+              "line": 7
+            },
+            {
+              "symbol": "Editor",
+              "path": "input/editor.rs",
+              "line": 18
+            },
+            {
+              "symbol": "InputGroup",
+              "path": "input/group.rs",
+              "line": 36
+            },
+            {
+              "symbol": "InputGroupAddonAlignment",
+              "path": "input/group.rs",
+              "line": 331
+            },
+            {
+              "symbol": "InputGroupAddon",
+              "path": "input/group.rs",
+              "line": 344
+            },
+            {
+              "symbol": "InputGroupInput",
+              "path": "input/group.rs",
+              "line": 449
+            },
+            {
+              "symbol": "InputGroupTextarea",
+              "path": "input/group.rs",
+              "line": 453
+            },
+            {
+              "symbol": "InputGroupControl",
+              "path": "input/group.rs",
+              "line": 456
+            },
+            {
+              "symbol": "InputGroupButton",
+              "path": "input/group.rs",
+              "line": 474
+            },
+            {
+              "symbol": "InputGroupText",
+              "path": "input/group.rs",
+              "line": 681
+            },
+            {
+              "symbol": "Input",
+              "path": "input/input.rs",
+              "line": 111
+            },
+            {
+              "symbol": "Tree",
+              "path": "input/mod.rs",
+              "line": 21
+            },
+            {
+              "symbol": "NumberInput",
+              "path": "input/number_input.rs",
+              "line": 21
+            },
+            {
+              "symbol": "OtpInput",
+              "path": "input/otp_input.rs",
+              "line": 22
+            },
+            {
+              "symbol": "CodeActionMenu",
+              "path": "input/popovers/code_action_menu.rs",
+              "line": 141
+            },
+            {
+              "symbol": "CompletionMenu",
+              "path": "input/popovers/completion_menu.rs",
+              "line": 171
+            },
+            {
+              "symbol": "DiagnosticPopover",
+              "path": "input/popovers/diagnostic_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "HoverPopover",
+              "path": "input/popovers/hover_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "AnyInputState",
+              "path": "input/state.rs",
+              "line": 17
+            },
+            {
+              "symbol": "Textarea",
+              "path": "input/textarea.rs",
+              "line": 14
+            },
+            {
+              "symbol": "InputToken",
+              "path": "input/token.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Support IME undo clipboard caret and demo suggestions"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "select",
+      "proposed_rust_types": [
+        "selection::Select"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/select-c16e3005a3c5.js",
+          "needle": "ArrowDown",
+          "snippet": "d 0,onKeyDown:re?e=>{switch(e.key){case`ArrowDown`:case`ArrowUp`:case` `:e.stopPropagation(),e.preventDefault(),i?i():te.current?.dispatchEvent(new PointerEvent(`pointerdown`,{bub"
+        }
+      ],
+      "observed_behaviors": [
+        "Pointer and arrow/space key interaction invalid loading disabled and size variants"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "select",
+          "presence": "verified_source",
+          "source_files": [
+            "select.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Caret",
+              "path": "select.rs",
+              "line": 40
+            },
+            {
+              "symbol": "SelectEvent",
+              "path": "select.rs",
+              "line": 71
+            },
+            {
+              "symbol": "SelectState",
+              "path": "select.rs",
+              "line": 121
+            },
+            {
+              "symbol": "Select",
+              "path": "select.rs",
+              "line": 136
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "combobox",
+          "presence": "verified_source",
+          "source_files": [
+            "combobox.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ComboboxTriggerContext",
+              "path": "combobox.rs",
+              "line": 34
+            },
+            {
+              "symbol": "ComboboxChange",
+              "path": "combobox.rs",
+              "line": 69
+            },
+            {
+              "symbol": "ComboboxState",
+              "path": "combobox.rs",
+              "line": 110
+            },
+            {
+              "symbol": "ComboboxEvent",
+              "path": "combobox.rs",
+              "line": 129
+            },
+            {
+              "symbol": "Combobox",
+              "path": "combobox.rs",
+              "line": 750
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Open using keyboard select clear disabled and loading options"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "popover",
+      "proposed_rust_types": [
+        "overlay::Popover"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/popover-27c4fbdc9c29.js",
+          "needle": "hoverOpenDelay:r=150",
+          "snippet": "{open:e,onOpenChange:t,showOnHover:n=!1,hoverOpenDelay:r=150,children:a})=>{let[o,s]=(0,H.useState)(!1),[c,l]=(0,H.useState)(!1),u=(0,H.useRef)(null),[d,f]=(0,H.useState)(null),p=(0,H.useRef"
+        }
+      ],
+      "observed_behaviors": [
+        "Controlled/uncontrolled nonmodal opening optional hover delay side alignment and focus policy"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "popover",
+          "presence": "verified_source",
+          "source_files": [
+            "popover.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Popover",
+              "path": "popover.rs",
+              "line": 108
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "hover_card",
+          "presence": "verified_source",
+          "source_files": [
+            "hover_card.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "HoverCard",
+              "path": "hover_card.rs",
+              "line": 19
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Respect hover delay and restore focus after outside dismissal"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "tooltip",
+      "proposed_rust_types": [
+        "overlay::Tooltip"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "TooltipProvider",
+          "snippet": "px,BIe]=Jg(`Tooltip`,[ly]),mx=ly(),VIe=`TooltipProvider`,HIe=700,hx=`tooltip.open`,[UIe,gx]=px(VIe),WIe=fx(e=>{let{__scopeTooltip:t,delayDuration:n=HIe,skipDelayDuration:r=300,disableHo"
+        }
+      ],
+      "observed_behaviors": [
+        "Tooltip provider delay and skip-delay settings with hoverability control"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "tooltip",
+          "presence": "verified_source",
+          "source_files": [
+            "tooltip.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Tooltip",
+              "path": "tooltip.rs",
+              "line": 35
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Show focused/hovered description with configured delay"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "dialog",
+      "proposed_rust_types": [
+        "overlay::Dialog"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/dialog-shell-df796bfbc480.js",
+          "needle": "shouldIgnoreClickOutside",
+          "snippet": "ontentOverflow:`visible`,contentProps:P,shouldIgnoreClickOutside:T,showDialogClose:F,size:S,variant:I,onOpenChange:L,children:z}),n[34]=T,n[35]=S,n[36]=P,n[37]=F,n[38]=I,n[39]=L,n[40]=z,n[41]=B)"
+        }
+      ],
+      "observed_behaviors": [
+        "Dialog size variant submit autofocus description and outside-dismiss policy"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "dialog",
+          "presence": "verified_source",
+          "source_files": [
+            "dialog/alert_dialog.rs",
+            "dialog/content.rs",
+            "dialog/description.rs",
+            "dialog/dialog.rs",
+            "dialog/dispatch_anchor.rs",
+            "dialog/entrance.rs",
+            "dialog/footer.rs",
+            "dialog/header.rs",
+            "dialog/mod.rs",
+            "dialog/title.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "AlertDialog",
+              "path": "dialog/alert_dialog.rs",
+              "line": 66
+            },
+            {
+              "symbol": "DialogContent",
+              "path": "dialog/content.rs",
+              "line": 9
+            },
+            {
+              "symbol": "DialogDescription",
+              "path": "dialog/description.rs",
+              "line": 18
+            },
+            {
+              "symbol": "DialogButtonProps",
+              "path": "dialog/dialog.rs",
+              "line": 47
+            },
+            {
+              "symbol": "Dialog",
+              "path": "dialog/dialog.rs",
+              "line": 303
+            },
+            {
+              "symbol": "DialogEntrance",
+              "path": "dialog/entrance.rs",
+              "line": 12
+            },
+            {
+              "symbol": "DialogFooter",
+              "path": "dialog/footer.rs",
+              "line": 23
+            },
+            {
+              "symbol": "DialogFooterButton",
+              "path": "dialog/footer.rs",
+              "line": 61
+            },
+            {
+              "symbol": "DialogClose",
+              "path": "dialog/footer.rs",
+              "line": 71
+            },
+            {
+              "symbol": "DialogAction",
+              "path": "dialog/footer.rs",
+              "line": 104
+            },
+            {
+              "symbol": "DialogHeader",
+              "path": "dialog/header.rs",
+              "line": 17
+            },
+            {
+              "symbol": "DialogTitle",
+              "path": "dialog/title.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Respect modal focus and outside dismissal policy"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "menu",
+      "proposed_rust_types": [
+        "menu::Menu"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "DropdownMenuCheckboxItem",
+          "snippet": "nMenu:()=>JMe,DropdownMenuArrow:()=>cNe,DropdownMenuCheckboxItem:()=>rNe,DropdownMenuContent:()=>$Me,DropdownMenuGroup:()=>eNe,DropdownMenuItem:()=>nNe,DropdownMenuItemIndicator:()=>oNe,Dropdown"
+        }
+      ],
+      "observed_behaviors": [
+        "Dropdown menu groups items checkable items and arrow exports"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "menu",
+          "presence": "verified_source",
+          "source_files": [
+            "menu/app_menu_bar.rs",
+            "menu/context_menu.rs",
+            "menu/dropdown_menu.rs",
+            "menu/menu_item.rs",
+            "menu/mod.rs",
+            "menu/popup_menu.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "AppMenuBar",
+              "path": "menu/app_menu_bar.rs",
+              "line": 26
+            },
+            {
+              "symbol": "ContextMenuExt",
+              "path": "menu/context_menu.rs",
+              "line": 17
+            },
+            {
+              "symbol": "ContextMenu",
+              "path": "menu/context_menu.rs",
+              "line": 46
+            },
+            {
+              "symbol": "ContextMenuState",
+              "path": "menu/context_menu.rs",
+              "line": 136
+            },
+            {
+              "symbol": "DropdownMenu",
+              "path": "menu/dropdown_menu.rs",
+              "line": 12
+            },
+            {
+              "symbol": "DropdownMenuPopover",
+              "path": "menu/dropdown_menu.rs",
+              "line": 36
+            },
+            {
+              "symbol": "PopupMenuItem",
+              "path": "menu/popup_menu.rs",
+              "line": 33
+            },
+            {
+              "symbol": "PopupMenu",
+              "path": "menu/popup_menu.rs",
+              "line": 282
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "native_menu",
+          "presence": "verified_source",
+          "source_files": [
+            "native_menu/fallback.rs",
+            "native_menu/macos.rs",
+            "native_menu/mod.rs",
+            "native_menu/windows.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "NativeMenu",
+              "path": "native_menu/mod.rs",
+              "line": 72
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Navigate checkable enabled entries and Escape closes"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "context_menu",
+      "proposed_rust_types": [
+        "menu::ContextMenu"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/context-menu-289f1a13127e.js",
+          "needle": "ContextMenu",
+          "snippet": "z;t[11]!==n||t[12]!==F?(R=e=>{n.props.onContextMenu?.(e),F(e,new DOMRect(e.clientX,e.clientY))},z=e=>{if(n.props.onKeyDown?.(e),e.key===`ContextMenu`||e.shiftKey&&e.key===`F10`){let"
+        }
+      ],
+      "observed_behaviors": [
+        "Pointer anchor ContextMenu key Shift+F10 and restoration to trigger"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "menu",
+          "presence": "verified_source",
+          "source_files": [
+            "menu/app_menu_bar.rs",
+            "menu/context_menu.rs",
+            "menu/dropdown_menu.rs",
+            "menu/menu_item.rs",
+            "menu/mod.rs",
+            "menu/popup_menu.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "AppMenuBar",
+              "path": "menu/app_menu_bar.rs",
+              "line": 26
+            },
+            {
+              "symbol": "ContextMenuExt",
+              "path": "menu/context_menu.rs",
+              "line": 17
+            },
+            {
+              "symbol": "ContextMenu",
+              "path": "menu/context_menu.rs",
+              "line": 46
+            },
+            {
+              "symbol": "ContextMenuState",
+              "path": "menu/context_menu.rs",
+              "line": 136
+            },
+            {
+              "symbol": "DropdownMenu",
+              "path": "menu/dropdown_menu.rs",
+              "line": 12
+            },
+            {
+              "symbol": "DropdownMenuPopover",
+              "path": "menu/dropdown_menu.rs",
+              "line": 36
+            },
+            {
+              "symbol": "PopupMenuItem",
+              "path": "menu/popup_menu.rs",
+              "line": 33
+            },
+            {
+              "symbol": "PopupMenu",
+              "path": "menu/popup_menu.rs",
+              "line": 282
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Right-click and Shift+F10 open same demo action menu"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "command_palette",
+      "proposed_rust_types": [
+        "command::CommandPalette"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/command-menu-dialog-e1ab846c2043.js",
+          "needle": "cmdk-item",
+          "snippet": "`)).flatMap(e=>{let t=e.querySelector(`[cmdk-item]:not([aria-disabled=\"true\"])`);return t==null?[]:[t]});if(r.length<2)return!1;let i=n.querySelector(`[cmdk-item][aria-selected=\"t"
+        }
+      ],
+      "observed_behaviors": [
+        "Grouped command results disabled-item filtering shortcuts and loading status"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "command",
+          "presence": "verified_source",
+          "source_files": [
+            "command/command.rs",
+            "command/item.rs",
+            "command/mod.rs",
+            "command/state.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Command",
+              "path": "command/command.rs",
+              "line": 58
+            },
+            {
+              "symbol": "CommandItem",
+              "path": "command/item.rs",
+              "line": 9
+            },
+            {
+              "symbol": "CommandGroup",
+              "path": "command/item.rs",
+              "line": 179
+            },
+            {
+              "symbol": "CommandEntry",
+              "path": "command/item.rs",
+              "line": 237
+            },
+            {
+              "symbol": "CommandState",
+              "path": "command/state.rs",
+              "line": 117
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Filter fixture actions then activate and show loading/empty state"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "tabs",
+      "proposed_rust_types": [
+        "navigation::Tabs"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "TabsList",
+          "snippet": "tation\":o,...l,ref:t})})},`Tabs`)),eIe=`TabsList`,tIe=ex.forwardRef(nx(function(e,t){let{__scopeTabs:n,loop:r=!0,...i}=e,a=ix(eIe,n),o=ZFe(n);return(0,tx.jsx)(xy,{asChild:!0,...o"
+        }
+      ],
+      "observed_behaviors": [
+        "Oriented tablist and disabled controlled/default tab triggers"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "tab",
+          "presence": "verified_source",
+          "source_files": [
+            "tab/mod.rs",
+            "tab/tab.rs",
+            "tab/tab_bar.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "TabVariant",
+              "path": "tab/tab.rs",
+              "line": 14
+            },
+            {
+              "symbol": "Tab",
+              "path": "tab/tab.rs",
+              "line": 397
+            },
+            {
+              "symbol": "TabBar",
+              "path": "tab/tab_bar.rs",
+              "line": 41
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Arrow navigation respects disabled tabs and inactive focus"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "breadcrumbs",
+      "proposed_rust_types": [
+        "navigation::Breadcrumbs"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/toolbar-breadcrumb-aeefda3b3d86.js",
+          "needle": "aria-current",
+          "snippet": "nk-0`,asset:i}):null,(0,v.jsx)(`span`,{\"aria-current\":`page`,className:`flex h-token-button-composer min-w-0 flex-auto items-center truncate px-2 text-default`,children:a})]}),t[9]=n"
+        }
+      ],
+      "observed_behaviors": [
+        "Truncated action/link items and current-page semantics"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "breadcrumb",
+          "presence": "verified_source",
+          "source_files": [
+            "breadcrumb.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Breadcrumb",
+              "path": "breadcrumb.rs",
+              "line": 13
+            },
+            {
+              "symbol": "BreadcrumbItem",
+              "path": "breadcrumb.rs",
+              "line": 20
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Parent action changes local route while current page is marked"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "tree",
+      "proposed_rust_types": [
+        "collection::TreeView"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/base-file-tree-f18041e294eb.js",
+          "needle": "expandedPaths",
+          "snippet": "?null),z;t[14]===x?z=t[15]:(z=()=>{x?.({expandedPaths:Ae.current,scrollTop:R.current,selectedPath:Ne.current})},t[14]=x,t[15]=z);let B=ne(z),V;t[16]!==ee||t[17]!==B?(V=e=>{Ae.current="
+        }
+      ],
+      "observed_behaviors": [
+        "Expanded paths selected path and scroll persistence plus treeitem semantics"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "tree",
+          "presence": "verified_source",
+          "source_files": [
+            "tree.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Tree",
+              "path": "tree.rs",
+              "line": 32
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Preserve expansion selection and scroll for fixture tree"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "reveal_selection",
+      "proposed_rust_types": [
+        "collection::RevealSelection"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/tree-scroll-36725f65cbb1.js",
+          "needle": "scrollPaddingTop",
+          "snippet": ",o=r.top+parseFloat(getComputedStyle(e).scrollPaddingTop)*a;i.top<o?e.scrollTop+=(i.top-o)/a:i.bottom>r.bottom&&(e.scrollTop+=(i.bottom-r.bottom)/a),v(e.scrollTop>0),t()},a=new MutationO"
+        }
+      ],
+      "observed_behaviors": [
+        "Active page reveal optional focus scroll padding and current-node observation"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "tree",
+          "presence": "verified_source",
+          "source_files": [
+            "tree.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Tree",
+              "path": "tree.rs",
+              "line": 32
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "scroll",
+          "presence": "verified_source",
+          "source_files": [
+            "scroll/mod.rs",
+            "scroll/scrollable.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ScrollableElement",
+              "path": "scroll/scrollable.rs",
+              "line": 16
+            },
+            {
+              "symbol": "Scrollable",
+              "path": "scroll/scrollable.rs",
+              "line": 67
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Reveal selected row without stealing focus"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "virtual_list",
+      "proposed_rust_types": [
+        "collection::VirtualList"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/virtualized-turn-list-93f4162a687b.js",
+          "needle": "scrollToKey",
+          "snippet": "f(a!=null)return a({getEntryGeometry:Pt,scrollToKey:Mt}),()=>{a(null)}},en=[Pt,a,Mt],t[123]=Pt,t[124]=a,t[125]=Mt,t[126]=$t,t[127]=en):($t=t[126],en=t[127]),(0,L.useEffect)($t,en);l"
+        }
+      ],
+      "observed_behaviors": [
+        "Entry geometry key-based scroll focus and status handling"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "virtual_list",
+          "presence": "verified_source",
+          "source_files": [
+            "virtual_list.rs"
+          ],
+          "public_declarations": [],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Scroll by stable key after variable-height changes"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "data_table",
+      "proposed_rust_types": [
+        "collection::DataTable"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/table-b3a110ed96f1.js",
+          "needle": "scheduled-table-search",
+          "snippet": "iant:`toolbar-compact`,autoFocus:!1,id:`scheduled-table-search`,inputRole:`searchbox`,maxLength:256,label:d,placeholder:p,searchQuery:h,onSearchQueryChange:b},t[62]=o,t[63]=d,t[64]=p,t[65]=h,t"
+        }
+      ],
+      "observed_behaviors": [
+        "Scheduled product table search scope filtering and row action composition; generic table engine not established"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "table",
+          "presence": "verified_source",
+          "source_files": [
+            "table/column.rs",
+            "table/data_table.rs",
+            "table/delegate.rs",
+            "table/loading.rs",
+            "table/mod.rs",
+            "table/state.rs",
+            "table/table.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Column",
+              "path": "table/column.rs",
+              "line": 10
+            },
+            {
+              "symbol": "ColumnGroup",
+              "path": "table/column.rs",
+              "line": 53
+            },
+            {
+              "symbol": "ColumnFixed",
+              "path": "table/column.rs",
+              "line": 231
+            },
+            {
+              "symbol": "ColumnSort",
+              "path": "table/column.rs",
+              "line": 263
+            },
+            {
+              "symbol": "DataTable",
+              "path": "table/data_table.rs",
+              "line": 94
+            },
+            {
+              "symbol": "TableDelegate",
+              "path": "table/delegate.rs",
+              "line": 16
+            },
+            {
+              "symbol": "TableSelection",
+              "path": "table/state.rs",
+              "line": 67
+            },
+            {
+              "symbol": "TableEvent",
+              "path": "table/state.rs",
+              "line": 81
+            },
+            {
+              "symbol": "TableVisibleRange",
+              "path": "table/state.rs",
+              "line": 132
+            },
+            {
+              "symbol": "TableState",
+              "path": "table/state.rs",
+              "line": 210
+            },
+            {
+              "symbol": "Table",
+              "path": "table/table.rs",
+              "line": 41
+            },
+            {
+              "symbol": "TableHeader",
+              "path": "table/table.rs",
+              "line": 143
+            },
+            {
+              "symbol": "TableBody",
+              "path": "table/table.rs",
+              "line": 215
+            },
+            {
+              "symbol": "TableFooter",
+              "path": "table/table.rs",
+              "line": 283
+            },
+            {
+              "symbol": "TableRow",
+              "path": "table/table.rs",
+              "line": 356
+            },
+            {
+              "symbol": "TableHead",
+              "path": "table/table.rs",
+              "line": 428
+            },
+            {
+              "symbol": "TableCell",
+              "path": "table/table.rs",
+              "line": 519
+            },
+            {
+              "symbol": "TableCaption",
+              "path": "table/table.rs",
+              "line": 610
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Filter fixture rows and activate correct stable row identity"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "split_pane",
+      "proposed_rust_types": [
+        "layout::SplitPane"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/split-view-194f08a5d0cd.js",
+          "needle": "Resize panels",
+          "snippet": "({id:`splitView.resize`,defaultMessage:`Resize panels`,description:`Accessible name for the split-view resize handle`}),\"aria-orientation\":`vertical`,\"aria-valuemax\":le(N,S,C),\"aria-v"
+        }
+      ],
+      "observed_behaviors": [
+        "Resizable column handle separator role min/max/current accessible label and animated width"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "resizable",
+          "presence": "verified_source",
+          "source_files": [
+            "resizable.rs"
+          ],
+          "public_declarations": [],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "dock",
+          "presence": "verified_source",
+          "source_files": [
+            "dock/dock.rs",
+            "dock/invalid_panel.rs",
+            "dock/mod.rs",
+            "dock/panel.rs",
+            "dock/tab_panel.rs",
+            "dock/test_support.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "DockSkin",
+              "path": "dock/mod.rs",
+              "line": 123
+            },
+            {
+              "symbol": "PanelStyle",
+              "path": "dock/panel.rs",
+              "line": 31
+            },
+            {
+              "symbol": "TitleStyle",
+              "path": "dock/panel.rs",
+              "line": 40
+            },
+            {
+              "symbol": "PanelControl",
+              "path": "dock/panel.rs",
+              "line": 46
+            },
+            {
+              "symbol": "Panel",
+              "path": "dock/panel.rs",
+              "line": 71
+            },
+            {
+              "symbol": "PanelView",
+              "path": "dock/panel.rs",
+              "line": 153
+            },
+            {
+              "symbol": "PanelHandle",
+              "path": "dock/panel.rs",
+              "line": 215
+            },
+            {
+              "symbol": "DragPanelPreview",
+              "path": "dock/tab_panel.rs",
+              "line": 57
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Pointer and keyboard resizing obey bounds at three DPI settings"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "color_palette",
+      "proposed_rust_types": [
+        "color::ColorPalette"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/color-palette-d07808540f80.js",
+          "needle": "onColorChange",
+          "snippet": "atchColor:i,disabled:o,groupAriaLabel:c,onColorChange:u}=e,p=o!==void 0&&o,m=a(),_;t[0]!==c||t[1]!==m?(_=c??m.formatMessage({id:`symbolPicker.icons.colors`,defaultMessage:`Icon colors"
+        }
+      ],
+      "observed_behaviors": [
+        "Selected/default swatch disabled option change callback and labeled group"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "color_picker",
+          "presence": "verified_source",
+          "source_files": [
+            "color_picker.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ColorPicker",
+              "path": "color_picker.rs",
+              "line": 55
+            },
+            {
+              "symbol": "ColorSelect",
+              "path": "color_picker.rs",
+              "line": 540
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Choose labeled swatch and expose selected state"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "date_picker",
+      "proposed_rust_types": [
+        "date::DatePicker"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/DatePicker-2e79bee347a2.js",
+          "needle": "selectedDate",
+          "snippet": "ren:(0,$.jsx)(Vu,{stepPosition:c,date:f,selectedDate:e,min:n,max:r,locale:i,onDateSelect:e=>{a.current(e),o()}},f.toLocaleString({month:`long`,year:`numeric`}))})})]})},`stable-view-"
+        }
+      ],
+      "observed_behaviors": [
+        "Selected date bounds locale month/year labels and close-on-selection callback"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "time::date_picker",
+          "presence": "verified_source",
+          "source_files": [
+            "time/date_picker.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "DatePickerEvent",
+              "path": "time/date_picker.rs",
+              "line": 40
+            },
+            {
+              "symbol": "DateTime",
+              "path": "time/date_picker.rs",
+              "line": 52
+            },
+            {
+              "symbol": "DateRangePresetValue",
+              "path": "time/date_picker.rs",
+              "line": 113
+            },
+            {
+              "symbol": "DateRangePreset",
+              "path": "time/date_picker.rs",
+              "line": 121
+            },
+            {
+              "symbol": "DatePickerState",
+              "path": "time/date_picker.rs",
+              "line": 153
+            },
+            {
+              "symbol": "DatePicker",
+              "path": "time/date_picker.rs",
+              "line": 542
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "time::calendar",
+          "presence": "verified_source",
+          "source_files": [
+            "time/calendar.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Calendar",
+              "path": "time/calendar.rs",
+              "line": 38
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Select fixture date respecting leap day locale and bounds"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "toast",
+      "proposed_rust_types": [
+        "feedback::ToastManager"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "this.addToast",
+          "snippet": "=e=>{this.subscribers.forEach(t=>t(e))},this.addToast=e=>{this.publish(e),this.toasts=[...this.toasts,e]},this.create=e=>{let{message:t,...n}=e,r=typeof e?.id==`number`||e.id?.length>"
+        }
+      ],
+      "observed_behaviors": [
+        "Toast subscribers IDs creation/update and list storage"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "notification",
+          "presence": "verified_source",
+          "source_files": [
+            "notification.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "NotificationType",
+              "path": "notification.rs",
+              "line": 38
+            },
+            {
+              "symbol": "NotificationDelivery",
+              "path": "notification.rs",
+              "line": 60
+            },
+            {
+              "symbol": "Notification",
+              "path": "notification.rs",
+              "line": 114
+            },
+            {
+              "symbol": "NotificationSettings",
+              "path": "notification.rs",
+              "line": 537
+            },
+            {
+              "symbol": "NotificationList",
+              "path": "notification.rs",
+              "line": 700
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Update toast ID without duplication and announce meaningful message"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "skeleton",
+      "proposed_rust_types": [
+        "feedback::Skeleton"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/loading-placeholder-8d41ffaba1ef.js",
+          "needle": "aria-hidden",
+          "snippet": "e:`absolute inset-0 flex items-center`,\"aria-hidden\":!0,children:(0,s.jsx)(r,{className:`w-full`,as:`span`,size:`sm`})}),t[2]=a):a=t[2];let c;return t[3]===i?c=t[4]:(c=(0,s.jsxs)(`s"
+        }
+      ],
+      "observed_behaviors": [
+        "Invisible text preserves geometry while decorative loading overlay is aria-hidden"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "skeleton",
+          "presence": "verified_source",
+          "source_files": [
+            "skeleton.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Skeleton",
+              "path": "skeleton.rs",
+              "line": 10
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "shimmer",
+          "presence": "verified_source",
+          "source_files": [
+            "shimmer.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ShimmerSpread",
+              "path": "shimmer.rs",
+              "line": 22
+            },
+            {
+              "symbol": "ShimmerStyle",
+              "path": "shimmer.rs",
+              "line": 53
+            },
+            {
+              "symbol": "ShimmerText",
+              "path": "shimmer.rs",
+              "line": 141
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Toggle fixture loading without duplicate accessible text or layout shift"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "file_drag",
+      "proposed_rust_types": [
+        "desktop::FileDragSource"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/file-drag-864118da8a34.js",
+          "needle": "startFileDrag",
+          "snippet": "fileDrags!=null&&window.electronBridge?.startFileDrag!=null,a=()=>{i&&t.fileDrags?.prepareDrag(n).catch(()=>{})},o=e=>{e.currentTarget.dataset.fileDragStarted=`false`};return{draggabl"
+        }
+      ],
+      "observed_behaviors": [
+        "Native file drag routed through Electron bridge with default prevention and drag marker"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Drag/cancel fixture file without network services"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "icons",
+      "proposed_rust_types": [
+        "icons::Icon"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/SegmentedControl-23a4006850e2.js",
+          "needle": "../Icon/svg/SquareCode.tsx",
+          "snippet": "on/svg/SquareCheckboxUnchecked.tsx\":jX,\"../Icon/svg/SquareCode.tsx\":FX,\"../Icon/svg/SquareFilledTableLegend.tsx\":zX,\"../Icon/svg/SquareImage.tsx\":UX,\"../Icon/svg/SquarePlus.tsx\":qX,\"../Icon/svg/Sq"
+        }
+      ],
+      "observed_behaviors": [
+        "Lazy icon mapping includes original SVG names and separate Lucide bundles"
+      ],
+      "shared_dependencies": [
+        "rendering",
+        "assets"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "icon",
+          "presence": "verified_source",
+          "source_files": [
+            "icon.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "IconNameExt",
+              "path": "icon.rs",
+              "line": 67
+            },
+            {
+              "symbol": "Icon",
+              "path": "icon.rs",
+              "line": 84
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Render fixture SVG with color bounds and decorative semantics"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "motion",
+      "proposed_rust_types": [
+        "motion::Transition"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "prefers-reduced-motion",
+          "snippet": "edia!=`function`?!1:window.matchMedia(`(prefers-reduced-motion: reduce)`).matches,CSe=e=>{if(!wg.pressable)return;let t=e.currentTarget;if(!gSe||!(t instanceof HTMLElement))return;let n=t.offs"
+        }
+      ],
+      "observed_behaviors": [
+        "Reduced-motion media query and Framer Motion integration"
+      ],
+      "shared_dependencies": [
+        "rendering",
+        "assets"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Reduced motion removes nonessential effects without hiding state"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "rich_text",
+      "proposed_rust_types": [
+        "editor::RichTextEditor"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-initial-b8e1c8014bb4.js",
+          "needle": "prosemirrorDispatchTransaction",
+          "snippet": "r=new Fp(`transactionEventPlugin`),rIr=`prosemirrorDispatchTransaction`,iIr=class extends Event{transaction;constructor(e){super(rIr),this.transaction=e}}})))()}function aIr(e,t,n,r,i,a){let o=yB.get("
+        }
+      ],
+      "observed_behaviors": [
+        "ProseMirror model and transaction dispatch events"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Edit fixture document with format undo redo paste and IME"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "code_editor",
+      "proposed_rust_types": [
+        "editor::CodeEditor"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/chatgpt-code-block-editor-ea44a9d2124a.js",
+          "needle": ".cm-editor",
+          "snippet": "t instanceof Element&&e.target.closest(`.cm-editor`)&&e.stopPropagation()}function ye(e){return e.docChanged&&!e.annotation(k)}function be(){return{language:new m,wrapping:new m,a1"
+        }
+      ],
+      "observed_behaviors": [
+        "CodeMirror editor surface and language wrapping accessibility placeholder compartments"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "input",
+          "presence": "verified_source",
+          "source_files": [
+            "input/clear_button.rs",
+            "input/content_type.rs",
+            "input/editor.rs",
+            "input/group/button_element.rs",
+            "input/group/tests.rs",
+            "input/group.rs",
+            "input/input.rs",
+            "input/language_config.rs",
+            "input/mod.rs",
+            "input/number_input.rs",
+            "input/otp_input.rs",
+            "input/overlay.rs",
+            "input/popovers/caret_anchored.rs",
+            "input/popovers/code_action_menu.rs",
+            "input/popovers/completion_menu.rs",
+            "input/popovers/diagnostic_popover.rs",
+            "input/popovers/hover_popover.rs",
+            "input/popovers/mod.rs",
+            "input/search.rs",
+            "input/state.rs",
+            "input/syntax_context.rs",
+            "input/textarea.rs",
+            "input/token.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "InputContentType",
+              "path": "input/content_type.rs",
+              "line": 7
+            },
+            {
+              "symbol": "Editor",
+              "path": "input/editor.rs",
+              "line": 18
+            },
+            {
+              "symbol": "InputGroup",
+              "path": "input/group.rs",
+              "line": 36
+            },
+            {
+              "symbol": "InputGroupAddonAlignment",
+              "path": "input/group.rs",
+              "line": 331
+            },
+            {
+              "symbol": "InputGroupAddon",
+              "path": "input/group.rs",
+              "line": 344
+            },
+            {
+              "symbol": "InputGroupInput",
+              "path": "input/group.rs",
+              "line": 449
+            },
+            {
+              "symbol": "InputGroupTextarea",
+              "path": "input/group.rs",
+              "line": 453
+            },
+            {
+              "symbol": "InputGroupControl",
+              "path": "input/group.rs",
+              "line": 456
+            },
+            {
+              "symbol": "InputGroupButton",
+              "path": "input/group.rs",
+              "line": 474
+            },
+            {
+              "symbol": "InputGroupText",
+              "path": "input/group.rs",
+              "line": 681
+            },
+            {
+              "symbol": "Input",
+              "path": "input/input.rs",
+              "line": 111
+            },
+            {
+              "symbol": "Tree",
+              "path": "input/mod.rs",
+              "line": 21
+            },
+            {
+              "symbol": "NumberInput",
+              "path": "input/number_input.rs",
+              "line": 21
+            },
+            {
+              "symbol": "OtpInput",
+              "path": "input/otp_input.rs",
+              "line": 22
+            },
+            {
+              "symbol": "CodeActionMenu",
+              "path": "input/popovers/code_action_menu.rs",
+              "line": 141
+            },
+            {
+              "symbol": "CompletionMenu",
+              "path": "input/popovers/completion_menu.rs",
+              "line": 171
+            },
+            {
+              "symbol": "DiagnosticPopover",
+              "path": "input/popovers/diagnostic_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "HoverPopover",
+              "path": "input/popovers/hover_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "AnyInputState",
+              "path": "input/state.rs",
+              "line": 17
+            },
+            {
+              "symbol": "Textarea",
+              "path": "input/textarea.rs",
+              "line": 14
+            },
+            {
+              "symbol": "InputToken",
+              "path": "input/token.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "highlighter",
+          "presence": "verified_source",
+          "source_files": [
+            "highlighter/diagnostic_styles.rs",
+            "highlighter/highlighter.rs",
+            "highlighter/input_adapter.rs",
+            "highlighter/language_name.rs",
+            "highlighter/languages.rs",
+            "highlighter/mod.rs",
+            "highlighter/registry.rs",
+            "highlighter/wasm_stub.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "SyntaxHighlighter",
+              "path": "highlighter/highlighter.rs",
+              "line": 31
+            },
+            {
+              "symbol": "Language",
+              "path": "highlighter/languages.rs",
+              "line": 6
+            },
+            {
+              "symbol": "LanguageConfig",
+              "path": "highlighter/registry.rs",
+              "line": 63
+            },
+            {
+              "symbol": "GrammarConfig",
+              "path": "highlighter/registry.rs",
+              "line": 73
+            },
+            {
+              "symbol": "SyntaxColors",
+              "path": "highlighter/registry.rs",
+              "line": 116
+            },
+            {
+              "symbol": "FontStyle",
+              "path": "highlighter/registry.rs",
+              "line": 179
+            },
+            {
+              "symbol": "FontWeightContent",
+              "path": "highlighter/registry.rs",
+              "line": 197
+            },
+            {
+              "symbol": "ThemeStyle",
+              "path": "highlighter/registry.rs",
+              "line": 226
+            },
+            {
+              "symbol": "StatusColors",
+              "path": "highlighter/registry.rs",
+              "line": 318
+            },
+            {
+              "symbol": "HighlightThemeStyle",
+              "path": "highlighter/registry.rs",
+              "line": 439
+            },
+            {
+              "symbol": "HighlightTheme",
+              "path": "highlighter/registry.rs",
+              "line": 468
+            },
+            {
+              "symbol": "LanguageParserFactory",
+              "path": "highlighter/registry.rs",
+              "line": 504
+            },
+            {
+              "symbol": "LanguageRegistry",
+              "path": "highlighter/registry.rs",
+              "line": 508
+            },
+            {
+              "symbol": "SyntaxHighlighter",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 11
+            },
+            {
+              "symbol": "Language",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 69
+            },
+            {
+              "symbol": "LanguageConfig",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 95
+            },
+            {
+              "symbol": "GrammarConfig",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 100
+            },
+            {
+              "symbol": "FontStyle",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 120
+            },
+            {
+              "symbol": "FontWeightContent",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 128
+            },
+            {
+              "symbol": "ThemeStyle",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 141
+            },
+            {
+              "symbol": "SyntaxColors",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 173
+            },
+            {
+              "symbol": "StatusColors",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 345
+            },
+            {
+              "symbol": "HighlightThemeStyle",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 412
+            },
+            {
+              "symbol": "HighlightTheme",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 428
+            },
+            {
+              "symbol": "LanguageRegistry",
+              "path": "highlighter/wasm_stub.rs",
+              "line": 462
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Edit fixture code with syntax wrapping undo and IME"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "math",
+      "proposed_rust_types": [
+        "content::MathView"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-9a94b907ed47.css",
+          "needle": "font-family:KaTeX_AMS",
+          "snippet": "stance,1rem);--right-fade:0}}@font-face{font-family:KaTeX_AMS;src:url(./KaTeX_AMS-Regular-5085d14c6356.woff2)format(\"woff2\"),url(./KaTeX_AMS-Regular-cc9bd60e01a9.woff)format(\"woff\"),url(./KaT"
+        }
+      ],
+      "observed_behaviors": [
+        "KaTeX font-family rules and corresponding bundled font assets"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Render fixture math and accessible alternative"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "diagram",
+      "proposed_rust_types": [
+        "content::DiagramView"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/mermaid.core-cf33bb7e5cda.js",
+          "needle": "mermaid version",
+          "snippet": "x`).style(`text-anchor`,`middle`).text(`mermaid version ${r}`)},`draw`)},Ca=Sa,wa={db:{},renderer:Sa,parser:{parse:m(()=>{},`parse`)}},Ta=`flowchart-elk`,Ea={id:Ta,detector:m((e,t={})=>"
+        }
+      ],
+      "observed_behaviors": [
+        "Mermaid runtime with diagram detectors"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Render fixture graph and show invalid-input error"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "a11y",
+      "proposed_rust_types": [
+        "a11y::AccessibleNode"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "forced-colors",
+          "snippet": "ne focus-visible:bg-primary-ghost-hover forced-colors:focus-visible:bg-[Highlight] forced-colors:focus-visible:text-[HighlightText] forced-colors:focus-visible:forced-color-adjust-non"
+        }
+      ],
+      "observed_behaviors": [
+        "Roles labels live-region handling and forced-color focus styles"
+      ],
+      "shared_dependencies": [
+        "platform",
+        "event_dispatch"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Expose Windows UIA role name state and action on demo screens"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "focus",
+      "proposed_rust_types": [
+        "focus::FocusScope"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "RovingFocusGroup",
+          "snippet": "cus`,eje={bubbles:!1,cancelable:!0},vy=`RovingFocusGroup`,[yy,tje,nje]=Qg(vy),[rje,by]=Jg(vy,[nje]),[ije,aje]=rje(vy),oje=my.forwardRef(gy(function(e,t){return(0,hy.jsx)(yy.Provider,{sco"
+        }
+      ],
+      "observed_behaviors": [
+        "Tabbable traversal focus scope and roving-focus group"
+      ],
+      "shared_dependencies": [
+        "platform",
+        "event_dispatch"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Nested overlays restore intended focus and nonmodal content does not trap"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "overlay_foundation",
+      "proposed_rust_types": [
+        "overlay::OverlayHost"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/app-shared-737655e1fb23.js",
+          "needle": "DismissableLayer",
+          "snippet": "DownCapture,C.onPointerDownCapture)})},`DismissableLayer`)),j_(hTe,`useDismissableLayerSurface`),ETe=j_(()=>!0,`IS_TRUE`),j_(gTe,`usePointerDownOutside`),j_(_Te,`useFocusOutside`),j_(vTe"
+        }
+      ],
+      "observed_behaviors": [
+        "Dismissable layer pointer-outside and focus-outside infrastructure"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "popover",
+          "presence": "verified_source",
+          "source_files": [
+            "popover.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Popover",
+              "path": "popover.rs",
+              "line": 108
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "dialog",
+          "presence": "verified_source",
+          "source_files": [
+            "dialog/alert_dialog.rs",
+            "dialog/content.rs",
+            "dialog/description.rs",
+            "dialog/dialog.rs",
+            "dialog/dispatch_anchor.rs",
+            "dialog/entrance.rs",
+            "dialog/footer.rs",
+            "dialog/header.rs",
+            "dialog/mod.rs",
+            "dialog/title.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "AlertDialog",
+              "path": "dialog/alert_dialog.rs",
+              "line": 66
+            },
+            {
+              "symbol": "DialogContent",
+              "path": "dialog/content.rs",
+              "line": 9
+            },
+            {
+              "symbol": "DialogDescription",
+              "path": "dialog/description.rs",
+              "line": 18
+            },
+            {
+              "symbol": "DialogButtonProps",
+              "path": "dialog/dialog.rs",
+              "line": 47
+            },
+            {
+              "symbol": "Dialog",
+              "path": "dialog/dialog.rs",
+              "line": 303
+            },
+            {
+              "symbol": "DialogEntrance",
+              "path": "dialog/entrance.rs",
+              "line": 12
+            },
+            {
+              "symbol": "DialogFooter",
+              "path": "dialog/footer.rs",
+              "line": 23
+            },
+            {
+              "symbol": "DialogFooterButton",
+              "path": "dialog/footer.rs",
+              "line": 61
+            },
+            {
+              "symbol": "DialogClose",
+              "path": "dialog/footer.rs",
+              "line": 71
+            },
+            {
+              "symbol": "DialogAction",
+              "path": "dialog/footer.rs",
+              "line": 104
+            },
+            {
+              "symbol": "DialogHeader",
+              "path": "dialog/header.rs",
+              "line": 17
+            },
+            {
+              "symbol": "DialogTitle",
+              "path": "dialog/title.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Nested layers dismiss correctly without click-through"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "input_foundation",
+      "proposed_rust_types": [
+        "input::Shortcut"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/command-menu-dialog-e1ab846c2043.js",
+          "needle": "allowWithinEditable",
+          "snippet": "||t[16]!==p?(m={accelerator:n,enabled:i,allowWithinEditable:f,onKeyDown:p},t[13]=n,t[14]=i,t[15]=f,t[16]=p,t[17]=m):m=t[17],Yr(m),null}var ka,Aa,ja;function Ma(){return(Ma=e((()=>{ka=R(),ci"
+        }
+      ],
+      "observed_behaviors": [
+        "Shortcut accelerators with editable-control dispatch policy"
+      ],
+      "shared_dependencies": [
+        "platform",
+        "event_dispatch"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "kbd",
+          "presence": "verified_source",
+          "source_files": [
+            "kbd.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Kbd",
+              "path": "kbd.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "input",
+          "presence": "verified_source",
+          "source_files": [
+            "input/clear_button.rs",
+            "input/content_type.rs",
+            "input/editor.rs",
+            "input/group/button_element.rs",
+            "input/group/tests.rs",
+            "input/group.rs",
+            "input/input.rs",
+            "input/language_config.rs",
+            "input/mod.rs",
+            "input/number_input.rs",
+            "input/otp_input.rs",
+            "input/overlay.rs",
+            "input/popovers/caret_anchored.rs",
+            "input/popovers/code_action_menu.rs",
+            "input/popovers/completion_menu.rs",
+            "input/popovers/diagnostic_popover.rs",
+            "input/popovers/hover_popover.rs",
+            "input/popovers/mod.rs",
+            "input/search.rs",
+            "input/state.rs",
+            "input/syntax_context.rs",
+            "input/textarea.rs",
+            "input/token.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "InputContentType",
+              "path": "input/content_type.rs",
+              "line": 7
+            },
+            {
+              "symbol": "Editor",
+              "path": "input/editor.rs",
+              "line": 18
+            },
+            {
+              "symbol": "InputGroup",
+              "path": "input/group.rs",
+              "line": 36
+            },
+            {
+              "symbol": "InputGroupAddonAlignment",
+              "path": "input/group.rs",
+              "line": 331
+            },
+            {
+              "symbol": "InputGroupAddon",
+              "path": "input/group.rs",
+              "line": 344
+            },
+            {
+              "symbol": "InputGroupInput",
+              "path": "input/group.rs",
+              "line": 449
+            },
+            {
+              "symbol": "InputGroupTextarea",
+              "path": "input/group.rs",
+              "line": 453
+            },
+            {
+              "symbol": "InputGroupControl",
+              "path": "input/group.rs",
+              "line": 456
+            },
+            {
+              "symbol": "InputGroupButton",
+              "path": "input/group.rs",
+              "line": 474
+            },
+            {
+              "symbol": "InputGroupText",
+              "path": "input/group.rs",
+              "line": 681
+            },
+            {
+              "symbol": "Input",
+              "path": "input/input.rs",
+              "line": 111
+            },
+            {
+              "symbol": "Tree",
+              "path": "input/mod.rs",
+              "line": 21
+            },
+            {
+              "symbol": "NumberInput",
+              "path": "input/number_input.rs",
+              "line": 21
+            },
+            {
+              "symbol": "OtpInput",
+              "path": "input/otp_input.rs",
+              "line": 22
+            },
+            {
+              "symbol": "CodeActionMenu",
+              "path": "input/popovers/code_action_menu.rs",
+              "line": 141
+            },
+            {
+              "symbol": "CompletionMenu",
+              "path": "input/popovers/completion_menu.rs",
+              "line": 171
+            },
+            {
+              "symbol": "DiagnosticPopover",
+              "path": "input/popovers/diagnostic_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "HoverPopover",
+              "path": "input/popovers/hover_popover.rs",
+              "line": 15
+            },
+            {
+              "symbol": "AnyInputState",
+              "path": "input/state.rs",
+              "line": 17
+            },
+            {
+              "symbol": "Textarea",
+              "path": "input/textarea.rs",
+              "line": 14
+            },
+            {
+              "symbol": "InputToken",
+              "path": "input/token.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Shortcut dispatch respects editable controls"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "layout_foundation",
+      "proposed_rust_types": [
+        "layout::Constraints"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/split-view-194f08a5d0cd.js",
+          "needle": "aria-valuemax",
+          "snippet": "andle`}),\"aria-orientation\":`vertical`,\"aria-valuemax\":le(N,S,C),\"aria-valuemin\":Math.min(S,N),\"aria-valuenow\":ue(N*Ae,N,S,C),className:c(`group absolute inset-y-0 z-20 select-none to"
+        }
+      ],
+      "observed_behaviors": [
+        "Panel size constraints and separator value calculations"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "resizable",
+          "presence": "verified_source",
+          "source_files": [
+            "resizable.rs"
+          ],
+          "public_declarations": [],
+          "behavioral_parity": "unverified"
+        },
+        {
+          "module_candidate": "scroll",
+          "presence": "verified_source",
+          "source_files": [
+            "scroll/mod.rs",
+            "scroll/scrollable.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ScrollableElement",
+              "path": "scroll/scrollable.rs",
+              "line": 16
+            },
+            {
+              "symbol": "Scrollable",
+              "path": "scroll/scrollable.rs",
+              "line": 67
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Tiny/large window resize never yields negative constraints"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "form_foundation",
+      "proposed_rust_types": [
+        "forms::FieldState"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/dialog-fields-70f615b1d3e5.js",
+          "needle": "aria-invalid",
+          "snippet": "l`,\"aria-label\":l,\"aria-describedby\":U,\"aria-invalid\":c,disabled:C,onBlur:W,onChange:G,leadingControl:K,trailingControl:J})}),t[34]=l,t[35]=C,t[36]=B,t[37]=c,t[38]=n,t[39]=s,t[40]=J,"
+        }
+      ],
+      "observed_behaviors": [
+        "Invalid/error description disabled and decimal field state"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "form",
+          "presence": "verified_source",
+          "source_files": [
+            "form/field.rs",
+            "form/form.rs",
+            "form/mod.rs",
+            "form/tests.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "FieldBuilder",
+              "path": "form/field.rs",
+              "line": 33
+            },
+            {
+              "symbol": "Field",
+              "path": "form/field.rs",
+              "line": 81
+            },
+            {
+              "symbol": "Form",
+              "path": "form/form.rs",
+              "line": 14
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Show linked validation error without discarding partial input"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    },
+    {
+      "id": "i18n",
+      "proposed_rust_types": [
+        "i18n::MessageCatalog"
+      ],
+      "evidence_level": "content_confirmed",
+      "sources": [
+        {
+          "path": "webview/assets/DatePicker-2e79bee347a2.js",
+          "needle": "toLocaleString",
+          "snippet": "valid, reason: ${this.invalidReason} }`}toLocaleString(e=fe,t={}){return this.isValid?sr.create(this.s.loc.clone(t),e).formatInterval(this):Ti}toISO(e){return this.isValid?`${this.s.to"
+        }
+      ],
+      "observed_behaviors": [
+        "Locale date formatting and message-catalog patterns"
+      ],
+      "shared_dependencies": [
+        "theme",
+        "focus",
+        "a11y",
+        "input",
+        "layout"
+      ],
+      "gpui_component_0_7_3": [],
+      "acceptance_tests": [
+        "Change demo locale while preserving stored date value"
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Complete original interaction contract and Windows parity remain unverified.",
+        "Source declarations are not proof of native behavior; validate reexports and integration."
+      ]
+    }
+  ],
+  "unconfirmed_candidates": [
+    {
+      "id": "accordion",
+      "proposed_rust_types": [
+        "components::Accordion"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/collapsible-user-message-content-d721b2c2952d.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "accordion",
+          "presence": "verified_source",
+          "source_files": [
+            "accordion.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Accordion",
+              "path": "accordion.rs",
+              "line": 18
+            },
+            {
+              "symbol": "AccordionItem",
+              "path": "accordion.rs",
+              "line": 161
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "collapsible",
+      "proposed_rust_types": [
+        "components::Collapsible"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/collapsible-user-message-content-d721b2c2952d.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "collapsible",
+          "presence": "verified_source",
+          "source_files": [
+            "collapsible.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Collapsible",
+              "path": "collapsible.rs",
+              "line": 11
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "scroll_area",
+      "proposed_rust_types": [
+        "components::ScrollArea"
+      ],
+      "evidence_level": "inferred",
+      "sources": [],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "scroll",
+          "presence": "verified_source",
+          "source_files": [
+            "scroll/mod.rs",
+            "scroll/scrollable.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "ScrollableElement",
+              "path": "scroll/scrollable.rs",
+              "line": 16
+            },
+            {
+              "symbol": "Scrollable",
+              "path": "scroll/scrollable.rs",
+              "line": 67
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "pagination",
+      "proposed_rust_types": [
+        "components::Pagination"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/plugin-listings-pagination-f51408b9ca41.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "pagination",
+          "presence": "verified_source",
+          "source_files": [
+            "pagination.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Pagination",
+              "path": "pagination.rs",
+              "line": 39
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "avatar",
+      "proposed_rust_types": [
+        "components::Avatar"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/avatar-345a4768b0bd.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "avatar",
+          "presence": "verified_source",
+          "source_files": [
+            "avatar/avatar.rs",
+            "avatar/avatar_group.rs",
+            "avatar/mod.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Avatar",
+              "path": "avatar/avatar.rs",
+              "line": 17
+            },
+            {
+              "symbol": "AvatarGroup",
+              "path": "avatar/avatar_group.rs",
+              "line": 10
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "badge",
+      "proposed_rust_types": [
+        "components::Badge"
+      ],
+      "evidence_level": "inferred",
+      "sources": [],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "badge",
+          "presence": "verified_source",
+          "source_files": [
+            "badge.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Badge",
+              "path": "badge.rs",
+              "line": 31
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "progress",
+      "proposed_rust_types": [
+        "components::Progress"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/progress-d440a7a9d021.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "progress",
+          "presence": "verified_source",
+          "source_files": [
+            "progress/mod.rs",
+            "progress/progress.rs",
+            "progress/progress_circle.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Progress",
+              "path": "progress/progress.rs",
+              "line": 14
+            },
+            {
+              "symbol": "ProgressCircle",
+              "path": "progress/progress_circle.rs",
+              "line": 17
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "spinner",
+      "proposed_rust_types": [
+        "components::Spinner"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/authenticated-chatgpt-webview-spinner-d94616d0602a.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "spinner",
+          "presence": "verified_source",
+          "source_files": [
+            "spinner.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Spinner",
+              "path": "spinner.rs",
+              "line": 10
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "file_upload",
+      "proposed_rust_types": [
+        "components::FileUpload"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/chatgpt-file-upload-2c230038b763.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "attachment",
+          "presence": "verified_source",
+          "source_files": [
+            "attachment.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "AttachmentStatus",
+              "path": "attachment.rs",
+              "line": 30
+            },
+            {
+              "symbol": "Attachment",
+              "path": "attachment.rs",
+              "line": 213
+            },
+            {
+              "symbol": "AttachmentMedia",
+              "path": "attachment.rs",
+              "line": 647
+            },
+            {
+              "symbol": "AttachmentContent",
+              "path": "attachment.rs",
+              "line": 889
+            },
+            {
+              "symbol": "AttachmentTitle",
+              "path": "attachment.rs",
+              "line": 1041
+            },
+            {
+              "symbol": "AttachmentDescription",
+              "path": "attachment.rs",
+              "line": 1104
+            },
+            {
+              "symbol": "AttachmentActions",
+              "path": "attachment.rs",
+              "line": 1162
+            },
+            {
+              "symbol": "AttachmentGroup",
+              "path": "attachment.rs",
+              "line": 1237
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    },
+    {
+      "id": "empty_state",
+      "proposed_rust_types": [
+        "components::EmptyState"
+      ],
+      "evidence_level": "name_only",
+      "sources": [
+        {
+          "path": "webview/assets/space-empty-state-3ac08c16929c.js"
+        }
+      ],
+      "observed_behaviors": [],
+      "shared_dependencies": [
+        "theme",
+        "a11y"
+      ],
+      "gpui_component_0_7_3": [
+        {
+          "module_candidate": "empty",
+          "presence": "verified_source",
+          "source_files": [
+            "empty.rs"
+          ],
+          "public_declarations": [
+            {
+              "symbol": "Empty",
+              "path": "empty.rs",
+              "line": 14
+            },
+            {
+              "symbol": "EmptyHeader",
+              "path": "empty.rs",
+              "line": 89
+            },
+            {
+              "symbol": "EmptyMediaVariant",
+              "path": "empty.rs",
+              "line": 157
+            },
+            {
+              "symbol": "EmptyMedia",
+              "path": "empty.rs",
+              "line": 167
+            },
+            {
+              "symbol": "EmptyTitle",
+              "path": "empty.rs",
+              "line": 231
+            },
+            {
+              "symbol": "EmptyDescription",
+              "path": "empty.rs",
+              "line": 279
+            },
+            {
+              "symbol": "EmptyContent",
+              "path": "empty.rs",
+              "line": 328
+            }
+          ],
+          "behavioral_parity": "unverified"
+        }
+      ],
+      "acceptance_tests": [
+        "Inspect original behavior contract then exercise state/actions with local fixture data."
+      ],
+      "acceptance_test_status": "not_run",
+      "native_status": "not_implemented",
+      "unknowns": [
+        "Filename or analogy does not establish generic original component behavior."
+      ]
+    }
+  ]
+}

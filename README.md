@@ -35,3 +35,6 @@ Se identificó mediante Get-StartApps y AppxManifest.xml, no por una suposición
 Esto contiene el **frontend de producción empaquetado**, con código minificado y recursos. No es el repositorio TSX original: no hay source maps en esta copia.
 El informe cubre las áreas principales; la extracción e inventario cubren todos los archivos del ASAR, pero eso no prueba todas las funciones habilitadas ni su funcionamiento en vivo.
 No se ejecutó la aplicación extraída ni se accedió a los datos de la cuenta.
+
+## App nativa Windows
+[Workspace Rust y guía de ejecución](native/README.md). La extracción completa se conserva en la raíz original C:\Users\PC\Repositories\chatgpt-rea; no se duplica dentro de este worktree.

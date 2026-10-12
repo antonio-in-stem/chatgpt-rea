@@ -1,0 +1,11 @@
+[package]
+name = "native-tools"
+version.workspace = true
+edition.workspace = true
+[dependencies]
+gpui-kit = "=0.7.3"
+
+chrono = "0.4"
+
+[features]
+ui-tests = ["gpui-kit/test-support"]

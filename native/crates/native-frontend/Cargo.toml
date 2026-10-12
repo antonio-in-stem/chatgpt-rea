@@ -1,0 +1,11 @@
+[package]
+name = "native-frontend"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+gpui-kit = "=0.7.3"
+native-core = { path = "../native-core" }
+native-rich = { path = "../native-rich" }
+native-settings = { path = "../native-settings" }
+native-tools = { path = "../native-tools" }

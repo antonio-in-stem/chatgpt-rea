@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "total_source_entries": 20988,
+  "indexed_entries": 20988,
+  "content_referenced_source_files": 102,
+  "resource_classes": {
+    "electron_host": 34,
+    "native_menu_locale": 64,
+    "packaged_dependency": 770,
+    "data_or_fixture": 883,
+    "visual_asset": 4000,
+    "javascript_module": 11508,
+    "stylesheet": 317,
+    "web_engine_binary": 33,
+    "font": 67,
+    "media_asset": 28,
+    "icon_module": 3274,
+    "web_entry": 3,
+    "other_packaged_resource": 7
+  },
+  "coverage_statement": "Every source entry is indexed. Inventory classification is not a complete semantic migration or native behavior verification.",
+  "source_sha256_manifest": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\reports\\inventory.json",
+  "missing_evidence_paths": []
+}

@@ -1,0 +1,12 @@
+[package]
+name = "native-settings"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+gpui-kit = "=0.7.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[features]
+ui-tests = ["gpui-kit/test-support"]
