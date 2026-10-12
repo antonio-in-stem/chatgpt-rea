@@ -70,3 +70,8 @@ Recovered app-initial lines225466,225506–225552 define min-w-0/flex-1 title co
 The previous global take(30) wrongly clipped project children before grouping. Each project now selects its own unpinned children from the complete local catalog. Recents starts at10; project children start at5; expansion adds10 independently and survives group collapse/reopen during the session. Pinned chats are not consumed by the recents page.
 Source: app-initial426580 recents maxItems10;422897 grouped thread maxItems=uxs;424285 uxs=5;377988 g1o forwards to kPo;352050–352420 kPo owns per-list expansion and10-item increment on the non-bounded branch. Local data has no backend paging.
 Remaining: forced-visible active item, one-item tail handling, persisted expansion, bounded/infinite paging branches, list animations, sections/reorder and complete original row actions. These are not claimed complete.
+
+
+## Active-row visibility and one-row tail
+Recovered kPo at352158–352172 takes the initial page, appends the forced-visible key if outside it, then renders the complete list in original order when exactly one row remains and hasMore=false. The native fully loaded local catalog now implements this shared rule for recents and project children. Selection does not mutate page expansion. Show more depends on actual visible rows. This supersedes the prior checkpoint's forced-row and one-tail gaps.
+52 native-workspace tests pass, including active-row navigation beyond a5-row project page and boundary cases for a single remaining row. Persisted expansion, source-specific active-key gates outside the chat route, remote loading, sections/reorder and full row actions remain incomplete.

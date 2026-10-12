@@ -200,3 +200,56 @@ fn sidebar_project_pages_are_independent_of_recents_and_each_other(cx: &mut Test
         assert!(window.try_find(("nav",142usize)).is_none());
     }).unwrap();
 }
+
+#[test]
+fn sidebar_page_selection_keeps_active_and_absorbs_single_tail_in_source_order() {
+    use super::sidebar_visible_indices as select;
+    assert_eq!(select(0,5,None),Vec::<usize>::new());
+    assert_eq!(select(6,5,None),vec![0,1,2,3,4,5]);
+    assert_eq!(select(7,5,None),vec![0,1,2,3,4]);
+    assert_eq!(select(7,5,Some(6)),vec![0,1,2,3,4,5,6]);
+    assert_eq!(select(8,5,Some(7)),vec![0,1,2,3,4,7]);
+    assert_eq!(select(8,5,Some(2)),vec![0,1,2,3,4]);
+    assert_eq!(select(8,5,Some(9)),vec![0,1,2,3,4]);
+}
+#[gpui_kit::test]
+fn sidebar_reveals_active_chat_without_expanding_every_group(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage,1280.);
+    cx.update_window(handle,|_,window,cx| {
+        let ids=app.update(cx,|s,cx| {
+            s.workspace.conversations.clear();
+            let project=s.workspace.projects[0].id.clone();
+            let mut ids=Vec::new();
+            for i in 0..8 {
+                let id=s.workspace.create_conversation();
+                s.workspace.append_message(&id,native_core::MessageRole::User,&format!("Project chat {i}")).unwrap();
+                s.workspace.assign_project(&id,Some(&project)).unwrap();
+                ids.push(id);
+            }
+            s.switch_chat(ids[7].clone(),window,cx);
+            cx.notify();
+            ids
+        });
+        window.render_frame(cx);
+        assert!(window.try_find(("nav",107usize)).is_some());
+        assert!(window.try_find(("nav",105usize)).is_none());
+        assert!(window.try_find(("sidebar-project-more",0usize)).is_some());
+        window.click(("nav",100usize),cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).active,ids[0]);
+        assert!(window.try_find(("nav",107usize)).is_none());
+        assert!(app.read(cx).sidebar_project_limits.is_empty());
+        // Seven rows plus an active row outside the first five leave only one
+        // hidden row: render all seven in original order and omit Show more.
+        app.update(cx,|s,cx| {
+            s.workspace.conversations.remove(5);
+            s.switch_chat(ids[7].clone(),window,cx);
+            cx.notify();
+        });
+        window.render_frame(cx);
+        assert!(window.try_find(("nav",105usize)).is_some());
+        assert!(window.try_find(("nav",106usize)).is_some());
+        assert!(window.try_find(("sidebar-project-more",0usize)).is_none());
+    }).unwrap();
+}

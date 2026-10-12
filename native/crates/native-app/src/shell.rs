@@ -7,6 +7,16 @@ use gpui_kit::component::button::{Button, ButtonVariants};
 fn clamp_sidebar_width(width: Pixels, viewport: Pixels) -> Pixels {
     width.min(px(520.)).min(viewport - px(240.)).max(px(290.))
 }
+// Recovered kPo: retain the active row after the page, then absorb a single
+// remaining local row. Remote hasMore is absent for this fully loaded catalog.
+fn sidebar_visible_indices(count: usize, limit: usize, active: Option<usize>) -> Vec<usize> {
+    let mut indices=(0..count.min(limit)).collect::<Vec<_>>();
+    if let Some(index)=active.filter(|index| *index>=limit && *index<count) {
+        indices.push(index);
+    }
+    if count-indices.len()==1 { return (0..count).collect(); }
+    indices
+}
 impl WorkspaceApp {
     fn open_shell_menu(&mut self, dialog: Dialog, window: &mut Window, cx: &mut Context<Self>) {
         if self.dialog.is_none() {
@@ -349,11 +359,12 @@ impl WorkspaceApp {
         for pinned in [true, false] {
             let rows = all_chats.iter().filter(|(_, c)| c.pinned == pinned && (pinned || c.project_id.is_none())).collect::<Vec<_>>();
             if !rows.is_empty() { recents = recents.child(section(if pinned { "Pinned" } else { "Chats" })); }
-            for (i, chat) in rows.iter().take(if pinned { usize::MAX } else { self.recent_limit }) {
+            let visible=sidebar_visible_indices(rows.len(),if pinned { usize::MAX } else { self.recent_limit },rows.iter().position(|(_,chat)|chat.id==self.active));
+            for (i, chat) in visible.iter().map(|index|rows[*index]) {
                 recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
                     Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx));
             }
-            if !pinned && rows.len() > self.recent_limit {
+            if !pinned && rows.len() > visible.len() {
                 recents = recents.child(self.nav("Show more", 901, Action::ShowMoreChats, false, cx));
             }
         }
@@ -376,11 +387,12 @@ impl WorkspaceApp {
             if !collapsed {
                 let rows = all_chats.iter().filter(|(_, c)| !c.pinned && c.project_id.as_deref() == Some(project.id.as_str())).collect::<Vec<_>>();
                 let limit = self.sidebar_project_limits.get(&project.id).copied().unwrap_or(5);
-                for (i, chat) in rows.iter().take(limit) {
+                let visible=sidebar_visible_indices(rows.len(),limit,rows.iter().position(|(_,chat)|chat.id==self.active));
+                for (i, chat) in visible.iter().map(|index|rows[*index]) {
                     recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
                         Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx).pl(px(32.)));
                 }
-                if rows.len() > limit {
+                if rows.len() > visible.len() {
                     let project_id = project.id.clone();
                     recents = recents.child(Button::new(("sidebar-project-more", index)).ghost()
                         .w_full().h(px(30.)).pl(px(32.)).pr(px(8.)).rounded(px(10.))

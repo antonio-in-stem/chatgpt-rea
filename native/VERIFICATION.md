@@ -229,3 +229,6 @@ The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previ
 
 ## 2026-10-12 independent sidebar lists
 Existing49 workspace tests pass after pagination changes. New independent-pages UI test passes separately (50 total defined). It checks30 ungrouped chats and two7-chat projects, per-project expansion, collapse/reopen retention and real chat activation. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56245760, 'sha256': '40cb0ef3b630057aa73a47201deeba2f0f147565698209c4fdcd550f9188dc5e'}
+
+## 2026-10-12 active sidebar row
+52 workspace tests passed. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56248832, 'sha256': 'a9e91d18c503e562b402d9877f98ecc1e1eedbf24416d6b10621790e62902fa6'}. Source kPo visibility semantics verified statically; full visual parity remains incomplete.
