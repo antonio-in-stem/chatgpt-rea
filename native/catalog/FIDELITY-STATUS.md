@@ -37,3 +37,7 @@ Personal Share now has local async create/copy/update, busy dismissal lock, bloc
 Projects now retain independent manual expansion for multiple rows. Child-title search forces only matching rows open and filters their child list, preserving manual state when cleared. Name-only matches stay collapsed unless manually expanded. Sorting, sticky layout and project-detail route remain unfinished.
 
 Project Name/Updated headers now toggle source default directions, reorder rows and retain expansion. Updated uses persisted local modification timestamps; legacy files preserve missing dates and use the source fallback. The source sort arrow is embedded. NLS collation is a Windows approximation to Intl.Collator and remains an explicit fidelity gap.
+
+## Current priority: supplied Windows shell screenshot
+
+See SHELL-REFERENCE.md. Native rail/contextual sidebar/frame are now separated; source SVGs and screenshot-calibrated shell geometry are implemented. Sidebar project groups collapse and retain navigation; full original rail/sidebar/canvas/composer behavior remains incomplete. Source default and screenshot measurements differ; do not mark this exact.

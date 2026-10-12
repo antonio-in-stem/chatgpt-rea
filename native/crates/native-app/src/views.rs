@@ -367,42 +367,48 @@ impl WorkspaceApp {
             )
             .into_any_element()
     }
-    fn projects_view(&self, cx: &mut Context<Self>) -> AnyElement {
+    fn projects_view(&self, window: &Window, cx: &mut Context<Self>) -> AnyElement {
         use gpui_kit::component::button::{Button, ButtonVariants};
         let colors = cx.theme().colors.clone();
-        let mut content = div().w_full().max_w(px(1440.)).mx_auto().flex().flex_col();
+        let gutter = if window.viewport_size().width >= px(1024.) { 48. } else { 24. };
+        let scroll = (-f32::from(self.projects_scroll.offset().y)).max(0.);
+        // QJa / _shell_bomwa_2: empty navigation sticks at -16px;
+        // the page-surface variant disables the legacy title translation.
+        let title_shift = 0.; // data-new-slate-layout keeps the title in the sticky row.
+        let header = div()
+            .id("projects-sticky-header").test_support()
+            .absolute().top(px(-scroll.min(16.))).left_0().right_0()
+            .h(px(77.)).pt(px(16.))
+            .bg(colors.background)
+            .border_b_1().border_color(if scroll > 0. { colors.border } else { colors.background })
+            .occlude()
+            .on_scroll_wheel(cx.listener(|s, event: &ScrollWheelEvent, _, cx| {
+                let mut offset = s.projects_scroll.offset();
+                offset.y = (offset.y + event.delta.pixel_delta(px(20.)).y)
+                    .clamp(-s.projects_scroll.max_offset().y, px(0.));
+                s.projects_scroll.set_offset(offset);
+                cx.stop_propagation();
+                cx.notify();
+            }))
+            .child(div().w_full().max_w(px(1440.)).mx_auto().px(px(gutter))
+                .h(px(60.)).flex().items_center().justify_between().gap(px(16.))
+                .child(div().h(px(60.)).min_w_0().overflow_hidden().flex_1()
+                    .child(div().id("projects-heading").relative().top(px(12. - title_shift))
+                        .h(px(36.)).flex().items_center()
+                        .text_size(native_ui::typography::TextRole::HeadingLarge.in_app(cx))
+                        .font_weight(FontWeight::MEDIUM).child("Projects")))
+                .child(div().flex().items_center().gap(px(12.))
+                    .child(div().w(px(240.)).child(Input::new(&self.project_search)))
+                    .child(Button::new(("app-btn", 300usize)).primary()
+                        .label(if self.workspace.projects.is_empty() { "New project" } else { "Create" })
+                        .on_click(cx.listener(|s, _, w, cx| s.act(Action::NewProject, w, cx))))));
+        let mut content = div().w_full().max_w(px(1440.)).mx_auto().px(px(gutter))
+            .flex().flex_col().child(div().h(px(77.)).flex_shrink_0());
         let query = self.project_search.read(cx).value().trim().to_lowercase();
         content = content.child(
             div()
-                .h(px(76.))
-                .flex()
-                .items_center()
-                .justify_between()
-                .gap(px(16.))
-                .child(
-                    div()
-                        .text_size(native_ui::typography::TextRole::HeadingLarge.in_app(cx))
-                        .font_weight(FontWeight::MEDIUM)
-                        .child("Projects"),
-                )
-                .child(
-                    div()
-                        .flex()
-                        .items_center()
-                        .gap(px(8.))
-                        .child(div().w(px(220.)).child(Input::new(&self.project_search)))
-                        .child(
-                            Button::new(("app-btn", 300usize))
-                                .label("New project")
-                                .on_click(
-                                    cx.listener(|s, _, w, cx| s.act(Action::NewProject, w, cx)),
-                                ),
-                        ),
-                ),
-        );
-        content = content.child(
-            div()
-                .h(px(36.))
+                .id("projects-table-heading").test_support()
+                .h(px(40.)).flex_shrink_0()
                 .flex()
                 .items_center()
                 .gap(px(16.))
@@ -619,12 +625,11 @@ impl WorkspaceApp {
                     }),
             );
         }
-        div()
-            .id("projects-index")
-            .size_full()
-            .overflow_y_scroll()
-            .px(px(20.))
-            .child(content)
+        div().id("projects-index").size_full().relative().overflow_hidden()
+            .on_scroll_wheel(cx.listener(|_, _, _, cx| cx.notify()))
+            .child(div().id("projects-scroll").test_support().size_full().overflow_y_scroll()
+                .track_scroll(&self.projects_scroll).child(content))
+            .child(header)
             .into_any_element()
     }
     fn library_columns(width: f32) -> u16 {
@@ -1001,9 +1006,9 @@ impl WorkspaceApp {
                 window.viewport_size().width,
             ))
         } else {
-            0.
+            48. // The destination rail stays visible when the contextual sidebar is hidden.
         };
-        let available = (f32::from(window.viewport_size().width) - sidebar - 40.).max(64.);
+        let available = (f32::from(window.viewport_size().width) - sidebar - 8. - 40.).max(64.);
         let columns = Self::library_columns(available);
         let gap = if f32::from(window.viewport_size().width) >= 640. {
             16.

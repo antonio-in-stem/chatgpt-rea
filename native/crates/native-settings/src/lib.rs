@@ -515,6 +515,9 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
     // Mapping them onto native roles is an approximation, not an exact original theme.
     // Theme::update reconciles legacy colors into semantic tokens and refreshes windows.
     Theme::update(cx, |theme| {
+        // Shipped Windows font stacks: app-shared CSS3643/3646.
+        theme.font_family = "Segoe UI".into();
+        theme.mono_font_family = "Consolas".into();
         theme.font_size = px(config.font_size as f32);
         theme.mono_font_size = px(config.code_font_size as f32);
         let dark = config.theme == "Dark";

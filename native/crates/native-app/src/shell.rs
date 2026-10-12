@@ -1,11 +1,11 @@
 // Source constraints: catalog/VISUAL-REFERENCE.md. Electron toolbar 46px,
-// sidebar default 340px (240..520), rows 30px with 10px corners.
+// Combined rail/sidebar default340px (290..520), rows30px with10px corners.
 use gpui_kit::base::TestSupportExt;
 use gpui_kit::component::button::{Button, ButtonVariants};
 
-// Matches shipped dC: the minimum wins when the viewport is narrower than480px.
+// Page-surface mode: source minimum combined rail/sidebar width is290px.
 fn clamp_sidebar_width(width: Pixels, viewport: Pixels) -> Pixels {
-    width.min(px(520.)).min(viewport - px(240.)).max(px(240.))
+    width.min(px(520.)).min(viewport - px(240.)).max(px(290.))
 }
 impl WorkspaceApp {
     fn open_shell_menu(&mut self, dialog: Dialog, window: &mut Window, cx: &mut Context<Self>) {
@@ -180,7 +180,7 @@ impl WorkspaceApp {
     ) -> Button {
         self.row_button(Some(name), label, key, action, selected, cx)
     }
-    fn sidebar_view(&self, window: &Window, cx: &mut Context<Self>) -> impl IntoElement {
+    fn rail_view(&self, cx: &mut Context<Self>) -> AnyElement {
         let display_name = self
             .settings
             .read(cx)
@@ -199,10 +199,80 @@ impl WorkspaceApp {
             .unwrap_or('U')
             .to_uppercase()
             .to_string();
-        let width = clamp_sidebar_width(
+        let mut rail = div().id("navigation-rail").test_support()
+            .w(px(48.)).h_full().flex_shrink_0().px(px(6.)).py(px(8.))
+            .flex().flex_col().items_center().gap(px(8.));
+        for (id, icon, label, route) in [
+            (4usize, "rail-home", "Home", Route::Chat),
+            (3, "library", "Library", Route::Library),
+            (5, "scheduled", "Scheduled", Route::Tool(0)),
+            (6, "rail-apps", "Apps", Route::Tool(1)),
+            (2, "projects", "Projects", Route::Projects),
+        ] {
+            rail = rail.child(Button::new(("nav", id)).ghost().size(px(36.)).p_0()
+                .rounded(px(10.)).tooltip(label).accessibility_label(label)
+                .when(self.route == route, |b| b.bg(cx.theme().colors.secondary))
+                .child(native_ui::icon(if icon == "rail-home" && self.route == route { "rail-home-selected" } else { icon }, 20.).text_color(if self.route == route {
+                    cx.theme().colors.foreground
+                } else { cx.theme().colors.muted_foreground }))
+                .on_click(cx.listener(move |s, _, w, cx| s.act(Action::Route(route), w, cx))));
+        }
+        rail = rail.child(div().flex_1()).child(
+                div()
+                    .id("profile-menu")
+                    .aria_label("Profile and settings")
+                    .test_support()
+                    .track_focus(&self.shell_trigger_focus[1])
+                    .flex()
+                    .items_center()
+                    .tab_stop(true)
+                    .role(Role::Button)
+                    .hover(|s| s.bg(cx.theme().colors.secondary))
+                    .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
+                        if matches!(event.keystroke.key.as_str(), "enter" | "space") {
+                            this.act(Action::AccountMenu, window, cx);
+                            cx.stop_propagation();
+                        }
+                    }))
+                    .w(px(36.))
+                    .h(px(36.))
+                    .p_0()
+                    .rounded(px(10.))
+                    .justify_center()
+                    .child(
+                        div()
+                            .w_full()
+                            .flex()
+                            .items_center()
+                            .justify_center()
+                            .child(
+                                div()
+                                    .size(px(28.))
+                                    .rounded_full()
+                                    .bg(rgb(0x416d58))
+                                    .text_color(rgb(0xffffff))
+                                    .flex()
+                                    .items_center()
+                                    .justify_center()
+                                    .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
+                                    .child(profile_initial),
+                            )
+                            ,
+                    )
+                    .on_click(
+                        cx.listener(|this, _, window, cx| {
+                            this.act(Action::AccountMenu, window, cx)
+                        }),
+                    ),
+        );
+        rail.into_any_element()
+    }
+    fn sidebar_view(&self, window: &Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let combined_width = clamp_sidebar_width(
             px(self.workspace.settings.sidebar_width as f32),
             window.viewport_size().width,
         );
+        let width = combined_width - px(48.);
         let header = div()
             .h(px(32.))
             .mx(px(8.))
@@ -256,42 +326,7 @@ impl WorkspaceApp {
                     .child(self.shell_icon("search", "Search chats", 709, Action::Search, cx))
                     .child(self.shell_icon("sidebar", "Close sidebar", 700, Action::Sidebar, cx)),
             );
-        let mut recents = div()
-            .id("recents")
-            .track_scroll(&self.recents_scroll)
-            .flex_1()
-            .min_h_0()
-            .overflow_y_scroll()
-            .flex()
-            .flex_col()
-            .gap(px(2.))
-            .mt(px(16.));
-        // Destination visibility/order is fixture state; each original destination is feature gated.
-        recents = recents
-            .child(self.sidebar_row(
-                "projects",
-                "Projects",
-                2,
-                Action::Route(Route::Projects),
-                self.route == Route::Projects,
-                cx,
-            ))
-            .child(self.sidebar_row(
-                "library",
-                "Library",
-                3,
-                Action::Route(Route::Library),
-                self.route == Route::Library,
-                cx,
-            ));
-        recents = recents.child(self.sidebar_row(
-            "scheduled",
-            "Scheduled",
-            5,
-            Action::Route(Route::Tool(0)),
-            self.route == Route::Tool(0),
-            cx,
-        ));
+        let mut recents = div().w_full().flex().flex_col().gap(px(2.));
         let muted = cx.theme().colors.muted_foreground;
         let caption_size = native_ui::typography::TextRole::Caption.in_app(cx);
         let section = |label: &'static str| {
@@ -310,30 +345,48 @@ impl WorkspaceApp {
             .filter(|c| !c.archived && !c.messages.is_empty())
             .collect::<Vec<_>>();
         chats.sort_by_key(|c| !c.pinned);
-        let mut last_pinned = None;
-        for (i, chat) in chats.iter().take(self.recent_limit).enumerate() {
-            if last_pinned != Some(chat.pinned) {
-                recents = recents.child(section(if chat.pinned { "Pinned" } else { "Chats" }));
-                last_pinned = Some(chat.pinned);
+        let visible_chats = chats.iter().take(self.recent_limit).enumerate().collect::<Vec<_>>();
+        for pinned in [true, false] {
+            let rows = visible_chats.iter().filter(|(_, c)| c.pinned == pinned && (pinned || c.project_id.is_none())).collect::<Vec<_>>();
+            if !rows.is_empty() { recents = recents.child(section(if pinned { "Pinned" } else { "Chats" })); }
+            for (i, chat) in rows {
+                recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
+                    Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx));
             }
-            recents = recents.child(self.nav(
-                chat.title.clone(),
-                100 + i,
-                Action::Chat(chat.id.clone()),
-                self.route == Route::Chat && self.active == chat.id,
-                cx,
-            ));
         }
         if chats.len() > self.recent_limit {
             recents = recents.child(self.nav("Show more", 901, Action::ShowMoreChats, false, cx));
         }
+        if !self.workspace.projects.is_empty() { recents = recents.child(section("Projects")); }
+        for (index, project) in self.workspace.projects.iter().enumerate() {
+            let collapsed = self.collapsed_sidebar_projects.contains(&project.id);
+            let id = project.id.clone();
+            recents = recents.child(Button::new(("sidebar-project", index)).ghost()
+                .w_full().h(px(30.)).px(px(8.)).rounded(px(10.))
+                .accessibility_label(format!("{} {}", if collapsed { "Expand" } else { "Collapse" }, project.name))
+                .child(div().w_full().flex().items_center().gap(px(8.))
+                    .child(native_ui::icon(if collapsed { "chevron-right" } else { "projects" }, 16.)
+                        .text_color(cx.theme().colors.muted_foreground))
+                    .child(div().min_w_0().flex_1().truncate().text_left()
+                        .text_size(native_ui::typography::TextRole::Small.in_app(cx)).child(project.name.clone())))
+                .on_click(cx.listener(move |s, _, _, cx| {
+                    if !s.collapsed_sidebar_projects.remove(&id) { s.collapsed_sidebar_projects.insert(id.clone()); }
+                    cx.notify();
+                })));
+            if !collapsed {
+                for (i, chat) in visible_chats.iter().filter(|(_, c)| !c.pinned && c.project_id.as_deref() == Some(project.id.as_str())) {
+                    recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
+                        Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx).pl(px(32.)));
+                }
+            }
+        }
         div()
-            .id("sidebar")
+            .id("sidebar").test_support()
             .relative()
             .w(width)
             .h_full()
             .flex_shrink_0()
-            .bg(cx.theme().colors.sidebar)
+            .bg(if cx.theme().mode.is_dark() { rgb(0x191b21).into() } else { cx.theme().colors.sidebar })
             .px(px(8.))
             .pt(px(8.))
             .pb(px(8.))
@@ -352,7 +405,7 @@ impl WorkspaceApp {
                     .on_mouse_down(
                         MouseButton::Left,
                         cx.listener(move |this, event: &MouseDownEvent, _, cx| {
-                            this.sidebar_resize = Some((event.position.x, width));
+                            this.sidebar_resize = Some((event.position.x, combined_width));
                             cx.stop_propagation();
                             cx.notify();
                         }),
@@ -360,55 +413,8 @@ impl WorkspaceApp {
             )
             .child(header)
             .child(self.sidebar_row("new-chat", "New chat", 0, Action::New, false, cx))
-            .child(recents)
-            .child(
-                div()
-                    .id("profile-menu")
-                    .aria_label("Profile and settings")
-                    .test_support()
-                    .track_focus(&self.shell_trigger_focus[1])
-                    .flex()
-                    .items_center()
-                    .tab_stop(true)
-                    .role(Role::Button)
-                    .hover(|s| s.bg(cx.theme().colors.secondary))
-                    .on_key_down(cx.listener(|this, event: &KeyDownEvent, window, cx| {
-                        if matches!(event.keystroke.key.as_str(), "enter" | "space") {
-                            this.act(Action::AccountMenu, window, cx);
-                            cx.stop_propagation();
-                        }
-                    }))
-                    .w_full()
-                    .h(px(44.))
-                    .px(px(8.))
-                    .rounded(px(10.))
-                    .justify_start()
-                    .child(
-                        div()
-                            .w_full()
-                            .flex()
-                            .items_center()
-                            .gap(px(8.))
-                            .child(
-                                div()
-                                    .size(px(28.))
-                                    .rounded_full()
-                                    .bg(rgb(0x416d58))
-                                    .text_color(rgb(0xffffff))
-                                    .flex()
-                                    .items_center()
-                                    .justify_center()
-                                    .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
-                                    .child(profile_initial),
-                            )
-                            .child(div().text_size(native_ui::typography::TextRole::Small.in_app(cx)).child(display_name)),
-                    )
-                    .on_click(
-                        cx.listener(|this, _, window, cx| {
-                            this.act(Action::AccountMenu, window, cx)
-                        }),
-                    ),
-            )
+            .child(div().id("recents").test_support().track_scroll(&self.recents_scroll)
+                .flex_1().min_h_0().mt(px(16.)).overflow_y_scroll().child(recents))
     }
     fn shell_menu(&self, dialog: Dialog, window: &Window, cx: &mut Context<Self>) -> AnyElement {
         let mut panel = div()
@@ -574,14 +580,14 @@ impl WorkspaceApp {
             .when(dialog == Dialog::ChatMenu, |d| {
                 // Align with More's right edge:138px caption controls +8px gap.
                 // Popup-specific gap/width remain pending source/runtime confirmation.
-                d.top(px(46.)).right(px(146.))
+                d.top(px(86.)).right(px(18.))
             })
             .when(
                 matches!(dialog, Dialog::AccountMenu | Dialog::HelpMenu),
                 |d| d.bottom(px(58.)).left(px(8.)),
             )
             .when(dialog == Dialog::BrandMenu, |d| {
-                d.top(px(44.)).left(px(16.))
+                d.top(px(84.)).left(px(64.))
             })
             .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation())
             .child(panel)
@@ -673,7 +679,7 @@ impl Render for WorkspaceApp {
         }
         // Plain Chat fixture has no page-surface: shipped ki is null unless tpp/flora
         // or hasPageSurface. Those modes are not implemented by this fixture.
-        if self.route != Route::Chat {
+        if self.route != Route::Chat || self.workspace.conversation(&self.active).is_ok_and(|c| !c.messages.is_empty()) {
             start = start.child(
                 div()
                     .max_w(px(320.))
@@ -749,7 +755,7 @@ impl Render for WorkspaceApp {
             .flex()
             .items_center()
             .justify_between()
-            .window_control_area(WindowControlArea::Drag)
+            .pr(px(12.))
             .child(start)
             .child(
                 div()
@@ -758,17 +764,20 @@ impl Render for WorkspaceApp {
                     .items_center()
                     .gap(px(8.))
                     .child(end)
-                    .child(div().h_full().pt(px(0.)).child(controls)),
+                    ,
             );
         let body = match self.route {
             Route::Chat => self.chat_view(window, cx),
-            Route::Projects => self.projects_view(cx),
+            Route::Projects => self.projects_view(window, cx),
             Route::Library => self.library_view(window, cx),
             Route::Settings => self.settings.clone().into_any_element(),
             Route::Rich(i) => self.rich[i].clone().into_any_element(),
             Route::Tool(i) => self.tools[i].clone().into_any_element(),
         };
         let mut main = div()
+            .id("conversation-surface").test_support()
+            .bg(cx.theme().colors.background)
+            .border_l_1().border_color(cx.theme().colors.border)
             .flex_1()
             .min_w_0()
             .h_full()
@@ -814,9 +823,9 @@ impl Render for WorkspaceApp {
             .key_context("Workspace")
             .relative()
             .size_full()
-            .bg(cx.theme().colors.background)
+            .bg(if cx.theme().mode.is_dark() { rgb(0x1a202f).into() } else { cx.theme().colors.sidebar })
             .text_color(cx.theme().colors.foreground)
-            .flex()
+            .flex().flex_col()
             .on_action(
                 cx.listener(|this, _: &NewChat, window, cx| this.act(Action::New, window, cx)),
             )
@@ -826,10 +835,19 @@ impl Render for WorkspaceApp {
             .on_action(
                 cx.listener(|this, _: &Escape, window, cx| this.act(Action::Close, window, cx)),
             );
-        if self.sidebar {
-            root = root.child(self.sidebar_view(window, cx));
-        }
-        root = root.child(main);
+        let titlebar = div().id("application-titlebar").test_support()
+            .h(px(40.)).flex_shrink_0().flex().items_center().justify_between()
+            .window_control_area(WindowControlArea::Drag)
+            .child(div().pl(px(8.)).flex().items_center()
+                .child(self.shell_icon("sidebar", "Toggle sidebar", 720, Action::Sidebar, cx)))
+            .child(controls);
+        let mut surface = div().id("workspace-surface").test_support().flex_1().min_w_0()
+            .h_full().flex().rounded_tl(px(16.)).rounded_tr(px(16.))
+            .border_1().border_color(cx.theme().colors.border).overflow_hidden();
+        if self.sidebar { surface = surface.child(self.sidebar_view(window, cx)); }
+        surface = surface.child(main);
+        root = root.child(titlebar).child(div().flex_1().min_h_0().w_full().flex()
+            .pr(px(6.)).pb(px(2.)).child(self.rail_view(cx)).child(surface));
         // Capture the drag above descendants so controls never consume the release.
         if self.sidebar_resize.is_some() {
             root = root.child(

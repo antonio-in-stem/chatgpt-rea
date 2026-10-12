@@ -320,5 +320,80 @@
     "sha256": "42d0aa713b22d1e78b01935fca512b0dae389323b4302bbcde0b4c8296b61d07",
     "bytes": 547,
     "role": "Projects vi -> N/T7 -> nfr=$(D4n), arrow-up-md-light-16; rotates 180 degrees for descending"
+  },
+  {
+    "name": "rail-home",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "descriptor": "U9n",
+    "descriptorName": "home-light-20",
+    "sourceLine": 197638,
+    "sha256": "d17d050107e17025c17f5b83fa7b85f7a95a0f04afac033e70ba6a323b441cc8",
+    "bytes": 2428,
+    "role": "app-initial joe <- shared Htt=Jdr=$(U9n); D2o home",
+    "method": "Static copy of descriptor SVG body and viewBox; no bundle execution"
+  },
+  {
+    "name": "rail-apps",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "descriptor": "tir",
+    "descriptorName": "plugin-light-20",
+    "sourceLine": 201481,
+    "sha256": "27bca13d82079e2fbc0e5d5ca0aa22abad2aed0c63af314463110832f63f2e25",
+    "bytes": 2100,
+    "role": "app-initial Yle <- shared Krt=Fmr=$(tir); Plugins railIcons.default",
+    "method": "Static copy of descriptor SVG body and viewBox; no bundle execution"
+  },
+  {
+    "name": "rail-settings",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "descriptor": "d9n",
+    "descriptorName": "gear-light-20",
+    "sourceLine": 197131,
+    "sha256": "5f6a78764279c5d0691801ac676326853a8c281d913b3ab4866b543c840502df",
+    "bytes": 3266,
+    "role": "app-initial qee <- shared Ctt=Ipr=$(d9n); D2o settings",
+    "method": "Static copy of descriptor SVG body and viewBox; no bundle execution"
+  },
+  {
+    "name": "rail-security",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "descriptor": "Csr",
+    "descriptorName": "terminal-shield-light-20",
+    "sourceLine": 204279,
+    "sha256": "8be127f90e5b78a9109ba776ceddd4fd00b96cbd57fdb1ae0881ac58a6872bd6",
+    "bytes": 1674,
+    "role": "app-initial Cse <- shared Iat=Ghr=$(Csr); Security largeIcon",
+    "method": "Static copy of descriptor SVG body and viewBox; no bundle execution"
+  },
+  {
+    "name": "rail-activity",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "descriptor": "C3n",
+    "descriptorName": "bell-light-20",
+    "sourceLine": 193192,
+    "sha256": "ba4e4d3b9ac3622dd4f48946eb0bc40e8774625529b7583ee4a1b3e364067bed",
+    "bytes": 1662,
+    "role": "Ies/Les activity: ece<-J7=_fr=$(C3n), attention TCe<-X7=yfr=$(y3n)",
+    "method": "Static descriptor body copy"
+  },
+  {
+    "name": "rail-activity-attention",
+    "source": "recovered-frontend/readable/assets/app-shared-737655e1fb23.js",
+    "descriptor": "y3n",
+    "descriptorName": "bell-badge-light-20",
+    "sourceLine": 193116,
+    "sha256": "29eea816076eecbae913c97d86ebf9299d7156e6b9ed94f0cff1b3b5f1cf57ce",
+    "bytes": 2298,
+    "role": "Ies/Les activity: ece<-J7=_fr=$(C3n), attention TCe<-X7=yfr=$(y3n)",
+    "method": "Static descriptor body copy"
+  },
+  {
+    "name": "rail-home-selected",
+    "source": "recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js",
+    "sourceLine": 379483,
+    "sha256": "70a122bf0f190ed1e805946907f0dac3e467e4c099b4370b5b8a8f1ffb57ce50",
+    "bytes": 1451,
+    "role": "D2o/Vts Home railIcons.selected=x0o",
+    "method": "Static SVG/path props copy; no execution"
   }
 ]

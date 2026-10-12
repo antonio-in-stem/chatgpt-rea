@@ -206,3 +206,7 @@ The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previ
 ## Project modification dates — 2026-10-12
 
 11 native-core and43 native-workspace tests passed. Coverage includes legacy missing dates, nonmutating unchanged edits, persisted edit dates, date-priority sorting, future/under-one-minute labels, all compact unit boundaries and local-calendar versus elapsed-day behavior. Windows build and packaging passed; SHA-256 `aa11329848869f193d216e16e1b583f8776e4bdeea2d56cb738520ead4df8b0c`. Localization, original clock scheduling and original-window pixel comparison remain open.
+
+## Shell composition checkpoint
+
+45native-workspace and13native-settings tests pass after the rail/sidebar/frame and Windows font changes. Build and Package.ps1 succeed. native-workspace.exe56110592bytes SHA256dba0f6250498712bc60c7b78050651d9e02ad544944a70e20ebfa3125766e91d. See catalog/SHELL-REFERENCE.md for source vs screenshot adjustments, capture limitations and major remaining gaps. Goal not complete.

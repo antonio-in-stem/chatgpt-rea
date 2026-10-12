@@ -204,7 +204,7 @@ fn library_grid_reflows_at_source_container_breakpoint(cx: &mut TestAppContext) 
         let sixth = window.find(("library-file", 1004usize)).bounds();
         assert_eq!(
             first.origin.y, fifth.origin.y,
-            "1060px content must use five columns"
+            "1052px content must use five columns"
         );
         assert!(sixth.origin.y > first.origin.y);
         app.update(cx, |s, cx| {
@@ -216,7 +216,7 @@ fn library_grid_reflows_at_source_container_breakpoint(cx: &mut TestAppContext) 
         let sixth = window.find(("library-file", 1004usize)).bounds();
         assert_eq!(
             first.origin.y, sixth.origin.y,
-            "1400px content must use six columns"
+            "1344px content must use six columns"
         );
     })
     .unwrap();
@@ -327,5 +327,42 @@ fn project_headers_sort_rows_and_preserve_expansion(cx: &mut TestAppContext) {
         window.render_frame(cx);
         assert!(!app.read(cx).project_sort.descending);
         assert!(window.find(("project-open", 1usize)).bounds().origin.y < window.find(("project-open", 2usize)).bounds().origin.y);
+    }).unwrap();
+}
+
+#[gpui_kit::test]
+fn project_header_sticks_while_table_scrolls_and_controls_remain_live(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, app) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        app.update(cx, |s, cx| {
+            for i in 0..30 { s.workspace.create_project(&format!("Project {i:02}")).unwrap(); }
+            s.act(Action::Route(Route::Projects), window, cx);
+        });
+        window.render_frame(cx);
+        let initial_header = window.find("projects-sticky-header").bounds();
+        let initial_table = window.find("projects-table-heading").bounds();
+        window.scroll("projects-scroll", gpui_kit::ScrollDelta::Pixels(point(px(0.), px(-240.))), cx);
+        window.render_frame(cx);
+        let header = window.find("projects-sticky-header").bounds();
+        let table = window.find("projects-table-heading").bounds();
+        assert_eq!(header.origin.y, initial_header.origin.y - px(16.));
+        assert!(table.origin.y < initial_table.origin.y - px(100.));
+        let search = app.read(cx).project_search.clone();
+        let search_bounds = window.find(("input", search.entity_id())).bounds();
+        assert!(search_bounds.origin.y >= initial_header.origin.y);
+        let offset = app.read(cx).projects_scroll.offset().y;
+        window.scroll("projects-sticky-header", gpui_kit::ScrollDelta::Pixels(point(px(0.), px(-100.))), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).projects_scroll.offset().y, offset - px(100.));
+        window.click(("app-btn", 300usize), cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).project_editing);
+        window.press("escape", cx);
+        window.render_frame(cx);
+        window.scroll("projects-sticky-header", gpui_kit::ScrollDelta::Pixels(point(px(0.), px(10000.))), cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).projects_scroll.offset().y, px(0.));
+        assert_eq!(window.find("projects-sticky-header").bounds().origin.y, initial_header.origin.y);
     }).unwrap();
 }

@@ -272,6 +272,8 @@ fn recents_show_more_exposes_next_page(cx: &mut TestAppContext) {
     });
     cx.update_window(window, |_, window, cx| {
         window.render_frame(cx);
+        app.update(cx, |s, cx| { s.recents_scroll.scroll_to_bottom(); cx.notify(); });
+        window.render_frame(cx);
         window.click(("nav", 901usize), cx);
         window.render_frame(cx);
         assert_eq!(app.read(cx).recent_limit, 60);
@@ -606,7 +608,7 @@ fn composer_popup_geometry_tracks_composer_and_model_contract(cx: &mut TestAppCo
             let composer = app.read(cx).composer_bounds.get();
             let popup = window.find("composer-menu-focus").bounds();
             assert_eq!(popup.size.width, composer.size.width);
-            assert_eq!(popup.origin.x, composer.origin.x);
+            assert!((popup.origin.x - composer.origin.x).abs() <= px(0.5), "Pixel rounding must not detach the popup from the composer");
             assert_eq!(
                 popup.origin.y + popup.size.height,
                 composer.origin.y - px(4.)
