@@ -238,3 +238,6 @@ Existing52 workspace tests passed after mode integration; new mode/draft/geometr
 
 ## 2026-10-12 permissions demo
 54 workspace tests and11 native-core tests pass. Real UI test covers keyboard choice, Escape, Go back, explicit confirmation, stored per-chat selection and abandoned confirmation on chat change. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56297472, 'sha256': '6874fafd2d7ed3c9f59475407f0b03c83ac173b5dd72244a019d2cca7ed31e16'}. Valid own-window capture native-codex-14 inspected; exact visual fidelity remains incomplete.
+
+## 2026-10-12 model/effort demo
+55 workspace tests and11 core tests passed. Native event test covers model selection, pointer movement to the slider end, keyboard decrement/Home, Escape, persisted values and chat-switch synchronization. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56344064, 'sha256': '617600fc0a65b3dd65b64ba37b4d31274eeb7a1c3fbf215ee9951e9e4fa1925c'}. PID24468 of the previous demo was stopped after path verification before building. Exact original model picker visual parity remains incomplete.

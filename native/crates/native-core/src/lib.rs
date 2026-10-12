@@ -50,12 +50,32 @@ pub struct ChatMessage {
     pub content: String,
     pub parent_id: Option<String>,
 }
+/// Local catalog fixture, not live provider availability.
+#[derive(Debug,Default,Clone,Copy,Serialize,Deserialize,PartialEq,Eq)]
+#[serde(rename_all="kebab-case")]
+pub enum CodexModel { #[default] Astra, Sol, Luna }
+impl CodexModel {
+    pub const ALL:[Self;3]=[Self::Astra,Self::Sol,Self::Luna];
+    pub fn label(self)->&'static str { match self {Self::Astra=>"GPT-6 Astra",Self::Sol=>"GPT-6 Sol",Self::Luna=>"GPT-6 Luna"} }
+}
+#[derive(Debug,Default,Clone,Copy,Serialize,Deserialize,PartialEq,Eq)]
+#[serde(rename_all="kebab-case")]
+pub enum ReasoningEffort { Light, #[default] Medium, High, ExtraHigh, Max, Ultra }
+impl ReasoningEffort {
+    pub const ALL:[Self;6]=[Self::Light,Self::Medium,Self::High,Self::ExtraHigh,Self::Max,Self::Ultra];
+    pub fn label(self)->&'static str { match self {Self::Light=>"Light",Self::Medium=>"Medium",Self::High=>"High",Self::ExtraHigh=>"Extra High",Self::Max=>"Max",Self::Ultra=>"Ultra"} }
+    pub fn index(self)->usize { Self::ALL.iter().position(|e|*e==self).unwrap_or(1) }
+}
 /// Presentation-only demo choice. Never grants host permissions.
 #[derive(Debug, Default, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all="kebab-case")]
 pub enum DemoPermissions { #[default] Ask, GuardianApprovals, FullAccess }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Conversation {
+    #[serde(default)]
+    pub codex_model: CodexModel,
+    #[serde(default)]
+    pub reasoning_effort: ReasoningEffort,
     #[serde(default)]
     pub demo_permissions: DemoPermissions,
     pub id: String,
@@ -139,6 +159,8 @@ impl Workspace {
         let id = id();
         self.conversations.push(Conversation {
             demo_permissions: DemoPermissions::default(),
+            codex_model: CodexModel::default(),
+            reasoning_effort: ReasoningEffort::default(),
             id: id.clone(),
             title: "New chat".into(),
             project_id: None,

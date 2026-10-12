@@ -2,6 +2,9 @@ use gpui_kit::base::Selectable;
 // Source: app-primary-19fe57fd8c00.js S5e/D5e/O5e and ChatGPT plus items.
 // The installed bundle receives model names from server data; MODELS is a local catalog fixture.
 impl WorkspaceApp {
+    fn codex_model_selection(&self)->(native_core::CodexModel,native_core::ReasoningEffort) {
+        self.workspace.conversation(&self.active).map(|c|(c.codex_model,c.reasoning_effort)).unwrap_or_default()
+    }
     fn composer_menu_actions(
         &self,
         dialog: Dialog,
@@ -12,6 +15,10 @@ impl WorkspaceApp {
                 ("Approve for me","",Action::ChoosePermissions(native_core::DemoPermissions::GuardianApprovals),781),
                 ("Full access","",Action::ChoosePermissions(native_core::DemoPermissions::FullAccess),782),
             ];
+        }
+        if dialog == Dialog::Model && self.workspace.settings.codex_surface {
+            return native_core::CodexModel::ALL.iter().enumerate()
+                .map(|(i,m)|(m.label(),"",Action::ChooseModel(i),750+i)).collect();
         }
         if dialog == Dialog::Model {
             MODELS
@@ -47,6 +54,19 @@ impl WorkspaceApp {
         let Some(dialog @ (Dialog::Model | Dialog::Attachments | Dialog::Permissions)) = self.dialog else {
             return false;
         };
+        if dialog==Dialog::Model && self.workspace.settings.codex_surface && self.effort_focus.is_focused(window) {
+            if matches!(event.keystroke.key.as_str(),"left"|"right"|"up"|"down"|"home"|"end") {
+                let current=self.codex_model_selection().1.index();
+                let next=match event.keystroke.key.as_str() {
+                    "left"|"down"=>current.saturating_sub(1),
+                    "right"|"up"=>(current+1).min(5),
+                    "home"=>0,_=>5,
+                };
+                self.effort_slider.update(cx,|s,cx|s.set_value(next as f32,window,cx));
+                if let Ok(chat)=self.workspace.conversation_mut(&self.active) { chat.reasoning_effort=native_core::ReasoningEffort::ALL[next]; }
+                self.persist(); cx.stop_propagation(); cx.notify(); return true;
+            }
+        }
         let rows = self.composer_menu_actions(dialog);
         match event.keystroke.key.as_str() {
             "down" => self.composer_menu_index = (self.composer_menu_index + 1) % rows.len(),
@@ -131,6 +151,7 @@ impl WorkspaceApp {
         let colors = cx.theme().colors.clone();
         let bounds = self.composer_bounds.get();
         let is_model = dialog == Dialog::Model;
+        let codex=is_model && self.workspace.settings.codex_surface;
         let mut menu = div()
             .w(if is_model {
                 px(254.)
@@ -152,7 +173,7 @@ impl WorkspaceApp {
             self.composer_menu_actions(dialog).into_iter().enumerate()
         {
             let checked = if dialog == Dialog::Model {
-                index == self.model_index
+                if codex { native_core::CodexModel::ALL[index]==self.codex_model_selection().0 } else { index == self.model_index }
             } else {
                 self.composer_tools.get(&self.active) == Some(&label)
             };
@@ -202,10 +223,20 @@ impl WorkspaceApp {
                     ),
             );
         }
+        if codex {
+            menu=menu.child(div().id("codex-effort").test_support().track_focus(&self.effort_focus).tab_stop(true)
+                .on_mouse_down(MouseButton::Left,cx.listener(|s,_,w,cx|w.focus(&s.effort_focus,cx))).p(px(8.)).flex().flex_col().gap(px(8.))
+                .child(div().flex().justify_between()
+                    .child("Reasoning effort")
+                    .child(self.codex_model_selection().1.label()))
+                .child(gpui_kit::component::slider::Slider::new(&self.effort_slider).w_full())
+                .child(div().flex().justify_between().text_size(px(12.)).text_color(colors.muted_foreground)
+                    .child("Light").child("Ultra")));
+        }
         let popup = anchored()
-            .anchor(Anchor::BottomLeft)
+            .anchor(if codex { Anchor::BottomRight } else { Anchor::BottomLeft })
             .position(point(
-                bounds.origin.x + px(if is_model { 42. } else { 0. }),
+                if codex { bounds.right()-px(72.) } else { bounds.origin.x + px(if is_model { 42. } else { 0. }) },
                 bounds.origin.y - px(if is_model { 8. } else { 4. }),
             ))
             .child(

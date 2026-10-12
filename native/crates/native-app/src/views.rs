@@ -215,7 +215,13 @@ impl WorkspaceApp {
             .px(px(6.))
             .rounded(px(8.))
             .text_size(native_ui::typography::TextRole::Small.in_app(cx))
-            .label(MODELS[self.model_index])
+            .when(!codex,|b|b.label(MODELS[self.model_index]))
+            .when(codex,|b| {
+                let (model,effort)=self.codex_model_selection();
+                b.child(div().flex().items_center().gap(px(6.))
+                    .child(div().font_weight(FontWeight::MEDIUM).child(model.label()))
+                    .child(div().text_color(cx.theme().colors.muted_foreground).child(effort.label())))
+            })
             .child(
                 native_ui::icon("chevron-down", 12.).text_color(cx.theme().colors.muted_foreground),
             )

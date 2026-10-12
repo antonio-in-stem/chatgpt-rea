@@ -172,6 +172,8 @@ pub struct WorkspaceApp {
     generation: u64,
     streaming: bool,
     model_index: usize,
+    effort_slider: Entity<gpui_kit::component::slider::SliderState>,
+    effort_focus: FocusHandle,
     composer_menu_index: usize,
     composer_library_query: Entity<InputState>,
     composer_library_selection: Vec<String>,
@@ -313,6 +315,8 @@ impl WorkspaceApp {
             generation: 0,
             streaming: false,
             model_index: 0,
+            effort_focus: cx.focus_handle(),
+            effort_slider: cx.new(|_|gpui_kit::component::slider::SliderState::new().min(0.).max(5.).step(1.).default_value(1.)),
             composer_menu_index: 0,
             composer_library_query: cx
                 .new(|cx| InputState::new(window, cx).placeholder("Search Library")),
@@ -352,6 +356,17 @@ impl WorkspaceApp {
             },
         )
         .detach();
+        cx.subscribe(&app.effort_slider,|s,_,event:&gpui_kit::component::slider::SliderEvent,cx| {
+            use gpui_kit::component::slider::{SliderEvent,SliderValue};
+            if s.dialog!=Some(Dialog::Model) || !s.workspace.settings.codex_surface { return; }
+            if let SliderEvent::Change(SliderValue::Single(value))=event {
+                if let Some(effort)=native_core::ReasoningEffort::ALL.get(value.round() as usize) {
+                    if let Ok(chat)=s.workspace.conversation_mut(&s.active) { chat.reasoning_effort=*effort; }
+                    s.persist();
+                    cx.notify();
+                }
+            }
+        }).detach();
         cx.subscribe(&app.project_search, |_, _, _: &InputEvent, cx| cx.notify())
             .detach();
         cx.subscribe(&app.library_search, |_, _, _: &InputEvent, cx| cx.notify())
@@ -806,12 +821,22 @@ impl WorkspaceApp {
             }
             Action::Model => {
                 self.previous_focus = window.focused(cx);
-                self.composer_menu_index = self.model_index;
+                self.composer_menu_index = if self.workspace.settings.codex_surface {
+                    let (model,effort)=self.codex_model_selection();
+                    self.effort_slider.update(cx,|slider,cx|slider.set_value(effort.index() as f32,window,cx));
+                    native_core::CodexModel::ALL.iter().position(|m|*m==model).unwrap_or(0)
+                } else { self.model_index };
                 self.dialog = Some(Dialog::Model);
                 window.focus(&self.modal_focus, cx);
             }
             Action::ChooseModel(index) => {
-                if index < MODELS.len() {
+                if self.workspace.settings.codex_surface {
+                    if let Some(model)=native_core::CodexModel::ALL.get(index) {
+                        if let Ok(chat)=self.workspace.conversation_mut(&self.active) { chat.codex_model=*model; }
+                        self.composer_menu_index=index;
+                        self.persist();
+                    }
+                } else if index < MODELS.len() {
                     self.model_index = index;
                     self.act(Action::Close, window, cx);
                 }

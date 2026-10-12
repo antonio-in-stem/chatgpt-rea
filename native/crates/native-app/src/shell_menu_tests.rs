@@ -208,3 +208,43 @@ fn permissions_selection_confirmation_and_chat_isolation(cx: &mut TestAppContext
     }).unwrap();
     let _=std::fs::remove_dir_all(path);
 }
+
+#[gpui_kit::test]
+fn codex_model_effort_slider_and_chat_selection_persist(cx:&mut TestAppContext) {
+    use native_core::{CodexModel as M,ReasoningEffort as E};
+    let (handle,app,path)=fixture(cx);
+    let first=cx.update_window(handle,|_,window,cx| {
+        app.update(cx,|s,cx|s.act(Action::Surface(true),window,cx));
+        window.render_frame(cx);
+        let first=app.read(cx).active.clone();
+        window.click(("app-btn",201usize),cx);
+        window.click(("app-btn",752usize),cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).codex_model_selection(),(M::Luna,E::Medium));
+        let slider=app.read(cx).effort_slider.entity_id();
+        let bounds=window.find(("slider",slider)).bounds();
+        window.click_at(("slider",slider),point(bounds.size.width-px(2.),bounds.size.height/2.),cx);
+        window.render_frame(cx);
+        first
+    }).unwrap();
+    cx.run_until_parked();
+    cx.update_window(handle,|_,window,cx| {
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).codex_model_selection().1,E::Ultra);
+        window.press("left",cx);
+        assert_eq!(app.read(cx).codex_model_selection().1,E::Max);
+        window.press("home",cx);
+        assert_eq!(app.read(cx).codex_model_selection().1,E::Light);
+        window.press("escape",cx);
+        assert!(app.read(cx).dialog.is_none());
+        let saved=native_core::Workspace::load(path.join("workspace.json")).unwrap();
+        let chat=saved.conversation(&first).unwrap();
+        assert_eq!((chat.codex_model,chat.reasoning_effort),(M::Luna,E::Light));
+        app.update(cx,|s,cx|s.act(Action::New,window,cx));
+        assert_eq!(app.read(cx).codex_model_selection(),(M::Astra,E::Medium));
+        app.update(cx,|s,cx|s.act(Action::Chat(first),window,cx));
+        window.click(("app-btn",201usize),cx);
+        assert_eq!(app.read(cx).effort_slider.read(cx).value(),gpui_kit::component::slider::SliderValue::Single(0.));
+    }).unwrap();
+    let _=std::fs::remove_dir_all(path);
+}
