@@ -41,7 +41,7 @@ impl WorkspaceApp {
             return false;
         };
         let count = match dialog {
-            Dialog::BrandMenu => 1,
+            Dialog::BrandMenu => 2,
             Dialog::AccountMenu => 2,
             Dialog::HelpMenu => 3,
             Dialog::ChatMenu => 5,
@@ -67,7 +67,7 @@ impl WorkspaceApp {
             }
             "enter" | "space" => {
                 let action = match dialog {
-                    Dialog::BrandMenu => Action::Close,
+                    Dialog::BrandMenu => Action::Surface(self.shell_menu_index == 1),
                     Dialog::AccountMenu | Dialog::HelpMenu => match self.shell_menu_index {
                         0 => Action::Route(Route::Settings),
                         1 => Action::HelpMenu,
@@ -293,7 +293,7 @@ impl WorkspaceApp {
             .child(
                 div()
                     .id("brand-menu")
-                    .aria_label("Switch mode, current mode: ChatGPT")
+                    .aria_label(if self.workspace.settings.codex_surface { "Switch mode, current mode: Codex" } else { "Switch mode, current mode: ChatGPT" })
                     .test_support()
                     .track_focus(&self.shell_trigger_focus[0])
                     .flex()
@@ -316,9 +316,11 @@ impl WorkspaceApp {
                             .items_center()
                             .gap(px(4.))
                             .child(
-                                native_ui::icon("wordmark", 18.)
-                                    .w(px(77.13))
-                                    .text_color(cx.theme().colors.foreground),
+                                if self.workspace.settings.codex_surface {
+                                    div().text_size(px(18.)).font_weight(FontWeight::SEMIBOLD).child("Codex").into_any_element()
+                                } else {
+                                    native_ui::icon("wordmark",18.).w(px(77.13)).text_color(cx.theme().colors.foreground).into_any_element()
+                                },
                             )
                             .child(
                                 native_ui::icon("chevron-down", 12.)
@@ -493,41 +495,19 @@ impl WorkspaceApp {
             );
         }
         if dialog == Dialog::BrandMenu {
-            // Dns: ChatGPT item only; Codex capability is false in this local fixture.
-            panel = panel.child(
-                div()
-                    .id(("shell-menu-focus", 0usize))
-                    .test_support()
-                    .track_focus(&self.shell_menu_focus[0])
-                    .child(
-                        Button::new("brand-chatgpt")
-                            .tab_stop(false)
-                            .ghost()
-                            .w_full()
-                            .h(px(60.))
-                            .px(px(8.))
-                            .rounded(px(8.))
-                            .accessibility_label("ChatGPT — Create, learn, and explore")
-                            .child(
-                                div()
-                                    .w_full()
-                                    .flex()
-                                    .flex_col()
-                                    .items_start()
-                                    .gap(px(4.))
-                                    .child(div().text_size(native_ui::typography::TextRole::Body.in_app(cx)).child("ChatGPT"))
-                                    .child(
-                                        div()
-                                            .text_size(native_ui::typography::TextRole::Caption.in_app(cx))
-                                            .text_color(cx.theme().colors.muted_foreground)
-                                            .child("Create, learn, and explore"),
-                                    ),
-                            )
-                            .on_click(cx.listener(|this, _, window, cx| {
-                                this.act(Action::Close, window, cx)
-                            })),
-                    ),
-            );
+            for (index,label) in ["ChatGPT","Codex"].into_iter().enumerate() {
+                panel=panel.child(div().id(("shell-menu-focus",index)).test_support()
+                    .track_focus(&self.shell_menu_focus[index])
+                    .child(Button::new(if index==0 { "brand-chatgpt" } else { "brand-codex" })
+                        .tab_stop(false).ghost().w_full().h(px(60.)).px(px(8.)).rounded(px(8.))
+                        .accessibility_label(label)
+                        .child(div().flex_1().flex().flex_col().items_start().gap(px(4.))
+                            .child(div().text_size(native_ui::typography::TextRole::Body.in_app(cx)).child(label))
+                            .child(div().text_size(native_ui::typography::TextRole::Caption.in_app(cx)).text_color(cx.theme().colors.muted_foreground)
+                                .child(if index==0 { "Create, learn, and explore" } else { "Build, debug, and ship" })))
+                        .when(self.workspace.settings.codex_surface==(index==1),|b|b.child(native_ui::icon("check",16.)))
+                        .on_click(cx.listener(move |s,_,w,cx|s.act(Action::Surface(index==1),w,cx)))));
+            }
         }
         let items: Vec<(&'static str, &'static str, usize, Action)> = if dialog == Dialog::BrandMenu
         {

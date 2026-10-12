@@ -232,3 +232,6 @@ Existing49 workspace tests pass after pagination changes. New independent-pages 
 
 ## 2026-10-12 active sidebar row
 52 workspace tests passed. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56248832, 'sha256': 'a9e91d18c503e562b402d9877f98ecc1e1eedbf24416d6b10621790e62902fa6'}. Source kPo visibility semantics verified statically; full visual parity remains incomplete.
+
+## 2026-10-12 Codex surface selection
+Existing52 workspace tests passed after mode integration; new mode/draft/geometry UI test passed after fixing draft flush (53 tests defined). Native-core11 tests passed. Build/package succeeded. Binary: {'name': 'native-workspace.exe', 'bytes': 56255488, 'sha256': 'a2f58f50880b34e4e42b4cdb08d38c1aaca944d6742d639ba6ba653d3071ef78'}. No full visual parity claim.

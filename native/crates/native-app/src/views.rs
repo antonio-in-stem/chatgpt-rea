@@ -108,6 +108,7 @@ impl WorkspaceApp {
     }
     fn chat_composer_view(&self, cx: &mut Context<Self>) -> AnyElement {
         use gpui_kit::component::button::ButtonVariants;
+        let codex=self.workspace.settings.codex_surface;
         let measured = self.composer_bounds.clone();
         let mut composer = div()
             .relative()
@@ -205,7 +206,7 @@ impl WorkspaceApp {
                     .w_full()
                     .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                     .line_height(px(20.))
-                    .aria_label("Ask ChatGPT"),
+                    .aria_label(if codex { "Work with Codex" } else { "Ask ChatGPT" }),
             ),
         );
         let model = gpui_kit::component::button::Button::new(("app-btn", 201usize))
@@ -252,6 +253,12 @@ impl WorkspaceApp {
                     cx,
                 )
             }));
+        let mut leading=div().id("composer-leading-controls").test_support().flex().items_center().gap(px(5.))
+            .child(self.chat_icon_button("plus","Add photos and files",200,Action::Attach,cx));
+        let mut trailing=div().id("composer-trailing-controls").test_support().min_w_0().flex().items_center().gap(px(6.));
+        if codex { trailing=trailing.child(model); } else { leading=leading.child(model); }
+        trailing=trailing.child(self.chat_icon_button(if codex { "mic" } else { "voice" },
+            if codex { "Dictate" } else { "Use voice" },202,Action::Route(Route::Rich(4)),cx)).child(send);
         composer
             .child(
                 div()
@@ -259,34 +266,8 @@ impl WorkspaceApp {
                     .items_center()
                     .justify_between()
                     .px(px(2.))
-                    .child(
-                        div()
-                            .flex()
-                            .items_center()
-                            .gap(px(4.))
-                            .child(self.chat_icon_button(
-                                "plus",
-                                "Add photos and files",
-                                200,
-                                Action::Attach,
-                                cx,
-                            ))
-                            .child(model),
-                    )
-                    .child(
-                        div()
-                            .flex()
-                            .items_center()
-                            .gap(px(6.))
-                            .child(self.chat_icon_button(
-                                "voice",
-                                "Use voice",
-                                202,
-                                Action::Route(Route::Rich(4)),
-                                cx,
-                            ))
-                            .child(send),
-                    ),
+                    .child(leading)
+                    .child(trailing),
             )
             .into_any_element()
     }

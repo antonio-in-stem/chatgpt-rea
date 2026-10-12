@@ -26,3 +26,9 @@ Source2210 labels guardian-approvals as Approve for me. Do not invent backend ef
 ## Native implementation boundary
 Introduce an explicit surface/mode before integrating Codex-only controls, keeping existing ChatGPT demo behavior. Render permissions/model/effort/dictation/submit using recovered component tokens, and retain a per-thread demo state. Drafts, stop/submit, popup dismissal and focus restoration must remain functional.
 Pending source tracing: M_e frame/footer tokens; model/effort combined menu; permission confirmation geometry/icons; goal above-composer strip; single-line transitions; reply/tool rows. No visual parity claim is supported yet.
+
+
+## Native mode integration checkpoint
+Settings now retains a backward-compatible codex_surface flag, selectable by pointer or keyboard from the existing brand menu. Dns source395810 supplies Codex/Build, debug, and ship; ChatGPT retains its description. Changing mode updates the brand and placeholder (Work with Codex vs Ask ChatGPT), preserves the active conversation and flushes the current draft before persistence.
+Fdl is the M_e renderer (app-initial export569316, function553344). FooterControls vLt67457 uses min-w-0/justify-end; FooterExpandingControls bLt67495 uses flex-1/justify-end. The native Codex variant places the model in trailing controls and uses the microphone vector; ChatGPT keeps its existing arrangement.
+This is initial mode integration, NOT full Codex parity. Permissions, model+effort catalog/menu, frame tokens, goal strip, actual inline dictation-demo states and transcript tool/approval rendering remain incomplete. Microphone currently opens the existing voice demo surface; model names still use the existing local catalog. All conversations currently share a mode; original mode-specific navigation inventories remain pending.

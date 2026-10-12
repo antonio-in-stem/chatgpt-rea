@@ -42,6 +42,7 @@ enum Action {
     ChatMenu,
     AccountMenu,
     BrandMenu,
+    Surface(bool),
     HelpMenu,
     KeyboardSettings,
     Search,
@@ -239,7 +240,7 @@ impl WorkspaceApp {
         let composer = cx.new(|cx| {
             TextareaState::new(window, cx)
                 .auto_grow(1, 8)
-                .placeholder("Ask ChatGPT")
+                .placeholder(if workspace.settings.codex_surface { "Work with Codex" } else { "Ask ChatGPT" })
                 .default_value(
                     workspace
                         .conversation(&active)
@@ -602,6 +603,14 @@ impl WorkspaceApp {
             Action::Route(route) => {
                 self.route = route;
                 self.dialog = None;
+            }
+            Action::Surface(codex) => {
+                let draft=self.composer.read(cx).value().to_string();
+                let _=self.workspace.set_draft(&self.active,draft);
+                self.workspace.settings.codex_surface=codex;
+                self.composer.update(cx,|input,cx| input.set_placeholder(if codex { "Work with Codex" } else { "Ask ChatGPT" },window,cx));
+                self.persist();
+                self.act(Action::Close,window,cx);
             }
             Action::Chat(id) => self.switch_chat(id, window, cx),
             Action::New => {

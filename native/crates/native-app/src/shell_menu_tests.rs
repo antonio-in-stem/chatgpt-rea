@@ -126,3 +126,39 @@ fn profile_menu_arrow_navigation_submenu_and_escape_restore_focus(cx: &mut TestA
     .unwrap();
     let _ = std::fs::remove_dir_all(path);
 }
+
+#[gpui_kit::test]
+fn codex_surface_switch_preserves_draft_and_moves_model_to_trailing_controls(cx: &mut TestAppContext) {
+    let (handle,app,path)=fixture(cx);
+    cx.update_window(handle,|_,window,cx| {
+        window.render_frame(cx);
+        let composer=app.read(cx).composer.clone();
+        let active=app.read(cx).active.clone();
+        window.click(("input",composer.entity_id()),cx);
+        window.input("Keep this draft",cx);
+        window.click("brand-menu",cx);
+        window.press("down",cx);
+        window.press("enter",cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).workspace.settings.codex_surface);
+        assert_eq!(composer.read(cx).value().to_string(),"Keep this draft");
+        assert_eq!(composer.read(cx).presentation().placeholder().to_string(),"Work with Codex");
+        assert_eq!(app.read(cx).active,active);
+        let model=window.find(("app-btn",201usize)).bounds();
+        let trailing=window.find("composer-trailing-controls").bounds();
+        assert!(model.left()>=trailing.left() && model.right()<=trailing.right());
+        let saved=native_core::Workspace::load(path.join("workspace.json")).unwrap();
+        assert!(saved.settings.codex_surface);
+        assert_eq!(saved.conversation(&active).unwrap().draft,"Keep this draft");
+        window.click("brand-menu",cx);
+        window.click("brand-chatgpt",cx);
+        window.render_frame(cx);
+        assert!(!app.read(cx).workspace.settings.codex_surface);
+        assert_eq!(composer.read(cx).value().to_string(),"Keep this draft");
+        assert_eq!(composer.read(cx).presentation().placeholder().to_string(),"Ask ChatGPT");
+        let model=window.find(("app-btn",201usize)).bounds();
+        let leading=window.find("composer-leading-controls").bounds();
+        assert!(model.left()>=leading.left() && model.right()<=leading.right());
+    }).unwrap();
+    let _=std::fs::remove_dir_all(path);
+}
