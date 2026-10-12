@@ -1,3 +1,5 @@
+#[path = "conversation_navigation.rs"]
+mod conversation_navigation;
 #[path = "project_sort.rs"]
 mod project_sort;
 use project_sort::{ProjectSort, ProjectSortKey};
@@ -151,6 +153,8 @@ pub struct WorkspaceApp {
     attachment_sequence: u64,
     recent_limit: usize,
     transcript: ScrollHandle,
+    navigation_hover: Option<String>,
+    navigation_motion: Option<Task<()>>,
     message_actions: HashMap<String, Entity<ChatMessageActions>>,
     recents_scroll: ScrollHandle,
     projects_scroll: ScrollHandle,
@@ -288,6 +292,8 @@ impl WorkspaceApp {
             attachment_sequence: 0,
             recent_limit: 30,
             transcript: ScrollHandle::new(),
+            navigation_hover: None,
+            navigation_motion: None,
             message_actions: HashMap::new(),
             recents_scroll: ScrollHandle::new(),
             projects_scroll: ScrollHandle::new(),
@@ -357,6 +363,7 @@ impl WorkspaceApp {
         app
     }
     fn handle_key(&mut self, event: &KeyDownEvent, window: &mut Window, cx: &mut Context<Self>) {
+        if self.navigation_key(event, cx) { return; }
         if event.keystroke.key == "escape" && (self.dialog.is_some() || self.edit_message.is_some())
         {
             self.act(Action::Close, window, cx);
@@ -397,6 +404,8 @@ impl WorkspaceApp {
     }
     fn switch_chat(&mut self, id: String, window: &mut Window, cx: &mut Context<Self>) {
         self.stop();
+        self.navigation_motion.take();
+        self.navigation_hover = None;
         self.active = id;
         self.route = Route::Chat;
         self.edit_message = None;

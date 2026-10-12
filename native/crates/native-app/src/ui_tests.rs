@@ -824,3 +824,70 @@ fn share_preview_blocks_links_and_abandoned_creation(cx: &mut TestAppContext) {
         assert!(app.read(cx).dialog.is_none());
     });
 }
+
+#[gpui_kit::test]
+fn conversation_markers_navigate_real_messages_and_keyboard_survives_hidden_rail(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let mut settings = native_settings::Settings::default();
+    settings.reduced_motion = true;
+    settings.save(&storage.0.join("settings.json")).unwrap();
+    let (handle, app) = open(cx, &storage);
+    let ids = cx.update_window(handle, |_, window, cx| {
+        let ids = app.update(cx, |s, cx| {
+            let chat = s.workspace.create_conversation();
+            let mut ids = Vec::new();
+            for i in 0..3 {
+                ids.push(s.workspace.append_message(&chat, native_core::MessageRole::User, &format!("Question {i}")).unwrap());
+                s.workspace.append_message(&chat, native_core::MessageRole::Assistant, &"A long response paragraph.\n\n".repeat(40)).unwrap();
+            }
+            s.switch_chat(chat, window, cx);
+            s.transcript.set_offset(point(px(0.),px(0.)));
+            ids
+        });
+        window.render_frame(cx);
+        app.update(cx, |s,cx| { s.transcript.set_offset(point(px(0.),px(0.))); cx.notify(); });
+        window.render_frame(cx);
+        assert!(window.try_find("conversation-navigation-rail").is_none());
+        let composer = app.read(cx).composer.clone();
+        window.click(("input",composer.entity_id()),cx);
+        window.press("alt-down",cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).transcript.offset().y < px(-100.));
+        let offset = app.read(cx).transcript.offset();
+        window.press("alt-shift-down",cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).transcript.offset(),offset);
+        window.press("alt-up",cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).transcript.offset().y > offset.y);
+        let fourth = app.update(cx, |s,cx| {
+            let chat = s.active.clone();
+            let id = s.workspace.append_message(&chat,native_core::MessageRole::User,"Question four").unwrap();
+            s.workspace.append_message(&chat,native_core::MessageRole::Assistant,&"Final answer.\n\n".repeat(40)).unwrap();
+            cx.notify();
+            id
+        });
+        window.render_frame(cx);
+        assert_eq!(window.find("conversation-navigation-rail").bounds().size.width,px(36.));
+        window.hover(gpui_kit::SharedString::from(format!("conversation-marker-{}",fourth)),cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).navigation_hover.as_deref(),Some(fourth.as_str()));
+        window.click(gpui_kit::SharedString::from(format!("conversation-marker-{}",fourth)),cx);
+        window.render_frame(cx);
+        let s=app.read(cx);
+        let target=s.transcript.bounds_for_item(6).unwrap().top()+s.transcript.offset().y;
+        assert!((target-s.transcript.bounds().top()).abs() <= px(1.));
+        ids
+    }).unwrap();
+    assert_eq!(ids.len(),3);
+    cx.simulate_window_resize(handle,size(px(1211.),px(1000.)));
+    cx.update_window(handle,|_,window,cx| {
+        window.render_frame(cx);
+        assert!(window.try_find("conversation-navigation-rail").is_none());
+    }).unwrap();
+    cx.simulate_window_resize(handle,size(px(1212.),px(1000.)));
+    cx.update_window(handle,|_,window,cx| {
+        window.render_frame(cx);
+        assert!(window.try_find("conversation-navigation-rail").is_some());
+    }).unwrap();
+}

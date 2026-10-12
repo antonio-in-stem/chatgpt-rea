@@ -210,3 +210,7 @@ The previous manual Blur event was removed. GPUI window.rs:3536 suppresses previ
 ## Shell composition checkpoint
 
 45native-workspace and13native-settings tests pass after the rail/sidebar/frame and Windows font changes. Build and Package.ps1 succeed. native-workspace.exe56110592bytes SHA256dba0f6250498712bc60c7b78050651d9e02ad544944a70e20ebfa3125766e91d. See catalog/SHELL-REFERENCE.md for source vs screenshot adjustments, capture limitations and major remaining gaps. Goal not complete.
+
+## Conversation navigation checkpoint
+
+47native-workspace tests pass. Real pointer/keyboard/resize checks cover marker visibility, jump alignment and hidden-rail shortcuts. Build+Package succeed; native-workspace.exe56154624bytes SHA25604d589f1fd507772f81c273a051015f6f17f34cb01543a873341b34d6c34896e. Inspected qa/native-navigation-11.png. Remaining fidelity limitations catalog/SHELL-REFERENCE.md.

@@ -337,7 +337,8 @@ impl WorkspaceApp {
                 .into_any_element();
         }
         let mut messages = div()
-            .id("chat-transcript")
+            .id("chat-transcript").test_support()
+            .on_scroll_wheel(cx.listener(|s, _, _, cx| { s.navigation_motion.take(); cx.notify(); }))
             .track_scroll(&self.transcript)
             .flex_1()
             .min_h_0()
@@ -357,7 +358,8 @@ impl WorkspaceApp {
             .size_full()
             .flex()
             .flex_col()
-            .child(messages)
+            .child(div().relative().flex_1().min_h_0().flex().flex_col()
+                .child(messages).child(self.conversation_rail(window, cx)))
             .child(
                 div()
                     .px(px(24.))

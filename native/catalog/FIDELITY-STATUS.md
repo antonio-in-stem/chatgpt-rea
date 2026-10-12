@@ -41,3 +41,5 @@ Project Name/Updated headers now toggle source default directions, reorder rows 
 ## Current priority: supplied Windows shell screenshot
 
 See SHELL-REFERENCE.md. Native rail/contextual sidebar/frame are now separated; source SVGs and screenshot-calibrated shell geometry are implemented. Sidebar project groups collapse and retain navigation; full original rail/sidebar/canvas/composer behavior remains incomplete. Source default and screenshot measurements differ; do not mark this exact.
+
+Conversation canvas now has functional user-message navigation markers and independent Alt+Up/Down. Geometry/hover/click/hidden-rail keyboard tested; preview/scrub/focus/animations and other source interactions remain pending in SHELL-REFERENCE.md.
