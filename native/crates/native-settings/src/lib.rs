@@ -20,6 +20,7 @@ pub struct Settings {
     pub instructions: String,
     pub theme: String,
     pub font_size: u8,
+    pub code_font_size: u8,
     pub reduced_motion: bool,
     pub notifications: bool,
     pub sound: bool,
@@ -36,6 +37,7 @@ impl Default for Settings {
             instructions: "Keep answers clear and concise.".into(),
             theme: "Dark".into(),
             font_size: 14,
+            code_font_size: 12,
             reduced_motion: false,
             notifications: true,
             sound: false,
@@ -59,8 +61,11 @@ impl Default for Settings {
 }
 impl Settings {
     pub fn validate(&self) -> Result<(), String> {
-        if !(12..=24).contains(&self.font_size) {
-            return Err("Font size must be between 12 and 24.".into());
+        if !(11..=16).contains(&self.font_size) {
+            return Err("UI font size must be between 11 and 16.".into());
+        }
+        if !(8..=24).contains(&self.code_font_size) {
+            return Err("Code font size must be between 8 and 24.".into());
         }
         if !["Light", "Dark"].contains(&self.theme.as_str()) {
             return Err("Choose Light or Dark.".into());
@@ -100,7 +105,15 @@ impl Settings {
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(Self::default()),
             Err(e) => return Err(e.to_string()),
         };
-        let value: Self = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+        let document: serde_json::Value =
+            serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+        let legacy_fonts = document.get("code_font_size").is_none();
+        let mut value: Self = serde_json::from_value(document).map_err(|e| e.to_string())?;
+        // Earlier demo builds allowed 12-24px UI text. Normalize only that
+        // known legacy range; malformed values still enter explicit recovery.
+        if legacy_fonts && (12..=24).contains(&value.font_size) {
+            value.font_size = value.font_size.clamp(11, 16);
+        }
         value.validate()?;
         Ok(value)
     }
@@ -190,6 +203,7 @@ pub struct SettingsSurface {
     voice: Choice,
     language: Choice,
     font: Entity<SliderState>,
+    code_font: Entity<SliderState>,
     pending_connection: Option<String>,
     voice_preview: bool,
     load_blocked: bool,
@@ -257,10 +271,17 @@ impl SettingsSurface {
         );
         let font = cx.new(|_| {
             SliderState::new()
-                .min(12.)
-                .max(24.)
+                .min(11.)
+                .max(16.)
                 .step(1.)
                 .default_value(config.font_size as f32)
+        });
+        let code_font = cx.new(|_| {
+            SliderState::new()
+                .min(8.)
+                .max(24.)
+                .step(1.)
+                .default_value(config.code_font_size as f32)
         });
         Self {
             section_focus: SECTIONS.iter().map(|_| cx.focus_handle()).collect(),
@@ -276,6 +297,7 @@ impl SettingsSurface {
             voice,
             language,
             font,
+            code_font,
             pending_connection: None,
             voice_preview: false,
             load_blocked: error,
@@ -309,6 +331,9 @@ impl SettingsSurface {
             .unwrap_or("English".into());
         if let SliderValue::Single(v) = self.font.read(cx).value() {
             self.config.font_size = v.round() as u8;
+        }
+        if let SliderValue::Single(v) = self.code_font.read(cx).value() {
+            self.config.code_font_size = v.round() as u8;
         }
     }
     pub fn current_settings(&self) -> &Settings {
@@ -422,10 +447,17 @@ impl SettingsSurface {
         );
         self.font = cx.new(|_| {
             SliderState::new()
-                .min(12.)
-                .max(24.)
+                .min(11.)
+                .max(16.)
                 .step(1.)
                 .default_value(config.font_size as f32)
+        });
+        self.code_font = cx.new(|_| {
+            SliderState::new()
+                .min(8.)
+                .max(24.)
+                .step(1.)
+                .default_value(config.code_font_size as f32)
         });
         self.config = config;
     }
@@ -445,6 +477,7 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
     // Theme::update reconciles legacy colors into semantic tokens and refreshes windows.
     Theme::update(cx, |theme| {
         theme.font_size = px(config.font_size as f32);
+        theme.mono_font_size = px(config.code_font_size as f32);
         let dark = config.theme == "Dark";
         let background: Hsla = rgb(if dark { 0x181818 } else { 0xffffff }).into();
         let foreground: Hsla = rgb(if dark { 0xdfdfdf } else { 0x1a1c1f }).into();
@@ -599,7 +632,7 @@ impl Render for SettingsSurface {
                 .child(settings_divider(cx))
                 .child(settings_row(
                     "UI font size",
-                    "12–24 px",
+                    "11–16 px",
                     Slider::new(&self.font),
                     cx,
                 ))
@@ -611,6 +644,13 @@ impl Render for SettingsSurface {
                         .text_size(px(self.font.read(cx).value().start()))
                         .child("The quick brown fox jumps over the lazy dog."),
                 )
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "Code font size",
+                    "8–24 px",
+                    Slider::new(&self.code_font),
+                    cx,
+                ))
                 .child(settings_divider(cx))
                 .child(settings_row(
                     "Reduce motion",
@@ -998,6 +1038,27 @@ mod tests {
         assert!(s.validate().is_err());
     }
     #[test]
+    fn legacy_font_range_migrates_without_rewriting_original() {
+        let path =
+            std::env::temp_dir().join(format!("native-font-migration-{}.json", super::unique_stamp()));
+        let original = br#"{"font_size":24}"#;
+        std::fs::write(&path, original).unwrap();
+        let loaded = Settings::load(&path).unwrap();
+        assert_eq!(loaded.font_size, 16);
+        assert_eq!(loaded.code_font_size, 12);
+        assert_eq!(std::fs::read(&path).unwrap(), original);
+        std::fs::remove_file(path).unwrap();
+        let mut settings = Settings::default();
+        for value in [8, 24] {
+            settings.code_font_size = value;
+            assert!(settings.validate().is_ok());
+        }
+        for value in [7, 25] {
+            settings.code_font_size = value;
+            assert!(settings.validate().is_err());
+        }
+    }
+    #[test]
     fn invalid_font_rejected() {
         let mut s = Settings::default();
         s.font_size = 80;
@@ -1047,9 +1108,9 @@ mod tests {
         ));
         let mut settings = Settings::default();
         settings.save(&path).unwrap();
-        settings.font_size = 18;
+        settings.font_size = 16;
         settings.save(&path).unwrap();
-        assert_eq!(Settings::load(&path).unwrap().font_size, 18);
+        assert_eq!(Settings::load(&path).unwrap().font_size, 16);
         std::fs::remove_file(path).unwrap();
     }
     #[test]

@@ -340,3 +340,9 @@ Menu follow-up: pointer tests exposed a submenu hit-test issue outside its paren
 ## Electron dialog scrim correction
 
 The shared CSS line 5688 defines `--color-dialog-overlay: #0002` (black, alpha 2/15). The dialog primitive consumes it at app-shared JS272559/273213. CSS6029–6034 overrides it only for the extension host, not Electron. All three native modal backdrops now use `native_ui::tokens::dialog_overlay()` instead of unrelated alpha 0x44/0x88 approximations. This corrects backdrop opacity only; panel surfaces, shadows and original-window pixel comparison remain separate verification work.
+
+## Font preferences recovered from the Electron host
+
+`app-shared-737655e1fb23.js:105389,105433,105440` defines UI 14px (11–16) and code 12px (8–24). Native settings now expose and persist both, updating Theme.font_size and mono_font_size; GPUI base text/node.rs consumes the synchronized mono_md token for code blocks. Legacy demo files without code_font_size normalize their formerly valid 12–24 UI range to 11–16 in memory only. Invalid data still requires explicit recovery.
+
+Source app-initial:449756/449966 also scales UI tokens by round(base * UI / 14); many native explicit pixel sizes still bypass that scaling. Source step-font-size changes both preferences, and zoom is independent (0.5–3). Those behaviors and custom UI/content/code families remain unported. Default UI stack CSS3643 resolves Segoe UI on standard Windows; OpenAI Sans preference is gated off by wVs=false in this shipped build.

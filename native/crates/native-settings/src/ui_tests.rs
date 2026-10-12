@@ -80,10 +80,11 @@ fn theme_and_font_apply_from_native_controls_and_persist(cx: &mut TestAppContext
     let storage = Storage::new();
     let mut initial = Settings::default();
     initial.theme = "Dark".into();
-    initial.font_size = 14;
+    initial.font_size = 11;
     initial.save(&storage.file()).unwrap();
     let (handle, view) = open(cx, &storage);
     let font = cx.update(|cx| view.read(cx).font.clone());
+    let code_font = cx.update(|cx| view.read(cx).code_font.clone());
     cx.update_window(handle, |_, window, cx| {
         window.render_frame(cx);
         window.within("settings-sections").click(1usize, cx);
@@ -99,6 +100,8 @@ fn theme_and_font_apply_from_native_controls_and_persist(cx: &mut TestAppContext
         window.render_frame(cx);
         window.click(("slider", font.entity_id()), cx);
         window.render_frame(cx);
+        window.click(("slider", code_font.entity_id()), cx);
+        window.render_frame(cx);
         window.click("settings-save", cx);
         window.render_frame(cx);
         assert!(!view.read(cx).error, "{}", view.read(cx).message);
@@ -106,15 +109,19 @@ fn theme_and_font_apply_from_native_controls_and_persist(cx: &mut TestAppContext
         assert!(!cx.theme().mode.is_dark());
         let configured = view.read(cx).config.font_size;
         assert_ne!(
-            configured, 14,
+            configured, 11,
             "Slider interaction must change the fixture value"
         );
         assert_eq!(cx.theme().font_size, px(configured as f32));
+        let code_size = view.read(cx).config.code_font_size;
+        assert_ne!(code_size, 12);
+        assert_eq!(cx.theme().mono_font_size, px(code_size as f32));
     })
     .unwrap();
     let saved = Settings::load(&storage.file()).unwrap();
     assert_eq!(saved.theme, "Light");
-    assert_ne!(saved.font_size, 14);
+    assert_ne!(saved.font_size, 11);
+    assert_ne!(saved.code_font_size, 12);
 }
 
 #[gpui_kit::test]
