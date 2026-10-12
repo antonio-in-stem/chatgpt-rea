@@ -14,7 +14,7 @@ pub fn workspace() -> Workspace {
     w.set_pinned(&c, true).unwrap();
     w.append_message(&c, MessageRole::User, "Help me design a focused workspace.")
         .unwrap();
-    w.append_message(&c,MessageRole::Assistant,"## Make room for your ideas\n\nA good workspace starts with **clear priorities** and useful tools close at hand.\n\n1. Keep the sidebar quiet.\n2. Let conversations and documents share the same space.\n3. Make every action easy to undo.\n\n> This is a local demo. Explore the editors, tools and settings from the sidebar.\n\n```rust\nfn main() {\n    println!(\"Build something thoughtful.\");\n}\n```").unwrap();
+    w.append_message(&c,MessageRole::Assistant,"## Make room for your ideas\n\nA good workspace starts with **clear priorities** and useful tools close at hand.\n\n1. Keep the sidebar quiet.\n2. Let conversations and documents share the same space.\n3. Make every action easy to undo.\n\n```rust\nfn main() {\n    println!(\"Build something thoughtful.\");\n}\n```").unwrap();
     let c = w.create_conversation();
     w.rename_conversation(&c, "Weekend reading list").unwrap();
     w.append_message(&c, MessageRole::User, "Organize my reading notes.")
@@ -26,11 +26,10 @@ pub fn workspace() -> Workspace {
 }
 pub fn response(prompt: &str) -> String {
     format!(
-        "## Let's explore that\n\nYou asked: **{}**\n\nThis response is a deterministic **local demo**, streamed to demonstrate the interface.\n\n- Open **Library** to edit a document.\n- Try **Code review** to compare changes and add comments.\n- Visit **Apps** or **Scheduled tasks** for more interactive flows.\n\nYou can stop this response, copy it, or branch the conversation. Nothing was sent to a server.",
+        "Here is a starting point for **{}**.\n\nBegin with the outcome you want, then break it into a few manageable steps:\n\n1. Write down the most important constraint.\n2. Sketch a first version that addresses it.\n3. Review what works and refine the details.\n\nKeep the first version small enough to try and clear enough to discuss.",
         prompt.chars().take(180).collect::<String>()
     )
 }
-
 #[cfg(test)]
 mod tests {
     #[test]
@@ -47,9 +46,9 @@ mod tests {
         );
     }
     #[test]
-    fn response_is_explicitly_demo() {
+    fn response_preserves_prompt_and_has_readable_structure() {
         let response = super::response("hello");
-        assert!(response.contains("local demo"));
+        assert!(response.contains("1. Write down"));
         assert!(response.contains("hello"));
     }
 }

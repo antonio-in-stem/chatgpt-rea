@@ -25,7 +25,7 @@ $matches=[Collections.Generic.List[IntPtr]]::new()
  if($owner -eq $DemoProcessId){
   $title=[Text.StringBuilder]::new(512)
   [DemoWindowCapture]::GetWindowText($handle,$title,512)|Out-Null
-  if($title.ToString().StartsWith('Native Workspace')){$matches.Add($handle)}
+  if(($title.ToString().StartsWith('ChatGPT') -or $title.ToString().StartsWith('Native Workspace'))){$matches.Add($handle)}
  }
  return $true
 },[IntPtr]::Zero)|Out-Null

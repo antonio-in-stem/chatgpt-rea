@@ -196,15 +196,14 @@ pub struct SettingsSurface {
     section_focus: Vec<FocusHandle>,
 }
 impl EventEmitter<SettingsChanged> for SettingsSurface {}
-const SECTIONS: [&str; 8] = [
+const SECTIONS: [&str; 7] = [
     "General",
     "Appearance",
     "Personalization",
     "Notifications",
     "Voice",
     "Connections",
-    "Accessibility",
-    "Keyboard",
+    "Keyboard shortcuts",
 ];
 fn choice(options: &[&str], selected: &str, window: &mut Window, cx: &mut App) -> Choice {
     let index = options.iter().position(|x| *x == selected).unwrap_or(0);
@@ -340,7 +339,7 @@ impl SettingsSurface {
     }
     fn did_save(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         apply_theme(&self.config, window, cx);
-        self.message="Saved locally. Theme and font size applied. Reduced-motion preference is stored and emitted; this kit has no global reduced-motion switch.".into();
+        self.message = "Changes saved on this device.".into();
         self.error = false;
         cx.emit(SettingsChanged {
             settings: self.config.clone(),
@@ -432,7 +431,7 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
     Theme::update(cx, |theme| {
         theme.font_size = px(config.font_size as f32);
         let dark = config.theme == "Dark";
-        let background: Hsla = rgb(if dark { 0x212121 } else { 0xffffff }).into();
+        let background: Hsla = rgb(if dark { 0x181818 } else { 0xffffff }).into();
         let foreground: Hsla = rgb(if dark { 0xdfdfdf } else { 0x1a1c1f }).into();
         let sidebar: Hsla = rgb(if dark { 0x181818 } else { 0xf9f9f9 }).into();
         let muted: Hsla = rgb(if dark { 0x303030 } else { 0xf9f9f9 }).into();
@@ -478,15 +477,67 @@ fn apply_theme(config: &Settings, window: &mut Window, cx: &mut App) {
         c.switch_thumb = on_primary;
     });
 }
+// Extracted SettingsRow: XBi/nVi in app-shared-737655e1fb23.js.
+// Physical pixel values follow the Electron host's 13px text-sm and 4px spacing.
 fn label(text: impl Into<SharedString>) -> Div {
-    div().text_sm().child(text.into())
+    div().text_size(px(13.)).child(text.into())
+}
+fn settings_row(title: &str, description: &str, control: impl IntoElement, cx: &App) -> Div {
+    div()
+        .flex()
+        .items_center()
+        .justify_between()
+        .gap(px(24.))
+        .px(px(16.))
+        .py(px(12.))
+        .child(
+            div()
+                .flex_1()
+                .min_w_0()
+                .flex()
+                .flex_col()
+                .gap(px(2.))
+                .child(
+                    div()
+                        .text_size(px(13.))
+                        .font_weight(FontWeight::MEDIUM)
+                        .child(title.to_owned()),
+                )
+                .when(!description.is_empty(), |el| {
+                    el.child(
+                        div()
+                            .text_size(px(12.))
+                            .text_color(cx.theme().muted_foreground)
+                            .child(description.to_owned()),
+                    )
+                }),
+        )
+        .child(
+            div()
+                .w(px(160.))
+                .flex_shrink_0()
+                .flex()
+                .justify_end()
+                .items_center()
+                .child(control),
+        )
+}
+fn settings_group(cx: &App) -> Div {
+    div()
+        .flex()
+        .flex_col()
+        .border_1()
+        .border_color(cx.theme().border)
+        .rounded(px(16.))
+}
+fn settings_divider(cx: &App) -> Div {
+    div().h(px(1.)).mx(px(16.)).bg(cx.theme().border)
 }
 impl Render for SettingsSurface {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let colors = cx.theme();
         let bg = colors.background;
         let fg = colors.foreground;
-        let border = colors.border;
         let muted = colors.muted_foreground;
         if self.load_blocked {
             return div().size_full().bg(bg).text_color(fg).p_6().flex().flex_col().gap_4()
@@ -504,224 +555,271 @@ impl Render for SettingsSurface {
                     })))
                 .into_any_element();
         }
-        let mut body = div().flex().flex_col().gap_4();
-        match self.section {
-            0 => {
-                body=body.child(label("Display name")).child(Input::new(&self.name))
-                .child(label("Preferred language · demo preference")).child(Select::new(&self.language).id("settings-language").accessibility_label("Preferred language (demo)"))
-                .child(label("Language is stored as a demo preference; this interface remains in English. No account or service is changed."));
-            }
-            1 => {
-                body = body
-                    .child(label("Color theme"))
-                    .child(
-                        Select::new(&self.theme)
-                            .id("settings-theme")
-                            .accessibility_label("Color theme"),
-                    )
-                    .child(label("Text size · 12–24 px"))
-                    .child(Slider::new(&self.font))
-                    .child(
-                        div()
-                            .p_4()
-                            .border_1()
-                            .border_color(border)
-                            .rounded_lg()
-                            .text_size(px(self.font.read(cx).value().start()))
-                            .child("The quick brown fox jumps over the lazy dog."),
-                    )
-                    .child(label(
-                        "Save changes to apply the selected application theme.",
-                    ));
-            }
-            2 => {
-                body = body
-                    .child(label("How should the assistant respond?"))
-                    .child(Input::new(&self.instructions))
-                    .child(
-                        Switch::new("memory")
-                            .label("Remember demo preferences")
-                            .checked(self.config.memory)
-                            .on_change(cx.listener(|s, v, _, cx| {
-                                s.config.memory = *v;
-                                cx.notify();
-                            })),
-                    )
-                    .child(label(
-                        "Personalization is local demo data; it is not sent to a model.",
-                    ));
-            }
-            3 => {
-                body = body
-                    .child(
-                        Switch::new("notify")
-                            .label("Show completion notifications")
-                            .checked(self.config.notifications)
-                            .on_change(cx.listener(|s, v, _, cx| {
-                                s.config.notifications = *v;
-                                cx.notify();
-                            })),
-                    )
-                    .child(
-                        Switch::new("sound")
-                            .label("Notification sound preference")
-                            .checked(self.config.sound)
-                            .on_change(cx.listener(|s, v, _, cx| {
-                                s.config.sound = *v;
-                                cx.notify();
-                            })),
-                    )
-                    .child(
-                        Button::new("test-notification")
-                            .tooltip("Show a local demo notification preview")
-                            .label("Preview notification")
-                            .on_click(cx.listener(|s, _, _, cx| {
-                                s.message = if s.config.notifications {
-                                    "Demo notification: Your task is ready."
-                                } else {
-                                    "Notifications are off. Enable them to preview."
-                                }
-                                .into();
-                                s.error = false;
-                                cx.notify();
-                            })),
-                    );
-            }
-            4 => {
-                body = body
-                    .child(label("Voice"))
-                    .child(
-                        Select::new(&self.voice)
-                            .id("settings-voice")
-                            .accessibility_label("Demo voice"),
-                    )
-                    .child(label(
-                        "Simulated voice preview — no microphone, synthesis or audio service.",
-                    ))
-                    .child(
-                        Button::new("voice-play")
-                            .tooltip("Simulate a preview; no audio is played")
-                            .label(if self.voice_preview {
-                                "Stop simulated preview"
+        let body = match self.section {
+            0 => settings_group(cx)
+                .child(settings_row(
+                    "Display name",
+                    "Used in this local profile.",
+                    Input::new(&self.name),
+                    cx,
+                ))
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "Language",
+                    "Preferred language for the demo.",
+                    Select::new(&self.language)
+                        .id("settings-language")
+                        .accessibility_label("Preferred language (demo)"),
+                    cx,
+                )),
+            1 => settings_group(cx)
+                .child(settings_row(
+                    "Theme",
+                    "Choose how the app looks on your device.",
+                    Select::new(&self.theme)
+                        .id("settings-theme")
+                        .accessibility_label("Color theme"),
+                    cx,
+                ))
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "UI font size",
+                    "12–24 px",
+                    Slider::new(&self.font),
+                    cx,
+                ))
+                .child(
+                    div()
+                        .px(px(16.))
+                        .pb(px(12.))
+                        .text_color(muted)
+                        .text_size(px(self.font.read(cx).value().start()))
+                        .child("The quick brown fox jumps over the lazy dog."),
+                )
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "Reduce motion",
+                    "Use fewer interface animations.",
+                    Switch::new("reduced-motion")
+                        .accessibility_label("Reduce motion")
+                        .checked(self.config.reduced_motion)
+                        .on_change(cx.listener(|s, v, _, cx| {
+                            s.config.reduced_motion = *v;
+                            cx.notify();
+                        })),
+                    cx,
+                )),
+            2 => settings_group(cx)
+                .child(
+                    div()
+                        .px(px(16.))
+                        .py(px(12.))
+                        .flex()
+                        .flex_col()
+                        .gap(px(8.))
+                        .child(label("Custom instructions"))
+                        .child(Input::new(&self.instructions)),
+                )
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "Memory",
+                    "Remember preferences in this demo.",
+                    Switch::new("memory")
+                        .accessibility_label("Memory")
+                        .checked(self.config.memory)
+                        .on_change(cx.listener(|s, v, _, cx| {
+                            s.config.memory = *v;
+                            cx.notify();
+                        })),
+                    cx,
+                )),
+            3 => settings_group(cx)
+                .child(settings_row(
+                    "Notifications",
+                    "Show a notification when a task finishes.",
+                    Switch::new("notify")
+                        .accessibility_label("Notifications")
+                        .checked(self.config.notifications)
+                        .on_change(cx.listener(|s, v, _, cx| {
+                            s.config.notifications = *v;
+                            cx.notify();
+                        })),
+                    cx,
+                ))
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "Sound",
+                    "Play a sound with notifications.",
+                    Switch::new("sound")
+                        .accessibility_label("Sound")
+                        .checked(self.config.sound)
+                        .on_change(cx.listener(|s, v, _, cx| {
+                            s.config.sound = *v;
+                            cx.notify();
+                        })),
+                    cx,
+                ))
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "Preview",
+                    "Local notification preview.",
+                    Button::new("test-notification")
+                        .label("Preview")
+                        .on_click(cx.listener(|s, _, _, cx| {
+                            s.message = if s.config.notifications {
+                                "Demo notification: Your task is ready."
                             } else {
-                                "Play simulated preview"
-                            })
-                            .on_click(cx.listener(|s, _, _, cx| {
-                                s.voice_preview = !s.voice_preview;
+                                "Notifications are off. Enable them to preview."
+                            }
+                            .into();
+                            s.error = false;
+                            cx.notify();
+                        })),
+                    cx,
+                )),
+            4 => settings_group(cx)
+                .child(settings_row(
+                    "Voice",
+                    "Select a voice for the demo.",
+                    Select::new(&self.voice)
+                        .id("settings-voice")
+                        .accessibility_label("Demo voice"),
+                    cx,
+                ))
+                .child(settings_divider(cx))
+                .child(settings_row(
+                    "Preview voice",
+                    "Simulated preview; no audio is played.",
+                    Button::new("voice-play")
+                        .label(if self.voice_preview {
+                            "Stop preview"
+                        } else {
+                            "Play preview"
+                        })
+                        .on_click(cx.listener(|s, _, _, cx| {
+                            s.voice_preview = !s.voice_preview;
+                            cx.notify();
+                        })),
+                    cx,
+                ))
+                .when(self.voice_preview, |el| {
+                    el.child(
+                        div()
+                            .px(px(16.))
+                            .pb(px(12.))
+                            .text_color(muted)
+                            .child("▂ ▅ ▃ ▆ ▄  Hello, how can I help?"),
+                    )
+                }),
+            5 => {
+                let mut group = settings_group(cx);
+                for (index, provider) in ["Google Drive", "GitHub", "Calendar"].iter().enumerate() {
+                    let connected = *self.config.connections.get(*provider).unwrap_or(&false);
+                    let p = provider.to_string();
+                    if index > 0 {
+                        group = group.child(settings_divider(cx));
+                    }
+                    group = group.child(settings_row(
+                        provider,
+                        if connected {
+                            "Connected · demo"
+                        } else {
+                            "Not connected"
+                        },
+                        Button::new(SharedString::from(format!("connect-{provider}")))
+                            .label(if connected { "Disconnect" } else { "Connect" })
+                            .on_click(cx.listener(move |s, _, _, cx| {
+                                if connected {
+                                    s.config.connections.insert(p.clone(), false);
+                                } else {
+                                    s.pending_connection = Some(p.clone());
+                                }
                                 cx.notify();
                             })),
-                    )
-                    .child(label(if self.voice_preview {
-                        "▂ ▅ ▃ ▆ ▄  Preview playing (simulation): Hello, how can I help?"
-                    } else {
-                        "Preview stopped."
-                    }));
-            }
-            5 => {
-                body = body.child(label("Demo connections · no OAuth and no network access."));
-                for provider in ["Google Drive", "GitHub", "Calendar"] {
-                    let connected = *self.config.connections.get(provider).unwrap_or(&false);
-                    let p = provider.to_string();
-                    body = body.child(
+                        cx,
+                    ));
+                }
+                if let Some(p) = self.pending_connection.clone() {
+                    group = group.child(settings_divider(cx)).child(
                         div()
+                            .p(px(16.))
                             .flex()
-                            .items_center()
-                            .justify_between()
-                            .gap_4()
+                            .flex_col()
+                            .gap(px(12.))
                             .child(label(format!(
-                                "{provider} · {}",
-                                if connected {
-                                    "Connected (demo)"
-                                } else {
-                                    "Not connected"
-                                }
+                                "Allow {p} in this demo? This changes only local sample state."
                             )))
                             .child(
-                                Button::new(SharedString::from(format!("connect-{provider}")))
-                                    .label(if connected {
-                                        "Disconnect"
-                                    } else {
-                                        "Connect demo"
-                                    })
-                                    .on_click(cx.listener(move |s, _, _, cx| {
-                                        if connected {
-                                            s.config.connections.insert(p.clone(), false);
-                                        } else {
-                                            s.pending_connection = Some(p.clone());
-                                        }
-                                        cx.notify();
-                                    })),
+                                div()
+                                    .flex()
+                                    .justify_end()
+                                    .gap(px(8.))
+                                    .child(
+                                        Button::new("cancel-connection").label("Cancel").on_click(
+                                            cx.listener(|s, _, _, cx| {
+                                                s.pending_connection = None;
+                                                cx.notify();
+                                            }),
+                                        ),
+                                    )
+                                    .child(
+                                        Button::new("confirm-connection")
+                                            .primary()
+                                            .label("Allow demo connection")
+                                            .on_click(cx.listener(|s, _, _, cx| {
+                                                if let Some(p) = s.pending_connection.take() {
+                                                    s.config.connections.insert(p, true);
+                                                }
+                                                cx.notify();
+                                            })),
+                                    ),
                             ),
                     );
                 }
-                if let Some(p) = self.pending_connection.clone() {
-                    body = body.child(
-                        div()
-                            .p_4()
-                            .border_1()
-                            .border_color(border)
-                            .rounded_lg()
-                            .flex()
-                            .flex_col()
-                            .gap_3()
-                            .child(label(format!(
-                                "Allow {p} in this demo? This only changes local sample state."
-                            )))
-                            .child(
-                                Button::new("confirm-connection")
-                                    .primary()
-                                    .label("Allow demo connection")
-                                    .on_click(cx.listener(|s, _, _, cx| {
-                                        if let Some(p) = s.pending_connection.take() {
-                                            s.config.connections.insert(p, true);
-                                        }
-                                        cx.notify();
-                                    })),
-                            )
-                            .child(Button::new("cancel-connection").label("Cancel").on_click(
-                                cx.listener(|s, _, _, cx| {
-                                    s.pending_connection = None;
-                                    cx.notify();
-                                }),
-                            )),
-                    );
-                }
-            }
-            6 => {
-                body=body.child(Switch::new("reduced-motion").label("Prefer reduced motion").checked(self.config.reduced_motion)
-                .on_change(cx.listener(|s,v,_,cx|{s.config.reduced_motion=*v;cx.notify();})))
-                .child(label("Preference is saved and sent to the application. The component kit has no global reduced-motion switch; this screen uses static transitions."))
-                .child(label("Use Tab and Shift+Tab to move between native controls. Font size is available in Appearance."));
+                group
             }
             _ => {
-                body=body.child(label("Edit demo shortcut mappings. Use Ctrl, Alt, Shift or Win plus a key. Duplicates are rejected on save."))
-                .child(label("Stored mappings are a demo configuration; operating-system shortcuts are not registered."));
-                for (name, input) in &self.hotkeys {
-                    body = body.child(label(name.clone())).child(Input::new(input));
+                let mut group = settings_group(cx);
+                for (index, (name, input)) in self.hotkeys.iter().enumerate() {
+                    if index > 0 {
+                        group = group.child(settings_divider(cx));
+                    }
+                    group = group.child(settings_row(name, "", Input::new(input), cx));
                 }
+                group
             }
-        }
+        };
         div()
             .size_full()
             .bg(bg)
             .text_color(fg)
             .flex()
-            .p_6()
-            .gap_6()
+            .text_size(px(13.))
+            .gap_0()
             .child(
                 div()
-                    .w(px(190.))
+                    .w(px(220.))
                     .flex_shrink_0()
                     .flex()
                     .flex_col()
                     .gap_2()
-                    .child(div().text_xl().mb_4().child("Settings"))
+                    .bg(cx.theme().sidebar)
+                    .p(px(8.))
+                    .pt(px(16.))
+                    .child(
+                        div()
+                            .h(px(30.))
+                            .px(px(8.))
+                            .text_size(px(13.))
+                            .font_weight(FontWeight::MEDIUM)
+                            .child("Settings"),
+                    )
                     .child(
                         gpui_kit::base::RadioGroup::new("settings-sections")
                             .axis(Axis::Vertical)
                             .flex()
                             .flex_col()
-                            .gap_2()
+                            .gap_0()
                             .children(SECTIONS.iter().enumerate().map(|(i, title)| {
                                 // The upstream styled group supplies semantics but no arrow navigation.
                                 // Owned handles keep focus and the controlled selection on the same item.
@@ -731,8 +829,11 @@ impl Render for SettingsSurface {
                                     .tab_stop(i == self.section)
                                     .accessibility_label(*title)
                                     .set_position(i + 1, SECTIONS.len())
-                                    .p_2()
-                                    .rounded_md()
+                                    .h(px(30.))
+                                    .px(px(8.))
+                                    .flex()
+                                    .items_center()
+                                    .rounded(px(10.))
                                     .bg(if i == self.section {
                                         cx.theme().muted
                                     } else {
@@ -778,11 +879,24 @@ impl Render for SettingsSurface {
                     .flex()
                     .flex_col()
                     .gap_5()
-                    .child(div().text_2xl().child(SECTIONS[self.section]))
-                    .child(body)
+                    .p(px(20.))
                     .child(
                         div()
-                            .mt_4()
+                            .w_full()
+                            .max_w(px(768.))
+                            .mx_auto()
+                            .pb(px(12.))
+                            .text_size(px(24.))
+                            .font_weight(FontWeight::NORMAL)
+                            .child(SECTIONS[self.section]),
+                    )
+                    .child(div().w_full().max_w(px(768.)).mx_auto().child(body))
+                    .child(
+                        div()
+                            .w_full()
+                            .max_w(px(768.))
+                            .mx_auto()
+                            .mt(px(20.))
                             .flex()
                             .gap_2()
                             .child(
@@ -829,10 +943,11 @@ impl Render for SettingsSurface {
                     )
                     .child(
                         div()
-                            .p_3()
-                            .rounded_lg()
-                            .border_1()
-                            .border_color(border)
+                            .w_full()
+                            .max_w(px(768.))
+                            .mx_auto()
+                            .py(px(12.))
+                            .text_size(px(12.))
                             .text_color(if self.error {
                                 rgb(0xe56b6f).into()
                             } else {

@@ -30,240 +30,108 @@ impl WorkspaceApp {
             .label(label)
             .on_click(cx.listener(move |this, _, window, cx| this.act(action.clone(), window, cx)))
     }
-    fn nav(
+    fn chat_icon_button(
         &self,
-        label: impl Into<SharedString>,
+        icon: &'static str,
+        label: &'static str,
         key: usize,
         action: Action,
-        selected: bool,
         cx: &mut Context<Self>,
-    ) -> impl IntoElement {
+    ) -> gpui_kit::component::button::Button {
         use gpui_kit::component::button::ButtonVariants;
-        let label: SharedString = label.into();
-        gpui_kit::component::button::Button::new(("nav", key))
+        gpui_kit::component::button::Button::new(("app-btn", key))
             .ghost()
-            .w_full()
-            .label(if selected {
-                format!("● {label}")
-            } else {
-                label.to_string()
-            })
+            .w(px(28.))
+            .h(px(28.))
+            .p_0()
+            .rounded(px(8.))
+            .accessibility_label(label)
+            .tooltip(label)
+            .child(native_ui::icon(icon, 18.).text_color(cx.theme().colors.foreground))
             .on_click(cx.listener(move |this, _, window, cx| this.act(action.clone(), window, cx)))
     }
-    fn sidebar_view(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        let mut side = div()
-            .id("sidebar")
-            .w(px(250.))
-            .h_full()
-            .flex_shrink_0()
-            .bg(cx.theme().colors.sidebar)
-            .p_3()
-            .flex()
-            .flex_col()
-            .gap_1()
-            .child(
-                div()
-                    .p_3()
-                    .text_lg()
-                    .font_weight(FontWeight::SEMIBOLD)
-                    .child("◉  Workspace"),
-            )
-            .child(self.nav("＋ New chat", 0, Action::New, false, cx))
-            .child(self.nav(
-                format!(
-                        "⌕ Search chats  {}",
-                        self.settings
-                            .read(cx)
-                            .current_settings()
-                            .hotkeys
-                            .get("Search")
-                            .map(String::as_str)
-                            .unwrap_or("")
-                    ),
-                1,
-                Action::Search,
-                false,
-                cx,
-            ))
-            .child(self.nav(
-                "▣ Projects",
-                2,
-                Action::Route(Route::Projects),
-                self.route == Route::Projects,
-                cx,
-            ))
-            .child(self.nav(
-                "▤ Library",
-                3,
-                Action::Route(Route::Library),
-                self.route == Route::Library,
-                cx,
-            ));
-        for (i, label) in TOOL_LABELS.iter().enumerate() {
-            side = side.child(self.nav(
-                *label,
-                10 + i,
-                Action::Route(Route::Tool(i)),
-                self.route == Route::Tool(i),
-                cx,
-            ));
-        }
-        let mut recents = div()
-            .id("recents")
-            .track_scroll(&self.recents_scroll)
-            .flex_1()
-            .min_h_0()
-            .overflow_y_scroll()
-            .mt_4()
-            .flex()
-            .flex_col()
-            .gap_1()
-            .child(
-                div()
-                    .px_3()
-                    .py_2()
-                    .text_xs()
-                    .text_color(cx.theme().colors.muted_foreground)
-                    .child("YOUR CHATS"),
-            );
-        let mut chats = self
-            .workspace
-            .conversations
-            .iter()
-            .filter(|c| !c.archived)
-            .collect::<Vec<_>>();
-        chats.sort_by_key(|c| !c.pinned);
-        for (i, c) in chats.iter().take(self.recent_limit).enumerate() {
-            recents = recents.child(self.nav(
-                format!("{}{}", if c.pinned { "◈ " } else { "" }, c.title),
-                100 + i,
-                Action::Chat(c.id.clone()),
-                self.route == Route::Chat && self.active == c.id,
-                cx,
-            ));
-        }
-        if chats.len() > self.recent_limit {
-            recents = recents.child(self.button("Show more chats", 901, Action::ShowMoreChats, cx));
-        }
-        side.child(recents)
-            .child(
-                div()
-                    .border_t_1()
-                    .border_color(cx.theme().colors.sidebar_border)
-                    .pt_3()
-                    .child(self.nav(
-                        "⚙ Settings",
-                        4,
-                        Action::Route(Route::Settings),
-                        self.route == Route::Settings,
-                        cx,
-                    )),
-            )
-            .child(
-                div()
-                    .px_3()
-                    .py_2()
-                    .text_xs()
-                    .text_color(cx.theme().colors.muted_foreground)
-                    .child("LOCAL DEMO · RUST / GPUI"),
-            )
-    }
-    fn chat_view(&self, cx: &mut Context<Self>) -> AnyElement {
-        let chat = self.workspace.conversation(&self.active).ok();
-        let mut messages = div()
-            .id("chat-transcript")
-            .track_scroll(&self.transcript)
-            .flex_1()
-            .min_h_0()
-            .overflow_y_scroll()
-            .px_6()
-            .py_6()
-            .flex()
-            .flex_col()
-            .gap_6();
-        if let Some(chat) = chat {
-            if chat.messages.is_empty() {
-                messages = messages
-                    .child(
-                        div()
-                            .mt(px(100.))
-                            .mb_8()
-                            .text_3xl()
-                            .text_center()
-                            .child("What would you like to explore?"),
-                    )
-                    .child(div().text_center().text_color(cx.theme().colors.muted_foreground).child(
-                        "Write a message, attach a demo file, or open a tool from the sidebar.",
-                    ));
+    fn chat_message_view(
+        &mut self,
+        index: usize,
+        message: &native_core::ChatMessage,
+        window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> AnyElement {
+        let user = message.role == MessageRole::User;
+        let toolbar = if let Some(toolbar) = self.message_actions.get(&message.id) {
+            toolbar.clone()
+        } else {
+            let parent = cx.weak_entity();
+            let toolbar =
+                cx.new(|cx| ChatMessageActions::new(message.clone(), index, parent, window, cx));
+            self.message_actions
+                .insert(message.id.clone(), toolbar.clone());
+            toolbar
+        };
+        toolbar.update(cx, |toolbar, cx| {
+            if toolbar.message.content != message.content || toolbar.index != index {
+                toolbar.message = message.clone();
+                toolbar.index = index;
+                cx.notify();
             }
-            for (i, m) in chat.messages.iter().enumerate() {
-                let user = m.role == MessageRole::User;
-                let mut row = div()
-                    .w_full()
-                    .max_w(px(850.))
-                    .mx_auto()
-                    .flex()
-                    .flex_col()
-                    .gap_2();
-                let bubble = div()
-                    .p_4()
-                    .rounded_xl()
-                    .when(user, |s| {
-                        s.ml_auto().max_w(px(660.)).bg(cx.theme().colors.muted)
-                    })
-                    .child(TextView::markdown(("message", i), m.content.clone()));
-                row = row
-                    .child(div().text_xs().text_color(rgb(0x8c8c8c)).child(if user {
-                        "YOU"
-                    } else {
-                        "ASSISTANT · DEMO"
-                    }))
-                    .child(bubble);
-                let mut actions = div()
-                    .flex()
-                    .gap_2()
-                    .child(self.button("Copy", 1000 + i * 6, Action::Copy(m.content.clone()), cx))
-                    .child(self.button("Branch", 1001 + i * 6, Action::Branch(m.id.clone()), cx));
-                if user {
-                    actions = actions.child(self.button(
-                        "Edit",
-                        1002 + i * 6,
-                        Action::Edit(m.id.clone(), m.content.clone()),
-                        cx,
-                    ));
-                } else {
-                    actions = actions.child(self.button(
-                        "Regenerate",
-                        1003 + i * 6,
-                        Action::Regenerate(m.id.clone()),
-                        cx,
-                    ));
-                }
-                row = row.child(actions);
-                messages = messages.child(row);
-            }
-        }
-        let mut composer = div()
-            .max_w(px(880.))
+        });
+        let hover_target = toolbar.clone();
+        let bubble = div()
+            .text_size(px(14.))
+            .line_height(px(24.))
+            .when(user, |s| {
+                s.ml_auto()
+                    .max_w(relative(0.7))
+                    .px(px(16.))
+                    .py(px(10.))
+                    .rounded(px(22.))
+                    .bg(cx.theme().colors.muted)
+            })
+            .child(TextView::markdown(
+                ("message", index),
+                message.content.clone(),
+            ));
+        div()
+            .id(("chat-turn", index))
             .w_full()
+            .max_w(px(768.))
             .mx_auto()
-            .p_4()
-            .rounded_xl()
+            .flex()
+            .flex_col()
+            .gap(px(6.))
+            .on_hover(move |hovered, _, cx| {
+                hover_target.update(cx, |toolbar, cx| toolbar.hover(*hovered, cx))
+            })
+            .child(bubble)
+            .child(toolbar)
+            .into_any_element()
+    }
+    fn chat_composer_view(&self, cx: &mut Context<Self>) -> AnyElement {
+        use gpui_kit::component::button::ButtonVariants;
+        let mut composer = div()
+            .w_full()
+            .max_w(px(768.))
+            .mx_auto()
+            .rounded(px(22.))
             .border_1()
             .border_color(cx.theme().colors.border)
-            .bg(cx.theme().colors.muted)
+            .bg(cx.theme().colors.background)
+            .p(px(8.))
             .flex()
             .flex_col()
-            .gap_3();
+            .gap(px(4.));
         if self.edit_message.is_some() {
             composer = composer.child(
                 div()
-                    .text_sm()
-                    .child("Editing creates a new branch and preserves the original chat."),
+                    .px(px(12.))
+                    .py(px(4.))
+                    .text_size(px(12.))
+                    .text_color(cx.theme().colors.muted_foreground)
+                    .child("Editing message"),
             );
         }
         if !self.current_attachments().is_empty() {
-            let mut files = div().flex().flex_wrap().gap_2();
+            let mut files = div().flex().flex_wrap().gap(px(8.)).pb(px(6.));
             for (i, item) in self.current_attachments().iter().enumerate() {
                 let status = match item.status {
                     AttachmentStatus::Queued => "Preparing…",
@@ -273,8 +141,27 @@ impl WorkspaceApp {
                 let mut chip = div()
                     .flex()
                     .items_center()
-                    .gap_1()
-                    .child(format!("▧ {} · {status}", item.name));
+                    .gap(px(8.))
+                    .p(px(8.))
+                    .rounded(px(12.))
+                    .border_1()
+                    .border_color(cx.theme().colors.border)
+                    .child(
+                        native_ui::icon("image", 20.)
+                            .text_color(cx.theme().colors.muted_foreground),
+                    )
+                    .child(
+                        div()
+                            .flex()
+                            .flex_col()
+                            .text_size(px(12.))
+                            .child(item.name.clone())
+                            .child(
+                                div()
+                                    .text_color(cx.theme().colors.muted_foreground)
+                                    .child(status),
+                            ),
+                    );
                 if item.status == AttachmentStatus::Failed {
                     chip = chip.child(self.button(
                         "Retry",
@@ -283,178 +170,948 @@ impl WorkspaceApp {
                         cx,
                     ));
                 }
-                chip =
-                    chip.child(self.button("×", 2000 + i, Action::RemoveAttachment(item.id), cx));
+                chip = chip.child(self.chat_icon_button(
+                    "close",
+                    "Remove attachment",
+                    2000 + i,
+                    Action::RemoveAttachment(item.id),
+                    cx,
+                ));
                 files = files.child(chip);
             }
             composer = composer.child(files);
         }
-        composer = composer.child(Textarea::new(&self.composer)).child(
-            div()
-                .flex()
-                .justify_between()
-                .items_center()
-                .child(
-                    div()
-                        .flex()
-                        .gap_2()
-                        .child(self.button("＋ Attach", 200, Action::Attach, cx))
-                        .child(self.button(
-                            format!("{} ▾", MODELS[self.model_index]),
-                            201,
-                            Action::Model,
-                            cx,
-                        ))
-                        .child(self.button("♪ Voice", 202, Action::Route(Route::Rich(4)), cx)),
-                )
-                .child(self.button(
-                    if self.streaming {
-                        "■ Stop"
-                    } else {
-                        "↑ Send"
-                    },
-                    203,
-                    if self.streaming {
+        composer = composer.child(
+            div().min_h(px(44.)).px(px(4.)).flex().items_center().child(
+                Textarea::new(&self.composer)
+                    .appearance(false)
+                    .bordered(false)
+                    .w_full()
+                    .text_size(px(14.))
+                    .line_height(px(20.))
+                    .aria_label("Ask ChatGPT"),
+            ),
+        );
+        let model = gpui_kit::component::button::Button::new(("app-btn", 201usize))
+            .ghost()
+            .h(px(28.))
+            .px(px(6.))
+            .rounded(px(8.))
+            .text_size(px(13.))
+            .label(MODELS[self.model_index])
+            .child(
+                native_ui::icon("chevron-down", 12.).text_color(cx.theme().colors.muted_foreground),
+            )
+            .accessibility_label("Choose model")
+            .on_click(cx.listener(|this, _, window, cx| this.act(Action::Model, window, cx)));
+        let send = gpui_kit::component::button::Button::new(("app-btn", 203usize))
+            .ghost()
+            .w(px(28.))
+            .h(px(28.))
+            .p_0()
+            .rounded_full()
+            .bg(cx.theme().colors.foreground)
+            .accessibility_label(if self.streaming {
+                "Stop response"
+            } else {
+                "Send message"
+            })
+            .tooltip(if self.streaming {
+                "Stop response"
+            } else {
+                "Send message"
+            })
+            .child(
+                native_ui::icon(if self.streaming { "stop" } else { "send" }, 18.)
+                    .text_color(cx.theme().colors.background),
+            )
+            .on_click(cx.listener(|this, _, window, cx| {
+                this.act(
+                    if this.streaming {
                         Action::Stop
                     } else {
                         Action::Send
                     },
+                    window,
                     cx,
-                )),
-        );
-        div().size_full().flex().flex_col().child(messages).child(div().px_6().pb_3().child(composer)).child(div().pb_3().text_center().text_xs().text_color(cx.theme().colors.muted_foreground).child("Local demo responses · No account or backend connection · Ctrl+Enter to send")).into_any_element()
-    }
-    fn projects_view(&self, cx: &mut Context<Self>) -> AnyElement {
-        let mut list = div()
-            .flex()
-            .flex_col()
-            .gap_2()
-            .w(px(230.))
-            .flex_shrink_0()
-            .child(self.button("＋ New project", 300, Action::NewProject, cx));
-        for (i, p) in self.workspace.projects.iter().enumerate() {
-            list = list.child(self.nav(
-                p.name.clone(),
-                300 + i,
-                Action::Project(p.id.clone()),
-                self.project.as_deref() == Some(&p.id),
-                cx,
-            ));
-        }
-        let mut editor = div()
-            .flex_1()
-            .flex()
-            .flex_col()
-            .gap_4()
-            .child(div().text_2xl().child("Projects"))
-            .child("Organize chats and keep instructions together.")
-            .child(Input::new(&self.project_name))
-            .child(Textarea::new(&self.project_instructions))
+                )
+            }));
+        composer
             .child(
                 div()
                     .flex()
-                    .gap_2()
-                    .child(self.button("Save project", 301, Action::SaveProject, cx))
-                    .child(self.button("New chat here", 302, Action::NewProjectChat, cx)),
-            );
-        if self.project.is_some() {
-            editor = editor.child(self.button(
-                "Remove project (keep chats)",
-                303,
-                Action::DeleteProject,
-                cx,
-            ));
-            for (i, c) in self
-                .workspace
-                .conversations
-                .iter()
-                .filter(|c| c.project_id == self.project)
-                .enumerate()
-            {
-                editor = editor.child(self.nav(
-                    c.title.clone(),
-                    350 + i,
-                    Action::Chat(c.id.clone()),
-                    false,
-                    cx,
-                ));
+                    .items_center()
+                    .justify_between()
+                    .px(px(2.))
+                    .child(
+                        div()
+                            .flex()
+                            .items_center()
+                            .gap(px(4.))
+                            .child(self.chat_icon_button(
+                                "plus",
+                                "Add photos and files",
+                                200,
+                                Action::Attach,
+                                cx,
+                            ))
+                            .child(model),
+                    )
+                    .child(
+                        div()
+                            .flex()
+                            .items_center()
+                            .gap(px(6.))
+                            .child(self.chat_icon_button(
+                                "voice",
+                                "Use voice",
+                                202,
+                                Action::Route(Route::Rich(4)),
+                                cx,
+                            ))
+                            .child(send),
+                    ),
+            )
+            .into_any_element()
+    }
+    fn chat_view(&mut self, window: &mut Window, cx: &mut Context<Self>) -> AnyElement {
+        let chat = self.workspace.conversation(&self.active).ok().cloned();
+        let home = chat.as_ref().is_none_or(|chat| chat.messages.is_empty());
+        if home {
+            let headline = div()
+                .relative()
+                .text_center()
+                .text_size(px(32.))
+                .line_height(px(38.))
+                .font_weight(FontWeight::NORMAL)
+                .child("Ready when you are.");
+            let headline = if self.settings.read(cx).current_settings().reduced_motion {
+                headline.into_any_element()
+            } else {
+                headline
+                    .with_animation(
+                        SharedString::from(format!("chat-home-headline-{}", self.active)),
+                        Animation::new(Duration::from_millis(200))
+                            .with_easing(chat_motion::hero_ease_in_out),
+                        |headline, progress| {
+                            headline.opacity(progress).top(px(-4. * (1. - progress)))
+                        },
+                    )
+                    .into_any_element()
+            };
+            return div()
+                .id("chat-home")
+                .size_full()
+                .flex()
+                .flex_col()
+                .justify_center()
+                .px(px(24.))
+                .pb(px(80.))
+                .child(
+                    div()
+                        .w_full()
+                        .max_w(px(768.))
+                        .mx_auto()
+                        .flex()
+                        .flex_col()
+                        .gap(px(28.))
+                        .child(headline)
+                        .child(self.chat_composer_view(cx)),
+                )
+                .into_any_element();
+        }
+        let mut messages = div()
+            .id("chat-transcript")
+            .track_scroll(&self.transcript)
+            .flex_1()
+            .min_h_0()
+            .overflow_y_scroll()
+            .px(px(24.))
+            .pt(px(24.))
+            .pb(px(20.))
+            .flex()
+            .flex_col()
+            .gap(px(20.));
+        if let Some(chat) = chat {
+            for (index, message) in chat.messages.iter().enumerate() {
+                messages = messages.child(self.chat_message_view(index, message, window, cx));
             }
         }
         div()
             .size_full()
-            .p_6()
             .flex()
-            .gap_6()
-            .child(list)
-            .child(editor)
+            .flex_col()
+            .child(messages)
+            .child(
+                div()
+                    .px(px(24.))
+                    .pt(px(8.))
+                    .pb(px(20.))
+                    .child(self.chat_composer_view(cx)),
+            )
             .into_any_element()
     }
+    fn projects_view(&self, cx: &mut Context<Self>) -> AnyElement {
+        use gpui_kit::component::button::{Button, ButtonVariants};
+        let colors = cx.theme().colors.clone();
+        let mut content = div().w_full().max_w(px(1440.)).mx_auto().flex().flex_col();
+        let query = self.project_search.read(cx).value().trim().to_lowercase();
+        content = content.child(
+            div()
+                .h(px(76.))
+                .flex()
+                .items_center()
+                .justify_between()
+                .gap(px(16.))
+                .child(
+                    div()
+                        .text_size(px(24.))
+                        .font_weight(FontWeight::MEDIUM)
+                        .child("Projects"),
+                )
+                .child(
+                    div()
+                        .flex()
+                        .items_center()
+                        .gap(px(8.))
+                        .child(div().w(px(220.)).child(Input::new(&self.project_search)))
+                        .child(
+                            Button::new(("app-btn", 300usize))
+                                .label("New project")
+                                .on_click(
+                                    cx.listener(|s, _, w, cx| s.act(Action::NewProject, w, cx)),
+                                ),
+                        ),
+                ),
+        );
+        content = content.child(
+            div()
+                .h(px(36.))
+                .flex()
+                .items_center()
+                .gap(px(16.))
+                .border_b_1()
+                .border_color(colors.border)
+                .text_size(px(12.))
+                .text_color(colors.muted_foreground)
+                .child(div().flex_1().child("Name"))
+                .child(div().w(px(64.)).child("Updated"))
+                .child(div().w(px(128.))),
+        );
+        let mut visible = 0;
+        for (i, p) in self.workspace.projects.iter().enumerate() {
+            let chats = self
+                .workspace
+                .conversations
+                .iter()
+                .filter(|c| c.project_id.as_deref() == Some(p.id.as_str()) && !c.archived)
+                .collect::<Vec<_>>();
+            if !query.is_empty()
+                && !p.name.to_lowercase().contains(&query)
+                && !chats
+                    .iter()
+                    .any(|c| c.title.to_lowercase().contains(&query))
+            {
+                continue;
+            }
+            visible += 1;
+            let expanded = self.project.as_deref() == Some(p.id.as_str()) || !query.is_empty();
+            let project_id = p.id.clone();
+            content = content.child(
+                div()
+                    .min_h(px(70.))
+                    .flex()
+                    .items_center()
+                    .gap(px(16.))
+                    .border_b_1()
+                    .border_color(colors.border)
+                    .child(
+                        Button::new(("project-open", i))
+                            .ghost()
+                            .flex_1()
+                            .min_w_0()
+                            .h(px(54.))
+                            .px(px(8.))
+                            .justify_start()
+                            .gap(px(12.))
+                            .rounded(px(8.))
+                            .accessibility_label(format!(
+                                "{} {}",
+                                if expanded { "Collapse" } else { "Expand" },
+                                p.name
+                            ))
+                            .child(
+                                div()
+                                    .w_full()
+                                    .flex()
+                                    .items_center()
+                                    .gap(px(12.))
+                                    .text_left()
+                                    .child(
+                                        native_ui::icon(
+                                            if expanded {
+                                                "chevron-down"
+                                            } else {
+                                                "chevron-right"
+                                            },
+                                            16.,
+                                        )
+                                        .text_color(colors.foreground),
+                                    )
+                                    .child(
+                                        native_ui::icon("projects", 20.)
+                                            .text_color(colors.foreground),
+                                    )
+                                    .child(
+                                        div()
+                                            .min_w_0()
+                                            .flex_1()
+                                            .flex()
+                                            .flex_col()
+                                            .items_start()
+                                            .gap(px(3.))
+                                            .child(div().text_size(px(14.)).child(p.name.clone()))
+                                            .child(
+                                                div()
+                                                    .text_size(px(12.))
+                                                    .text_color(colors.muted_foreground)
+                                                    .child(format!("{} chats", chats.len())),
+                                            ),
+                                    ),
+                            )
+                            .on_click(cx.listener(move |s, _, w, cx| {
+                                if s.project.as_deref() == Some(project_id.as_str()) {
+                                    s.project = None;
+                                } else {
+                                    s.act(Action::Project(project_id.clone()), w, cx);
+                                }
+                                cx.notify();
+                            })),
+                    )
+                    .child(
+                        div()
+                            .w(px(64.))
+                            .text_size(px(12.))
+                            .text_color(colors.muted_foreground)
+                            .child("—"),
+                    )
+                    .child(
+                        div()
+                            .w(px(128.))
+                            .flex()
+                            .justify_end()
+                            .gap(px(4.))
+                            .child(
+                                Button::new(("project-edit", i))
+                                    .ghost()
+                                    .label("Edit")
+                                    .on_click(cx.listener({
+                                        let id = p.id.clone();
+                                        move |s, _, w, cx| {
+                                            s.act(Action::Project(id.clone()), w, cx);
+                                            s.previous_focus = w.focused(cx);
+                                            s.project_editing = true;
+                                            s.notice.clear();
+                                            s.dialog = Some(Dialog::ProjectEditor);
+                                            s.project_name
+                                                .update(cx, |input, cx| input.focus(w, cx));
+                                            cx.notify();
+                                        }
+                                    })),
+                            )
+                            .child(
+                                Button::new(("project-chat", i))
+                                    .ghost()
+                                    .h(px(32.))
+                                    .w(px(32.))
+                                    .p_0()
+                                    .accessibility_label("New chat in project")
+                                    .tooltip("New chat in project")
+                                    .child(
+                                        native_ui::icon("plus", 18.).text_color(colors.foreground),
+                                    )
+                                    .on_click(cx.listener({
+                                        let id = p.id.clone();
+                                        move |s, _, w, cx| {
+                                            s.act(Action::Project(id.clone()), w, cx);
+                                            s.act(Action::NewProjectChat, w, cx);
+                                        }
+                                    })),
+                            ),
+                    ),
+            );
+            if expanded {
+                let mut children = div().pb(px(12.)).pl(px(28.)).flex().flex_col();
+                if chats.is_empty() {
+                    children = children.child(
+                        div()
+                            .py(px(8.))
+                            .text_size(px(13.))
+                            .text_color(colors.muted_foreground)
+                            .child("No chats"),
+                    );
+                }
+                for (j, chat) in chats.iter().enumerate() {
+                    children = children.child(
+                        Button::new(("project-child", i * 10000 + j))
+                            .ghost()
+                            .h(px(36.))
+                            .justify_start()
+                            .px(px(8.))
+                            .accessibility_label(chat.title.clone())
+                            .child(div().w_full().text_left().child(chat.title.clone()))
+                            .on_click(cx.listener({
+                                let id = chat.id.clone();
+                                move |s, _, w, cx| s.act(Action::Chat(id.clone()), w, cx)
+                            })),
+                    );
+                }
+                if self.project.as_deref() == Some(p.id.as_str()) {
+                    children = children.child(
+                        Button::new(("project-remove", i))
+                            .ghost()
+                            .justify_start()
+                            .text_size(px(12.))
+                            .accessibility_label("Remove project")
+                            .child(div().w_full().text_left().child("Remove project"))
+                            .tooltip("Remove project and keep its chats")
+                            .on_click(
+                                cx.listener(|s, _, w, cx| s.act(Action::DeleteProject, w, cx)),
+                            ),
+                    );
+                }
+                content = content.child(children);
+            }
+        }
+        if visible == 0 {
+            content = content.child(
+                div()
+                    .py(px(40.))
+                    .text_center()
+                    .text_color(colors.muted_foreground)
+                    .child(if query.is_empty() {
+                        "Create a project to keep related chats, files, and instructions together."
+                    } else {
+                        "No projects match your search."
+                    }),
+            );
+        }
+        div()
+            .id("projects-index")
+            .size_full()
+            .overflow_y_scroll()
+            .px(px(20.))
+            .child(content)
+            .into_any_element()
+    }
+    fn library_file_card(
+        &self,
+        index: usize,
+        title: &str,
+        kind: &str,
+        preview: &str,
+        action: Action,
+        cx: &mut Context<Self>,
+    ) -> AnyElement {
+        use gpui_kit::component::button::{Button, ButtonVariants};
+        let colors = cx.theme().colors.clone();
+        let mut card = Button::new(("library-file", index))
+            .ghost()
+            .p_0()
+            .rounded(px(16.))
+            .overflow_hidden()
+            .accessibility_label(format!("Open {title}"))
+            .tooltip(format!("Open {title}"))
+            .on_click(cx.listener(move |s, _, w, cx| s.act(action.clone(), w, cx)));
+        if self.library_grid {
+            card = card
+                .w(px(242.))
+                .h_auto()
+                .border_1()
+                .border_color(colors.border)
+                .child(
+                    div()
+                        .w_full()
+                        .text_left()
+                        .flex()
+                        .flex_col()
+                        .child(
+                            div()
+                                .h(px(136.))
+                                .rounded_t(px(15.))
+                                .w_full()
+                                .overflow_hidden()
+                                .p(px(20.))
+                                .bg(colors.muted)
+                                .flex()
+                                .flex_col()
+                                .gap(px(6.))
+                                .child(
+                                    native_ui::icon(
+                                        match kind {
+                                            "Image" => "image",
+                                            "Spreadsheet" | "Chart" => "spreadsheet",
+                                            "Presentation" => "presentation",
+                                            _ => "document",
+                                        },
+                                        24.,
+                                    )
+                                    .text_color(colors.muted_foreground),
+                                )
+                                .child(
+                                    div()
+                                        .text_size(px(12.))
+                                        .text_color(colors.muted_foreground)
+                                        .whitespace_normal()
+                                        .child(preview.to_owned()),
+                                ),
+                        )
+                        .child(
+                            div()
+                                .px(px(20.))
+                                .py(px(14.))
+                                .flex()
+                                .flex_col()
+                                .gap(px(4.))
+                                .items_start()
+                                .child(
+                                    div()
+                                        .text_size(px(14.))
+                                        .font_weight(FontWeight::MEDIUM)
+                                        .child(title.to_owned()),
+                                )
+                                .child(
+                                    div()
+                                        .text_size(px(12.))
+                                        .text_color(colors.muted_foreground)
+                                        .child(kind.to_owned()),
+                                ),
+                        ),
+                );
+        } else {
+            card = card
+                .w_full()
+                .h(px(56.))
+                .px(px(12.))
+                .justify_start()
+                .border_b_1()
+                .border_color(colors.border)
+                .child(
+                    div()
+                        .w_full()
+                        .text_left()
+                        .flex()
+                        .items_center()
+                        .gap(px(12.))
+                        .child(
+                            native_ui::icon(
+                                match kind {
+                                    "Image" => "image",
+                                    "Spreadsheet" | "Chart" => "spreadsheet",
+                                    "Presentation" => "presentation",
+                                    _ => "document",
+                                },
+                                24.,
+                            )
+                            .text_color(colors.foreground),
+                        )
+                        .child(
+                            div()
+                                .flex_1()
+                                .min_w_0()
+                                .text_size(px(14.))
+                                .child(title.to_owned()),
+                        )
+                        .child(
+                            div()
+                                .w(px(160.))
+                                .text_size(px(13.))
+                                .text_color(colors.muted_foreground)
+                                .child(kind.to_owned()),
+                        ),
+                );
+        }
+        card.into_any_element()
+    }
     fn library_view(&self, cx: &mut Context<Self>) -> AnyElement {
+        use gpui_kit::component::button::{Button, ButtonVariants};
+        let colors = cx.theme().colors.clone();
         let mut library = div()
             .id("library")
             .size_full()
             .overflow_y_scroll()
-            .p_6()
+            .px(px(20.))
+            .pb(px(20.))
             .flex()
             .flex_col()
-            .gap_4()
-            .child(div().text_2xl().child("Library"))
-            .child("Create, edit and explore your documents.");
-        let mut toolbar = div().flex().gap_2().child(self.button(
-            "＋ New document",
-            400,
-            Action::NewDocument,
-            cx,
-        ));
+            .gap(px(20.));
+        if self.document.is_some() {
+            library = library
+                .child(
+                    div()
+                        .h(px(56.))
+                        .flex()
+                        .items_center()
+                        .justify_between()
+                        .child(
+                            Button::new("library-back")
+                                .ghost()
+                                .label("Library")
+                                .on_click(cx.listener(|s, _, _, cx| {
+                                    s.document = None;
+                                    cx.notify();
+                                })),
+                        )
+                        .child(
+                            div()
+                                .flex()
+                                .gap(px(8.))
+                                .child(self.button("Save", 401, Action::SaveDocument, cx))
+                                .child(self.button(
+                                    if self.doc_preview { "Edit" } else { "Preview" },
+                                    402,
+                                    Action::Preview,
+                                    cx,
+                                ))
+                                .child(self.button("Delete", 403, Action::DeleteDocument, cx)),
+                        ),
+                )
+                .child(
+                    div()
+                        .w_full()
+                        .max_w(px(768.))
+                        .mx_auto()
+                        .child(Input::new(&self.doc_title)),
+                );
+            return library
+                .child(
+                    div()
+                        .w_full()
+                        .max_w(px(768.))
+                        .mx_auto()
+                        .child(if self.doc_preview {
+                            div()
+                                .py(px(20.))
+                                .child(TextView::markdown(
+                                    "document-preview",
+                                    self.doc_editor.read(cx).value(),
+                                ))
+                                .into_any_element()
+                        } else {
+                            Textarea::new(&self.doc_editor).into_any_element()
+                        }),
+                )
+                .into_any_element();
+        }
+        library = library.child(
+            div()
+                .h(px(76.))
+                .flex()
+                .items_center()
+                .justify_between()
+                .gap(px(16.))
+                .child(
+                    div()
+                        .text_size(px(24.))
+                        .font_weight(FontWeight::MEDIUM)
+                        .child("Library"),
+                )
+                .child(
+                    div()
+                        .flex()
+                        .items_center()
+                        .gap(px(8.))
+                        .child(div().w(px(220.)).child(Input::new(&self.library_search)))
+                        .child(
+                            Button::new("library-view-toggle")
+                                .ghost()
+                                .label(if self.library_grid {
+                                    "List view"
+                                } else {
+                                    "Grid view"
+                                })
+                                .on_click(cx.listener(|s, _, _, cx| {
+                                    s.library_grid = !s.library_grid;
+                                    cx.notify();
+                                })),
+                        )
+                        .child(self.button("Create", 400, Action::NewDocument, cx)),
+                ),
+        );
+        let mut filters = div().id("library-filters").flex().flex_wrap().gap(px(8.));
+        for (i, name) in [
+            "All",
+            "Documents",
+            "Images",
+            "Spreadsheets",
+            "Presentations",
+            "PDFs",
+        ]
+        .iter()
+        .enumerate()
+        {
+            filters = filters.child(
+                Button::new(("library-filter", i))
+                    .ghost()
+                    .rounded(px(999.))
+                    .h(px(32.))
+                    .px(px(12.))
+                    .when(self.library_category == i, |b| b.bg(colors.muted))
+                    .label(*name)
+                    .on_click(cx.listener(move |s, _, _, cx| {
+                        s.library_category = i;
+                        cx.notify();
+                    })),
+            );
+        }
+        library = library.child(filters);
+        let query = self.library_search.read(cx).value().trim().to_lowercase();
+        let mut files = div()
+            .id("library-files")
+            .flex()
+            .gap(px(16.))
+            .when(self.library_grid, |d| d.flex_wrap())
+            .when(!self.library_grid, |d| d.flex_col());
+        let mut count = 0;
         for (i, d) in self.workspace.documents.iter().enumerate() {
-            toolbar = toolbar.child(self.button(
-                d.title.clone(),
-                410 + i,
+            let (category, kind) = match d.kind {
+                DocumentKind::Spreadsheet => (3, "Spreadsheet"),
+                DocumentKind::Presentation => (4, "Presentation"),
+                DocumentKind::Drawing => (2, "Image"),
+                _ => (1, "Document"),
+            };
+            if (self.library_category != 0 && self.library_category != category)
+                || (!query.is_empty()
+                    && !format!("{} {kind}", d.title)
+                        .to_lowercase()
+                        .contains(&query))
+            {
+                continue;
+            }
+            count += 1;
+            let preview = d.content.chars().take(90).collect::<String>();
+            files = files.child(self.library_file_card(
+                i,
+                &d.title,
+                kind,
+                &preview,
                 Action::Document(d.id.clone()),
                 cx,
             ));
         }
-        library = library.child(toolbar);
-        if self.document.is_some() {
-            library = library.child(Input::new(&self.doc_title)).child(
-                div()
-                    .flex()
-                    .gap_2()
-                    .child(self.button("Save", 401, Action::SaveDocument, cx))
-                    .child(self.button(
-                        if self.doc_preview {
-                            "Edit Markdown"
-                        } else {
-                            "Preview"
-                        },
-                        402,
-                        Action::Preview,
-                        cx,
-                    ))
-                    .child(self.button("Delete document", 403, Action::DeleteDocument, cx)),
-            );
-            library = if self.doc_preview {
-                library.child(div().p_6().child(TextView::markdown(
-                    "document-preview",
-                    self.doc_editor.read(cx).value(),
-                )))
-            } else {
-                library.child(Textarea::new(&self.doc_editor))
-            };
-        }
-        library = library.child(div().mt_4().text_lg().child("Studios & viewers"));
-        let mut cards = div().flex().flex_wrap().gap_3();
-        for (i, label) in RICH_LABELS.iter().enumerate() {
-            cards = cards.child(self.button(
-                format!("▧ {label} →"),
-                500 + i,
+        // Named local example files open the existing retained editor entities.
+        // These titles describe sample content, not selectable component types.
+        let samples = [
+            (
+                "A quieter workspace",
+                "Document",
+                "Design principles · Milestones",
+                1,
+            ),
+            (
+                "Team budget",
+                "Spreadsheet",
+                "Item                 Planned     Actual\nResearch             1200          900\nDesign               2400        2300",
+                3,
+            ),
+            (
+                "Ideas, made tangible",
+                "Presentation",
+                "One canvas.\nA hundred possibilities.",
+                4,
+            ),
+            (
+                "Landscape study",
+                "Image",
+                "Procedural image · Local annotations",
+                2,
+            ),
+            (
+                "Meeting notes",
+                "Audio",
+                "00:00 ━━━━━━━━━ 02:00\nSample recording timeline",
+                0,
+            ),
+            (
+                "Product flow",
+                "Diagram",
+                "Idea → Draft → Review → Publish",
+                1,
+            ),
+            (
+                "Places to explore",
+                "Map",
+                "Local map with saved markers",
+                0,
+            ),
+            (
+                "Design handbook",
+                "PDF",
+                "A short guide to thoughtful interfaces",
+                5,
+            ),
+            (
+                "Function study",
+                "Math",
+                "y = x²\nCoordinates and curves",
+                1,
+            ),
+            (
+                "Geometry study",
+                "3D scene",
+                "Procedural geometry · Local scene",
+                0,
+            ),
+            (
+                "Budget overview",
+                "Chart",
+                "Planning, design and development",
+                3,
+            ),
+        ];
+        for (i, (title, kind, preview, category)) in samples.iter().enumerate() {
+            if (self.library_category != 0 && self.library_category != *category)
+                || (!query.is_empty() && !format!("{title} {kind}").to_lowercase().contains(&query))
+            {
+                continue;
+            }
+            count += 1;
+            files = files.child(self.library_file_card(
+                1000 + i,
+                title,
+                kind,
+                preview,
                 Action::Route(Route::Rich(i)),
                 cx,
             ));
         }
-        library.child(cards).into_any_element()
+        if count == 0 {
+            files = files.child(
+                div()
+                    .w_full()
+                    .py(px(40.))
+                    .text_center()
+                    .text_color(colors.muted_foreground)
+                    .child("No files match your search."),
+            );
+        }
+        library.child(files).into_any_element()
     }
+
+    fn project_dialog(&self, cx: &mut Context<Self>) -> AnyElement {
+        use gpui_kit::component::button::{Button, ButtonVariants};
+        let content = div()
+            .id("project-editor")
+            .w(px(520.))
+            .max_w(relative(0.92))
+            .max_h(relative(0.88))
+            .overflow_y_scroll()
+            .p(px(24.))
+            .rounded(px(24.))
+            .bg(cx.theme().colors.background)
+            .border_1()
+            .border_color(cx.theme().colors.border)
+            .shadow_lg()
+            .flex()
+            .flex_col()
+            .gap(px(16.))
+            .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation())
+            .child(
+                div()
+                    .flex()
+                    .items_center()
+                    .justify_between()
+                    .gap(px(16.))
+                    .child(
+                        div()
+                            .text_size(px(20.))
+                            .font_weight(FontWeight::MEDIUM)
+                            .child(if self.project.is_some() {
+                                "Edit project"
+                            } else {
+                                "Create project"
+                            }),
+                    )
+                    .child(
+                        Button::new("project-editor-close")
+                            .ghost()
+                            .w(px(32.))
+                            .h(px(32.))
+                            .p_0()
+                            .rounded_full()
+                            .accessibility_label("Close project editor")
+                            .tooltip("Close")
+                            .child(
+                                native_ui::icon("close", 20.)
+                                    .text_color(cx.theme().colors.foreground),
+                            )
+                            .on_click(cx.listener(|s, _, w, cx| s.act(Action::Close, w, cx))),
+                    ),
+            )
+            .child(
+                div()
+                    .flex()
+                    .flex_col()
+                    .gap(px(8.))
+                    .child(div().text_size(px(13.)).child("Name"))
+                    .child(Input::new(&self.project_name)),
+            )
+            .child(
+                div()
+                    .flex()
+                    .flex_col()
+                    .gap(px(8.))
+                    .child(div().text_size(px(13.)).child("Instructions"))
+                    .child(Textarea::new(&self.project_instructions)),
+            )
+            .when(!self.notice.is_empty(), |d| {
+                d.child(
+                    div()
+                        .text_size(px(12.))
+                        .text_color(cx.theme().colors.muted_foreground)
+                        .child(self.notice.clone()),
+                )
+            })
+            .child(
+                div()
+                    .flex()
+                    .justify_end()
+                    .gap(px(8.))
+                    .child(
+                        Button::new("project-editor-cancel")
+                            .label("Cancel")
+                            .on_click(cx.listener(|s, _, w, cx| s.act(Action::Close, w, cx))),
+                    )
+                    .child(
+                        Button::new(("app-btn", 301usize))
+                            .primary()
+                            .label("Save")
+                            .on_click(cx.listener(|s, _, w, cx| s.act(Action::SaveProject, w, cx))),
+                    ),
+            );
+        div()
+            .absolute()
+            .inset_0()
+            .bg(rgba(0x00000022))
+            .flex()
+            .items_center()
+            .justify_center()
+            .on_mouse_down(
+                MouseButton::Left,
+                cx.listener(|s, _, w, cx| s.act(Action::Close, w, cx)),
+            )
+            .child(content.focus_trap("project-editor-dialog", &self.modal_focus))
+            .occlude()
+            .into_any_element()
+    }
+
     fn dialog_view(&self, dialog: Dialog, cx: &mut Context<Self>) -> AnyElement {
+        if dialog == Dialog::ProjectEditor {
+            return self.project_dialog(cx);
+        }
+        if matches!(dialog, Dialog::ChatMenu | Dialog::AccountMenu) {
+            return self.shell_menu(dialog, cx);
+        }
         let mut content = div()
             .w(px(610.))
             .max_h(px(640.))
@@ -467,6 +1124,7 @@ impl WorkspaceApp {
             .flex_col()
             .gap_4();
         match dialog {
+            Dialog::ChatMenu | Dialog::AccountMenu | Dialog::ProjectEditor => unreachable!(),
             Dialog::Search => {
                 content = content
                     .child(div().text_xl().child("Search chats"))
@@ -578,147 +1236,5 @@ impl WorkspaceApp {
             .child(content.focus_trap("workspace-dialog", &self.modal_focus))
             .occlude()
             .into_any_element()
-    }
-}
-impl Render for WorkspaceApp {
-    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let dark = cx.theme().mode.is_dark();
-        let title = match self.route {
-            Route::Chat => self
-                .workspace
-                .conversation(&self.active)
-                .map(|c| c.title.clone())
-                .unwrap_or_else(|_| "New chat".into()),
-            Route::Projects => "Projects".into(),
-            Route::Library => "Library".into(),
-            Route::Settings => "Settings".into(),
-            Route::Rich(i) => RICH_LABELS[i].into(),
-            Route::Tool(i) => TOOL_LABELS[i].into(),
-        };
-        let mut header = div()
-            .h(px(66.))
-            .flex_shrink_0()
-            .px_5()
-            .flex()
-            .items_center()
-            .justify_between()
-            .child(
-                div()
-                    .flex()
-                    .items_center()
-                    .gap_3()
-                    .child(self.button("☰", 700, Action::Sidebar, cx))
-                    .child(div().text_lg().child(title))
-                    .child(
-                        div()
-                            .px_2()
-                            .py_1()
-                            .rounded_md()
-                            .text_xs()
-                            .text_color(cx.theme().colors.muted_foreground)
-                            .child("DEMO"),
-                    ),
-            );
-        let mut actions = div().flex().gap_2().child(self.button(
-            if dark { "☀" } else { "☾" },
-            701,
-            Action::Theme,
-            cx,
-        ));
-        if self.route == Route::Chat {
-            let c = self.workspace.conversation(&self.active).ok();
-            actions = actions
-                .child(self.button("Rename", 702, Action::Rename, cx))
-                .child(self.button(
-                    if c.is_some_and(|c| c.pinned) {
-                        "Unpin"
-                    } else {
-                        "Pin"
-                    },
-                    703,
-                    Action::Pin,
-                    cx,
-                ))
-                .child(self.button(
-                    if c.is_some_and(|c| c.archived) {
-                        "Unarchive"
-                    } else {
-                        "Archive"
-                    },
-                    704,
-                    Action::Archive,
-                    cx,
-                ))
-                .child(self.button("Project", 705, Action::AssignProject, cx))
-                .child(self.button("Share", 706, Action::Share, cx))
-                .child(self.button("Delete", 707, Action::DeleteChat, cx));
-        }
-        header = header.child(actions);
-        let body = match self.route {
-            Route::Chat => self.chat_view(cx),
-            Route::Projects => self.projects_view(cx),
-            Route::Library => self.library_view(cx),
-            Route::Settings => self.settings.clone().into_any_element(),
-            Route::Rich(i) => self.rich[i].clone().into_any_element(),
-            Route::Tool(i) => self.tools[i].clone().into_any_element(),
-        };
-        let mut main = div()
-            .flex_1()
-            .min_w_0()
-            .h_full()
-            .flex()
-            .flex_col()
-            .child(header);
-        if let Some(error) = &self.load_error {
-            main = main.child(
-                div()
-                    .p_3()
-                    .bg(rgb(0x663333))
-                    .text_color(rgb(0xffffff))
-                    .child(format!(
-                        "Storage could not be loaded. Changes will not overwrite it. {error}"
-                    )),
-            );
-        }
-        if !self.notice.is_empty() {
-            main = main.child(
-                div()
-                    .px_5()
-                    .py_2()
-                    .text_sm()
-                    .text_color(rgb(if dark { 0xb3ccb7 } else { 0x395c41 }))
-                    .child(self.notice.clone()),
-            );
-        }
-        main = main.child(div().flex_1().min_h_0().child(body));
-        let mut root = div()
-            .id("workspace-app")
-            .track_focus(&self.focus)
-            .capture_key_down(
-                cx.listener(|this, event, window, cx| this.handle_key(event, window, cx)),
-            )
-            .key_context("Workspace")
-            .relative()
-            .size_full()
-            .bg(cx.theme().colors.background)
-            .text_color(cx.theme().colors.foreground)
-            .flex()
-            .on_action(
-                cx.listener(|this, _: &NewChat, window, cx| this.act(Action::New, window, cx)),
-            )
-            .on_action(
-                cx.listener(|this, _: &Search, window, cx| this.act(Action::Search, window, cx)),
-            )
-            .on_action(
-                cx.listener(|this, _: &Escape, window, cx| this.act(Action::Close, window, cx)),
-            );
-        if self.sidebar {
-            root = root.child(self.sidebar_view(cx));
-        }
-        root = root.child(main);
-        if let Some(dialog) = self.dialog {
-            root = root.child(self.dialog_view(dialog, cx));
-        }
-        root
     }
 }

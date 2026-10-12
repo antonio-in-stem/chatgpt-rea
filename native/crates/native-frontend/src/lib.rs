@@ -11,3 +11,4 @@ pub use native_core as domain;
 pub use native_rich::{RichKind, RichSurface};
 pub use native_settings::SettingsSurface;
 pub use native_tools::{ToolKind, ToolSurface};
+pub use native_ui as visuals;

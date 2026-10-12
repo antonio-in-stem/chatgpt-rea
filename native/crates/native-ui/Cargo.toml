@@ -1,0 +1,6 @@
+[package]
+name = "native-ui"
+version.workspace = true
+edition.workspace = true
+[dependencies]
+gpui-kit = "=0.7.3"

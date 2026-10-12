@@ -1,4 +1,4 @@
-# Functional native demo: product coverage audit
+# Native frontend: product coverage audit
 
 Static source snapshot, not a parity or runtime-verification claim. The goal is an application with fixture-backed workflows, not a component gallery. Native source paths below are relative to native/crates; original paths are relative to extracted.
 
@@ -9,9 +9,9 @@ Static source snapshot, not a parity or runtime-verification claim. The goal is 
 - Demo implementation means source has controls/state/actions. This audit did not build, launch or visually test them.
 - Remaining work concerns frontend decisions with local fixtures. Backend inference, transcription, OAuth, providers and binary codecs are excluded.
 
-## Verification snapshot
+## Previous functional baseline (superseded by VERIFICATION.md)
 
-The parent reports the final central workspace suite passed **63/63 tests**: core 10, rich 19, settings 11, tools 9 and app 14. This includes **23 native headless UI integration tests**: rich 5, settings 4, tools 3 and app 11. Counts describe test execution, not a parity percentage or a Windows visual/UI Automation assessment.
+The earlier functional baseline suite passed **63/63 tests**: core 10, rich 19, settings 11, tools 9 and app 14. This includes **23 native headless UI integration tests**: rich 5, settings 4, tools 3 and app 11. Counts describe test execution, not a parity percentage or a Windows visual/UI Automation assessment.
 
 Settings tests cover radio Arrow/Home navigation and focus, theme/font controls, shortcut editing and duplicate rejection, and explicit corruption recovery preserving the exact original bytes. A clock-resolution collision between parallel temporary directories was fixed with an atomic per-process suffix shared by staging, backups and test storage. The settings test executable was then repeated **five times with all 11 tests passing each run**, without disabling parallelism.
 

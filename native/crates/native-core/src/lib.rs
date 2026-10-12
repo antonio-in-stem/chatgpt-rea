@@ -71,13 +71,19 @@ pub struct Document {
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Settings {
+    #[serde(default = "default_sidebar_width")]
+    pub sidebar_width: u16,
     pub dark_mode: bool,
     pub provider_url: String,
     pub model: String,
 }
+fn default_sidebar_width() -> u16 {
+    340
+}
 impl Default for Settings {
     fn default() -> Self {
         Self {
+            sidebar_width: default_sidebar_width(),
             dark_mode: true,
             provider_url: "https://api.openai.com/v1".into(),
             model: String::new(),

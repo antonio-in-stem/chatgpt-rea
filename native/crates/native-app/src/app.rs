@@ -1,3 +1,8 @@
+#[path = "chat_actions.rs"]
+mod chat_actions;
+#[path = "chat_motion.rs"]
+mod chat_motion;
+use chat_actions::ChatMessageActions;
 use gpui_kit::base::FocusTrapElement;
 use gpui_kit::component::{
     ActiveTheme,
@@ -29,6 +34,8 @@ enum Action {
     Stop,
     Sidebar,
     Theme,
+    ChatMenu,
+    AccountMenu,
     Search,
     Close,
     Pin,
@@ -64,14 +71,17 @@ enum Action {
 }
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Dialog {
+    ChatMenu,
+    AccountMenu,
     Search,
     Rename,
     Delete,
     Attachments,
     Model,
     Project,
+    ProjectEditor,
 }
-const MODELS: [&str; 3] = ["Demo · Balanced", "Demo · Fast", "Demo · Thoughtful"];
+const MODELS: [&str; 3] = ["Auto", "Fast", "Thinking"];
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum AttachmentStatus {
     Queued,
@@ -92,6 +102,7 @@ pub struct WorkspaceApp {
     route: Route,
     active: String,
     sidebar: bool,
+    sidebar_resize: Option<(Pixels, Pixels)>,
     notice: String,
     dialog: Option<Dialog>,
     focus: FocusHandle,
@@ -105,12 +116,18 @@ pub struct WorkspaceApp {
     doc_title: Entity<InputState>,
     doc_editor: Entity<TextareaState>,
     project: Option<String>,
+    project_editing: bool,
+    project_search: Entity<InputState>,
+    library_search: Entity<InputState>,
+    library_category: usize,
+    library_grid: bool,
     document: Option<String>,
     doc_preview: bool,
     attachments: HashMap<String, Vec<Attachment>>,
     attachment_sequence: u64,
     recent_limit: usize,
     transcript: ScrollHandle,
+    message_actions: HashMap<String, Entity<ChatMessageActions>>,
     recents_scroll: ScrollHandle,
     edit_message: Option<String>,
     stream: Option<Task<()>>,
@@ -127,7 +144,12 @@ impl WorkspaceApp {
             .map(PathBuf::from)
             .unwrap_or_else(std::env::temp_dir)
             .join("NativeWorkspaceDemo");
-        Self::with_storage(base, window, cx)
+        let first_launch = !base.join("workspace.json").exists();
+        let mut app = Self::with_storage(base, window, cx);
+        if first_launch {
+            app.act(Action::New, window, cx);
+        }
+        app
     }
     pub(crate) fn with_storage(base: PathBuf, window: &mut Window, cx: &mut Context<Self>) -> Self {
         let path = base.join("workspace.json");
@@ -172,8 +194,8 @@ impl WorkspaceApp {
         .collect();
         let composer = cx.new(|cx| {
             TextareaState::new(window, cx)
-                .auto_grow(2, 8)
-                .placeholder("Ask anything · Ctrl+Enter to send")
+                .auto_grow(1, 8)
+                .placeholder("Ask ChatGPT")
                 .default_value(
                     workspace
                         .conversation(&active)
@@ -188,6 +210,7 @@ impl WorkspaceApp {
             route: Route::Chat,
             active,
             sidebar: true,
+            sidebar_resize: None,
             notice: String::new(),
             dialog: None,
             focus: cx.focus_handle(),
@@ -210,12 +233,18 @@ impl WorkspaceApp {
                     .placeholder("Write Markdown here…")
             }),
             project: None,
+            project_editing: false,
+            project_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search projects")),
+            library_search: cx.new(|cx| InputState::new(window, cx).placeholder("Search files")),
+            library_category: 0,
+            library_grid: true,
             document: None,
             doc_preview: false,
             attachments: HashMap::new(),
             attachment_sequence: 0,
             recent_limit: 30,
             transcript: ScrollHandle::new(),
+            message_actions: HashMap::new(),
             recents_scroll: ScrollHandle::new(),
             edit_message: None,
             stream: None,
@@ -244,6 +273,10 @@ impl WorkspaceApp {
             },
         )
         .detach();
+        cx.subscribe(&app.project_search, |_, _, _: &InputEvent, cx| cx.notify())
+            .detach();
+        cx.subscribe(&app.library_search, |_, _, _: &InputEvent, cx| cx.notify())
+            .detach();
         cx.subscribe(&app.search, |_, _, _: &InputEvent, cx| cx.notify())
             .detach();
         cx.subscribe(
@@ -259,6 +292,9 @@ impl WorkspaceApp {
         {
             self.act(Action::Close, window, cx);
             cx.stop_propagation();
+            return;
+        }
+        if self.dialog == Some(Dialog::ProjectEditor) {
             return;
         }
         let action = self
@@ -489,6 +525,16 @@ impl WorkspaceApp {
             }
             Action::Send => self.send(window, cx),
             Action::Stop => self.stop(),
+            Action::ChatMenu => {
+                self.previous_focus = window.focused(cx);
+                self.dialog = Some(Dialog::ChatMenu);
+                window.focus(&self.modal_focus, cx);
+            }
+            Action::AccountMenu => {
+                self.previous_focus = window.focused(cx);
+                self.dialog = Some(Dialog::AccountMenu);
+                window.focus(&self.modal_focus, cx);
+            }
             Action::Sidebar => self.sidebar = !self.sidebar,
             Action::Theme => {
                 self.settings
@@ -500,6 +546,9 @@ impl WorkspaceApp {
                 self.search.update(cx, |input, cx| input.focus(window, cx));
             }
             Action::Close => {
+                if self.dialog == Some(Dialog::ProjectEditor) {
+                    self.project_editing = false;
+                }
                 let had_dialog = self.dialog.take().is_some();
                 if !had_dialog && self.edit_message.take().is_some() {
                     let draft = self
@@ -680,6 +729,7 @@ impl WorkspaceApp {
                 }
             }
             Action::Project(id) => {
+                self.project_editing = false;
                 if let Some(p) = self.workspace.projects.iter().find(|p| p.id == id) {
                     let (name, instructions) = (p.name.clone(), p.instructions.clone());
                     self.project_name
@@ -691,14 +741,21 @@ impl WorkspaceApp {
                 }
             }
             Action::NewProject => {
-                self.dialog = None;
-                self.previous_focus = None;
+                self.project_editing = true;
+                if self.dialog.is_none() {
+                    self.previous_focus = window.focused(cx);
+                }
+                self.dialog = Some(Dialog::ProjectEditor);
+                self.notice.clear();
+
                 self.project = None;
                 self.project_name
                     .update(cx, |s, cx| s.set_value("", window, cx));
                 self.project_instructions
                     .update(cx, |s, cx| s.set_value("", window, cx));
                 self.route = Route::Projects;
+                self.project_name
+                    .update(cx, |input, cx| input.focus(window, cx));
             }
             Action::SaveProject => {
                 let name = self.project_name.read(cx).value().to_string();
@@ -713,13 +770,16 @@ impl WorkspaceApp {
                 };
                 match result {
                     Ok(()) => {
+                        self.project_editing = false;
                         self.notice = "Project saved".into();
                         self.persist();
+                        self.act(Action::Close, window, cx);
                     }
                     Err(e) => self.notice = e,
                 }
             }
             Action::DeleteProject => {
+                self.project_editing = false;
                 if let Some(id) = self.project.take() {
                     let _ = self.workspace.delete_project(&id);
                     self.notice = "Project removed; its chats are preserved".into();
@@ -794,6 +854,7 @@ impl WorkspaceApp {
     }
 }
 include!("views.rs");
+include!("shell.rs");
 
 fn matches_shortcut(shortcut: &str, key: &Keystroke) -> bool {
     let parts = shortcut
@@ -839,3 +900,11 @@ mod shortcut_tests {
 #[cfg(all(test, feature = "ui-tests"))]
 #[path = "ui_tests.rs"]
 mod ui_tests;
+
+#[cfg(all(test, feature = "ui-tests"))]
+#[path = "project_library_tests.rs"]
+mod project_library_tests;
+
+#[cfg(all(test, feature = "ui-tests"))]
+#[path = "sidebar_tests.rs"]
+mod sidebar_tests;

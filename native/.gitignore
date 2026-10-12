@@ -5,3 +5,5 @@
 
 qa/
 Cargo.lock.before-ui-tests
+
+/*.log

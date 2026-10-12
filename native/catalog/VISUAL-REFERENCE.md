@@ -52,7 +52,7 @@ The shared .sidebar-navigation class explicitly defines 30px nav rows, 32px mode
 
 .sidebar-row-focus changes action opacity from 0 to 1 on :focus-visible, hides the leading icon, expands menu width from 0 to auto, sets action width to 5 spacing units, and hides the indicator. This is a concrete focus interaction, not simply a selected background.
 
-**Not established:** final ChatGPT sidebar item order, expanded width, collapsed rail width, active-row colors, avatar/account footer geometry, platform titlebar inset and feature-gated sections. The generic sidebar names found above are unrelated task/review lists. Shared classes are source-backed constraints, but cannot establish a complete ChatGPT sidebar screenshot. Do not fill these gaps with invented 260px/280px widths or a Codex project/worktree navigation tree.
+**Updated by recovered component tracing below:** expanded width, conditional sidebar order, footer container, runtime font defaults, and titlebar conditions are now resolved from source. Final enabled account gates, rail width, avatar geometry and runtime compositing still need observation. The unrelated task/review sidebar chunks remain excluded.
 
 ## Fonts and color evidence
 
@@ -244,3 +244,67 @@ className:`heading-xl font-normal whitespace-pre-wrap text-default browser:min-h
 - sidebar-new-chat-icon-cbd5d32d0c8e.js: SHA-256 4cb0aa43d787326b650f4b28064e06ffbb349e1f6df6fc07307250bc058134a8
 - sidebar-projects-icon-55225a1c26e6.js: SHA-256 026f6a1981207c19911c7940a3988a527b4ad66d6ab9bc69049239308f4d0e8b
 - sidebar-search-icon-dee5b5ecb91c.js: SHA-256 278337b7214ac263bcb2b26b56ad9714c470977199d95c5d7cd5309c5f19361a
+
+
+## Recovered shared sidebar: implementation contract
+
+The following links target formatted copies of the shipped files; symbol names and literal expressions are the evidence, line numbers are navigation aids. These resolve the earlier static gaps without claiming that every capability is enabled for the installed account.
+
+- **Width:** [HRt/URt/dC](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:69049) loads persisted `sidebar-width`, defaults to **340px**, and clamps between 240 and min(520, viewport minus 240). Keep-visible layout can raise the minimum to 290. A forced layout width can override this. This is not evidence for a universal 250/260px sidebar.
+- **Font cascade:** [runtime typography](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:449635) derives UI size from saved sansFontSize (default14), code size default12; it writes family/size on root and body. OVs scales text-base14, sm13, xs12, heading-sm18, heading-md20 by UI-size/default-size. `wVs` resolves false at449964; thus `h && g ? OpenAI Sans : null` does not automatically enable OpenAI Sans in this build. An explicit custom theme family still wins. Default Windows fallback is Segoe UI. Bundled brand and explicitly marked headings are separate from the UI stack.
+- **Structure:** [iEs](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:432157) renders Chat history navigation: header; New chat block; scrolling destinations/sections; fixed bottom footer. Header [432544](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:432544) is brand `cEs` left and a right flex gap1 group: optional active-media NFo, optionally Activity Ies, Search CLo. NFo is not an always-present icon. `showSearchNavItem:false` means Search belongs in the header, not a duplicate full navigation row.
+- **Brand:** [Dns](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:395531) uses ChatGPT SVG `_ns` for ChatGpt mode, Work SVG for work, Codex SVG for codex. SVG height1em/widthauto and an accessible brand label; normal typography text-heading-sm/line24/semibold. The enabled selector is ghost/squircle size-lg with a tertiary chevron `q1e`; disabled mode can render static text, and a home-link mode uses inline link. Do not substitute a logo emoji or assume a model dropdown.
+- **New chat:** [oes/ses/les](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:391027) renders New chat with sidebar-new-chat animation and static xKe icon. Then optional monothread entry y7o, then leading content/destination, then optional search (disabled by root). Monothread chunk `navigation-item-impl-d2598a45e762.js` labels itself ChatGPT, describes an ongoing mobile-prototype conversation, and is feature gated. It is not Group chats.
+- **Scrollable area:** [NCs](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:428578) uses a flex1/min-height0 vertical scroller, bottom margin equal to footer height, row-radius10, gap4 (browser gap5), hidden horizontal overflow and row padding. [BCs](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:428913) places priority and pinned groups before date-grouped recents when present; projects/connections/chats/custom sections follow configured ordering and collapsed state. Do not hardcode projects before recents without the fixture configuration.
+- **Footer:** [VTs](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:431786) composes optional usage/onboarding/announcement/update notices then y2o with account iPo leading and optional update action trailing. Root places it absolute inset-x0/bottom0. [y2o](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:380919) gives noncompact footer toolbar height, gap2 and row-x padding; browser minheight64. Account data [iPo](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:351125) comes from nameAtLogin/profilePictureUrlAtLogin/email and profile_subtext. Use explicit demo identity, not a fabricated observed account.
+
+### Destination order is state, not a single list
+
+[Registry ljo](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:347738) discovers capability-gated destinations. [Njo](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:348493) then overrides visibility and ordering; [Y9o/ies](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:390401) renders the chosen visible list in order.
+
+| Destination | Observed icon references | Availability/default evidence |
+|---|---|---|
+| Projects | am / large Iqe; sidebar-projects geometry | Descriptor prepended when project/sidebar layout permits |
+| Images | dfe; Uye16 / zee20; sidebar-images | ChatGPT capability, chat mode and route gate; registry default true but Njo can hide |
+| Library | XDe / iUe; sidebar-library | Desktop capability and library gate; replaces/competes with Space |
+| Scheduled / Tasks | u6a / EKe; sidebar-tasks | Automation capability. MYa299529 experiment use_tasks_label chooses Tasks, otherwise Scheduled |
+| Plugins / Skills | up / Yle; sidebar-plugins | Desktop/host capability determines Plugins versus Skills |
+| Health | Hse / cde | Eligibility and feature gates |
+| Finances | KMe / WJe; sidebar-finances | Account finance eligibility; registry hidden default |
+| Maps | ume16 / xDe20 | ChatGPT and maps gates |
+| Shopping | tre16 / _Qe20 | Feature gate; hidden default, optional New badge |
+| GPTs | MWe / _Ve | Eligible plan/capability; hidden default |
+| Sites | x0e / ar | Sites availability; hidden default |
+| Agents | Oke / k$e | Workspace-agent gate |
+| Archive | ITe / Hhe | Feature gate; hidden default |
+
+New sidebar layout defaults only Projects, Library, builtin:space, builtin:orbit, except CME/missionControl/maps retain special logic. Legacy fallback Bjo is `[builtin:orbit, automations, library, cme, skills]`, intersected with available destinations. Account settings and browser settings can replace these defaults. A reproducible native fixture must declare layout variant, capabilities and saved destination list; merely enabling every registered item is not source parity.
+
+## Conversation titlebar, not an inline action gallery
+
+[Conversation route](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/chatgpt-conversation-page-d6ceb517cb3b.js:7211) registers MainContentLayout header with desktopPlacement titlebar and divider false. CSS toolbar is **46px desktop**, **52px browser**; toolbar-action gap is **6px desktop**, **8px browser** ([CSS](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-shared-9a94b907ed47.css:3699)). Caption safe insets are measured and divided by app zoom, with6px left addition ([shell](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-initial-b8e1c8014bb4.js:200743)); do not infer OS caption widths from a generic toolbar.
+
+Header start is conditional. [5455](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/chatgpt-conversation-page-d6ceb517cb3b.js:5455) defines X as product tpp/flora, ln as layout hasPageSurface. [6292](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/chatgpt-conversation-page-d6ceb517cb3b.js:6292) sets `ki = X || ln ? Di : null`; Di includes thread icon and editable title max320px. A GPT replaces this with its own header; absent conversation/data conditions clear it. The `mf` wrapper is a business-agent header and returns the fallback without an agent; it is not a model picker. Thus ordinary chat outside page-surface has empty start, while page-surface can show title. Preserve this conditional fixture distinction.
+
+End actions [D_](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/chatgpt-conversation-page-d6ceb517cb3b.js:6608) are **Share then More**, registered align=end/order100. Share is toolbar-size rounded-large and can disable for streaming/restricted/not-ready state ([z_](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/chatgpt-conversation-page-d6ceb517cb3b.js:8610)). More opens [Ti](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/chatgpt-conversation-page-d6ceb517cb3b.js:4072): rename, conditional pin, archive/unarchive, delete plus project/sharing/view/preferences/handoff options when applicable. Temporary/archived/shared states alter availability. These actions are not a row of permanent text buttons.
+
+The `_l productExperience` header insertion is **NoPaymentTrialHeader**, traced through [B5](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-primary-19fe57fd8c00.js:119473) to header-bf604e776ceb.js. Do not mistake it for a model selector. Shared header identity layout [HPt](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-primary-19fe57fd8c00.js:118352) truncates start max320px and animates identity position300ms unless reduced motion.
+
+## Theme cascade: tokens versus displayed pixel color
+
+[Base palette](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-shared-9a94b907ed47.css:5120), modern color-mix overrides at5263 and semantic aliases around5693:
+
+| Semantic role | Light | Dark |
+|---|---|---|
+| surface / main | #ffffff | #181818 |
+| surface-under | gray-fixed50 | #000000 |
+| editor-opaque / surface-tertiary | #ededed fallback; 40% in transparent modern override | #212121 |
+| elevated-primary | white70% over transparent | #212121 at96% |
+| elevated-primary-opaque | #ffffff | #282828 |
+| foreground | #1a1c1f | #dfdfdf |
+| secondary text | foreground70% | white70% |
+| tertiary text | foreground50% | white50% |
+| ghost secondary hover | foreground5% | white8% |
+| secondary active | foreground4% | white12% |
+
+**Do not flatten this table into a false screenshot claim.** [Electron rules](C:/Users/PC/Repositories/chatgpt-rea/recovered-frontend/readable/assets/app-shared-9a94b907ed47.css:47900) make normal body transparent and frame/non-content sidebar tertiary70% over transparent. Nested sidebar becomes transparent. Page-surface overrides dark to tertiary80% (light secondary85%). `.electron-opaque` body uses surface-under and changes elevated-primary to elevated-primary-opaque. Application-menu chrome is excluded from these selectors. The extension-only48070 override is not Electron. Consequently dark main #181818/sidebar #212121 are semantic choices, while actual visible sidebar/page pixels depend on frame nesting, backdrop and opaque state. Runtime DOM/computed-style or a valid capture is required to settle the final composition; reversing main/editor token names is not justified.

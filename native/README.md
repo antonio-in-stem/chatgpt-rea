@@ -1,5 +1,7 @@
 # Native Workspace — Windows frontend demo
 
+Estado: port en desarrollo hacia el clon visual exacto. Consulta [fidelidad y diferencias pendientes](catalog/FIDELITY-STATUS.md); la compilación y las pruebas no equivalen a paridad visual.
+
 Aplicación Rust local que reúne navegación, chats, proyectos, biblioteca, ajustes y superficies de contenido. Las respuestas, conexiones y medios usan fixtures. No necesita una cuenta, API key ni servicios de ChatGPT.
 
 ## Arrancar y compilar

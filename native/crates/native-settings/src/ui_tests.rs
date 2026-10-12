@@ -63,10 +63,10 @@ fn section_navigation_uses_native_radio_keyboard_selection(cx: &mut TestAppConte
         window.render_frame(cx);
         assert_eq!(
             view.read(cx).section,
-            7,
+            6,
             "ArrowUp wraps to the last section"
         );
-        assert!(view.read(cx).section_focus[7].is_focused(window));
+        assert!(view.read(cx).section_focus[6].is_focused(window));
         window.press("home", cx);
         window.render_frame(cx);
         assert_eq!(view.read(cx).section, 0);
@@ -132,7 +132,7 @@ fn shortcut_edit_save_and_duplicate_error_preserve_saved_value(cx: &mut TestAppC
     });
     cx.update_window(handle, |_, window, cx| {
         window.render_frame(cx);
-        window.within("settings-sections").click(7usize, cx);
+        window.within("settings-sections").click(6usize, cx);
         window.render_frame(cx);
         window.click(("input", search.entity_id()), cx);
         window.press("ctrl-a", cx);
@@ -195,4 +195,27 @@ fn explicit_recovery_click_preserves_original_bytes(cx: &mut TestAppContext) {
         .collect::<Vec<_>>();
     assert_eq!(backups.len(), 1);
     assert_eq!(std::fs::read(&backups[0]).unwrap(), original);
+}
+
+#[gpui_kit::test]
+fn reduce_motion_is_in_appearance_and_retains_saved_preference(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (handle, view) = open(cx, &storage);
+    cx.update_window(handle, |_, window, cx| {
+        window.render_frame(cx);
+        window.within("settings-sections").click(1usize, cx);
+        window.render_frame(cx);
+        window.click("reduced-motion", cx);
+        window.click("settings-save", cx);
+        window.render_frame(cx);
+        assert!(!view.read(cx).error, "{}", view.read(cx).message);
+        assert!(view.read(cx).config.reduced_motion);
+        window.within("settings-sections").click(0usize, cx);
+        window.render_frame(cx);
+        window.within("settings-sections").click(1usize, cx);
+        window.render_frame(cx);
+        assert!(view.read(cx).config.reduced_motion);
+    })
+    .unwrap();
+    assert!(Settings::load(&storage.file()).unwrap().reduced_motion);
 }

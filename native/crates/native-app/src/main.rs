@@ -14,11 +14,16 @@ fn main() {
             gpui_kit::open_window(
                 WindowOptions {
                     window_bounds: Some(WindowBounds::Windowed(bounds)),
+                    titlebar: Some(TitlebarOptions {
+                        title: None,
+                        appears_transparent: true,
+                        traffic_light_position: None,
+                    }),
                     ..Default::default()
                 },
                 cx,
                 |window, cx| {
-                    window.set_window_title("Native Workspace · Local Demo");
+                    window.set_window_title("ChatGPT · Rust");
                     cx.new(|cx| app::WorkspaceApp::new(window, cx))
                 },
             )

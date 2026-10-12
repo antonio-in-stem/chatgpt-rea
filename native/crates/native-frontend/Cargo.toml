@@ -9,3 +9,4 @@ native-core = { path = "../native-core" }
 native-rich = { path = "../native-rich" }
 native-settings = { path = "../native-settings" }
 native-tools = { path = "../native-tools" }
+native-ui = { path = "../native-ui" }

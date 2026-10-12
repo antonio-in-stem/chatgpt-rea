@@ -9,16 +9,18 @@ use std::{
     path::PathBuf,
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
+static TEMP_SEQUENCE: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
 struct Storage(PathBuf);
 impl Storage {
     fn new() -> Self {
         Self(std::env::temp_dir().join(format!(
-                "native-app-ui-{}-{}",
+                "native-app-ui-{}-{}-{}",
                 std::process::id(),
                 SystemTime::now()
                     .duration_since(UNIX_EPOCH)
                     .unwrap()
-                    .as_nanos()
+                    .as_nanos(),
+                TEMP_SEQUENCE.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
             )))
     }
 }
@@ -138,6 +140,11 @@ fn multiline_send_and_stop_cancel_future_stream_updates(cx: &mut TestAppContext)
         window.render_frame(cx);
         window.click(("input", composer.entity_id()), cx);
         window.input("First line\nSecond line", cx);
+        assert_eq!(
+            composer.read(cx).value().as_ref(),
+            "First line\nSecond line",
+            "Composer must retain typed multiline input before submission"
+        );
         window.press("ctrl-enter", cx);
     })
     .unwrap();
@@ -227,6 +234,8 @@ fn explicit_model_and_project_choices(cx: &mut TestAppContext) {
         window.render_frame(cx);
         assert_eq!(app.read(cx).model_index, 2);
         assert!(app.read(cx).dialog.is_none());
+        window.click(("app-btn", 708usize), cx);
+        window.render_frame(cx);
         window.click(("app-btn", 705usize), cx);
         window.render_frame(cx);
         window.click(("app-btn", 802usize), cx);
@@ -255,6 +264,9 @@ fn recents_show_more_exposes_next_page(cx: &mut TestAppContext) {
                 app.workspace
                     .rename_conversation(&id, &format!("Extra chat {i}"))
                     .unwrap();
+                app.workspace
+                    .append_message(&id, native_core::MessageRole::User, "Saved conversation")
+                    .unwrap();
             }
             app.recents_scroll.scroll_to_bottom();
             cx.notify();
@@ -262,7 +274,7 @@ fn recents_show_more_exposes_next_page(cx: &mut TestAppContext) {
     });
     cx.update_window(window, |_, window, cx| {
         window.render_frame(cx);
-        window.click(("app-btn", 901usize), cx);
+        window.click(("nav", 901usize), cx);
         window.render_frame(cx);
         assert_eq!(app.read(cx).recent_limit, 60);
     })
@@ -345,7 +357,7 @@ fn reduced_motion_renders_response_without_streaming(cx: &mut TestAppContext) {
                 .last()
                 .unwrap()
                 .content
-                .contains("Nothing was sent to a server")
+                .contains("No animation please")
         );
     });
 }
@@ -437,4 +449,63 @@ fn cancel_queued_attachment_does_not_resurrect_when_preparation_finishes(cx: &mu
         .advance_clock(Duration::from_millis(400));
     cx.run_until_parked();
     cx.update(|cx| assert!(app.read(cx).current_attachments().is_empty()));
+}
+
+#[gpui_kit::test]
+fn user_message_actions_reveal_for_pointer_and_keyboard_focus(cx: &mut TestAppContext) {
+    let storage = Storage::new();
+    let (window, app) = open(cx, &storage);
+    cx.update_window(window, |_, window, cx| window.render_frame(cx))
+        .unwrap();
+    cx.run_until_parked();
+    let (toolbar, composer, expected) = cx.update(|cx| {
+        let state = app.read(cx);
+        let message = &state
+            .workspace
+            .conversation(&state.active)
+            .unwrap()
+            .messages[0];
+        (
+            state.message_actions[&message.id].clone(),
+            state.composer.clone(),
+            message.content.clone(),
+        )
+    });
+    cx.update_window(window, |_, window, cx| {
+        window.hover(("input", composer.entity_id()), cx);
+        window.render_frame(cx);
+        assert!(!toolbar.read(cx).visible());
+        window.hover(("app-btn", 1000usize), cx);
+        window.render_frame(cx);
+    })
+    .unwrap();
+    cx.run_until_parked();
+    cx.update(|cx| assert!(toolbar.read(cx).visible()));
+    cx.update_window(window, |_, window, cx| {
+        window.hover(("input", composer.entity_id()), cx);
+        window.render_frame(cx);
+        window.focus(&toolbar.read(cx).focus.clone(), cx);
+        window.press("tab", cx);
+        window.render_frame(cx);
+    })
+    .unwrap();
+    cx.run_until_parked();
+    cx.update(|cx| assert!(toolbar.read(cx).focused && toolbar.read(cx).visible()));
+    cx.update_window(window, |_, window, cx| {
+        window.press("enter", cx);
+    })
+    .unwrap();
+    cx.run_until_parked();
+    cx.update(|cx| {
+        assert_eq!(
+            cx.read_from_clipboard().and_then(|item| item.text()),
+            Some(expected)
+        )
+    });
+    cx.update_window(window, |_, window, cx| {
+        window.click(("input", composer.entity_id()), cx)
+    })
+    .unwrap();
+    cx.run_until_parked();
+    cx.update(|cx| assert!(!toolbar.read(cx).focused && !toolbar.read(cx).visible()));
 }

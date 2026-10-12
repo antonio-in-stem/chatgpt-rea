@@ -4736,6 +4736,7 @@ dependencies = [
  "native-rich",
  "native-settings",
  "native-tools",
+ "native-ui",
 ]
 
 [[package]]
@@ -4752,6 +4753,7 @@ name = "native-settings"
 version = "0.1.0"
 dependencies = [
  "gpui-kit",
+ "native-ui",
  "serde",
  "serde_json",
 ]
@@ -4761,6 +4763,13 @@ name = "native-tools"
 version = "0.1.0"
 dependencies = [
  "chrono",
+ "gpui-kit",
+]
+
+[[package]]
+name = "native-ui"
+version = "0.1.0"
+dependencies = [
  "gpui-kit",
 ]
 
@@ -4778,11 +4787,13 @@ dependencies = [
 name = "native-workspace"
 version = "0.1.0"
 dependencies = [
+ "embed-resource",
  "gpui-kit",
  "native-core",
  "native-rich",
  "native-settings",
  "native-tools",
+ "native-ui",
  "serde_json",
 ]
 

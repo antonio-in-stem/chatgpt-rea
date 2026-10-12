@@ -1,0 +1,211 @@
+[
+  {
+    "name": "plus",
+    "source": "extracted/webview/assets/composer_plus-451d93cbdc23.svg",
+    "sha256": "9a7fb270df6ee398980174e0babd1a844835dd6a9589d9a7538ca8fd7420202d",
+    "bytes": 984,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "mic",
+    "source": "extracted/webview/assets/composer_mic-1c2dfc365b22.svg",
+    "sha256": "fff4345ffe8db44123ed98fca61eefe13c44957abd8b42c26d687b2f96fbe675",
+    "bytes": 1491,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "voice",
+    "source": "extracted/webview/assets/voice_5_bars_soundwave-36e8087185c0.svg",
+    "sha256": "ff83b197ef637114103d56989876bec2f10887b4fa6f465bfb97630444125722",
+    "bytes": 710,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "send",
+    "source": "extracted/webview/assets/arrow_up-6c904b0911e9.svg",
+    "sha256": "83f21ab4a65951fd98ccf9ab89d743250c7e8aca86fc5c8b7a0220c6d7cfcc0c",
+    "bytes": 291,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "stop",
+    "source": "extracted/webview/assets/stop-d40b2b9849a3.svg",
+    "sha256": "6ef98fe7471caa2107b527145f9fd7d9b6099345b4fbbdf80ed108097975481d",
+    "bytes": 248,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "copy",
+    "source": "extracted/webview/assets/copy-fca5b461d233.svg",
+    "sha256": "f82fb0341681c607e2ac5d5a66d51afe0e9e0f4c0d8b1a7b94b205e53bc230ee",
+    "bytes": 3350,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "edit",
+    "source": "extracted/webview/assets/edit-f9caffbe09e1.svg",
+    "sha256": "760fe882647a402d21d63dca49c10d650eabc69d4fde6f8710e608f345f20552",
+    "bytes": 506,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "regenerate",
+    "source": "extracted/webview/assets/arrow_rotate_cw-4a213574bd44.svg",
+    "sha256": "b643bba40383d5d1a423bd53607345a644bce57dca53d96f667d29d359dfd9b3",
+    "bytes": 828,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "branch",
+    "source": "extracted/webview/assets/branch-cddbdb4445c4.svg",
+    "sha256": "832283395813f2eedb153e2295ef7663f1199c054cdacdcd5f4d9dfefbdaf487",
+    "bytes": 1198,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "more",
+    "source": "extracted/webview/assets/ellipsis-9e39f0de3171.svg",
+    "sha256": "b65afa45a6e5b1bf8732b917539fe47145ce5fc7c0300854a59e98b05d9a50e9",
+    "bytes": 283,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "chevron-down",
+    "source": "extracted/webview/assets/chevron_down-6d8fb03d85b2.svg",
+    "sha256": "60f528fbe29743a6d8f3f1f3710a7ff443c45ec71652a4d8f7370628015cd3ef",
+    "bytes": 283,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "sidebar",
+    "source": "extracted/webview/assets/sidebar_left-59ba729cde31.svg",
+    "sha256": "6492fceab1cfdb9cf9ae6e276a3fc90997cb642ce541a08e681b3f1e5881386a",
+    "bytes": 318,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "new-chat",
+    "source": "extracted/webview/assets/compose_edit_square-2e8bc761727d.svg",
+    "sha256": "df3bdea70773d06cc878e57318fd68cb29d1ef9bb1de4a6a77c625f843364598",
+    "bytes": 2338,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "search",
+    "source": "extracted/webview/assets/search-799c22aba3de.svg",
+    "sha256": "c98cebb937c9c0cd7672a8f584a1b4c51dad43ca61a9c7c8ec44f52b6086b2be",
+    "bytes": 669,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "library",
+    "source": "extracted/webview/assets/library-29533709afea.svg",
+    "sha256": "5d57b143490e75f37c60747ffdc05547f5360dfc5e7ead54d34db42d64135ff2",
+    "bytes": 272,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "projects",
+    "source": "extracted/webview/assets/folder-2bb8c26384b3.svg",
+    "sha256": "b593dfde0ed392361490956f4e2966c4108166e751bd04819983c57b6bd76c60",
+    "bytes": 859,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "settings",
+    "source": "extracted/webview/assets/settings-b4aeca2bb8a4.svg",
+    "sha256": "335388dd346629708363e5404b2dda39d763620205c8b6032c24feebca68232f",
+    "bytes": 1484,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "share",
+    "source": "extracted/webview/assets/share-ff60a9206871.svg",
+    "sha256": "8fbd6545e254aa2a9b9625e10a96ff723e04d1e3ce26ce9ed93ee8204f997e7b",
+    "bytes": 1524,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "close",
+    "source": "extracted/webview/assets/x-809c088b232e.svg",
+    "sha256": "00e9548dc130c7b678648fb47e5fe2da2b8a490e1b8fc99520937c4d72830c6f",
+    "bytes": 358,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "pin",
+    "source": "extracted/webview/assets/pin-2fd723b94de8.svg",
+    "sha256": "251154b557537cdd1260ee277b0ea42ec2bb0d3998d2164d890e450b1e82ef3c",
+    "bytes": 1236,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "trash",
+    "source": "extracted/webview/assets/trash-91a07fbf24e7.svg",
+    "sha256": "781d40718a7f6095b93ae27a681a723e671be2215b6a81bc112efdfd9e3e1c9b",
+    "bytes": 1112,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "archive",
+    "source": "extracted/webview/assets/archive-30c19584748a.svg",
+    "sha256": "e242578fce3eda76196df3d34dd24750f625f66212691989b01cf433d7425a4f",
+    "bytes": 1444,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "image",
+    "source": "extracted/webview/assets/image-f4b6b38efca3.svg",
+    "sha256": "4a3f7993676fa1f8b9a1d7bceac33842670a6d27a961e5b4786f930f9c218a53",
+    "bytes": 329,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "logo",
+    "source": "extracted/webview/assets/openai_logo_regular-ceb75a1754fa.svg",
+    "sha256": "8d7fc57895f1acfb63ac3ad1ca2f074b208d690524cd78180dc9e754e2efa83f",
+    "bytes": 2696,
+    "role": "shipped glyph candidate; per-control runtime binding is not yet verified"
+  },
+  {
+    "name": "chatgpt-wordmark",
+    "source": "extracted/webview/assets/app-initial-b8e1c8014bb4.js",
+    "source_symbol": "_ns",
+    "source_character_offset": 8068713,
+    "source_utf8_byte_offset": 8080526,
+    "source_sha256": "799331dde54905c4df5e360f23a9621141759e2c0acb230aeab909f9904b646f",
+    "sha256": "b885d5b6eec68584708b04a72bb3349a52508c7b15421565ddb12ae27e5ebf44",
+    "bytes": 4385,
+    "role": "ChatGPT wordmark SVG bound by Dns when workModeAccess is ChatGpt; exact inert literal extraction, no target execution",
+    "output": "chatgpt-wordmark.svg",
+    "viewBox": "0 0 77.129955 18"
+  },
+  {
+    "name": "chevron-right",
+    "source": "extracted/webview/assets/chevron_right-b4fa8e89cb1b.svg",
+    "sha256": "552d4585572971aa613134f35271d826664b82052cb0693b999e0df53f0994f7",
+    "bytes": 282,
+    "role": "shipped glyph; per-control binding pending verification"
+  },
+  {
+    "name": "document",
+    "source": "extracted/webview/assets/file_document-c15c8075d55c.svg",
+    "sha256": "167e0f793d8c461ecf70dda2fd3806f0f5ae53f58d2712fce06ff41d99ed30a6",
+    "bytes": 2786,
+    "role": "shipped glyph; per-control binding pending verification"
+  },
+  {
+    "name": "spreadsheet",
+    "source": "extracted/webview/assets/file_spreadsheet-88eaa777523b.svg",
+    "sha256": "af860e66a2657b6cdfde5825190f548309e075b71da80e2707778720a9c6815c",
+    "bytes": 463,
+    "role": "shipped glyph; per-control binding pending verification"
+  },
+  {
+    "name": "presentation",
+    "source": "extracted/webview/assets/file_presentation-bb201ec30014.svg",
+    "sha256": "8d7469460a1aa55276187406d82841a56309176b1a136b34225f90d952c5a660",
+    "bytes": 2245,
+    "role": "shipped glyph; per-control binding pending verification"
+  }
+]
