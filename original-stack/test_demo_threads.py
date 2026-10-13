@@ -5,6 +5,42 @@ from unittest.mock import patch
 from demo_threads import THREAD,handle,ThreadError,ThreadStore
 
 class ThreadTests(unittest.TestCase):
+    def test_search_matches_body_and_archive_filter_without_exposing_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json")
+            result,event=store.handle("thread/search",{"searchTerm":"FORMATTED demo"})
+            self.assertIsNone(event)
+            self.assertEqual(len(result["data"]),1)
+            self.assertIn("formatted demo",result["data"][0]["snippet"])
+            self.assertEqual(result["data"][0]["thread"]["turns"],[])
+            self.assertEqual(store.handle("thread/search",{"searchTerm":"missing-unique"})[0]["data"],[])
+            store.handle("thread/archive",{"threadId":THREAD["id"]})
+            self.assertEqual(store.handle("thread/search",{"searchTerm":"demo"})[0]["data"],[])
+            self.assertEqual(len(store.handle("thread/search",{"searchTerm":"demo","archived":True})[0]["data"]),1)
+
+    def test_search_keyset_cursor_reverses_and_rejects_other_query(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json")
+            for _ in range(2):store.handle("thread/fork",{"threadId":THREAD["id"],"lastTurnId":THREAD["turns"][0]["id"]})
+            query={"searchTerm":"formatted demo","limit":1}
+            first=store.handle("thread/search",query)[0]
+            second=store.handle("thread/search",{**query,"cursor":first["nextCursor"]})[0]
+            self.assertNotEqual(first["data"][0]["thread"]["id"],second["data"][0]["thread"]["id"])
+            back=store.handle("thread/search",{**query,"cursor":second["backwardsCursor"],"sortDirection":"asc"})[0]
+            self.assertEqual(back["data"][0]["thread"]["id"],first["data"][0]["thread"]["id"])
+            with self.assertRaises(ThreadError):store.handle("thread/search",{**query,"cursor":first["nextCursor"],"searchTerm":"different"})
+            for bad in ({},{"searchTerm":2},{"searchTerm":"demo","limit":True},{"searchTerm":"demo","sourceKinds":"appServer"},{"searchTerm":"demo","archived":"true"},{"searchTerm":"demo","cursor":"demo-search:!"},{"searchTerm":"demo","sortKey":["created_at"]}):
+                with self.assertRaises(ThreadError):store.handle("thread/search",bad)
+
+    def test_search_snippet_centers_late_unicode_match(self):
+        import copy
+        thread=copy.deepcopy(THREAD)
+        thread["turns"][0]["items"][1]["text"]="ß"*300+" Straße final match"
+        result=handle("thread/search",{"searchTerm":"STRASSE"},thread)
+        self.assertIn("Straße final match",result["data"][0]["snippet"])
+        self.assertTrue(result["data"][0]["snippet"].startswith("…"))
+        self.assertEqual(handle("thread/search",{"searchTerm":"  "},thread)["data"],[])
+
     def test_list_omits_history_and_honors_filters(self):
         self.assertEqual(handle("thread/list",{})["data"][0]["turns"],[])
         self.assertEqual(handle("thread/list",{"archived":True})["data"],[])

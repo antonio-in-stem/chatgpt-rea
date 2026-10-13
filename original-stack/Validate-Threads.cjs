@@ -41,6 +41,7 @@ with tempfile.TemporaryDirectory() as directory:
  failure=streaming.end_failed_turn(THREAD['id'],failed_start['turn']['id'],'Demo failure')
  samples.extend([[names[e['method']],e['params']] for e in failure])
  samples.extend([[names[e['method']],e['params']] for e in events])
+samples.append(['ThreadSearchResponse',handle('thread/search',{'searchTerm':'demo'})])
 samples.append(['ThreadItemsListResponse',handle('thread/items/list',{'threadId':THREAD['id']})])
 samples.append(['ThreadGoalGetResponse',handle('thread/goal/get',{'threadId':THREAD['id']})])
 samples.append(['HooksListResponse',handle_message(json.dumps({'id':1,'method':'hooks/list','params':{'cwds':[THREAD['cwd']]}}))[0]['result']])

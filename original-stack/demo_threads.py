@@ -1,12 +1,14 @@
 """Source-shaped, read-only transcript for exercising the original renderer."""
 import copy
+import base64
+import hashlib
 import json
 import time
 import uuid
 from pathlib import Path
 
 THREAD = json.loads((Path(__file__).parent / "demo-thread.json").read_text(encoding="utf-8"))
-METHODS = {"thread/list", "thread/read", "thread/turns/list", "thread/resume", "thread/goal/get", "thread/items/list"}
+METHODS = {"thread/search", "thread/list", "thread/read", "thread/turns/list", "thread/resume", "thread/goal/get", "thread/items/list"}
 
 class ThreadError(ValueError):
     pass
@@ -22,11 +24,67 @@ def page(items, params, prefix):
     result = items[offset:offset+limit]
     return {"data":result,"nextCursor":prefix+str(offset+limit) if offset+limit<len(items) else None,"backwardsCursor":None}
 
+def search_threads(entries, params):
+    """Local substring demo search, not a reproduction of upstream full-text ranking."""
+    term=params.get("searchTerm")
+    if not isinstance(term,str):raise ThreadError("Search term must be text")
+    term=term.strip().casefold()
+    keys={"created_at":"createdAt","updated_at":"updatedAt","recency_at":"recencyAt"}
+    sort=params.get("sortKey") or "created_at"
+    direction=params.get("sortDirection") or "desc"
+    if not isinstance(sort,str) or sort not in keys or direction not in ("asc","desc"):raise ThreadError("Invalid search sort")
+    archived=params.get("archived")
+    if archived is not None and type(archived) is not bool:raise ThreadError("Invalid archive filter")
+    sources=params.get("sourceKinds")
+    allowed={"cli","vscode","exec","appServer","subAgent","subAgentReview","subAgentCompact","subAgentThreadSpawn","subAgentOther","unknown"}
+    if sources is not None and (not isinstance(sources,list) or any(not isinstance(v,str) or v not in allowed for v in sources)):raise ThreadError("Invalid source filter")
+    sources=sorted(set(sources or ["cli","vscode","appServer"]))
+    limit=params.get("limit") if params.get("limit") is not None else 100
+    if type(limit) is not int or not 1<=limit<=1000:raise ThreadError("Invalid limit")
+    scope=hashlib.sha256(json.dumps([term,sort,bool(archived),sources]).encode()).hexdigest()[:16]
+    anchor=None
+    cursor=params.get("cursor")
+    if cursor is not None:
+        try:
+            if not isinstance(cursor,str) or not cursor.startswith("demo-search:"):raise ValueError()
+            token=json.loads(base64.b64decode(cursor[12:],altchars=b"-_",validate=True))
+            if not isinstance(token,list) or len(token)!=3 or token[0]!=scope or type(token[1]) is not int or not isinstance(token[2],str):raise ValueError()
+            anchor=tuple(token[1:])
+        except (ValueError,TypeError,UnicodeError):raise ThreadError("Invalid demo search cursor") from None
+    def cursor_for(key):return "demo-search:"+base64.urlsafe_b64encode(json.dumps([scope,*key]).encode()).decode()
+    matches=[]
+    for entry in entries:
+        thread=entry["thread"]
+        if bool(entry["archived"])!=bool(archived) or thread["source"] not in sources:continue
+        texts=[thread.get("name") or "",thread.get("preview") or ""]
+        for turn in thread["turns"]:
+            for item in turn["items"]:
+                if item["type"]=="userMessage":texts.extend(v["text"] for v in item["content"] if v["type"]=="text")
+                elif item["type"]=="agentMessage":texts.append(item["text"])
+        text=next((t for t in texts if term and term in t.casefold()),None)
+        if text is None:continue
+        # Map folded offsets back to original Unicode before clipping a snippet.
+        folded_position=text.casefold().find(term)
+        folded_offset=0
+        position=0
+        for position,char in enumerate(text):
+            folded_offset+=len(char.casefold())
+            if folded_offset>folded_position:break
+        start=max(0,position-60)
+        snippet=("\u2026" if start else "")+text[start:start+240]+("\u2026" if start+240<len(text) else "")
+        key=(thread[keys[sort]] or 0,thread["id"])
+        if anchor is not None and not (key>anchor if direction=="asc" else key<anchor):continue
+        matches.append((key,{"thread":{**copy.deepcopy(thread),"turns":[]},"snippet":snippet}))
+    matches.sort(key=lambda row:row[0],reverse=direction=="desc")
+    selected=matches[:limit]
+    return {"data":[row[1] for row in selected],"nextCursor":cursor_for(selected[-1][0]) if len(matches)>limit else None,"backwardsCursor":cursor_for(selected[0][0]) if selected else None}
+
 def handle(method, params, thread_data=None, archived=False):
     if params is None and method == "thread/list":params={}
     if not isinstance(params, dict):
         raise ThreadError("Expected object parameters")
     thread = copy.deepcopy(THREAD if thread_data is None else thread_data)
+    if method == "thread/search":return search_threads([{"thread":thread,"archived":archived}],params)
     if method == "thread/list":
         if params.get("originators") or params.get("ancestorThreadId"):
             raise ThreadError("Unsupported demo thread filter")
@@ -186,6 +244,7 @@ class ThreadStore:
         if params is None and method == "thread/list":params={}
         if not isinstance(params,dict):raise ThreadError("Expected object parameters")
         if method == "thread/start":return self._start(params)
+        if method == "thread/search":return search_threads(self.data["threads"].values(),params),None
         if method == "thread/list":
             ancestor=params.get("ancestorThreadId")
             if ancestor is not None and not isinstance(ancestor,str):raise ThreadError("Invalid ancestor")
