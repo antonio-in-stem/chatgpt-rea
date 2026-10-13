@@ -24,7 +24,8 @@
       "formattedSourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
       "components": [
         "Button",
-        "Spinner"
+        "Spinner",
+        "MenuInput"
       ],
       "symbols": [
         "r5",
@@ -35,10 +36,11 @@
         "kbi",
         "Zbi",
         "Qbi",
-        "$bi"
+        "$bi",
+        "Pji"
       ],
-      "transformation": "Literal variant tables and class expression; semantic extraction of props, loading, sizing labels and disabled anchor handlers. Default spinner paths retained. Rays SVG body retained, generic asset optical wrapper not yet extracted. Router adapter supplied through renderLink.",
-      "status": "Six package tests pass, including differential execution against shipped Jbi. Independent browser flow passes using shared Button; pixel comparison pending.",
+      "transformation": "Literal variant tables and class expression; semantic extraction of props, loading, sizing labels and disabled anchor handlers. Default spinner paths retained. Rays SVG output specialized from original hlr/rlr pipeline, including paint style and accessibility; source-execution parity test covers the fixed spinner asset. Router adapter supplied through renderLink.",
+      "status": "Button differential tests and standalone flow pass. Rays SVG output matches original asset pipeline; matched screenshot and timing comparison pending.",
       "variants": {
         "colors": 62,
         "sizes": 84,
@@ -50,7 +52,7 @@
   "limitations": [
     "Not original TypeScript",
     "Portable original CSS baseline available; minimal scoping and visual comparison pending",
-    "motion runtime compatibility and root/theme configuration remain to be verified",
+    "Motion runtime compatibility remains to be verified; root/theme setup documented",
     "Not a finished component library",
     "ChoiceButton interactive-* selectors not found in recovered CSS: behavior extracted, visual dependency unresolved"
   ],

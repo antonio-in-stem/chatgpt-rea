@@ -1,3 +1,4 @@
+import {createMenuInput} from './MenuInput.js';
 import {createButton} from './Button.js';
 import {createSpinner} from './Spinner.js';
 export {buttonColors,buttonSizes,buttonRadii,sizeRadii} from './buttonVariants.js';
@@ -28,5 +29,5 @@ export function createReaUI({React, motion, mergeClasses=classNames, requestFram
   }
   const Spinner=createSpinner(React,mergeClasses);
   const Button=createButton({React,mergeClasses,Spinner});
-  return {Button,Spinner,ChoiceButton,ChoiceGroup,SegmentedControl};
+  return {Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
 }
