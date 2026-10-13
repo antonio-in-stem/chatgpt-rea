@@ -66,3 +66,12 @@ Capture scripts now optionally resize the verified demo window to a requested cl
 Measured original normal bubble: radius 22, superellipse(1.5), neutral #dfdfdf at 5% alpha, text Segoe UI 14 px / weight 430 / line-height 22.75 px. Native dark normal user bubbles now use that translucent material, weight and line-height; light material is unchanged/unverified. The compiled capture native-bubble-measured-style.png visibly retains the text and shows dominant fill RGB(34,34,34), replacing the prior opaque RGB(48,48,48). The original has a dominant RGB(34,34,34) in the sampled region but also a gradient of other gray values; this is not proof of equivalent compositing. Vertical placement and surrounding content styling remain different.
 
 Locked offline cargo build passed, and native/dist/windows was repackaged. Evidence includes bubble-matched-viewport-observation.json, native-bubble-matched-fixture.json, original-bubble-matched-viewport.png, native-bubble-matched-viewport.png and native-bubble-measured-style.png.
+
+
+## Scroll-state correction before vertical layout port
+
+The equal-viewport original capture was at the bottom of a column-reverse scroller, not the start of history. The scroller is 660 px high with 737 px scrollHeight: scrollTop=0 at the bottom, -77 at the top. A real upward wheel event moved the same bubble from y=103 to y=180, preserving its 42.75 px height. Therefore the apparent 14 px offset against the native screenshot cannot be corrected as a fixed margin.
+
+The newly measured ancestor children identify a 52 px date/time separator before the first user message, plus the original 32 px content top inset. At the top: scroller y=96, separator y=128 and bubble y=180. The original timestamp-separator module confirms normal py-4 (16+16) and leading-5 (20); compact variants use py-2, and nonfinite timestamps render nothing. Native chat_view currently has 24 px transcript padding and no timestamp separator, and places its composer outside the message scroller. These are structural differences still to port, not pixel offsets to guess.
+
+Evidence: thread-scroll-top-observation.json and original-thread-scroll-top.png. Demo-Controls scroll-thread sends a bounded wheel event to the demo scroller; Measure-Renderer now captures user-message ancestor child geometry. Native layout was deliberately not adjusted from the invalid earlier comparison.

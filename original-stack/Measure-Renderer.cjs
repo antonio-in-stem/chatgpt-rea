@@ -66,7 +66,11 @@ function measureRenderer() {
     }
     for(let n=e;n;n=n.parentElement)chains[name].push(record(n));
   }
-  return {viewport:{width:innerWidth,height:innerHeight,devicePixelRatio,visualViewportScale:visualViewport?.scale},document:{url:location.href,visibility:document.visibilityState,focused:document.hasFocus(),fontsStatus:document.fonts.status,activeElement:{tag:document.activeElement?.tagName,role:document.activeElement?.getAttribute('role'),label:document.activeElement?.getAttribute('aria-label')}},anchors:chains,fontSamples,rootVariables,nodes};
+  const userAncestorGeometry=(chains.userMessage||[]).map(id=>{
+    const e=document.querySelector(nodes[id].selector);
+    return {id,children:[...e.children].map(child=>({tag:child.tagName,classes:child.getAttribute('class'),role:child.getAttribute('role'),rect:child.getBoundingClientRect().toJSON()}))};
+  });
+  return {userAncestorGeometry,viewport:{width:innerWidth,height:innerHeight,devicePixelRatio,visualViewportScale:visualViewport?.scale},document:{url:location.href,visibility:document.visibilityState,focused:document.hasFocus(),fontsStatus:document.fonts.status,activeElement:{tag:document.activeElement?.tagName,role:document.activeElement?.getAttribute('role'),label:document.activeElement?.getAttribute('aria-label')}},anchors:chains,fontSamples,rootVariables,nodes};
 }
 
 (async()=>{

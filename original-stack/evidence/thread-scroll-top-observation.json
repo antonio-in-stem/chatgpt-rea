@@ -1,0 +1,443 @@
+{
+  "viewport": {
+    "width": 1090,
+    "height": 760,
+    "devicePixelRatio": 1,
+    "visualViewportScale": 1
+  },
+  "bubble": {
+    "x": 617.609375,
+    "y": 180,
+    "width": 442.390625,
+    "height": 42.75
+  },
+  "scroller": {
+    "rect": {
+      "x": 341,
+      "y": 96,
+      "width": 745,
+      "height": 660
+    },
+    "scroll": {
+      "width": 725,
+      "height": 737,
+      "left": 0,
+      "top": -77
+    }
+  },
+  "source": {
+    "exeSha256": "13d7ee588d7ae20f04f7aa25a65ae82917ada81501304ac8f5e679d0b3306601",
+    "asarSha256": "c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038"
+  },
+  "userAncestorGeometry": [
+    {
+      "id": 105,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "flex flex-col items-end gap-1",
+          "role": null,
+          "rect": {
+            "x": 633.609375,
+            "y": 190,
+            "width": 410.390625,
+            "height": 22.75,
+            "top": 190,
+            "right": 1044,
+            "bottom": 212.75,
+            "left": 633.609375
+          }
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "bg-user-message text-user-message min-w-0 max-w-(--user-chat-width) overflow-hidden break-words px-(--thread-content-margin) [&_.contain-inline-size]:[contain:initial] _bubble_11evq_1 py-2.5 rounded-2xl relative text-start",
+          "role": null,
+          "rect": {
+            "x": 617.609375,
+            "y": 180,
+            "width": 442.390625,
+            "height": 42.75,
+            "top": 180,
+            "right": 1060,
+            "bottom": 222.75,
+            "left": 617.609375
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "flex flex-row-reverse items-center gap-1",
+          "role": null,
+          "rect": {
+            "x": 961.515625,
+            "y": 226.75,
+            "width": 98.484375,
+            "height": 26,
+            "top": 226.75,
+            "right": 1060,
+            "bottom": 252.75,
+            "left": 961.515625
+          }
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "children": [
+        {
+          "tag": "H4",
+          "classes": "sr-only m-0 select-none",
+          "role": null,
+          "rect": {
+            "x": 1059,
+            "y": 180,
+            "width": 1,
+            "height": 1,
+            "top": 180,
+            "right": 1060,
+            "bottom": 181,
+            "left": 1059
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "group/user-message flex w-full flex-col gap-1 items-end",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 180,
+            "width": 693,
+            "height": 72.75,
+            "top": 180,
+            "right": 1060,
+            "bottom": 252.75,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "flex flex-col items-end gap-2",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 180,
+            "width": 693,
+            "height": 72.75,
+            "top": 180,
+            "right": 1060,
+            "bottom": 252.75,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 109,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "scroll-mt-4",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 180,
+            "width": 693,
+            "height": 72.75,
+            "top": 180,
+            "right": 1060,
+            "bottom": 252.75,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "flex flex-col",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 180,
+            "width": 693,
+            "height": 72.75,
+            "top": 180,
+            "right": 1060,
+            "bottom": 252.75,
+            "left": 367
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "w-full group-data-[spacing=grouped]/agent-activity:shrink-0",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 252.75,
+            "width": 693,
+            "height": 16,
+            "top": 252.75,
+            "right": 1060,
+            "bottom": 268.75,
+            "left": 367
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "flex flex-col",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 268.75,
+            "width": 693,
+            "height": 406.25,
+            "top": 268.75,
+            "right": 1060,
+            "bottom": 675,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "flex flex-col gap-0",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 180,
+            "width": 693,
+            "height": 495,
+            "top": 180,
+            "right": 1060,
+            "bottom": 675,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "flex justify-center py-4",
+          "role": "separator",
+          "rect": {
+            "x": 367,
+            "y": 128,
+            "width": 693,
+            "height": 52,
+            "top": 128,
+            "right": 1060,
+            "bottom": 180,
+            "left": 367
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "contents",
+          "role": null,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": 113,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "[&_[data-virtualized-turn-content]]:[content-visibility:visible]",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 128,
+            "width": 693,
+            "height": 547,
+            "top": 128,
+            "right": 1060,
+            "bottom": 675,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 128,
+            "width": 693,
+            "height": 547,
+            "top": 128,
+            "right": 1060,
+            "bottom": 675,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 115,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "flex flex-col",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 128,
+            "width": 693,
+            "height": 547,
+            "top": 128,
+            "right": 1060,
+            "bottom": 675,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 116,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "relative shrink-0",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 128,
+            "width": 693,
+            "height": 547,
+            "top": 128,
+            "right": 1060,
+            "bottom": 675,
+            "left": 367
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "shrink-0",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 687,
+            "width": 693,
+            "height": 0,
+            "top": 687,
+            "right": 1060,
+            "bottom": 687,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 117,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "relative flex flex-col electron:[--color-codex-description:color-mix(in_srgb,var(--color-text)_70%,transparent)] gap-3",
+          "role": null,
+          "rect": {
+            "x": 367,
+            "y": 128,
+            "width": 693,
+            "height": 559,
+            "top": 128,
+            "right": 1060,
+            "bottom": 687,
+            "left": 367
+          }
+        }
+      ]
+    },
+    {
+      "id": 118,
+      "children": [
+        {
+          "tag": "DIV",
+          "classes": "contents",
+          "role": null,
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "relative flex flex-1 shrink-0 flex-col _transcriptContent_121j8_2 [--thread-content-max-width:var(--thread-content-responsive-max-width,inherit)] [--thread-body-max-width:calc(var(--thread-content-max-width)+var(--thread-body-inline-padding,0px)*2)] mx-auto w-full max-w-(--thread-body-max-width) px-[var(--thread-body-inline-padding,var(--padding-toolbar))] pb-8 has-[[data-compact-status-slot-clearance]]:pb-0",
+          "role": null,
+          "rect": {
+            "x": 351,
+            "y": 128,
+            "width": 725,
+            "height": 591,
+            "top": 128,
+            "right": 1076,
+            "bottom": 719,
+            "left": 351
+          }
+        },
+        {
+          "tag": "DIV",
+          "classes": "pointer-events-none sticky bottom-0 z-10 mt-auto w-full shrink-0 h-[calc(var(--thread-scroll-padding-bottom)-var(--spacing)*4)]",
+          "role": null,
+          "rect": {
+            "x": 351,
+            "y": 642,
+            "width": 725,
+            "height": 114,
+            "top": 642,
+            "right": 1076,
+            "bottom": 756,
+            "left": 351
+          }
+        }
+      ]
+    }
+  ],
+  "separatorSource": {
+    "path": "original-stack\\state\\recovered-all\\readable\\assets\\timestamp-separator-9cf1f71ff983.js",
+    "sha256": "00d98e1af25f3c1e94306976ca7f0b67913c99d76c6eba22d56afe6f3b82ca84",
+    "normalPaddingY": 16,
+    "normalLineHeight": 20,
+    "normalTotalHeight": 52,
+    "compactPaddingY": 8,
+    "nonFiniteTimestamp": "renders nothing"
+  }
+}
