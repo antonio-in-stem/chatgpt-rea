@@ -6,6 +6,7 @@ const {demoStatsigBootstrap}=require('./demo_feature_flags.cjs');
 const {demoSidebarSettings}=require('./demo_sidebar_settings.cjs');
 const {demoPluginHttp}=require('./demo_plugin_http.cjs');
 const {demoSkillFile}=require('./demo_skill_file.cjs');
+const {demoSkillLifecycle}=require('./demo_skill_lifecycle.cjs');
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const [avatarPngPath,outputDirectory]=process.argv.slice(2);
 if(!avatarPngPath)throw Error('Pass an explicit local demo PNG path');
@@ -32,6 +33,9 @@ values.http={
  '/wham/onboarding/context':{role:null,desktop_onboarding_completed_at:'2026-10-13T00:00:00Z'}
 };
 const replacements=[
+ ['"recommended-skills":async({hostId:e,refresh:t})=>{','"recommended-skills":async({hostId:e,refresh:t})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`catalog`,{hostId:e},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
+ ['"install-recommended-skill":async({hostId:e,skillId:t,repoPath:n,installRoot:r,skillStatsigOverride:a,forceReinstall:o,source:s})=>{','"install-recommended-skill":async({hostId:e,skillId:t,repoPath:n,installRoot:r,skillStatsigOverride:a,forceReinstall:o,source:s})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`install`,{hostId:e,skillId:t,repoPath:n,installRoot:r},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
+ ['"remove-skill":async({hostId:e,skillPath:t})=>{','"remove-skill":async({hostId:e,skillPath:t})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`remove`,{hostId:e,skillPath:t},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"read-file":async({path:e,hostId:t})=>{','"read-file":async({path:e,hostId:t})=>{const demoSkill=demoSkillFile(e,t);if(demoSkill!==null)return demoSkill;'],
  ['async function O_(e){','async function O_(e){return structuredClone(__reaDemoIdentity.accountInfo);'],
  ['readAccountInfo(e=!1){','readAccountInfo(e=!1){return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.accountInfo)});'],
@@ -44,7 +48,7 @@ for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;

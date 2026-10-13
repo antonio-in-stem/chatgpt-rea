@@ -30,3 +30,16 @@ class SkillTests(unittest.TestCase):
                 self.assertEqual(reply['error']['code'],-32603)
             self.assertFalse(SkillStore(config).enabled)
             self.assertFalse(store.path.with_suffix('.pending').exists())
+
+    def test_host_install_state_controls_inventory_and_survives_toggle(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config=ConfigStore(Path(directory)/'config.json',{})
+            state=Path(directory)/'demo-skills.json'
+            state.write_text(json.dumps({'enabled':True,'installed':False}))
+            store=SkillStore(config)
+            self.assertEqual(store.handle('skills/list',{},'C:/demo')['data'][0]['skills'],[])
+            store.handle('skills/config/write',{'name':NAME,'enabled':False},'C:/demo')
+            self.assertFalse(json.loads(state.read_text())['installed'])
+            state.write_text(json.dumps({'enabled':False,'installed':True}))
+            skill=SkillStore(config).handle('skills/list',{},'C:/demo')['data'][0]['skills'][0]
+            self.assertFalse(skill['enabled'])
