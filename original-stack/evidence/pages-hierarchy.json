@@ -24,7 +24,8 @@
   "runtimeVerified": true,
   "limitations": [
     "Personal pages only; no space ownership changes",
-    "Move/drag/drop and subtree archive/restore currently covered by adapter tests only; original UI validation pending"
+    "Move/drag/drop and independent-child restore currently covered by adapter tests only; original UI validation pending",
+    "Permanent subtree deletion covered by adapter tests only"
   ],
   "runtime": {
     "package": "v24",
@@ -37,6 +38,28 @@
       "Reload > Space > Nested original page restores body",
       "Expand pages inside Archive lifecycle demo changes expanded=true and renders child row"
     ],
-    "restoredText": "Created through the original Add subpage control."
+    "restoredText": "Created through the original Add subpage control.",
+    "subtreeLifecycle": {
+      "flow": [
+        "Parent original File menu Delete and confirmation",
+        "Both parent and child removed from Recents",
+        "Trash Pages displays both pages with deleted date",
+        "Parent original actions Restore and confirmation",
+        "Trash empty; both pages immediately return to Recents",
+        "Open child restores original editable paragraph"
+      ],
+      "canonicalHashesBeforeAfterIdentical": true,
+      "hashes": {
+        "rea-page-5": "5A647993712B7F74A84F7BBD6F80CE18040123B34DDA8D2474B2294C82B3E59F",
+        "rea-page-4": "6F11395EB7F5C21530967076E2552758FF0C1AEA8779463D68F445DE213F021B"
+      },
+      "restoredChildBlocks": {
+        "type": "paragraph",
+        "layout": "normal",
+        "text": "Created through the original Add subpage control.",
+        "headings": [],
+        "table": null
+      }
+    }
   }
 }
