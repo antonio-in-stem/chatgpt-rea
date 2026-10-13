@@ -8,7 +8,15 @@
     "./styles.css": "./styles/original.css"
   },
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "build:example": "esbuild examples/main.js --bundle --format=esm --outfile=dist/example.js",
+    "dev": "node scripts/serve.mjs"
   },
-  "description": "Source-traced reusable frontend components; extraction in progress"
+  "description": "Source-traced reusable frontend components; extraction in progress",
+  "dependencies": {
+    "esbuild": "0.28.0",
+    "framer-motion": "12.43.0",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  }
 }

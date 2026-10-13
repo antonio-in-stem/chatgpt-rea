@@ -24,3 +24,9 @@ Original utility classes are retained verbatim. Import `@rea/ui/styles.css` for 
 Use the shipped frontend as the visual/behavior reference. Keep app services behind consumer-provided callbacks; add demo responses only where needed to exercise a flow.
 
 Regenerate the styles with `node scripts/extract-styles.mjs <extracted-webview-assets>`. Existing differing output is rejected. `styles/manifest.json` records each source digest. Preserve original third-party notices; this package does not relicense the extracted assets.
+
+## Run the connected example
+
+From `ui-library`, run `npm ci --ignore-scripts`, `npm run build:example`, then `npm run dev`. Open the loopback URL printed by the server. The example loads no original app host and needs no account or synthetic backend. It is a new composition using recovered components, not a clone of an original screen.
+
+React/ReactDOM 19.2.7 match the version string observed in the shipped renderer. Framer Motion 12.43.0 is pinned for this example; matching it to the bundled animation runtime and visual/timing comparison remain pending. Dependencies and the build output are excluded from Git; the lockfile is tracked.

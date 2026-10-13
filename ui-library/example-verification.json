@@ -1,0 +1,22 @@
+{
+  "type": "Independent browser execution, not full original visual parity",
+  "observed": [
+    "React app mounts outside ChatGPT host",
+    "Guided initially aria-pressed=true",
+    "Click Direct changes controlled selection",
+    "Review displays Review: direct and Back/Confirm controls",
+    "Confirm displays status Confirmed: direct"
+  ],
+  "build": "npm run build:example succeeded with esbuild 0.28.0",
+  "runtimeVersions": {
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "framer-motion": "12.43.0"
+  },
+  "limits": [
+    "Motion exact original version unresolved",
+    "Screenshot/style and animation comparison not yet performed",
+    "Only first connected example and three extracted components; not complete library"
+  ],
+  "console": "Only observed error was missing favicon; added data favicon to avoid request. No app exception observed."
+}
