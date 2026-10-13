@@ -1,5 +1,5 @@
 {
-  "status": "Create/list/detail adapter implemented and tested; not installed or runtime verified",
+  "status": "v33 installed; original creation and reload persistence verified; scoped library route pending",
   "create": {
     "method": "POST",
     "path": "/spaces/v2",
@@ -73,7 +73,10 @@
     "New space direct DOM activation opened original Create a space dialog after animation",
     "Space name input placeholder Name the topic or group",
     "Invite people, Cancel, Create present",
-    "Cancelled without submitting"
+    "Cancelled without submitting",
+    "Original Create a space dialog submitted with synthetic name Original Space demo; sidebar displays created space",
+    "Reload then Space retains synthetic space in sidebar and All listing",
+    "Opening created space reports Could not load all pages; demo backend missing GET /spaces/{space_id}/pages"
   ],
   "unknowns": [
     "Exhaustive response schema",
@@ -91,7 +94,7 @@
     "Workspace-default creation explicitly unsupported in personal demo",
     "Invitation/share and appearance fallback not implemented",
     "Space archive and scoped child listing/creation pending",
-    "UI creation/root startup still unverified"
+    "Creation and persistence verified; root editor startup not verified, default view is scoped library"
   ],
   "tests": "72 Python +27 Node pass; creation write-failure atomicity, root identity, list pagination, rename projection and root sync persistence covered"
 }
