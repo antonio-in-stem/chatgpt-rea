@@ -82,6 +82,18 @@ class PageSyncTests(unittest.TestCase):
    self.assertEqual(json.loads(restored.get_text('title').to_json()),'First version')
    self.assertEqual(base64.b64decode(snapshot['state_vector_base64']),y.encode_state_vector(restored))
    self.assertEqual(snapshot['through_sequence'],1)
+ def test_order_and_symbol_create_versions_without_false_block_attribution(self):
+  with tempfile.TemporaryDirectory(prefix='rea-order-') as directory:
+   folder=Path(directory);(folder/'demo-pages.json').write_text(json.dumps({'items':[{'metadata':{'page_id':'rea-page-1'}}]}))
+   store=PageSyncStore(folder);doc=y.YDoc()
+   def commit(key):
+    store.commit('rea-page-1',{'client_update_id':key,'update':base64.b64encode(y.encode_state_as_update(doc)).decode()})
+    return json.loads((folder/'rea-page-1-document.json').read_text())
+   with doc.begin_transaction() as tx:doc.get_array('topLevelBlockIds').append(tx,'block-a')
+   first=commit('order');self.assertEqual(len(first['checkpoints']),1);self.assertEqual(first['block_attributions'],{})
+   with doc.begin_transaction() as tx:doc.get_map('pagesMetadata').set(tx,'symbol',{'kind':'icon','value':'function','color':'blue'})
+   second=commit('symbol');self.assertEqual(len(second['checkpoints']),2);self.assertEqual(second['block_attributions'],{})
+   self.assertEqual(len(commit('unchanged')['checkpoints']),2)
  def test_archived_and_deleted_pages_reject_sync_and_commit(self):
   with tempfile.TemporaryDirectory(prefix='rea-page-sync-') as directory:
    folder=Path(directory);file=folder/'demo-pages.json';store=PageSyncStore(folder)

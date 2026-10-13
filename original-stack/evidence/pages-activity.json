@@ -61,10 +61,17 @@
       "Canonical document stores frozen full Yjs envelopes after title/block changes, sequence IDs and state vectors",
       "GET versions paginates metadata descending through_sequence",
       "GET checkpoint-bootstrap returns full descriptor with exact UTF-8 byte_size and SHA256, observed head and expiry",
-      "Download URL uses reserved rea-demo.invalid and is not yet connected to a downloader"
+      "Download URL uses reserved rea-demo.invalid and is not yet connected to a downloader",
+      "Snapshots also capture topLevelBlockIds order and pagesMetadata symbol changes without false block attributions",
+      "Standalone demoCheckpointDownload returns exact frozen bytes only for reserved demo URL and available local page; not wired into host service"
     ],
     "source_endpoint_constraint": "app-shared-737655e1fb23.js:105114-105140 zAt requires OpenAI wss endpoint when allowLocal=false. app-initial164595 invokes it whenever pagesRealtime service exists. Restoring downloader service alone breaks local ws sync.",
-    "tests": "Frozen snapshot survives subsequent edit; replay does not duplicate checkpoint; vector matches restored Yjs; pagination/hash and archived rejection tested.69 Python +24 Node passed."
+    "tests": "70 Python pass, standalone local downloader test passes; previous24Node unaffected. UI integration still pending.",
+    "network_research": {
+      "electron_webrequest": "https://www.electronjs.org/docs/latest/api/web-request",
+      "websocket_redirect_issue": "https://github.com/electron/electron/issues/51505",
+      "conclusion": "Do not assume onBeforeRequest redirectURL works for WebSockets; no runtime proxy change attempted."
+    }
   },
   "views_pending": {
     "route": "GET /pages/{page_id}/views?limit=20&cursor=...",
