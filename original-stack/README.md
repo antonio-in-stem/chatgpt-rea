@@ -372,3 +372,10 @@ These are syntactic candidates, not a complete runtime graph: aliased loaders, s
 ## Strict AST recovery correction during renderer expansion
 
 The first all-assets pass reported an AST difference for dotnet.native.k09zdxq5tw.js. Focused comparison found Prettier converting quoted object keys from StringLiteral nodes to Identifier nodes. Recover-AllAssets now uses quoteProps: preserve and will retry records with astEquivalent=false instead of treating them as successful cached results. The same original module, formatted with that option in a read-only probe, compared AST-equal (canonical AST SHA-256 b2d531ec73a29773b359d06b619277aefb99d5a08f25f18e9b771ca0fcda9259). The running first pass still uses its already-loaded options; after it exits, a second incremental pass must apply the correction and then run the full audit. No AST validation requirement was relaxed.
+
+
+## Renderer first-pass completion and incremental checkpoint fix
+
+The first all-assets process completed with 15,087 records (14,771 JS/MJS and 316 CSS), 385,608,865 original bytes and 490,677,728 formatted bytes. It exited 1 for the single previously diagnosed dotnet.native.k09zdxq5tw.js AST difference; there were no parse/format errors. The corrective incremental pass is running and has not yet been accepted as a final audit.
+
+A checkpoint issue was also found: a short incremental run could finish on cached files without writing its updated manifest. Recover-AllAssets now unconditionally writes the manifest after the loop. The already-running corrective process loaded the prior script, so its final manifest must be checked and, if needed, regenerated with the fixed version before auditing. Do not infer success from summary.json alone.
