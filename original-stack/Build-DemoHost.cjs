@@ -88,6 +88,7 @@ const check=fs.readFileSync(dest), start=8+check.readUInt32LE(4);
 if(!check.subarray(start,start+raw.length-dataStart).equals(raw.subarray(dataStart)))throw Error('Original archive data changed');
 if(sha(check.subarray(start+Number(entry.offset),start+Number(entry.offset)+entry.size))!==sha(bytes))throw Error('Patched member mismatch');
 fs.writeFileSync(path.join(out,'demo-account-read.json'),JSON.stringify(identity.accountRead(),null,2)+'\n');
+if(sha(check.subarray(start+Number(protocolEntry.offset),start+Number(protocolEntry.offset)+protocolEntry.size))!==sha(protocolBytes))throw Error('Patched protocol member mismatch');
 const manifest={mode:'instrumented-demo-host',simulatedSessionState:'signedIn',sourceSha256:sha(raw),outputSha256:sha(check),changedMember:'.vite/build/main-BklS_2Y2.js',additionalChangedMember:'.vite/build/browser-background-switches-Zzmx0u5p.js',servedHtmlChange:'Only demo index CSP connect-src adds current loopback Pages endpoint',protocolOriginalSha256:sha(protocolOriginal),protocolPatchedSha256:sha(protocolBytes),originalMemberSha256:sha(original),patchedMemberSha256:sha(bytes),seams:replacements.map(([needle])=>needle),originalArchiveDataPreserved:true,rendererFilesModified:false,credentialsPresent:false,networkBoundary:'Only this host fetchHttp service is blocked for unmatched routes; this is not full process network isolation.',runtimeVerified:false};
 fs.writeFileSync(path.join(out,'patch-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 console.log(JSON.stringify({output:dest,...manifest},null,2));

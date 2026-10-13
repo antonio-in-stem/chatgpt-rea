@@ -6,13 +6,24 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const listing=method==='GET'&&(route==='/pages'||route==='/pages/catalog');
  const detail=method==='GET'&&/^\/pages\/rea-page-[1-9][0-9]*$/.test(route);
  const create=method==='POST'&&route==='/pages';
+ const library=method==='POST'&&route==='/files/library';
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!listing&&!detail&&!create&&!token)return null;
+ if(!listing&&!detail&&!create&&!token&&!library)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
  if(state.version!==1||!Array.isArray(state.items)||!Number.isSafeInteger(state.sequence))throw Error('Invalid demo page store');
  const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;return {metadata:doc?{...item.metadata,title:doc.title??item.metadata.title,current_sequence:doc.sequence}:item.metadata,content:doc?null:item.content,document_bootstrap:null};};
+ if(library){
+  if(typeof body!=='string'||body.length>65536)throw Error('Expected library JSON');
+  const input=JSON.parse(body);if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid library body');
+  if(input.cursor)throw Error('Unknown demo library cursor');
+  if(input.limit!=null&&(!Number.isInteger(input.limit)||input.limit<1||input.limit>100))throw Error('Invalid library limit');
+  if(input.trashed_only||input.include_pages!==true||(input.categories?.length&&!input.categories.includes('pages')))return {items:[],cursor:null};
+  const items=state.items.map(x=>read(x).metadata).filter(x=>!input.q||x.title.toLowerCase().includes(String(input.q).toLowerCase())).filter(x=>!input.allowlist_ids||input.allowlist_ids.includes(x.page_id));
+  if(items.length>(input.limit||50))throw Error('Demo library pagination not implemented');
+  return {items:items.map(x=>({id:x.page_id,file_id:x.page_id,file_name:x.title,directory_id:null,library_artifact_type:'page',updated_at:x.updated_at,record_creation_time:x.created_at,last_used_at:x.updated_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:null}})),cursor:null};
+ }
  if(token){
   const item=state.items.find(x=>x.metadata.page_id===route.split('/')[2]);if(!item)throw Error('Unknown demo page');
   const runtime=JSON.parse(fs.readFileSync(path.join(path.dirname(settingsPath),'demo-pages-runtime.json'),'utf8'));

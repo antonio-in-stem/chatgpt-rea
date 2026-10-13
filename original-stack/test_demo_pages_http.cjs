@@ -17,6 +17,9 @@ test('personal page creation is idempotent, persistent, paged and explicit about
   const listing=call('GET','/pages?limit=1');assert.equal(listing.items[0].title,'Second');assert.equal(listing.next_cursor,'offset:1');
   assert.equal(call('GET','/pages?limit=1&cursor=offset:1').items[0].page_id,'rea-page-1');
   assert.equal(call('GET','/pages/catalog').items[0].open.page_id,'rea-page-2');
+  assert.equal(call('POST','/files/library',{include_pages:true}).items[0].file_name,'Second');
+  assert.equal(call('POST','/files/library',{include_pages:true,q:'Second'}).items.length,1);
+  assert.deepEqual(call('POST','/files/library',{include_pages:true,trashed_only:true}),{items:[],cursor:null});
   assert.throws(()=>call('GET','/pages?cursor=oops'));
   assert.throws(()=>call('POST','/pages',{...input,parent_page_id:'other'}));
   assert.throws(()=>call('POST','/pages',{...input,initial_blocks:[{}]}));

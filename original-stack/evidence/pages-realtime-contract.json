@@ -25,7 +25,7 @@
     "HTTP bootstrap cannot use rootless empty Yjs update",
     "Legacy capabilities are insufficient for typed blocks, comments, collaborator cursors and semantic operations"
   ],
-  "next": "Build/install v20 with demo_page_csp helper patch in protocol host member. It adds only actual demo endpoint /demo-pages/ to served index CSP; original JS/CSS unchanged. Then verify text edit/reload.",
+  "next": "Build v21 with pending POST/files/library page projection then reopen Original Pages demo and verify title/body restored. Broader typed-block/semantic support remains.",
   "implementation": {
     "files": [
       "demo_page_sync.py",
@@ -34,6 +34,16 @@
     ],
     "dependency": "y-py==0.6.2 installed only in original-stack/state/page-sync-deps",
     "verified": "unit test applies real Yjs title update, persists canonical full state, restores in new document, deduplicates receipts, rejects conflicts, preserves foreign pending file",
-    "runtime": "v19 editor renders correctly, but title readonly and document contenteditable=false; CDP no Pages socket frames, runtime log confirms CSP blocked loopback."
+    "runtime": "v20 original editor connects: server_capabilities, sync_step_1, sync_step_2(sequence0). Title and document editable. Native input title/body persisted in rea-page-3-document.json sequence1 and decoded independently as Yjs. Reload returns Space empty because library fixture was empty; reopening not yet verified."
+  },
+  "runtimeVerified": {
+    "runtimePid": 49432,
+    "adapterPid": 100412,
+    "launcherSession": 64233,
+    "packageSha256": "e6326e933b31fb081fe7fcc68685d1eb82a19c9ee1f3281b27fc27adea1519f4",
+    "pageId": "rea-page-3",
+    "title": "Original Pages demo",
+    "markdown": "Text written through the original editor.",
+    "canonicalSequence": 1
   }
 }
