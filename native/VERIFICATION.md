@@ -391,3 +391,7 @@ Source-derived superellipse(1.5) and15.625px radius extent now apply to destinat
 
 ## Sidebar row corners
 Recovered sidebar-item geometry applied to chat/project/Show more rows. Corrected Button wrapper padding after real screenshot inspection; final capture qa/native-sidebar-22.png. Build and59 workspace tests pass. This is not whole-app visual parity.
+
+
+## Durable section collapse
+60 existing workspace tests and12 core tests pass; added restore-on-open UI test passes (61 total workspace tests now). Production executable builds. Collapsed state is loaded from workspace settings with backward-compatible serde default.

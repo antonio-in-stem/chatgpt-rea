@@ -43,6 +43,9 @@ fn paint_shell_frame(bounds: Bounds<Pixels>, shell: Hsla, border: Hsla, window: 
     window.paint_quad(quad(bounds, radii, Hsla::transparent_black(), px(1.), border, BorderStyle::Solid));
 }
 
+fn sidebar_section_key(label: &str) -> &str {
+    match label { "Pinned" => "pinned", "Chats" => "chats", "Projects" => "threads", _ => label }
+}
 fn sidebar_backdrop(cx: &App) -> Hsla {
     if cx.theme().mode.is_dark() { rgb(0x191b21).into() } else { cx.theme().colors.sidebar }
 }
@@ -383,7 +386,7 @@ impl WorkspaceApp {
             );
         let mut recents = div().w_full().flex().flex_col().gap(px(2.));
         let section = |label: &'static str, cx: &mut Context<Self>| {
-            let collapsed = self.collapsed_sidebar_sections.contains(label);
+            let collapsed = self.workspace.settings.collapsed_sidebar_sections.contains(sidebar_section_key(label));
             Button::new(SharedString::from(format!("sidebar-section-{label}"))).ghost()
                 .w_full().h(px(30.)).mt(px(16.)).px(px(8.)).justify_start()
                 .text_size(native_ui::typography::TextRole::Body.in_app(cx))
@@ -393,7 +396,11 @@ impl WorkspaceApp {
                 .child(div().flex().items_center().gap(px(4.)).child(label)
                     .when(collapsed, |row| row.child(native_ui::icon("chevron-right",12.))))
                 .on_click(cx.listener(move |s,_,_,cx| {
-                    if !s.collapsed_sidebar_sections.remove(label) { s.collapsed_sidebar_sections.insert(label); }
+                    let key=sidebar_section_key(label);
+                    if !s.workspace.settings.collapsed_sidebar_sections.remove(key) {
+                        s.workspace.settings.collapsed_sidebar_sections.insert(key.to_string());
+                    }
+                    s.persist();
                     cx.notify();
                 }))
         };
@@ -409,7 +416,7 @@ impl WorkspaceApp {
             let rows = all_chats.iter().filter(|(_, c)| c.pinned == pinned && (pinned || c.project_id.is_none())).collect::<Vec<_>>();
             let label = if pinned { "Pinned" } else { "Chats" };
             if !rows.is_empty() { recents = recents.child(section(label, cx)); }
-            if self.collapsed_sidebar_sections.contains(label) { continue; }
+            if self.workspace.settings.collapsed_sidebar_sections.contains(sidebar_section_key(label)) { continue; }
             let visible=sidebar_visible_indices(rows.len(),if pinned { usize::MAX } else { self.recent_limit },rows.iter().position(|(_,chat)|chat.id==self.active));
             for (i, chat) in visible.iter().map(|index|rows[*index]) {
                 recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
@@ -420,7 +427,7 @@ impl WorkspaceApp {
             }
         }
         if !self.workspace.projects.is_empty() { recents = recents.child(section("Projects", cx)); }
-        for (index, project) in self.workspace.projects.iter().enumerate().filter(|_| !self.collapsed_sidebar_sections.contains("Projects")) {
+        for (index, project) in self.workspace.projects.iter().enumerate().filter(|_| !self.workspace.settings.collapsed_sidebar_sections.contains("threads")) {
             let collapsed = self.collapsed_sidebar_projects.contains(&project.id);
             let id = project.id.clone();
             recents = recents.child(Button::new(("sidebar-project", index)).ghost()

@@ -136,6 +136,8 @@ pub struct Settings {
     pub codex_surface: bool,
     #[serde(default = "default_sidebar_width")]
     pub sidebar_width: u16,
+    #[serde(default)]
+    pub collapsed_sidebar_sections: HashSet<String>,
     pub dark_mode: bool,
     pub provider_url: String,
     pub model: String,
@@ -147,6 +149,7 @@ impl Default for Settings {
     fn default() -> Self {
         Self {
             sidebar_width: default_sidebar_width(),
+            collapsed_sidebar_sections: HashSet::new(),
             codex_surface: false,
             dark_mode: true,
             provider_url: "https://api.openai.com/v1".into(),

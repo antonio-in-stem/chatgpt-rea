@@ -269,6 +269,28 @@ fn sidebar_section_toggle_hides_only_its_content(cx: &mut TestAppContext) {
         assert!(window.try_find("sidebar-section-Pinned").is_some());
         assert_eq!(app.read(cx).active,active);
         assert_eq!(app.read(cx).workspace.conversations.len(),count);
+        let saved=native_core::Workspace::load(storage.0.join("workspace.json")).unwrap();
+        assert!(saved.settings.collapsed_sidebar_sections.contains("threads"));
+        assert_eq!(saved.conversations.len(),count);
+        window.click("sidebar-section-Projects",cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("sidebar-project",0usize)).is_some());
+        let saved=native_core::Workspace::load(storage.0.join("workspace.json")).unwrap();
+        assert!(!saved.settings.collapsed_sidebar_sections.contains("threads"));
+    }).unwrap();
+}
+
+#[gpui_kit::test]
+fn saved_section_collapse_is_applied_on_open(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let mut workspace=crate::fixtures::workspace();
+    workspace.settings.collapsed_sidebar_sections.insert("threads".into());
+    workspace.save(storage.0.join("workspace.json")).unwrap();
+    let (handle,_app)=open(cx,&storage,1280.);
+    cx.update_window(handle,|_,window,cx| {
+        window.render_frame(cx);
+        assert!(window.try_find("sidebar-section-Projects").is_some());
+        assert!(window.try_find(("sidebar-project",0usize)).is_none());
         window.click("sidebar-section-Projects",cx);
         window.render_frame(cx);
         assert!(window.try_find(("sidebar-project",0usize)).is_some());
