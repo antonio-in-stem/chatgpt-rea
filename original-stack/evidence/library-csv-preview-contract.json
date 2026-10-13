@@ -1,0 +1,24 @@
+{
+  "scope": "Original CSV artifact viewer with synthetic uploaded bytes; renderer unchanged",
+  "sources": [
+    "library-file-preview-kind-4b1f33be05cd.js:46-68"
+  ],
+  "static_observation": "Artifact classification checks MIME first and then extension; CSV is an accepted artifact kind before the generic text branch.",
+  "fixture": {
+    "name": "rea-library-table.csv",
+    "bytes": 72,
+    "sha256": "8c89c30230f1d63966593977a5eeb7835de9e5c7253a740edc5f5aefde641c3b"
+  },
+  "runtime_observations": [
+    "Original New > Upload files accepted the CSV fixture and opened the original sheet viewer",
+    "Three columns and three rows preserve Unicode, quoted commas and escaped double quotes",
+    "Selecting C2 changed the address display to C2 and the value bar showed café, demo",
+    "Original zoom menu offered 25%, 50%, 100%, 200%; selecting 200% visibly doubled the grid scale while preserving C2",
+    "Original Download produced the exact uploaded 72-byte file"
+  ],
+  "limits": [
+    "Request edits was disabled; this verification does not establish spreadsheet editing",
+    "Other spreadsheet formats, category filtering and restart persistence have not been verified in this pass",
+    "Cell automation is deliberately restricted to this fixture, 1280x820 viewport, 100% zoom and observed canvas points"
+  ]
+}

@@ -2,6 +2,7 @@
 const zlib=require('node:zlib');
 function libraryFixture(kind='txt'){
  if(kind==='txt')return {name:'rea-library-original.txt',bytes:Buffer.from('Original Library upload demo.\nUnicode: café.\n<script>shown as plain text</script>\n')};
+ if(kind==='csv')return {name:'rea-library-table.csv',bytes:Buffer.from('Product,Quantity,Note\r\nCoffee,2,"café, demo"\r\nTea,3,"Quoted ""text"""\r\n')};
  if(kind==='png'){
   const crc=data=>{let n=0xffffffff;for(const byte of data){n^=byte;for(let i=0;i<8;i++)n=(n>>>1)^((n&1)?0xedb88320:0);}return (n^0xffffffff)>>>0;};
   const chunk=(type,data)=>{const name=Buffer.from(type),size=Buffer.alloc(4),sum=Buffer.alloc(4);size.writeUInt32BE(data.length);sum.writeUInt32BE(crc(Buffer.concat([name,data])));return Buffer.concat([size,name,data,sum]);};
