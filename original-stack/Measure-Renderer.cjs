@@ -4,7 +4,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 
 function measureRenderer() {
-  const properties = ['display','position','box-sizing','width','height','min-width','max-width','min-height','max-height','padding-top','padding-right','padding-bottom','padding-left','margin-top','margin-right','margin-bottom','margin-left','gap','row-gap','column-gap','corner-shape','corner-top-left-shape','corner-top-right-shape','corner-bottom-right-shape','corner-bottom-left-shape','border-top-left-radius','border-top-right-radius','border-bottom-right-radius','border-bottom-left-radius','border-top-width','border-right-width','border-bottom-width','border-left-width','border-top-color','border-right-color','border-bottom-color','border-left-color','border-top-style','background-color','background-image','background-clip','backdrop-filter','filter','mask-image','color','box-shadow','opacity','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-rendering','overflow-x','overflow-y','align-items','justify-content','flex-direction','flex-grow','flex-shrink','transform','clip-path','transition-property','transition-duration','transition-timing-function'];
+  const properties = ['display','position','box-sizing','width','height','min-width','max-width','min-height','max-height','padding-top','padding-right','padding-bottom','padding-left','margin-top','margin-right','margin-bottom','margin-left','gap','row-gap','column-gap','corner-shape','corner-top-left-shape','corner-top-right-shape','corner-bottom-right-shape','corner-bottom-left-shape','border-top-left-radius','border-top-right-radius','border-bottom-right-radius','border-bottom-left-radius','border-top-width','border-right-width','border-bottom-width','border-left-width','border-top-color','border-right-color','border-bottom-color','border-left-color','border-top-style','background-color','background-image','background-clip','backdrop-filter','filter','mask-image','color','box-shadow','opacity','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-rendering','white-space','overflow-wrap','word-break','overflow-x','overflow-y','align-items','justify-content','flex-direction','flex-grow','flex-shrink','transform','clip-path','transition-property','transition-duration','transition-timing-function'];
   const nodes = [], ids = new Map();
   const variables = e => {const s=getComputedStyle(e);return Object.fromEntries([...s].filter(p=>p.startsWith('--')).map(p=>[p,s.getPropertyValue(p)]))};
   const rootVariables=variables(document.documentElement);
@@ -22,7 +22,7 @@ function measureRenderer() {
     if(ids.has(e)) return ids.get(e);
     const id = nodes.length, s = getComputedStyle(e), r = e.getBoundingClientRect();
     ids.set(e,id);
-    nodes.push({id,selector:selector(e),tag:e.tagName,classes:e.getAttribute('class'),role:e.getAttribute('role'),ariaLabel:e.getAttribute('aria-label'),ariaExpanded:e.getAttribute('aria-expanded'),ariaChecked:e.getAttribute('aria-checked'),dataState:e.getAttribute('data-state'),dataHighlighted:e.hasAttribute('data-highlighted'),ariaHidden:e.getAttribute('aria-hidden'),inert:e.inert,rect:{x:r.x,y:r.y,width:r.width,height:r.height},styles:Object.fromEntries(properties.map(p=>[p,s.getPropertyValue(p)])),variableOverrides:Object.fromEntries(Object.entries(variables(e)).filter(([k,v])=>v!==(e.parentElement?getComputedStyle(e.parentElement).getPropertyValue(k):rootVariables[k]))),scroll:{width:e.scrollWidth,height:e.scrollHeight,left:e.scrollLeft,top:e.scrollTop},focused:document.activeElement===e,hovered:e.matches(':hover')});
+    nodes.push({id,selector:selector(e),tag:e.tagName,classes:e.getAttribute('class'),role:e.getAttribute('role'),ariaLabel:e.getAttribute('aria-label'),ariaExpanded:e.getAttribute('aria-expanded'),ariaChecked:e.getAttribute('aria-checked'),ariaPressed:e.getAttribute('aria-pressed'),dataState:e.getAttribute('data-state'),dataHighlighted:e.hasAttribute('data-highlighted'),ariaHidden:e.getAttribute('aria-hidden'),inert:e.inert,rect:{x:r.x,y:r.y,width:r.width,height:r.height},styles:Object.fromEntries(properties.map(p=>[p,s.getPropertyValue(p)])),variableOverrides:Object.fromEntries(Object.entries(variables(e)).filter(([k,v])=>v!==(e.parentElement?getComputedStyle(e.parentElement).getPropertyValue(k):rootVariables[k]))),scroll:{width:e.scrollWidth,height:e.scrollHeight,left:e.scrollLeft,top:e.scrollTop},focused:document.activeElement===e,hovered:e.matches(':hover')});
     nodes[id].parentId=e.parentElement?record(e.parentElement):null;
     nodes[id].pseudoElements=Object.fromEntries(["::before","::after"].map(p=>{const ps=getComputedStyle(e,p);return [p,{content:ps.content,...Object.fromEntries(properties.map(k=>[k,ps.getPropertyValue(k)]))}]}));
     return id;
@@ -40,6 +40,7 @@ function measureRenderer() {
     composerSend:document.querySelector('button[aria-label="Enviar"]'),
     composerPermissions:document.querySelector('button[aria-label="Cambiar permisos"]'),
     userMessage:document.querySelector('._bubble_11evq_1'),
+    codeWrap:buttons.find(e=>['Habilitar ajuste de línea','Desactivar ajuste de línea'].includes(e.getAttribute('aria-label'))),
     tableInline:document.querySelector('[data-markdown-table] table'),
     tableExpand:document.querySelector('[aria-label="Expandir tabla"]'),
     tablePreviewClose:document.querySelector('[aria-label="Cerrar vista previa de tabla"]'),
@@ -73,7 +74,17 @@ function measureRenderer() {
     const e=document.querySelector(nodes[id].selector);
     return {id,children:[...e.children].map(child=>({tag:child.tagName,classes:child.getAttribute('class'),role:child.getAttribute('role'),rect:child.getBoundingClientRect().toJSON()}))};
   });
-  return {userAncestorGeometry,viewport:{width:innerWidth,height:innerHeight,devicePixelRatio,visualViewportScale:visualViewport?.scale},document:{url:location.href,visibility:document.visibilityState,focused:document.hasFocus(),fontsStatus:document.fonts.status,activeElement:{tag:document.activeElement?.tagName,role:document.activeElement?.getAttribute('role'),label:document.activeElement?.getAttribute('aria-label')}},anchors:chains,fontSamples,rootVariables,nodes};
+  // Read the bounded code surface, including any open shadow hosts; do not assume a pre/code renderer.
+  const codeSurface=anchors.codeWrap?.closest('[class*=_CodeSurface_]');
+  const codeRenderers=(codeSurface?[codeSurface,...[...codeSurface.querySelectorAll('*')].filter(e=>e.shadowRoot)]:[]).map(host=>{
+    const root=host.shadowRoot||host;
+    return {hostRect:host.getBoundingClientRect().toJSON(),openShadowRoot:!!host.shadowRoot,
+      nodes:root?[...root.querySelectorAll('div,span,pre,code,[data-file],[data-code]')].slice(0,80).map(e=>{
+        const style=getComputedStyle(e);
+        return {tag:e.tagName,attributes:Object.fromEntries([...e.attributes].map(a=>[a.name,a.value])),rect:e.getBoundingClientRect().toJSON(),scrollWidth:e.scrollWidth,clientWidth:e.clientWidth,scrollHeight:e.scrollHeight,clientHeight:e.clientHeight,styles:Object.fromEntries(properties.map(p=>[p,style.getPropertyValue(p)]))};
+      }):[]};
+  });
+  return {codeRenderers,userAncestorGeometry,viewport:{width:innerWidth,height:innerHeight,devicePixelRatio,visualViewportScale:visualViewport?.scale},document:{url:location.href,visibility:document.visibilityState,focused:document.hasFocus(),fontsStatus:document.fonts.status,activeElement:{tag:document.activeElement?.tagName,role:document.activeElement?.getAttribute('role'),label:document.activeElement?.getAttribute('aria-label')}},anchors:chains,fontSamples,rootVariables,nodes};
 }
 
 (async()=>{

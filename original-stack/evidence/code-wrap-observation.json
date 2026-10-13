@@ -1,0 +1,18 @@
+{
+  "sourceReadablePath": "original-stack\\state\\recovered-all\\readable\\assets\\app-shared-737655e1fb23.js",
+  "sourceReadableSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "fragmentStartLine": 287305,
+  "fragmentEndLine": 287934,
+  "fragmentSha256": "10c47109719e9c1b8c4ee320fef75c0fbd49567838bdffae47fde1860708d7dd",
+  "verification": {
+    "pressedStateToggled": true,
+    "whiteSpaceChangedFromPreToPreWrap": true,
+    "shortFixtureGeometryUnchanged": true
+  },
+  "limitations": [
+    "Short code sample fits both modes; long-line wrapping and horizontal scroll remain unverified.",
+    "Inline snippet is ordinary light DOM code, not the separate shadow-DOM file viewer.",
+    "This is a recovered production fragment with unresolved external symbols, not authored TypeScript or a standalone build.",
+    "Native Rust behavior has not been implemented or verified here."
+  ]
+}

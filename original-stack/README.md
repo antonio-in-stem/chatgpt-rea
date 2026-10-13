@@ -399,3 +399,12 @@ The untouched renderer was exercised through its original Ocultar barra lateral 
 The composer editable changes from x=369, width=689 to x=213, width=712; it remains y=656, height=44. This is the editable node, not the outer composer surface. The user bubble retains width 442.390625, height 42.75 and y=180, while x moves from 617.609375 to 494.609375. All eight selected anchor states (geometry, labels, expanded state and scroll values) returned exactly to their initial values after restoration. sidebar-toggle-observation.json retains the bounded comparison; sidebar-{expanded,collapsed,restored}-metrics.json retain full computed measurements.
 
 This verifies one dark desktop state, not intermediate animation frames, other viewport/DPI combinations, persistence across restart or the native Rust port. No original components, styles or assets were modified.
+
+
+## Original inline code wrap contract
+
+The original inline snippet was toggled with its actual Habilitar ajuste de línea and Desactivar ajuste de línea buttons. aria-pressed changed false/true and the code node changed white-space from pre to pre-wrap. The fixture has three short lines, so geometry remains 651x60 CSS px in both states; this does not verify long-line wrapping or horizontal scrolling. The control was restored to disabled. Code text resolves to CSS 12 px, weight 430, line-height 20 px, overflow-wrap:anywhere; the surrounding body is overflow:auto.
+
+Unlike the separately recovered file viewer, this snippet uses a light-DOM code element without a pre wrapper or shadow root. Measure-Renderer now records white-space/overflow-wrap/word-break, aria-pressed and a bounded code-surface snapshot, including open shadow hosts if present. A preliminary assumed pre selector and file-viewer shadow selector both found nothing; the final measurements use the observed snippet surface. code-wrap-{enabled,disabled}.json retain those measurements.
+
+code-snippet-wrap.recovered.js preserves the production snippet functions through Lqi, whose shouldWrap input selects whitespace-pre-wrap! versus whitespace-pre!. code-wrap-observation.json records source/fragment hashes and line provenance. The fragment depends on other production symbols. These observations do not establish persistence, every language/highlighter state, long-content behavior or native Rust parity. The original renderer was not changed.
