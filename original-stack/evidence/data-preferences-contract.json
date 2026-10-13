@@ -14,10 +14,17 @@
     "originalBehavior": "Training switch observes account and policy guards, patches preference and invalidates user settings; errors produce original toast. Location preference has additional permission handling."
   },
   "implementation": "Atomic sidecar <sidebar-settings-file>.preferences.json, strict observed boolean keys. Existing sidebar file preserved byte-for-byte. No remote mutation or OS location permission implementation.",
-  "validation": "56 Node tests pass, including fresh serialized host function, coexistence with sidebar customization, invalid values, failed rename and foreign temporary-file preservation. Runtime remains v52 without this change; v53 build and original switch verification pending.",
+  "validation": "56 Node tests pass. v53 original Data controls switch Allow chats to improve the model began false/enabled. Real pointer click set aria-checked true and persisted training_allowed true. Renderer reload, original profile Settings menu and Data controls reopened with checked true. Second pointer click restored checked false and persisted false.",
   "limitations": [
-    "No claim of real training consent or location permission changes",
-    "Runtime visual switch behavior remains unverified",
+    "No real training consent or OS location permission changes",
+    "Precise location control and permission flow remain runtime-unverified",
     "Other preference keys and broader Data Controls remain incomplete"
-  ]
+  ],
+  "runtime": {
+    "version": "v53",
+    "rendererFilesModified": false,
+    "packageSha256": "bda4c62188ba2a05d01eed8b315244a56859974fc289601dbe9101aa49d6901a",
+    "trainingToggleBothDirections": true,
+    "trainingReloadRestoration": true
+  }
 }
