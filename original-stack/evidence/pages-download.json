@@ -66,6 +66,6 @@
     "preservation": "Canonical update, sequence, receipts, checkpoints and timestamps remain unchanged; idempotent byte-preserving no-op after preparation",
     "concurrency": "Exclusive pending file and final source-byte recheck; foreign pending file preserved; linked files refused",
     "tests": "74 Python tests pass including legacy migration, history preservation, pending-file conflict and repeated no-op",
-    "runtime": "Current v39 data already backfilled manually; automatic path takes effect on next adapter launch"
+    "runtime": "v40 adapter startup completed; every pre-existing canonical document file hash unchanged across preparation"
   }
 }

@@ -16,5 +16,17 @@
   ],
   "provenance": "Values invented as local demo fixtures; consumer shape recovered from shipped code, not real account balances or upstream backend",
   "validation": "40 Node tests pass before ambient rows addition; focused suite rerun after",
-  "runtime": "Build/install and actual profile panel verification pending"
+  "runtime": {
+    "package": "v40",
+    "verified": [
+      "Original profile menu > Usage remaining opens original limit details",
+      "Displays 5h 88% and Weekly 92% with reset labels",
+      "Upgrade to Plus and Learn more original controls visible; not activated"
+    ],
+    "ambient_variant": "app-initial:303342-303357 requires gate3538455134 plus identity and platform gates; current demo uses original fallback limit panel",
+    "remaining": [
+      "Ambient variant activation and appearance",
+      "Other usage states such as exhausted limits and warning presentation"
+    ]
+  }
 }
