@@ -225,6 +225,17 @@ class ThreadTests(unittest.TestCase):
             self.assertEqual(saved["status"],{"type":"idle"})
             self.assertEqual(saved["turns"][0]["status"],"interrupted")
 
+    def test_stream_item_timestamps_use_delivery_time(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json",streaming=True)
+            with patch("demo_threads.time.time",return_value=100):
+                response,events=store.handle("turn/start",{"threadId":THREAD["id"],"input":[{"type":"text","text":"Timestamp demo"}]})
+            for event in events:
+                with patch("demo_threads.time.time",return_value=115):
+                    store.apply_stream_event(THREAD["id"],response["turn"]["id"],event)
+                if event["method"]=="item/completed":self.assertEqual(event["params"]["completedAtMs"],115000)
+                if event["method"]=="turn/completed":self.assertEqual(event["params"]["turn"]["durationMs"],15000)
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

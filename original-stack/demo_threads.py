@@ -97,6 +97,7 @@ class ThreadStore:
         if turn["status"]=="interrupted":return False
         method,params=event["method"],event["params"]
         if method in ("item/started","item/completed"):
+            params["startedAtMs" if method=="item/started" else "completedAtMs"]=int(time.time()*1000)
             item=copy.deepcopy(params["item"])
             turn["items"]=[i for i in turn["items"] if i["id"]!=item["id"]]+[item]
         elif method=="item/agentMessage/delta":
