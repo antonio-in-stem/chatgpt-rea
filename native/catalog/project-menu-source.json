@@ -1,0 +1,18 @@
+[
+  {
+    "file": "project-destinations.recovered.js",
+    "function": "jas",
+    "source": "app-initial-b8e1c8014bb4.js",
+    "source_line": 399546,
+    "sha256": "1d1e649c07fc909f936f5dbcecd58028dff5cd3fbf98df20cffe447e49d516c3",
+    "coverage": "formatted static function excerpt, not original TypeScript or executed runtime"
+  },
+  {
+    "file": "conversation-menu.recovered.js",
+    "function": "Kas",
+    "source": "app-initial-b8e1c8014bb4.js",
+    "source_line": 400099,
+    "sha256": "700ad48577320b81dd8af6e32139ab2574719e099f5caa911d98c4827e6d0cda",
+    "coverage": "formatted static function excerpt, not original TypeScript or executed runtime"
+  }
+]

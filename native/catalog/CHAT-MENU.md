@@ -11,3 +11,11 @@ Static source: app-initial-b8e1c8014bb4.js. This is a partial map, not a claim o
 Ported now: four exact SVG template literals (rename/pin/unpin/delete), referenced by the native menu with per-file SHA256 and binding evidence in chat-menu-icons.json. Delete text and icon now use the native danger token. This is exact vector data but not yet exact color-token/rasterization parity.
 
 Remaining: native menu still has five provisional actions and a single variant. Source-specific groups, separators, conditional entries, project submenu, copy/share/read-state/window/preferences actions and accelerator display need full porting. Do not infer that the current local menu is complete from these icon corrections.
+
+
+## Project destination contract (jas)
+Exact formatted function excerpt retained in project-destinations.recovered.js; its containing menu builder is conversation-menu.recovered.js. Hashes/locations in project-menu-source.json.
+
+Parent menu: optional current-project label, Move to project submenu, then Remove from project when the current project is removable. The submenu excludes the current project and special project types. New project appears first when creation is permitted; a separator follows only if destination projects exist. Choosing New project creates then moves the originating conversation, without first navigating to it. Existing destinations carry project-specific enabled/tooltip rules. Loaded destinations remain present alongside a retry row when a request fails. Loading/unknown current project produces a disabled loading row. No other projects is disabled and appears only if there are no destinations and creation is unavailable. Memory restrictions can disable the whole move entry.
+
+Required native work: retain separate menu focus/index and viewport-aware nested anchor; preserve explicit chat target through create/save/cancel; exclude current project; render removal at parent level; keep demo loading/error states available without pretending to call the account backend. The existing Project dialog is not an equivalent implementation and remains pending replacement in the contextual path.
