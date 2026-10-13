@@ -110,6 +110,21 @@ class ThreadTests(unittest.TestCase):
             with self.assertRaises(ThreadError):store.handle("thread/fork",{"threadId":THREAD["id"],"lastTurnId":"missing"})
             self.assertEqual(len(store.data["threads"]),2)
 
+    def test_spawn_ancestry_excludes_forks_and_ancestor(self):
+        import copy
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json")
+            fork,_=store.handle("thread/fork",{"threadId":THREAD["id"]})
+            for identifier,parent in (("child",THREAD["id"]),("grandchild","child"),("unrelated",None)):
+                entry=copy.deepcopy(store.data["threads"][THREAD["id"]])
+                entry["thread"].update(id=identifier,parentThreadId=parent)
+                store.data["threads"][identifier]=entry
+            result=store.handle("thread/list",{"ancestorThreadId":THREAD["id"]})[0]
+            self.assertEqual({t["id"] for t in result["data"]},{"child","grandchild"})
+            with self.assertRaises(ThreadError):store.handle("thread/list",{"ancestorThreadId":THREAD["id"],"parentThreadId":"child"})
+            self.assertEqual(store.handle("thread/goal/get",{"threadId":fork["thread"]["id"]})[0],{"goal":None})
+            with self.assertRaises(ThreadError):store.handle("thread/goal/get",{"threadId":"missing"})
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

@@ -32,6 +32,13 @@ class TransportTests(unittest.IsolatedAsyncioTestCase):
         legacy,_=handle_message(json.dumps({"id":2,"method":"getAuthStatus","params":{"includeToken":True,"refreshToken":True}}))
         self.assertEqual(legacy["result"], {"authMethod":None,"authToken":None,"requiresOpenaiAuth":False})
 
+    async def test_empty_hooks_are_scoped_to_requested_directories(self):
+        reply,_=handle_message(json.dumps({"id":1,"method":"hooks/list","params":{"cwds":["C:/demo/one","C:/demo/two"]}}))
+        self.assertEqual([row["cwd"] for row in reply["result"]["data"]],["C:/demo/one","C:/demo/two"])
+        self.assertTrue(all(row["hooks"]==[] for row in reply["result"]["data"]))
+        reply,_=handle_message(json.dumps({"id":1,"method":"hooks/list","params":{"cwds":"invalid"}}))
+        self.assertEqual(reply["error"]["code"],-32602)
+
     async def test_notifications_and_malformed_frames(self):
         self.assertIsNone(handle_message('{"method":"initialized"}')[0])
         self.assertEqual(handle_message('{broken')[0]['error']['code'],-32700)

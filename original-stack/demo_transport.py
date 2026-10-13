@@ -57,6 +57,14 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
             return {"id": request_id, "result": result}, observation
         except ProjectError as error:
             return {"id": request_id, "error": {"code": -32602, "message": str(error)}}, observation
+    if message["method"] == "hooks/list":
+        options={} if params is None else params
+        cwds=options.get("cwds",[]) if isinstance(options,dict) else None
+        if not isinstance(cwds,list) or any(not isinstance(cwd,str) or not cwd for cwd in cwds):
+            return {"id":request_id,"error":{"code":-32602,"message":"Expected working-directory strings"}},observation
+        # A demo has no configured executable hooks. Do not access these paths.
+        roots=cwds or [demo_threads.THREAD["cwd"]]
+        return {"id":request_id,"result":{"data":[{"cwd":cwd,"hooks":[],"warnings":[],"errors":[]} for cwd in roots]}},observation
     if message["method"] == "initialize":
         return {"id": request_id, "result": {
             "userAgent": "rea-demo/0.162.0-alpha.17.2",

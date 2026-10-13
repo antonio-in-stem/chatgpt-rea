@@ -9,6 +9,7 @@ const code=`import json
 from demo_threads import handle,THREAD,ThreadStore
 from pathlib import Path
 import tempfile
+from demo_transport import handle_message
 samples=[['ThreadResumeResponse',handle('thread/resume',{'threadId':THREAD['id']})],['ThreadListResponse',handle('thread/list',{})],['ThreadReadResponse',handle('thread/read',{'threadId':THREAD['id'],'includeTurns':True})],['ThreadTurnsListResponse',handle('thread/turns/list',{'threadId':THREAD['id'],'itemsView':'full'})]]
 with tempfile.TemporaryDirectory() as directory:
  store=ThreadStore(Path(directory)/'thread.json')
@@ -17,6 +18,8 @@ with tempfile.TemporaryDirectory() as directory:
   samples.extend([[response_schema,result],[event_schema,event['params']]])
  result,event=store.handle('thread/fork',{'threadId':THREAD['id'],'lastTurnId':THREAD['turns'][0]['id']})
  samples.extend([['ThreadForkResponse',result],['ThreadStartedNotification',event['params']]])
+samples.append(['ThreadGoalGetResponse',handle('thread/goal/get',{'threadId':THREAD['id']})])
+samples.append(['HooksListResponse',handle_message(json.dumps({'id':1,'method':'hooks/list','params':{'cwds':[THREAD['cwd']]}}))[0]['result']])
 print(json.dumps(samples))`;
 const samples=JSON.parse(cp.execFileSync('python',['-c',code],{cwd:__dirname,encoding:'utf8'}));
 for(const [name,value] of samples){

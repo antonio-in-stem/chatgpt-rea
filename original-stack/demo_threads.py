@@ -6,7 +6,7 @@ import uuid
 from pathlib import Path
 
 THREAD = json.loads((Path(__file__).parent / "demo-thread.json").read_text(encoding="utf-8"))
-METHODS = {"thread/list", "thread/read", "thread/turns/list", "thread/resume"}
+METHODS = {"thread/list", "thread/read", "thread/turns/list", "thread/resume", "thread/goal/get"}
 
 class ThreadError(ValueError):
     pass
@@ -44,6 +44,7 @@ def handle(method, params, thread_data=None, archived=False):
         return page([thread] if matches else [],params,"demo-thread:")
     if params.get("threadId") != thread["id"]:
         raise ThreadError("Unknown demo thread")
+    if method == "thread/goal/get":return {"goal":None}
     if method == "thread/resume":
         if params.get("history") or params.get("path"):
             raise ThreadError("Importing arbitrary history is not supported by the demo")
@@ -92,9 +93,20 @@ class ThreadStore:
         if params is None and method == "thread/list":params={}
         if not isinstance(params,dict):raise ThreadError("Expected object parameters")
         if method == "thread/list":
-            per_thread={**params,"cursor":None,"limit":1}
+            ancestor=params.get("ancestorThreadId")
+            if ancestor is not None and not isinstance(ancestor,str):raise ThreadError("Invalid ancestor")
+            if ancestor is not None and params.get("parentThreadId") is not None:raise ThreadError("Parent and ancestor filters are mutually exclusive")
+            per_thread={**params,"cursor":None,"limit":1,"ancestorThreadId":None}
             rows=[]
             for entry in self.data["threads"].values():
+                if ancestor is not None:
+                    # Spawn ancestry follows parentThreadId, never forkedFromId.
+                    current=entry["thread"].get("parentThreadId")
+                    seen={entry["thread"]["id"]}
+                    while current is not None and current != ancestor and current not in seen:
+                        seen.add(current)
+                        current=self.data["threads"].get(current,{}).get("thread",{}).get("parentThreadId")
+                    if current != ancestor or entry["thread"]["id"] == ancestor:continue
                 rows.extend(handle(method,per_thread,entry["thread"],entry["archived"])["data"])
             sort_key=params.get("sortKey") or "created_at"
             keys={"created_at":"createdAt","updated_at":"updatedAt","recency_at":"recencyAt"}
