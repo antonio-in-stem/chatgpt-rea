@@ -20,7 +20,9 @@
     ],
     "content-2bf9ea38a12a.js": [
       "8410-8520 comments sidebar",
-      "20706 selection thread creation"
+      "20706 selection thread creation",
+      "9029 original delete confirmation",
+      "9106 original edit action"
     ]
   },
   "verified": [
@@ -29,11 +31,16 @@
     "Original Reply submission",
     "Reload demo and reopen page: both messages visible",
     "Resolve comment: original Resolved UI and persisted state at sequence 25",
-    "Captured synthetic original Yjs update roundtrip test"
+    "Captured synthetic original Yjs update roundtrip test",
+    "Original Resolved section expands; Select comment thread exposes Reopen; Reopen returns thread to open state",
+    "Reply Comment actions > Edit comment > Save changes body and displays Edited",
+    "Original Add reaction popover offers thumbs-up, heart, celebration, eyes; thumbs-up displays count 1",
+    "Reply Comment actions > Delete comment opens original confirmation; Delete empties body and writes deleted_at without removing parent thread",
+    "Reload and reopen: parent comment and thumbs-up count 1 remain, deleted reply is hidden"
   ],
   "not_verified": [
-    "Reopen resolved thread UI",
-    "Edit/delete/reactions UI",
+    "Reaction removal UI",
+    "Deleting a root comment with surviving replies",
     "Cross-block comments",
     "Live comments",
     "Mentions and external collaborators"
@@ -42,5 +49,22 @@
     "pid": 87256,
     "adapter_pid": 102580,
     "asar_sha256": "585405530e4e74a270cc867dc6b3756099bb1c18f59459947290f52e67d185ac"
+  },
+  "canonical_after_lifecycle": {
+    "sequence": 29,
+    "thread_state": "open",
+    "resolved_by": null,
+    "resolved_at": null,
+    "parent_body": "Local demo comment from the original Pages editor.",
+    "reaction": {
+      "emoji": "\ud83d\udc4d",
+      "actor": "rea-demo-user",
+      "active": true
+    },
+    "reply": {
+      "body": "",
+      "edited_at": "2026-10-13T11:50:09.869Z",
+      "deleted_at": "2026-10-13T11:51:51.534Z"
+    }
   }
 }
