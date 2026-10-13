@@ -1,0 +1,20 @@
+{
+  "runtimePid": 46520,
+  "rendererModified": false,
+  "fixture": "rea-demo-note.txt; synthetic plain text only",
+  "input": "Chromium Input.dispatchDragEvent with explicit file under isolated demo state",
+  "observed": [
+    "Synthetic ClipboardEvent without local file path was handled but produced no file chip",
+    "File drag produced original named chip and Remove control",
+    "Send encoded original Files mentioned by the user context as UserInput text",
+    "Original history rendered filename chip",
+    "After Page.reload and reopening thread, filename chip restored",
+    "Remove control cleared a newly attached draft file"
+  ],
+  "unverified": [
+    "Clicking history file chip did not produce an observed preview; handler under investigation",
+    "Native Windows picker",
+    "Cloud upload/progress/errors",
+    "Other document types"
+  ]
+}

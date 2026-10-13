@@ -24,6 +24,10 @@ const fs=require('node:fs'),path=require('node:path');
   else if(operation==='focus-composer')expression=`(()=>{const fields=[...document.querySelectorAll('[contenteditable="true"]')].filter(e=>e.getBoundingClientRect().width>0);if(fields.length!==1||document.querySelector('[role="dialog"]'))throw Error('Expected one unobscured original composer');fields[0].focus();return {focused:document.activeElement===fields[0]}})()`;
   else if(operation==='inspect-content')expression='document.body.innerText.slice(-14000)';
   else if(operation==='reload-demo')expression='true';
+  else if(operation==='drop-demo-file')expression=`(()=>{const e=document.activeElement;if(!e?.matches('[contenteditable="true"]')||document.querySelector('[role="dialog"]'))throw Error('Focused unobscured composer required');const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`;
+  else if(operation==='paste-demo-file'){
+   expression=`(()=>{const e=document.activeElement;if(!e?.matches('[contenteditable="true"]')||document.querySelector('[role="dialog"]'))throw Error('Focused unobscured composer required');const transfer=new DataTransfer();transfer.items.add(new File(['REA synthetic text attachment. No private content.'],'rea-demo-note.txt',{type:'text/plain'}));const event=new ClipboardEvent('paste',{bubbles:true,cancelable:true,clipboardData:transfer});e.dispatchEvent(event);return {syntheticPaste:true,handled:event.defaultPrevented}})()`;
+  }
   else if(operation==='paste-demo-image'){
    const imagePath=path.resolve(__dirname,'../../../extracted/webview/assets/atlas-app-5b67bfaeebb3.png');
    const bytes=fs.readFileSync(imagePath);if(bytes.length>1024*1024||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('Expected packaged demo PNG');
@@ -40,10 +44,15 @@ const fs=require('node:fs'),path=require('node:path');
   else if(operation==='describe'&&label)expression=`[...document.querySelectorAll('[aria-label]')].filter(e=>e.getAttribute('aria-label')===${JSON.stringify(label)}).map(e=>({html:e.outerHTML,ancestor:e.parentElement?.outerHTML.slice(0,5000),rect:e.getBoundingClientRect().toJSON()}))`;
   else if(operation==='locate'&&label)expression=`[...document.querySelectorAll('*')].filter(e=>e.children.length===0&&e.textContent.trim()===${JSON.stringify(label)}).map(e=>e.parentElement.parentElement.parentElement.outerHTML.slice(0,2400))`;
   else if(operation==='fill'&&label&&value!==undefined)expression=`(()=>{const matches=[...document.querySelectorAll('input')].filter(e=>e.getAttribute('aria-label')===${JSON.stringify(label)}||e.getAttribute('placeholder')===${JSON.stringify(label)});if(matches.length!==1)throw Error('Expected one input');const input=matches[0];Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,${JSON.stringify(value)});input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));return {filled:${JSON.stringify(label)}}})()`;
-  else throw Error('Supported operations: inspect, inspect-content, inspect-focus, inspect-images, reload-demo, paste-demo-image, scroll-thread, scroll-code, click, hover, activate, activate-text, fill, insert-focused, search-key, dialog-key, row-action, describe');
+  else throw Error('Supported operations: inspect, inspect-content, inspect-focus, inspect-images, reload-demo, paste-demo-image, paste-demo-file, drop-demo-file, scroll-thread, scroll-code, click, hover, activate, activate-text, fill, insert-focused, search-key, dialog-key, row-action, describe');
   const result=await send('Runtime.evaluate',{returnByValue:true,expression});
   if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);
-  if(operation==='reload-demo'){await send('Page.reload',{ignoreCache:false});console.log(JSON.stringify({reloaded:true}));
+  if(operation==='drop-demo-file'){
+   const file=path.join(state,'rea-demo-note.txt');fs.writeFileSync(file,'REA synthetic text attachment. No private content.\n');
+   const {x,y}=result.result.value;const data={items:[],files:[file],dragOperationsMask:1};
+   for(const type of ['dragEnter','dragOver','drop'])await send('Input.dispatchDragEvent',{type,x,y,data});
+   console.log(JSON.stringify({dropped:'rea-demo-note.txt',synthetic:true}));
+  }else if(operation==='reload-demo'){await send('Page.reload',{ignoreCache:false});console.log(JSON.stringify({reloaded:true}));
   }else if(operation==='scroll-code'){
    const {x,y}=result.result.value;await send('Input.dispatchMouseEvent',{type:'mouseWheel',x,y,deltaX:Number(label),deltaY:0});console.log(JSON.stringify({operation,deltaX:Number(label),before:result.result.value}));
   }else if(operation==='scroll-thread'){
