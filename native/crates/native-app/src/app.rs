@@ -540,11 +540,14 @@ impl WorkspaceApp {
     fn stream_response(&mut self, prompt: String, cx: &mut Context<Self>) {
         self.stop();
         if self.settings.read(cx).current_settings().reduced_motion {
-            let _ = self.workspace.append_message(
+            if let Err(error) = self.workspace.append_demo_response(
                 &self.active,
-                MessageRole::Assistant,
                 crate::fixtures::response(&prompt),
-            );
+            ) {
+                self.notice = error;
+                cx.notify();
+                return;
+            }
             if self.workspace.settings.codex_surface {
                 if let Ok(chat)=self.workspace.conversation_mut(&self.active) {
                     if let Some(m)=chat.messages.last_mut() { m.activity=Some(crate::fixtures::activity(native_core::ActivityStatus::Worked)); }
@@ -558,7 +561,7 @@ impl WorkspaceApp {
         let conversation = self.active.clone();
         let Ok(message) = self
             .workspace
-            .append_message(&conversation, MessageRole::Assistant, "…")
+            .append_demo_response(&conversation, "…")
         else {
             return;
         };

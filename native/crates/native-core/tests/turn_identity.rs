@@ -164,3 +164,46 @@ fn unknown_message_between_turns_breaks_assistant_adjacency() {
         .push("missing".into());
     assert!(w.conversation(&c).unwrap().timestamp_separators(0).is_err());
 }
+
+#[test]
+fn demo_response_records_lifecycle_and_regeneration_preserves_source() {
+    let mut w = Workspace::default();
+    let c = w.create_conversation();
+    let u = w.append_message(&c, MessageRole::User, "hello").unwrap();
+    let a = w.append_demo_response(&c, "demo answer").unwrap();
+    let source = w.conversation(&c).unwrap().clone();
+    let turn = &source.turns[0];
+    assert_eq!(turn.message_ids, vec![u.clone(), a.clone()]);
+    assert_eq!(turn.started_at_ms, source.messages[0].sent_at_ms);
+    assert_eq!(
+        turn.final_assistant_started_at_ms,
+        source.messages[1].sent_at_ms
+    );
+    let branch = w.prepare_regeneration(&c, &a).unwrap();
+    w.append_demo_response(&branch, "replacement").unwrap();
+    assert_eq!(w.conversation(&branch).unwrap().turns.len(), 1);
+    assert_eq!(
+        w.conversation(&branch).unwrap().turns[0].message_ids.len(),
+        2
+    );
+    assert_eq!(w.conversation(&c).unwrap(), &source);
+    w.validate().unwrap();
+}
+#[test]
+fn demo_response_rejects_invalid_lifecycle_without_partial_message() {
+    let mut w = Workspace::default();
+    let c = w.create_conversation();
+    let before = w.clone();
+    assert!(w.append_demo_response(&c, "answer").is_err());
+    assert_eq!(w, before);
+    w.append_message(&c, MessageRole::User, "legacy").unwrap();
+    w.conversation_mut(&c).unwrap().messages[0].sent_at_ms = None;
+    let before = w.clone();
+    assert!(w.append_demo_response(&c, "").is_err());
+    assert_eq!(w, before);
+    w.append_demo_response(&c, "answer").unwrap();
+    assert_eq!(w.conversation(&c).unwrap().turns[0].started_at_ms, None);
+    let before = w.clone();
+    assert!(w.append_demo_response(&c, "another").is_err());
+    assert_eq!(w, before);
+}

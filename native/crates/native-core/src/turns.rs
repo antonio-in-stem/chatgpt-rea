@@ -139,3 +139,44 @@ pub(crate) fn remap_branch_turns(
         .turns
         .retain(|turn| !turn.message_ids.is_empty());
 }
+
+impl crate::Workspace {
+    /// Start the fixed demo's final response to its trailing user message.
+    /// This lifecycle boundary is explicit; it does not retroactively group history.
+    pub fn append_demo_response(
+        &mut self,
+        conversation: &str,
+        content: impl Into<String>,
+    ) -> Result<String, String> {
+        let mut candidate = self.clone();
+        let chat = candidate.conversation(conversation)?;
+        let user = chat
+            .messages
+            .last()
+            .filter(|message| message.role == MessageRole::User)
+            .ok_or("Demo response requires a trailing user message")?;
+        let user_id = user.id.clone();
+        let user_time = user.sent_at_ms;
+        let existing = chat
+            .turns
+            .iter()
+            .find(|turn| turn.message_ids.contains(&user_id))
+            .cloned();
+        let assistant_id =
+            candidate.append_message(conversation, MessageRole::Assistant, content)?;
+        let chat = candidate.conversation_mut(conversation)?;
+        let assistant_time = chat.messages.last().and_then(|message| message.sent_at_ms);
+        let mut turn = existing.unwrap_or_else(|| ConversationTurn {
+            id: crate::id(),
+            message_ids: vec![user_id],
+            started_at_ms: user_time,
+            final_assistant_started_at_ms: None,
+        });
+        turn.message_ids.push(assistant_id.clone());
+        turn.final_assistant_started_at_ms = assistant_time;
+        chat.record_turn(turn)?;
+        candidate.validate()?;
+        *self = candidate;
+        Ok(assistant_id)
+    }
+}
