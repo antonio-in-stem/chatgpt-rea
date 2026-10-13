@@ -60,3 +60,7 @@ The current shell is a different original navigation variant (no narrow rail), a
 Runtime PID79532 reaches the original shell at 1280x820, DPI96. The missing entitlement fixture fix removes the observed startup error boundary. Native capture state/demo-profile-host-v1/rail-v5.png shows the narrow rail, original Space/Sites icons, original rounded frame/composer and profile image. DOM image is complete, natural100x100, rendered24x24. It is an explicitly synthetic packaged image, not the owner portrait.
 
 Original Explore exposes Projects and Pull requests. Both were pinned through original controls using the scoped Demo-Controls pin-destination operation; subsequent DOM lists both in the rail. Persistence across restart is not yet verified. The later PrintWindow capture evidence/original-rail-v5.png retained an older-looking frame and is not proof of the pinning visual result. Security, destination order and Images visibility still differ from the requested reference. No Rust changes.
+
+## v6 sidebar persistence verified end-to-end
+
+Original Explore pin controls persisted Pull requests and Projects. After stopping demo PID52980, new process PID71012 restored both rail controls without repinning. See evidence/sidebar-persistence-runtime.json. This supersedes the earlier persistence-pending observation; unpin/reorder and full visual parity remain unverified.
