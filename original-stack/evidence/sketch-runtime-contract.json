@@ -3,7 +3,8 @@
   "sources": [
     "sketch-d706a5709dee.js:15520-15622",
     "sketch-d706a5709dee.js:17462-17569",
-    "app-primary-19fe57fd8c00.js:66302-66330,66577-66600"
+    "app-primary-19fe57fd8c00.js:66302-66330,66577-66600",
+    "sketch-d706a5709dee.js:15594-15617,15697-15737"
   ],
   "contract": "Sketch export is queued through original image attachment integration with sketchId, filename and replaceImageId; localPath starts unset. Original Codex filename is Codex Sketch.png.",
   "runtime_observations": [
@@ -18,10 +19,13 @@
     "v53 original Shapes menu lists Line, Arrow, Rectangle, Ellipse, Triangle, Diamond, Star and Heart; only Rectangle exercised in this pass",
     "Rectangle selected through original menu and bounded diagonal pointer drag rendered a white rectangle with eight selection handles; no canvas state injection",
     "Original Eraser plus diagonal pointer drag removed portions of opposite rectangle corners; view screenshot confirmed partial geometry erasure",
-    "Original Undo restored the closed rectangle visually; Attach sketch exported a decoded374x302 image into the original composer"
+    "Original Undo restored the closed rectangle visually; Attach sketch exported a decoded374x302 image into the original composer",
+    "v53 Text tool plus bounded pointer gesture created original sketch-text-editor textarea; actual input inserted Texto demo: café 123, exact value verified",
+    "Original Use blue changed text color; Attach sketch replaced existing attachment with one decoded374x303 image",
+    "Reopening Codex Sketch.png recovered the full Unicode text in original read-only text layer, with visible wrapping into two lines and rectangle retained; overlap with rectangle border reflects the chosen test coordinates"
   ],
   "limitations": [
-    "Text, other shape variants, selection transformations and thickness controls remain unverified; Rectangle, partial erasure and erasure undo exercised",
+    "Other shape variants, text formatting/resize/editing edge cases, selection transformations and thickness controls remain unverified; Text creation/color/export/draft reopen, Rectangle, partial erasure and erasure undo exercised",
     "Cancel/draft retention, history sketch re-editing and cross-process editable document persistence remain unverified",
     "No cloud sketch generation or model inference"
   ],
