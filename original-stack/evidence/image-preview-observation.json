@@ -25,6 +25,7 @@
     "Seeded protocol history, not original composer upload.",
     "Only data URI carrier verified visually; localImage and fileId remain unverified.",
     "Editing tools, download, keyboard dismissal and reload persistence of zoom not tested.",
-    "WindowIndex ordering changed after resize; authoritative screenshots use verified content HWND 9373858. Helper HWND 2756132 produced a black capture that was replaced."
+    "WindowIndex ordering changed after resize; authoritative screenshots use verified content HWND 9373858. Helper HWND 2756132 produced a black capture that was replaced.",
+    "Post-close PrintWindow capture retained the 200% viewer frame despite DOM having one thumbnail and no close control. Pixel-level dismissal is not verified; original-image-zoom-retained.png is stale-frame evidence."
   ]
 }
