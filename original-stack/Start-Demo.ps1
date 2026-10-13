@@ -21,6 +21,8 @@ $mutex=[Threading.Mutex]::new($false,('Local\ReaDemo-'+$key))
 $owned=$false
 $adapter=$null
 $app=$null
+$runtimeLogs=@()
+$runtimeCopies=@()
 try{
  try{$owned=$mutex.WaitOne(0)}catch [Threading.AbandonedMutexException]{$owned=$true}
  if(-not $owned){throw 'Another demo launcher owns this runtime; close it before launching again.'}
@@ -43,11 +45,17 @@ try{
  $announcement=$line.Result | ConvertFrom-Json
  if(-not $announcement -or $announcement.mode -ne 'demo-contract-adapter' -or $announcement.endpoint -notmatch '^ws://127\.0\.0\.1:[0-9]+$'){throw 'Invalid demo adapter startup response.'}
  $remainingOutput=$adapter.StandardOutput.ReadToEndAsync()
- $launch=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -Visible
- $app=Get-Process -Id $launch.pid -ErrorAction Stop
+ foreach($name in @('runtime-stdout.log','runtime-stderr.log')){
+  $runtimeLogs+= [IO.FileStream]::new((Join-Path $state $name),[IO.FileMode]::Create,[IO.FileAccess]::Write,[IO.FileShare]::Read,4096,$true)
+ }
+ $app=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -Visible -PassThru
+ # Drain both pipes concurrently; never accumulate unbounded runtime logs in memory.
+ $runtimeCopies+= $app.StandardOutput.BaseStream.CopyToAsync($runtimeLogs[0])
+ $runtimeCopies+= $app.StandardError.BaseStream.CopyToAsync($runtimeLogs[1])
  Write-Host ('Original frontend demo opened. Windows readiness is simulated: '+$WindowsScenario+'. No tools are executed.')
  [pscustomobject]@{runtimePid=$app.Id;adapterPid=$adapter.Id;endpoint=$announcement.endpoint;profile=$preflight.profile;stores=$stores} | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath (Join-Path $state 'demo-session.json') -Encoding utf8
  while(-not $app.WaitForExit(500)){
+  foreach($copy in $runtimeCopies){if($copy.IsFaulted){$copy.GetAwaiter().GetResult()}}
   if($adapter.HasExited){throw 'Demo adapter exited while the frontend was open. See adapter-error.log in this profile.'}
  }
 }finally{
@@ -58,8 +66,12 @@ try{
  }
  if($app){
   if(-not $app.HasExited){$app.Kill($true);$app.WaitForExit()}
+  foreach($copy in $runtimeCopies){
+   try{if(-not $copy.Wait(5000)){Write-Warning "Runtime log pipe did not close within 5 seconds"}}catch{Write-Warning ("Runtime log capture failed: "+$_.Exception.GetType().Name)}
+  }
   $app.Dispose()
  }
+ foreach($log in $runtimeLogs){$log.Dispose()}
  if($owned){$mutex.ReleaseMutex()}
  $mutex.Dispose()
 }

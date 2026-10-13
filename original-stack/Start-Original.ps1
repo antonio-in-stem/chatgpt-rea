@@ -1,5 +1,7 @@
 param(
  [switch]$WaitForExit,
+ # Caller owns the returned process and must drain/dispose both redirected streams.
+ [switch]$PassThru,
  [switch]$Visible,
  [switch]$InspectRuntime,
  [switch]$DryRun,
@@ -7,6 +9,7 @@ param(
  [string]$DemoTransportUrl
 )
 $ErrorActionPreference='Stop'
+if($PassThru -and $WaitForExit){throw 'PassThru and WaitForExit are mutually exclusive'}
 $runtime=Join-Path $PSScriptRoot 'pristine'
 $inventoryPath=Join-Path $PSScriptRoot 'runtime-inventory.json'
 if(-not(Test-Path -LiteralPath $inventoryPath)){throw 'Run Complete-Runtime.ps1 first'}
@@ -34,6 +37,8 @@ $start=[Diagnostics.ProcessStartInfo]::new()
 $start.FileName=Join-Path $runtime 'ChatGPT.exe'
 $start.WorkingDirectory=$runtime
 $start.UseShellExecute=$false
+$start.RedirectStandardOutput=[bool]$PassThru
+$start.RedirectStandardError=[bool]$PassThru
 $start.WindowStyle=if($Visible){[Diagnostics.ProcessWindowStyle]::Normal}else{[Diagnostics.ProcessWindowStyle]::Hidden}
 # Remove parent agent/runtime routing and credentials from the child only.
 # Separate profile directories alone do not prove native account-store isolation.
@@ -67,4 +72,4 @@ if($DryRun){
 }
 $process=[Diagnostics.Process]::Start($start)
 [pscustomobject]@{pid=$process.Id;executable=$start.FileName;profile=(Join-Path $state 'profile');startedUtc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $state 'last-launch.json') -Encoding utf8
-if($WaitForExit){$process.WaitForExit();[pscustomobject]@{pid=$process.Id;exitCode=$process.ExitCode}}else{[pscustomobject]@{pid=$process.Id;executable=$start.FileName}}
+if($PassThru){$process}elseif($WaitForExit){$process.WaitForExit();[pscustomobject]@{pid=$process.Id;exitCode=$process.ExitCode}}else{[pscustomobject]@{pid=$process.Id;executable=$start.FileName}}
