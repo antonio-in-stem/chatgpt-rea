@@ -1,0 +1,25 @@
+{
+  "capturedUtc": "2026-10-13T03:36:18.4395738Z",
+  "profile": "demo-first-run-audit",
+  "onboardingControls": [
+    "Ingeniería",
+    "Continuar",
+    "Omitir",
+    "Ir a ChatGPT"
+  ],
+  "sendControls": [
+    "Nuevo chat",
+    "Enviar"
+  ],
+  "threadId": "86f340cf-1dd9-4083-8f2e-a3e92fa07351",
+  "turnCount": 1,
+  "turnStatus": "completed",
+  "authFilePresent": false,
+  "reopenedThroughOriginalSidebar": true,
+  "rendererModified": false,
+  "limitations": [
+    "No claim of all account-gated features working",
+    "No guarantee of native account-store or network isolation",
+    "Windows readiness is a simulated UI scenario"
+  ]
+}

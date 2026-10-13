@@ -220,3 +220,11 @@ From original-stack, run ./Start-Demo.ps1 in PowerShell 7. Python with websocket
 A named mutex and copied-runtime process check reject concurrent launchers to avoid attaching the frontend to the wrong server. The adapter is stopped in finally after runtime exit; an adapter failure also closes the runtime launched by this invocation. Inspection is opt-in through -InspectRuntime. Fresh profiles still run the original onboarding/account gates; the launch test below proves process lifecycle only, not completion of first-run onboarding or all account-gated features.
 
 Live verification with demo-launcher-check started both processes, rejected a second invocation before spawning another adapter, and exited successfully after the tracked runtime process tree was terminated. Both tracked PIDs were absent afterwards. The default fresh profile is separate from previously populated observation profiles and does not import their account or demo databases.
+
+## Clean-profile onboarding and reopening verified
+
+The coordinated launcher was run with a new demo-first-run-audit profile. The original onboarding controls were used in order: Ingeniería, Continuar, Omitir, Ir a ChatGPT. The unmodified shell then displayed the seeded demo conversation. Nuevo chat, native text input and Enviar created one completed turn containing "Fresh profile demo: original onboarding completed." and the fixed demo response. No account fixture or renderer change was needed, and the profile's codex-home/auth.json was absent.
+
+After the first runtime and adapter were confirmed absent, the same launcher/profile was reopened. The onboarding did not recur; the persisted conversation was opened through its original sidebar row. Its message actions and composer were present, and the native capture shows the retained transcript. Evidence: first-run-observation.json, original-first-run-composer.png and original-first-run-reopened.png. This verifies the clean-profile basic chat path, not all account-gated features or native credential/network isolation.
+
+The initial in-process PowerShell capture failed with a stack overflow while the app remained alive. Running Capture-OriginalWindow.ps1 using a separate `pwsh -NoProfile -File` process succeeded; use that invocation for repeatable captures. No fix to the capture helper itself is claimed.
