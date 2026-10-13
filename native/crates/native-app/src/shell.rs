@@ -54,6 +54,14 @@ fn sidebar_row_corners(cx: &App) -> impl IntoElement {
     native_ui::corners::squircle_cutouts(12.5, sidebar_backdrop(cx))
 }
 impl WorkspaceApp {
+    fn project_menu_choices(&self) -> Vec<(String, Action)> {
+        let current = self.workspace.conversation(&self.chat_target()).ok().and_then(|c| c.project_id.as_deref());
+        let mut items = vec![("New project".into(),Action::NewProjectForChat)];
+        items.extend(self.workspace.projects.iter().filter(|p| Some(p.id.as_str()) != current)
+            .map(|p| (p.name.clone(),Action::ChooseProject(Some(p.id.clone())))));
+        items
+    }
+
     fn toggle_sidebar_section(&mut self, label: &str, cx: &mut Context<Self>) {
         let key=sidebar_section_key(label);
         if !self.workspace.settings.collapsed_sidebar_sections.remove(key) {
@@ -71,6 +79,7 @@ impl WorkspaceApp {
                 _ => window.focused(cx),
             };
         }
+        self.project_submenu = None;
         self.dialog = Some(dialog);
         self.shell_menu_index = if dialog == Dialog::HelpMenu { 2 } else { 0 };
         window.focus(&self.shell_menu_focus[self.shell_menu_index], cx);
@@ -86,11 +95,31 @@ impl WorkspaceApp {
             return false;
         };
         if dialog == Dialog::EditMenu { return self.edit_menu_key(event,window,cx); }
+        if dialog == Dialog::ChatMenu {
+            if let Some(index) = self.project_submenu {
+                let choices = self.project_menu_choices();
+                let count = choices.len();
+                match event.keystroke.key.as_str() {
+                    "escape" | "left" => {
+                        self.project_submenu = None;
+                        self.shell_menu_index = 2;
+                        window.focus(&self.shell_menu_focus[2],cx);
+                    }
+                    "down" => self.project_submenu = Some((index+1)%count),
+                    "up" => self.project_submenu = Some((index+count-1)%count),
+                    "home" => self.project_submenu = Some(0),
+                    "end" => self.project_submenu = Some(count-1),
+                    "enter" | "space" => self.act(choices[index].1.clone(),window,cx),
+                    _ => return false,
+                }
+                cx.notify(); cx.stop_propagation(); return true;
+            }
+        }
         let count = match dialog {
             Dialog::BrandMenu => 2,
             Dialog::AccountMenu => 2,
             Dialog::HelpMenu => 3,
-            Dialog::ChatMenu => 5,
+            Dialog::ChatMenu => if self.workspace.conversation(&self.chat_target()).is_ok_and(|c| c.project_id.is_some()) { 6 } else { 5 },
             _ => return false,
         };
         let next = match event.keystroke.key.as_str() {
@@ -98,6 +127,10 @@ impl WorkspaceApp {
             "up" => Some((self.shell_menu_index + count - 1) % count),
             "home" => Some(0),
             "end" => Some(count - 1),
+            "right" if dialog == Dialog::ChatMenu && self.shell_menu_index == 2 => {
+                self.act(Action::AssignProject,window,cx);
+                cx.stop_propagation(); return true;
+            }
             "right" if dialog == Dialog::AccountMenu && self.shell_menu_index == 1 => {
                 self.open_shell_menu(Dialog::HelpMenu, window, cx);
                 cx.stop_propagation();
@@ -124,7 +157,8 @@ impl WorkspaceApp {
                         1 => Action::Pin,
                         2 => Action::AssignProject,
                         3 => Action::Archive,
-                        _ => Action::DeleteChat,
+                        4 => Action::DeleteChat,
+                        _ => Action::ChooseProject(None),
                     },
                     _ => unreachable!(),
                 };
@@ -606,7 +640,14 @@ impl WorkspaceApp {
                         .on_click(cx.listener(move |s,_,w,cx|s.act(Action::Surface(index==1),w,cx)))));
             }
         }
-        let items: Vec<(&'static str, &'static str, usize, Action)> = if dialog == Dialog::BrandMenu
+        if dialog == Dialog::ChatMenu {
+            if let Some(project) = self.workspace.conversation(&self.chat_target()).ok()
+                .and_then(|c| c.project_id.as_ref()).and_then(|id| self.workspace.projects.iter().find(|p| &p.id == id)) {
+                panel = panel.child(div().px(px(8.)).py(px(4.)).text_size(px(12.))
+                    .text_color(cx.theme().colors.muted_foreground).child(project.name.clone()));
+            }
+        }
+        let mut items: Vec<(&'static str, &'static str, usize, Action)> = if dialog == Dialog::BrandMenu
         {
             vec![]
         } else if dialog == Dialog::ChatMenu {
@@ -632,6 +673,9 @@ impl WorkspaceApp {
                 ("help", "Help", 712, Action::HelpMenu),
             ]
         };
+        if dialog == Dialog::ChatMenu && self.workspace.conversation(&self.chat_target()).is_ok_and(|c| c.project_id.is_some()) {
+            items.push(("projects", "Remove from project", 706, Action::ChooseProject(None)));
+        }
         for (index, (name, label, key, action)) in items.into_iter().enumerate() {
             panel = panel.child(
                 div()
@@ -659,7 +703,7 @@ impl WorkspaceApp {
                                         )
                                     })
                                     .child(label)
-                                    .when(key == 712, |row| {
+                                    .when(key == 712 || key == 705, |row| {
                                         row.child(div().flex_1())
                                             .child(native_ui::icon("chevron-right", 12.))
                                     }),
@@ -672,7 +716,7 @@ impl WorkspaceApp {
                             .text_size(native_ui::typography::TextRole::Small.in_app(cx))
                             .when(key == 707, |button| button.text_color(cx.theme().colors.danger))
                             .on_click(cx.listener(move |this, _, window, cx| {
-                                if !matches!(action, Action::HelpMenu) {
+                                if !matches!(action, Action::HelpMenu | Action::AssignProject) {
                                     this.dialog = None;
                                 }
                                 this.act(action.clone(), window, cx);
@@ -687,7 +731,7 @@ impl WorkspaceApp {
                 // Popup-specific gap/width remain pending source/runtime confirmation.
                 if let Some(anchor)=self.chat_menu_anchor {
                     d.left(anchor.x.min(window.viewport_size().width-px(256.)).max(px(4.)))
-                        .top(anchor.y.min(window.viewport_size().height-px(200.)).max(px(4.)))
+                        .top(anchor.y.min(window.viewport_size().height-px(256.)).max(px(4.)))
                 } else { d.top(px(86.)).right(px(18.)) }
             })
             .when(
@@ -699,6 +743,20 @@ impl WorkspaceApp {
             })
             .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation())
             .child(panel)
+            .when(dialog == Dialog::ChatMenu && self.project_submenu.is_some(), |anchor| {
+                let x = self.chat_menu_anchor.map(|p| p.x).unwrap_or(window.viewport_size().width-px(266.));
+                anchor.child(div().id("chat-project-submenu").test_support().absolute()
+                    .left(if x+px(504.) > window.viewport_size().width { px(-248.) } else { px(248.) })
+                    .top_0().w(px(248.)).max_h(px(300.)).flex().flex_col().overflow_y_scroll()
+                    .track_focus(&self.modal_focus).on_mouse_down(MouseButton::Left, |_,_,cx| cx.stop_propagation()).p(px(6.)).rounded(px(14.))
+                    .border_1().border_color(cx.theme().colors.border).bg(cx.theme().colors.popover).shadow_lg()
+                    .children(self.project_menu_choices().into_iter().enumerate().map(|(index,(label,action))| {
+                        Button::new(("chat-project-option",index)).ghost().tab_stop(false)
+                            .w_full().h(px(32.)).px(px(8.)).justify_start().label(label)
+                            .when(self.project_submenu == Some(index),|b| b.bg(cx.theme().colors.secondary))
+                            .on_click(cx.listener(move |s,_,w,cx| s.act(action.clone(),w,cx)))
+                    })))
+            })
             .when(dialog == Dialog::HelpMenu, |anchor| {
                 anchor.child(
                     div()
@@ -1004,6 +1062,8 @@ impl Render for WorkspaceApp {
         root
     }
 }
+
+
 
 
 

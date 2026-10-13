@@ -88,6 +88,7 @@ enum Action {
     DeleteProject,
     NewProjectChat,
     AssignProject,
+    NewProjectForChat,
     Document(String),
     NewDocument,
     SaveDocument,
@@ -148,6 +149,8 @@ pub struct WorkspaceApp {
     section_focus: Vec<FocusHandle>,
     chat_action_target: Option<String>,
     chat_menu_anchor: Option<Point<Pixels>>,
+    project_submenu: Option<usize>,
+    project_move_after_create: Option<String>,
     previous_focus: Option<FocusHandle>,
     composer: Entity<TextareaState>,
     search: Entity<InputState>,
@@ -280,6 +283,8 @@ impl WorkspaceApp {
             section_focus,
             chat_action_target: None,
             chat_menu_anchor: None,
+            project_submenu: None,
+            project_move_after_create: None,
             workspace,
             path,
             load_error,
@@ -294,7 +299,7 @@ impl WorkspaceApp {
             dialog: None,
             focus: cx.focus_handle(),
             modal_focus: cx.focus_handle(),
-            shell_menu_focus: (0..5).map(|_| cx.focus_handle()).collect(),
+            shell_menu_focus: (0..6).map(|_| cx.focus_handle()).collect(),
             shell_menu_index: 0,
             shell_trigger_focus: (0..2).map(|_| cx.focus_handle()).collect(),
             previous_focus: None,
@@ -749,6 +754,8 @@ impl WorkspaceApp {
                 self.search.update(cx, |input, cx| input.focus(window, cx));
             }
             Action::Close => {
+                self.project_submenu = None;
+                self.project_move_after_create = None;
                 self.chat_action_target = None;
                 self.chat_menu_anchor = None;
                 if self.dialog == Some(Dialog::ProjectEditor) {
@@ -1046,6 +1053,11 @@ impl WorkspaceApp {
                     self.route = Route::Projects;
                 }
             }
+            Action::NewProjectForChat => {
+                self.project_move_after_create = Some(self.chat_target());
+                self.project_submenu = None;
+                self.act(Action::NewProject, window, cx);
+            }
             Action::NewProject => {
                 self.project_editing = true;
                 if self.dialog.is_none() {
@@ -1059,7 +1071,7 @@ impl WorkspaceApp {
                     .update(cx, |s, cx| s.set_value("", window, cx));
                 self.project_instructions
                     .update(cx, |s, cx| s.set_value("", window, cx));
-                self.route = Route::Projects;
+                if self.project_move_after_create.is_none() { self.route = Route::Projects; }
                 self.project_name
                     .update(cx, |input, cx| input.focus(window, cx));
             }
@@ -1076,6 +1088,13 @@ impl WorkspaceApp {
                 };
                 match result {
                     Ok(()) => {
+                        if let Some(chat) = &self.project_move_after_create {
+                            if let Err(error) = self.workspace.assign_project(chat, self.project.as_deref()) {
+                                self.notice = error;
+                                cx.notify();
+                                return;
+                            }
+                        }
                         self.project_editing = false;
                         if let Some(id) = &self.project { self.expanded_projects.insert(id.clone()); }
                         self.notice = "Project saved".into();
@@ -1101,9 +1120,14 @@ impl WorkspaceApp {
                 self.persist();
             }
             Action::AssignProject => {
-                self.previous_focus = window.focused(cx);
-                self.dialog = Some(Dialog::Project);
-                window.focus(&self.modal_focus, cx);
+                if self.dialog == Some(Dialog::ChatMenu) {
+                    self.project_submenu = Some(0);
+                    window.focus(&self.modal_focus, cx);
+                } else {
+                    self.previous_focus = window.focused(cx);
+                    self.dialog = Some(Dialog::Project);
+                    window.focus(&self.modal_focus, cx);
+                }
             }
             Action::ChooseProject(project) => {
                 match self

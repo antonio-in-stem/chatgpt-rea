@@ -338,3 +338,49 @@ fn sidebar_context_menu_targets_unopened_chat(cx: &mut TestAppContext) {
         assert_eq!(app.read(cx).active,active);
     }).unwrap();
 }
+
+
+#[gpui_kit::test]
+fn project_submenu_create_moves_context_target_and_cancel_preserves_data(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage,1280.);
+    cx.update_window(handle,|_,window,cx| {
+        let (active,target,old_project)=app.update(cx,|s,cx| {
+            let active=s.active.clone();
+            let target=s.workspace.create_conversation();
+            let project=s.workspace.create_project("Existing").unwrap();
+            s.workspace.assign_project(&target,Some(&project)).unwrap();
+            s.chat_action_target=Some(target.clone());
+            s.open_shell_menu(super::Dialog::ChatMenu,window,cx);
+            (active,target,project)
+        });
+        window.render_frame(cx);
+        window.press("down",cx); window.press("down",cx); window.press("right",cx);
+        window.render_frame(cx);
+        assert!(window.try_find("chat-project-submenu").is_some());
+        assert!(!app.read(cx).project_menu_choices().iter().any(|(name,_)| name=="Existing"));
+        window.press("left",cx); window.render_frame(cx);
+        assert!(window.try_find("chat-project-submenu").is_none());
+        window.press("right",cx); window.press("enter",cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).active,active);
+        assert!(matches!(app.read(cx).route,super::Route::Chat));
+        app.update(cx,|s,cx| {
+            s.project_name.update(cx,|input,cx| input.set_value("Created from chat",window,cx));
+            s.act(super::Action::SaveProject,window,cx);
+        });
+        window.render_frame(cx);
+        let created=app.read(cx).workspace.conversation(&target).unwrap().project_id.clone().unwrap();
+        assert_ne!(created,old_project);
+        assert_eq!(app.read(cx).active,active);
+        let count=app.read(cx).workspace.projects.len();
+        app.update(cx,|s,cx| {
+            s.chat_action_target=Some(target.clone());
+            s.act(super::Action::NewProjectForChat,window,cx);
+            s.act(super::Action::Close,window,cx);
+        });
+        assert_eq!(app.read(cx).workspace.projects.len(),count);
+        assert_eq!(app.read(cx).workspace.conversation(&target).unwrap().project_id.as_deref(),Some(created.as_str()));
+        assert!(app.read(cx).project_move_after_create.is_none());
+    }).unwrap();
+}

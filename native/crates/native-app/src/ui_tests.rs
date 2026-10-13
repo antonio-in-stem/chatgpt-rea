@@ -236,7 +236,10 @@ fn explicit_model_and_project_choices(cx: &mut TestAppContext) {
         window.render_frame(cx);
         window.click(("app-btn", 705usize), cx);
         window.render_frame(cx);
-        window.click(("app-btn", 802usize), cx);
+        assert!(app.read(cx).dialog == Some(super::Dialog::ChatMenu), "project click closed parent menu");
+        assert!(app.read(cx).project_submenu.is_some(), "project submenu was not opened");
+        let option=app.read(cx).project_menu_choices().iter().position(|(name,_)| name=="Second project").unwrap();
+        window.click(("chat-project-option", option), cx);
     })
     .unwrap();
     cx.update(|cx| {
@@ -1107,3 +1110,4 @@ fn conversation_title_uses_available_header_space_without_displacing_actions(cx:
         }).unwrap();
     }
 }
+
