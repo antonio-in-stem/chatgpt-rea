@@ -1,5 +1,5 @@
 {
-  "scope": "Original Markdown download, partial verification",
+  "scope": "Original Markdown download with demo HTTP projection, native save verified",
   "sources": {
     "renderer": "download-markdown-a303ed2590df.js:18-98",
     "menu": "app-initial-b8e1c8014bb4.js:407360-407373",
@@ -7,7 +7,11 @@
   },
   "observed": [
     "File menu Download on open Nested original page opens native Windows Save As dialog",
-    "Save dialog cancelled on verified demo process only; no file exported"
+    "Save dialog cancelled on verified demo process only; no file exported",
+    "v39 installed with unchanged renderer archive members",
+    "With Original Pages demo open, sidebar Nested original page > Download used HTTP content projection",
+    "Original native Save As saved Markdown to a new demo-state file",
+    "Saved bytes exactly equal Created through the original Add subpage control. plus LF (50 UTF-8 bytes)"
   ],
   "contract": [
     "Title or page ID forms sanitized .md filename",
@@ -19,11 +23,11 @@
     "Browser fallback saves text/markdown;charset=utf-8 Blob",
     "Failure shows Could not download page as Markdown toast"
   ],
-  "gap": "demoPagesHttp read returns content:null for canonical Yjs documents; HTTP-based download outside an active editor not implemented",
+  "gap": "Rich-file export and concurrent-edit UI error recovery still unverified; simple canonical page export works",
   "remaining": [
-    "Connect canonical ordered Yjs blocks to original serializer and HTTP projection without stale content",
-    "Verify actual saved UTF-8 file against rich original editor Markdown",
-    "Verify failure UI states"
+    "Verify rich document saved bytes including tables, code and instructions",
+    "Verify concurrent-edit/archived export failure UI recovery",
+    "Fresh legacy document migration workflow beyond current demo state"
   ],
   "fidelity": "No custom export UI or approximate Markdown serializer introduced",
   "serializer": {
@@ -37,14 +41,14 @@
       "Canonical child page markdown block reproduced its editor text with trailing newline"
     ],
     "evidence": "original-markdown-roundtrip.json",
-    "integration": "Not yet connected to HTTP content projection; no substitute serializer introduced"
+    "integration": "Connected through host export bridge, verified via sidebar download"
   },
   "projection_stage": {
     "implementation": "PageSyncStore.export_blocks snapshots canonical topLevelBlockIds + blocksById into export_blocks on each successful commit",
     "atomicity": "Projection sequence and Yjs update share one exclusive temporary write and atomic replacement",
     "validation": "Ordered markdown and agent_instructions only; missing/duplicate/unsupported block yields null rather than partial output; orphan blocks omitted",
     "tests": "73 Python tests pass, including ordering, unavailable projection, replay and failed atomic write",
-    "runtime": "Not installed in running adapter yet; old documents need explicit backfill or new commit",
+    "runtime": "Active in v39; five legacy document snapshots backfilled while adapter stopped",
     "remaining": "Invoke original CZ/sZ serializer for HTTP response and verify matching sequence before returning"
   },
   "http_bridge": {
@@ -53,6 +57,6 @@
     "consistency": "Projection sequence must match canonical and metadata; canonical file bytes rechecked after serialization and page liveness rechecked",
     "content_contract": "id/kind/markdown/metadata blocks match original applyPageRead at app-initial:341860-341884",
     "tests": "37 Node tests pass; 73 Python tests previously passed for projection",
-    "runtime": "Build/install and native save verification pending; active v38 unchanged"
+    "runtime": "v39 original sidebar HTTP download and native Save As verified"
   }
 }
