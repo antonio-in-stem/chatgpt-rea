@@ -1,0 +1,24 @@
+{
+  "profile": "demo-first-run-audit",
+  "threadId": "37a5640d-fd5b-4013-9242-faa80b98686a",
+  "viewport": {
+    "width": 1090,
+    "height": 760,
+    "devicePixelRatio": 1,
+    "visualViewportScale": 1
+  },
+  "verification": {
+    "nowrapCodeWidth": 2375,
+    "wrappedCodeWidth": 651,
+    "nowrapHeight": 40,
+    "wrappedHeight": 120,
+    "wheelDeltaX": 240,
+    "observedScrollLeft": 240,
+    "restoredScrollLeft": 0
+  },
+  "limitations": [
+    "Single Rust fixture with one long unbroken string and one short line.",
+    "No keyboard scroll, wrap persistence, alternate DPI, selection or clipboard verification.",
+    "Renderer unchanged; these are original runtime observations, not Rust parity."
+  ]
+}

@@ -81,7 +81,7 @@ function measureRenderer() {
     return {hostRect:host.getBoundingClientRect().toJSON(),openShadowRoot:!!host.shadowRoot,
       nodes:root?[...root.querySelectorAll('div,span,pre,code,[data-file],[data-code]')].slice(0,80).map(e=>{
         const style=getComputedStyle(e);
-        return {tag:e.tagName,attributes:Object.fromEntries([...e.attributes].map(a=>[a.name,a.value])),rect:e.getBoundingClientRect().toJSON(),scrollWidth:e.scrollWidth,clientWidth:e.clientWidth,scrollHeight:e.scrollHeight,clientHeight:e.clientHeight,styles:Object.fromEntries(properties.map(p=>[p,style.getPropertyValue(p)]))};
+        return {tag:e.tagName,attributes:Object.fromEntries([...e.attributes].map(a=>[a.name,a.value])),rect:e.getBoundingClientRect().toJSON(),scrollLeft:e.scrollLeft,scrollTop:e.scrollTop,scrollWidth:e.scrollWidth,clientWidth:e.clientWidth,scrollHeight:e.scrollHeight,clientHeight:e.clientHeight,styles:Object.fromEntries(properties.map(p=>[p,style.getPropertyValue(p)]))};
       }):[]};
   });
   return {codeRenderers,userAncestorGeometry,viewport:{width:innerWidth,height:innerHeight,devicePixelRatio,visualViewportScale:visualViewport?.scale},document:{url:location.href,visibility:document.visibilityState,focused:document.hasFocus(),fontsStatus:document.fonts.status,activeElement:{tag:document.activeElement?.tagName,role:document.activeElement?.getAttribute('role'),label:document.activeElement?.getAttribute('aria-label')}},anchors:chains,fontSamples,rootVariables,nodes};
