@@ -47,3 +47,13 @@ class SecurityTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             config=ConfigStore(Path(directory)/'config.json',{})
             self.assertEqual(handle_message(raw,config=config)[0]['result'],discovery)
+
+    def test_original_plugin_eligibility_identity(self):
+        from demo_plugins import PluginStore
+        with tempfile.TemporaryDirectory() as directory:
+            config=ConfigStore(Path(directory)/'config.json',{})
+            plugins=PluginStore(config).handle('plugin/installed',{})['marketplaces']
+            eligible=[p for m in plugins for p in m['plugins'] if p['id'].startswith('codex-security@')]
+            self.assertEqual(len(eligible),1)
+            self.assertTrue(eligible[0]['enabled'])
+            self.assertEqual(eligible[0]['availability'],'AVAILABLE')

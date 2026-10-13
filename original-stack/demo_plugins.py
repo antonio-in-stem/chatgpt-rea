@@ -57,5 +57,13 @@ class PluginStore:
                 'mcpServers':[],'scheduledTasks':None}}
         if method == 'plugin/installed' and not self.installed: marketplace['plugins']=[]
         result = {'marketplaces':[marketplace],'marketplaceLoadErrors':[]}
+        # Original Security eligibility requires an enabled codex-security@ identity.
+        # This entry describes only the in-process synthetic read provider, never executable code.
+        if method == 'plugin/installed':
+            security = {**summary, 'id':'codex-security@rea-local', 'name':'codex-security',
+                        'installed':True, 'enabled':True, 'localVersion':'1.0.0',
+                        'source':{'type':'local','path':'C:/REA-Demo/plugins/codex-security'}}
+            result['marketplaces'].append({'name':'rea-security-demo','path':MARKETPLACE,
+                                          'interface':None,'plugins':[security]})
         if method == 'plugin/list': result['featuredPluginIds']=[]
         return result
