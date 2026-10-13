@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Thirty-seven tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Thirty-eight tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -100,7 +100,7 @@ The wrapper accepts `{animation, Icon, staticIcon, className}`. It finds the enc
 
 `createAnimatedArtwork({React, motionPreference})` now connects the recovered data, color helpers and shipped Lottie runtime. Pass its result to `createAnimatedNavigationIcon`, then supply that wrapper as `AnimatedIcon` to `createReaUI`. The example search navigation control uses this chain and retains its focus-search action.
 
-The renderer uses the original wrapper classes, autoplay/loop defaults, color observer, reduced-motion gate, completion and DOM-ready callbacks. React.lazy/Suspense and a local error boundary replace the original application loading service; exact loading/error/retry parity remains unverified. Non-navigation artwork requires an explicit fallback icon, since those additional default glyphs have not been extracted. The example bundles code in one file, so lazy activation does not imply separate network chunks. The shipped expression engine causes esbuild's direct-eval warning; its original code is retained.
+The renderer uses the original wrapper classes, autoplay/loop defaults, color observer, reduced-motion gate, completion and DOM-ready callbacks. The recovered lazy-component contract now supplies Suspense, prefetch and one 200ms load retry. Error reporting is a consumer callback; no app telemetry is imported. Non-navigation artwork requires an explicit fallback icon, since those additional default glyphs have not been extracted. The example bundles code in one file, so lazy activation does not imply separate network chunks. The shipped expression engine causes esbuild's direct-eval warning; its original code is retained.
 
 Browser verification of the search control observed the static icon at 100 ms, animated SVG after the 300 ms gate, changing path geometry, return to the static icon on completion, and immediate cleanup on pointer leave. This does not establish full original screenshot parity or coverage of every animation. 
 
@@ -125,3 +125,9 @@ This consumes trusted recovered preset objects; it is not an SVG sanitizer. The 
 `createDarkThemeHook(React)` preserves hxi/gxi/_xi/vxi: it observes only `data-theme` on the document root, reports true for dark, false for other present values, and null for missing/SSR state. `createReaUI` exposes `useDarkTheme` and supplies it to responsive artwork automatically. This reads the theme; it does not recreate account preference storage or system-theme selection.
 
 The authored example's toggle changes that attribute and demonstrates live subscription updates. Browser verification observed dark text rgb(223,223,223), light text rgb(26,28,31), and restoration to dark without reload. The example toggle is not the original settings screen; themed asset pixel comparison remains pending.
+
+### Deferred component loading
+
+`createLazyComponentFactory({React, reportLoadError?, schedule?})` produces the recovered `oxi` loader. Each component shares its in-flight request, clears a rejected request for retry, retries once after 200ms, supports `fallback`, `errorFallback`, `propagateLoadError` and `suspendToParent`, and exposes `prefetch()`. Prefetch is deduplicated and allows newly mounted instances to use the loaded component immediately. The original behavior is preserved even when prefetch fails: its promise stays cached while a later lazy mount can retry the cleared load.
+
+AnimatedArtwork uses this loader. Differential tests compare success/retry/failure/propagation/prefetch branches with the shipped function. The keyboard and reduced-motion browser regression also passes after integration. Errors during component rendering are not converted into load failures by this loader, matching the source boundary.

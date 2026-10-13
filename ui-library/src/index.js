@@ -1,3 +1,4 @@
+export {createLazyComponentFactory} from './lazyComponent.js';
 import {createDarkThemeHook} from './theme.js';
 export {createDarkThemeHook} from './theme.js';
 import {createAssetIcon} from './AssetIcon.js';
