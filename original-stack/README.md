@@ -390,3 +390,12 @@ Final coverage: 15,087 top-level renderer files (14,771 JavaScript/MJS with posi
 Readable files: original-stack/state/recovered-all/readable/assets. Full provenance: state/recovered-all/manifest.json. Literal dependency map: state/recovered-all/dependency-edges.json. The compact definitive audit and summary are retained in evidence/recovered-renderer-audit.json and evidence/recovered-renderer-summary.json. The generated readable tree remains ignored to avoid committing roughly 491 MB of duplicate production code; scripts reproduce it locally from the existing extraction.
 
 This completes readability/coverage recovery for the selected top-level distributed JS/MJS/CSS, not original TypeScript recovery, native executable decompilation, all nested package code, CSS semantic equivalence, all runtime features, or the exact Rust port. The runnable reference remains the untouched packaged runtime.
+
+
+## Original sidebar collapse/restore geometry
+
+The untouched renderer was exercised through its original Ocultar barra lateral / Mostrar barra lateral controls using real CDP mouse events. At 1090x760, DPR 1, the rail home control remains at (8,52), 36x36 in both states. The main pane moves from x=340, width=746 to x=52, width=1034. The sidebar mode/new-chat controls leave the DOM. The conversation scroller moves from x=341, width=745 to x=52, width=1034: its one-pixel boundary changes with the expanded sidebar, so subtracting a constant width everywhere would be inaccurate.
+
+The composer editable changes from x=369, width=689 to x=213, width=712; it remains y=656, height=44. This is the editable node, not the outer composer surface. The user bubble retains width 442.390625, height 42.75 and y=180, while x moves from 617.609375 to 494.609375. All eight selected anchor states (geometry, labels, expanded state and scroll values) returned exactly to their initial values after restoration. sidebar-toggle-observation.json retains the bounded comparison; sidebar-{expanded,collapsed,restored}-metrics.json retain full computed measurements.
+
+This verifies one dark desktop state, not intermediate animation frames, other viewport/DPI combinations, persistence across restart or the native Rust port. No original components, styles or assets were modified.

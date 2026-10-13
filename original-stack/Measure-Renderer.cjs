@@ -29,6 +29,9 @@ function measureRenderer() {
   }
   const buttons = [...document.querySelectorAll('button')];
   const anchors = {
+    sidebarToggle:buttons.find(e=>['Ocultar barra lateral','Mostrar barra lateral'].includes(e.getAttribute('aria-label'))),
+    conversationMain:document.querySelector('main'),
+    conversationScroller:document.querySelector('.thread-scroll-container'),
     railHome:buttons.find(e=>e.innerText.trim()==='Inicio'),
     sidebarMode:buttons.find(e=>e.getAttribute('aria-label')?.startsWith('Cambiar de modo')),
     sidebarNewChat:buttons.find(e=>e.innerText.trim()==='Nuevo chat'),

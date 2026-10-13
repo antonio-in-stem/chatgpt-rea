@@ -1,0 +1,402 @@
+{
+  "scope": "Untouched original renderer, explicit demo profile, sidebar toggle via real mouse input",
+  "states": {
+    "expanded": {
+      "capturedUtc": "2026-10-13T05:22:37.463Z",
+      "viewport": {
+        "width": 1090,
+        "height": 760,
+        "devicePixelRatio": 1,
+        "visualViewportScale": 1
+      },
+      "anchors": {
+        "sidebarToggle": {
+          "rect": {
+            "x": 74,
+            "y": 4,
+            "width": 28,
+            "height": 28
+          },
+          "ariaLabel": "Ocultar barra lateral",
+          "ariaExpanded": "true",
+          "scroll": {
+            "width": 28,
+            "height": 28,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "railHome": {
+          "rect": {
+            "x": 8,
+            "y": 52,
+            "width": 36,
+            "height": 36
+          },
+          "ariaLabel": null,
+          "ariaExpanded": "false",
+          "scroll": {
+            "width": 36,
+            "height": 36,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "sidebarMode": {
+          "rect": {
+            "x": 62,
+            "y": 54,
+            "width": 84.21875,
+            "height": 32
+          },
+          "ariaLabel": "Cambiar de modo, modo actual: Codex",
+          "ariaExpanded": "false",
+          "scroll": {
+            "width": 84,
+            "height": 32,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "sidebarNewChat": {
+          "rect": {
+            "x": 60,
+            "y": 96,
+            "width": 272,
+            "height": 30
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 272,
+            "height": 31,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "conversationMain": {
+          "rect": {
+            "x": 340,
+            "y": 44,
+            "width": 746,
+            "height": 712
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 745,
+            "height": 712,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "conversationScroller": {
+          "rect": {
+            "x": 341,
+            "y": 96,
+            "width": 745,
+            "height": 660
+          },
+          "ariaLabel": "Conversation",
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 725,
+            "height": 737,
+            "left": 0,
+            "top": -77
+          }
+        },
+        "composer": {
+          "rect": {
+            "x": 369,
+            "y": 656,
+            "width": 689,
+            "height": 44
+          },
+          "ariaLabel": "Trabaja con Codex",
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 689,
+            "height": 44,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "userMessage": {
+          "rect": {
+            "x": 617.609375,
+            "y": 180,
+            "width": 442.390625,
+            "height": 42.75
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 442,
+            "height": 43,
+            "left": 0,
+            "top": 0
+          }
+        }
+      }
+    },
+    "collapsed": {
+      "capturedUtc": "2026-10-13T05:22:47.701Z",
+      "viewport": {
+        "width": 1090,
+        "height": 760,
+        "devicePixelRatio": 1,
+        "visualViewportScale": 1
+      },
+      "anchors": {
+        "sidebarToggle": {
+          "rect": {
+            "x": 74,
+            "y": 4,
+            "width": 28,
+            "height": 28
+          },
+          "ariaLabel": "Mostrar barra lateral",
+          "ariaExpanded": "false",
+          "scroll": {
+            "width": 28,
+            "height": 28,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "railHome": {
+          "rect": {
+            "x": 8,
+            "y": 52,
+            "width": 36,
+            "height": 36
+          },
+          "ariaLabel": null,
+          "ariaExpanded": "false",
+          "scroll": {
+            "width": 36,
+            "height": 36,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "sidebarMode": null,
+        "sidebarNewChat": null,
+        "conversationMain": {
+          "rect": {
+            "x": 52,
+            "y": 44,
+            "width": 1034,
+            "height": 712
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 1034,
+            "height": 712,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "conversationScroller": {
+          "rect": {
+            "x": 52,
+            "y": 96,
+            "width": 1034,
+            "height": 660
+          },
+          "ariaLabel": "Conversation",
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 1014,
+            "height": 737,
+            "left": 0,
+            "top": -77
+          }
+        },
+        "composer": {
+          "rect": {
+            "x": 213,
+            "y": 656,
+            "width": 712,
+            "height": 44
+          },
+          "ariaLabel": "Trabaja con Codex",
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 712,
+            "height": 44,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "userMessage": {
+          "rect": {
+            "x": 494.609375,
+            "y": 180,
+            "width": 442.390625,
+            "height": 42.75
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 442,
+            "height": 43,
+            "left": 0,
+            "top": 0
+          }
+        }
+      }
+    },
+    "restored": {
+      "capturedUtc": "2026-10-13T05:22:58.231Z",
+      "viewport": {
+        "width": 1090,
+        "height": 760,
+        "devicePixelRatio": 1,
+        "visualViewportScale": 1
+      },
+      "anchors": {
+        "sidebarToggle": {
+          "rect": {
+            "x": 74,
+            "y": 4,
+            "width": 28,
+            "height": 28
+          },
+          "ariaLabel": "Ocultar barra lateral",
+          "ariaExpanded": "true",
+          "scroll": {
+            "width": 28,
+            "height": 28,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "railHome": {
+          "rect": {
+            "x": 8,
+            "y": 52,
+            "width": 36,
+            "height": 36
+          },
+          "ariaLabel": null,
+          "ariaExpanded": "false",
+          "scroll": {
+            "width": 36,
+            "height": 36,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "sidebarMode": {
+          "rect": {
+            "x": 62,
+            "y": 54,
+            "width": 84.21875,
+            "height": 32
+          },
+          "ariaLabel": "Cambiar de modo, modo actual: Codex",
+          "ariaExpanded": "false",
+          "scroll": {
+            "width": 84,
+            "height": 32,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "sidebarNewChat": {
+          "rect": {
+            "x": 60,
+            "y": 96,
+            "width": 272,
+            "height": 30
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 272,
+            "height": 31,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "conversationMain": {
+          "rect": {
+            "x": 340,
+            "y": 44,
+            "width": 746,
+            "height": 712
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 745,
+            "height": 712,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "conversationScroller": {
+          "rect": {
+            "x": 341,
+            "y": 96,
+            "width": 745,
+            "height": 660
+          },
+          "ariaLabel": "Conversation",
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 725,
+            "height": 737,
+            "left": 0,
+            "top": -77
+          }
+        },
+        "composer": {
+          "rect": {
+            "x": 369,
+            "y": 656,
+            "width": 689,
+            "height": 44
+          },
+          "ariaLabel": "Trabaja con Codex",
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 689,
+            "height": 44,
+            "left": 0,
+            "top": 0
+          }
+        },
+        "userMessage": {
+          "rect": {
+            "x": 617.609375,
+            "y": 180,
+            "width": 442.390625,
+            "height": 42.75
+          },
+          "ariaLabel": null,
+          "ariaExpanded": null,
+          "scroll": {
+            "width": 442,
+            "height": 43,
+            "left": 0,
+            "top": 0
+          }
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Single dark desktop viewport at DPR 1; animation frames, other widths/DPI and restart persistence not covered.",
+    "Composer geometry refers to the editable node, not its outer surface.",
+    "This does not establish native Rust parity."
+  ],
+  "verification": {
+    "allSelectedAnchorsRestoredExactly": true,
+    "railHomeUnchanged": true,
+    "sidebarControlsAbsentWhenCollapsed": true
+  }
+}
