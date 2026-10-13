@@ -212,3 +212,11 @@ thread/rollback now removes a positive bounded number of final turns from legacy
 A Legacy Edit Demo conversation with historyMode=legacy was opened in the original renderer. Editar mensaje, native text entry into its editor and Enviar issued thread/rollback with numTurns, followed by turn/start. Persistence shows one completed replacement turn containing Legacy message to edit. Updated through the original legacy editor. evidence/original-legacy-message-edited.png retains the native capture. Both legacy and paginated editing now have separate runtime observations.
 
 An additional attempt opened Acciones del chat, but the menu options were not exposed in the inspected renderer DOM; renaming through that menu remains unverified. No host-private callback was invoked to bypass the menu.
+
+## One-command demo launcher
+
+From original-stack, run ./Start-Demo.ps1 in PowerShell 7. Python with websockets must already be installed; the launcher does not install dependencies. It verifies the original executable/ASAR using Start-Original, starts a loopback adapter, reads its dynamically assigned endpoint and opens the copied runtime visibly. It keeps project/config/thread JSON under the selected demo profile. The default profile is demo-desktop; -StateName selects another demo-* name. The ready Windows UI scenario is explicit in startup output and can be changed with -WindowsScenario. It is not an OS sandbox guarantee. -DryRun checks/prepares paths without launching processes.
+
+A named mutex and copied-runtime process check reject concurrent launchers to avoid attaching the frontend to the wrong server. The adapter is stopped in finally after runtime exit; an adapter failure also closes the runtime launched by this invocation. Inspection is opt-in through -InspectRuntime. Fresh profiles still run the original onboarding/account gates; the launch test below proves process lifecycle only, not completion of first-run onboarding or all account-gated features.
+
+Live verification with demo-launcher-check started both processes, rejected a second invocation before spawning another adapter, and exited successfully after the tracked runtime process tree was terminated. Both tracked PIDs were absent afterwards. The default fresh profile is separate from previously populated observation profiles and does not import their account or demo databases.

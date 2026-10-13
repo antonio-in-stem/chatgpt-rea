@@ -1,5 +1,6 @@
 param(
  [switch]$WaitForExit,
+ [switch]$Visible,
  [switch]$InspectRuntime,
  [switch]$DryRun,
  [ValidatePattern('^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$')][string]$StateName,
@@ -33,7 +34,7 @@ $start=[Diagnostics.ProcessStartInfo]::new()
 $start.FileName=Join-Path $runtime 'ChatGPT.exe'
 $start.WorkingDirectory=$runtime
 $start.UseShellExecute=$false
-$start.WindowStyle=[Diagnostics.ProcessWindowStyle]::Hidden
+$start.WindowStyle=if($Visible){[Diagnostics.ProcessWindowStyle]::Normal}else{[Diagnostics.ProcessWindowStyle]::Hidden}
 # Remove parent agent/runtime routing and credentials from the child only.
 # Separate profile directories alone do not prove native account-store isolation.
 foreach($key in @($start.Environment.Keys)){
