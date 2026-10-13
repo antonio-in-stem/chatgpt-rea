@@ -7,6 +7,7 @@ const {demoSidebarSettings}=require('./demo_sidebar_settings.cjs');
 const {demoPluginHttp}=require('./demo_plugin_http.cjs');
 const {demoAutomationHttp}=require('./demo_automation_http.cjs');
 const {demoSpaceHttp}=require('./demo_space_http.cjs');
+const {demoDirectorySharing}=require('./demo_directory_sharing.cjs');
 const {demoPagesHttp}=require('./demo_pages_http.cjs');
 const {demoUsageHttp}=require('./demo_usage_http.cjs');
 const {demoPageExport}=require('./demo_page_export.cjs');
@@ -64,7 +65,7 @@ for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoUsageHttp.toString()+'\n'+demoPageExport.toString()+'\n'+demoCheckpointDownload.toString()+'\n'+demoPagesHttp.toString()+'\n'+demoSpaceHttp.toString()+'\n'+demoLocalAutomations.toString()+'\n'+demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoDirectorySharing.toString()+'\n'+demoUsageHttp.toString()+'\n'+demoPageExport.toString()+'\n'+demoCheckpointDownload.toString()+'\n'+demoPagesHttp.toString()+'\n'+demoSpaceHttp.toString()+'\n'+demoLocalAutomations.toString()+'\n'+demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;

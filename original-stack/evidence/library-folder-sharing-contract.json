@@ -1,0 +1,77 @@
+{
+  "scope": "Original native Library folder sharing; separate from Pages/Spaces sharing",
+  "sources": {
+    "api": "api-32252bf200bf.js:15-39,128-227,229-267,328-357",
+    "validation": "model-2247c0efb7ec.js:7-33",
+    "initial_load": "dialog-8a8d8e01dffd.js:3496-3620",
+    "email_resolution": "recipient-picker-5d859275648d.js:486-503,568-652",
+    "pending_role_change": "dialog-8a8d8e01dffd.js:961-978,1404-1432",
+    "staging_cancel": "dialog-8a8d8e01dffd.js:1244-1270,3796-3820,4336-4338"
+  },
+  "contracts": {
+    "base": "/files/library/directories/{directory_id}",
+    "get": [
+      "sharing-state",
+      "shares",
+      "effective-access"
+    ],
+    "scope": {
+      "resource_type": "library_folder",
+      "resource_id": "matching directory ID"
+    },
+    "resolve": {
+      "method": "POST",
+      "path": "/sharing/recipients/resolve",
+      "body": {
+        "email": "synthetic email"
+      },
+      "response": {
+        "eligible": true
+      }
+    },
+    "invite": {
+      "method": "POST",
+      "path": "shares",
+      "body": [
+        "recipient:{recipient_type:email,email}",
+        "role_id",
+        "expected_invitation_id when replacing"
+      ]
+    },
+    "remove": {
+      "method": "DELETE",
+      "path": "shares/{share_id}",
+      "response": "ignored"
+    },
+    "pending_role_change": "One POST shares with old expected_invitation_id and new role_id; no PATCH shares or DELETE first"
+  },
+  "demo_policies": [
+    "Only collaborator@example.invalid is eligible; invitation delivery never occurs",
+    "Invitations remain email-only and pending; no invented principal or effective access is granted",
+    "Replacing role issues a fresh synthetic invitation ID; renderer accepts either changed or preserved ID",
+    "Ancestor invitations mark effective access incomplete until inherited access is modeled",
+    "Only collaborators_only link mode is supplied for the synthetic personal account",
+    "Response shapes inferred from actual consumer accesses, not asserted as complete upstream schemas"
+  ],
+  "implemented": [
+    "Scoped owner/viewer sharing-state and explicit version1 capabilities",
+    "Persistent invitation roster and allowed folder roles",
+    "Synthetic email resolution",
+    "Pending create, role replacement with expected invitation comparison, and delete",
+    "Atomic store writes shared with directory lifecycle"
+  ],
+  "validation": "45 Node tests pass. Original UI owner/recipient resolution/invite/role staging/Save/Cancel/restart/removal verified.",
+  "limitations": [
+    "No accepted principal grants, access-change preview/apply, inherited access, workspace link modes or access requests",
+    "Unknown upstream error schemas; stale invitation rejects locally",
+    "No folder file upload implementation yet"
+  ],
+  "ui_observations": [
+    "Share opens original owner row, Add emails combobox and Only those invited link setting",
+    "Fixed synthetic recipient resolves and Invite persists pending Viewer, displayed with original Invite sent label; no email delivery",
+    "Selecting Editor leaves stored Viewer until Save; Save persists replacement invitation and displays Editor",
+    "Selecting Commenter then Cancel preserves Editor",
+    "Full process restart preserves pending Editor in original dialog",
+    "Remove access leaves persisted grant until Save; Save removes it and original roster returns to owner only"
+  ]
+}

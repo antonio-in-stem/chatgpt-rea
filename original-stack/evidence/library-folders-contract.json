@@ -8,7 +8,8 @@
     "move": "app-initial:493017-493022",
     "path": "app-initial:289870-289891",
     "delete": "app-initial-b8e1c8014bb4.js:492982-493000; library-item-dialogs-90a15dde2d55.js:130-164",
-    "query_selection": "app-initial-b8e1c8014bb4.js:158201-158226,158509-158568,158631 onward"
+    "query_selection": "app-initial-b8e1c8014bb4.js:158201-158226,158509-158568,158631 onward",
+    "move_dialog": "library-move-dialog-84e6c66e5dc6.js:102-230,277,500-545"
   },
   "requests": {
     "create": {
@@ -59,7 +60,12 @@
     "Full renderer reload: folder preserved in All > Your items; Suggested is a different ranking query",
     "Original Rename dialog updates name; renamed parent and child verified after full process restart",
     "Original Delete folder confirmation states permanent deletion with descendants",
-    "Cancel preserves both directories; confirming removes only synthetic child and renders original empty folder state"
+    "Cancel preserves both directories; confirming removes only synthetic child and renders original empty folder state",
+    "Nested context menu labels action Move; root context menu labels Move to folder",
+    "Move dialog disables selected directory itself and Move here at its current parent",
+    "Selecting Library root and Cancel preserves original parent",
+    "Move here to Library root persists null parent; full renderer reload > All > Your items shows moved folder",
+    "Move to folder > select original parent > Move here persists original parent again"
   ],
   "create_behaviors": [
     "Blank trimmed name or validation error prevents submission",
@@ -69,16 +75,15 @@
     "Invalidates account/user library query cache"
   ],
   "next": [
-    "Verify original Move to folder dialog and destination selection",
     "Implement proper HTTP409 conflict messaging",
-    "Trace directory sharing and file upload contracts",
+    "Implement original file upload contracts; extend sharing to accepted principals and inherited access",
     "Verify active filters including shared/favorites/sources"
   ],
   "limitations": [
     "Directory access DTO remains consumer-inferred",
     "Folder subtree deletion currently supports directory-only synthetic contents; file ingestion is not implemented",
     "Original Suggested ranking is not reproduced by demo backend; use All > Your items for folder enumeration",
-    "Directory sharing and move-dialog UI verification remain pending"
+    "Pending email directory sharing verified separately; create-destination inside move dialog not yet verified"
   ],
   "implementation": [
     "Directories stored separately from page items in same atomic demo state file",

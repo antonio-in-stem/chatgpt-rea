@@ -1,3 +1,4 @@
+const {demoDirectorySharing}=require('./demo_directory_sharing.cjs');
 // Original pko draft metadata and applyPageRead HTTP preview contract.
 // This store does not acknowledge realtime edits: the sync protocol is separate.
 function demoPagesHttp(method,url,body,settingsPath,fs,path){
@@ -6,6 +7,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const directoryId=route.match(/^\/files\/library\/directories\/(rea-directory-[1-9][0-9]*)$/)?.[1];
  const directory=(route==='/files/library/directories'&&method==='POST')||(route==='/files/library/directories/path'&&method==='GET')||(directoryId&&['GET','PATCH','DELETE'].includes(method));
  const sharing=route.match(/^\/(?:pages\/(rea-page-[1-9][0-9]*)|spaces\/v2\/(rea-space-[1-9][0-9]*))\/shares(?:\/(rea-share-[1-9][0-9]*))?$/);
+ const directorySharing=/^\/files\/library\/directories\/rea-directory-[1-9][0-9]*\/(sharing-state|shares|effective-access)(?:\/rea-directory-share-[1-9][0-9]*)?$/.test(route)||(method==='POST'&&route==='/sharing/recipients/resolve');
  const recipientSearch=method==='POST'&&route==='/pages/sharing/recipients';
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
  const spaceAction=route.match(/^\/spaces\/(rea-space-[1-9][0-9]*)(\/restore)?$/);
@@ -26,12 +28,13 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!directory&&!recipientSearch&&!sharing&&!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
+ if(!directorySharing&&!directory&&!recipientSearch&&!sharing&&!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
  if(state.version!==1||!Array.isArray(state.items)||!Number.isSafeInteger(state.sequence))throw Error('Invalid demo page store');
  const persist=()=>{const temporary=file+'.pending';let owned=false;try{fs.writeFileSync(temporary,JSON.stringify(state),{flag:'wx'});owned=true;fs.renameSync(temporary,file);}finally{if(owned&&fs.existsSync(temporary))fs.unlinkSync(temporary);}};
+ if(directorySharing)return demoDirectorySharing(method,url,body,state,persist);
  const directoryRoot={id:'rea-directory-root',name:'My files',kind:'directory',is_root:true,parent_directory_id:null,access_kind:'owned'};
  const directoryParent=value=>value==null||value===directoryRoot.id?null:value;
  const directories=state.directories??[];
