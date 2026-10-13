@@ -11,7 +11,10 @@
     "v39 installed with unchanged renderer archive members",
     "With Original Pages demo open, sidebar Nested original page > Download used HTTP content projection",
     "Original native Save As saved Markdown to a new demo-state file",
-    "Saved bytes exactly equal Created through the original Add subpage control. plus LF (50 UTF-8 bytes)"
+    "Saved bytes exactly equal Created through the original Add subpage control. plus LF (50 UTF-8 bytes)",
+    "Rich Original Pages demo exported from active editor and independently through sidebar while another page was active",
+    "Both native Save As outputs are byte-identical: 275 UTF-8 bytes, SHA256 f74c42e5888cf50779ca18c23f62dce503ccb5cabdd9bad515ac2577e536ff7f",
+    "Rich output includes math fence, CALLOUT, horizontal rule, code fence, three-column table, heading and checked checklist"
   ],
   "contract": [
     "Title or page ID forms sanitized .md filename",
@@ -23,9 +26,8 @@
     "Browser fallback saves text/markdown;charset=utf-8 Blob",
     "Failure shows Could not download page as Markdown toast"
   ],
-  "gap": "Rich-file export and concurrent-edit UI error recovery still unverified; simple canonical page export works",
+  "gap": "Concurrent-edit and archive error recovery UI unverified; runtime rich export paths match",
   "remaining": [
-    "Verify rich document saved bytes including tables, code and instructions",
     "Verify concurrent-edit/archived export failure UI recovery",
     "Fresh legacy document migration workflow beyond current demo state"
   ],
