@@ -2,6 +2,26 @@ import base64,json,tempfile,unittest
 from pathlib import Path
 from demo_page_sync import PageSyncStore,y
 class PageSyncTests(unittest.TestCase):
+ def test_export_blocks_order_and_unsupported_shapes(self):
+  doc=y.YDoc()
+  self.assertEqual(PageSyncStore.export_blocks(doc,0),{'sequence':0,'blocks':[]})
+  with doc.begin_transaction() as tx:
+   doc.get_array('topLevelBlockIds').extend(tx,['b','a'])
+   doc.get_map('blocksById').set(tx,'a',{'kind':'markdown','markdown':'**Second**'})
+   doc.get_map('blocksById').set(tx,'b',{'kind':'agent_instructions','markdown':'First'})
+   doc.get_map('blocksById').set(tx,'orphan',{'kind':'markdown','markdown':'Unused'})
+  result=PageSyncStore.export_blocks(doc,4)
+  self.assertEqual(result['sequence'],4)
+  self.assertEqual([b['id'] for b in result['blocks']],['b','a'])
+  self.assertEqual(result['blocks'][1]['markdown'],'**Second**')
+  with doc.begin_transaction() as tx:doc.get_map('blocksById').set(tx,'b',{'kind':'future','markdown':'Unknown'})
+  self.assertIsNone(PageSyncStore.export_blocks(doc,5))
+  with doc.begin_transaction() as tx:doc.get_map('blocksById').pop(tx,'b')
+  self.assertIsNone(PageSyncStore.export_blocks(doc,6))
+  with doc.begin_transaction() as tx:
+   doc.get_map('blocksById').set(tx,'b',{'kind':'markdown','markdown':'Known'})
+   doc.get_array('topLevelBlockIds').append(tx,'a')
+  self.assertIsNone(PageSyncStore.export_blocks(doc,7))
  def test_update_replay_reload_and_conflicting_receipt(self):
   with tempfile.TemporaryDirectory(prefix='rea-page-sync-') as directory:
    folder=Path(directory)
@@ -14,6 +34,7 @@ class PageSyncTests(unittest.TestCase):
    message={'client_update_id':'edit-1','update':base64.b64encode(y.encode_state_as_update(doc)).decode()}
    ack,committed=store.commit('rea-page-1',message)
    self.assertEqual(ack['sequence'],1)
+   self.assertEqual(json.loads((folder/'rea-page-1-document.json').read_text())['export_blocks'],{'sequence':1,'blocks':[]})
    self.assertEqual(json.loads((folder/'rea-page-1-document.json').read_text())['symbol'],{'kind':'emoji','value':'\U0001f680'})
    self.assertEqual(committed['update'],message['update'])
    committed_time=json.loads((folder/'rea-page-1-document.json').read_text())['updated_at']
@@ -29,6 +50,7 @@ class PageSyncTests(unittest.TestCase):
    (folder/'rea-page-1-document.pending').write_text('foreign')
    with self.assertRaises(FileExistsError):store.commit('rea-page-1',{**message,'client_update_id':'edit-2'})
    self.assertEqual(store.sync('rea-page-1')['committed_sequence'],1)
+   self.assertEqual(json.loads((folder/'rea-page-1-document.json').read_text())['export_blocks']['sequence'],1)
    self.assertEqual((folder/'rea-page-1-document.pending').read_text(),'foreign')
  def test_original_comment_update_survives_reload_and_unrelated_edit(self):
   fixture=json.loads((Path(__file__).parent/'fixtures/page-comments-original-update.json').read_text(encoding='utf-8'))

@@ -41,6 +41,19 @@ class PageSyncStore:
                     if owned and temporary.exists():temporary.unlink()
         y.apply_update(doc,base64.b64decode(state['update'],validate=True))
         return file,state,doc
+    @staticmethod
+    def export_blocks(doc, sequence):
+        """Snapshot ordered original blocks; unsupported shapes stay unavailable."""
+        order=json.loads(doc.get_array('topLevelBlockIds').to_json())
+        blocks=json.loads(doc.get_map('blocksById').to_json())
+        if any(not isinstance(key,str) for key in order) or len(set(order))!=len(order):return None
+        result=[]
+        for key in order:
+            block=blocks.get(key)
+            if (not isinstance(block,dict) or block.get('kind') not in ('markdown','agent_instructions')
+                or not isinstance(block.get('markdown'),str)):return None
+            result.append({**block,'id':key})
+        return {'sequence':sequence,'blocks':result}
     def sync(self,page_id):
         _,state,doc=self.load(page_id)
         return {'type':'sync_step_2','committed_sequence':state['sequence'],'session_id':'demo-'+page_id,'update':base64.b64encode(y.encode_state_as_update(doc)).decode(),'capabilities':['comments_v1'],'viewer':{'account_user_id':'rea-demo-user','display_name':'Demo'}}
@@ -72,6 +85,7 @@ class PageSyncStore:
         state['update']=base64.b64encode(y.encode_state_as_update(doc)).decode()
         state['title']=json.loads(doc.get_text('title').to_json())
         state['symbol']=json.loads(doc.get_map('pagesMetadata').to_json()).get('symbol')
+        state['export_blocks']=self.export_blocks(doc,state['sequence'])
         if (before_blocks!=after_blocks or before_title!=state['title']
             or before_order!=json.loads(doc.get_array('topLevelBlockIds').to_json())
             or before_metadata!=json.loads(doc.get_map('pagesMetadata').to_json())):

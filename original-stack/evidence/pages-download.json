@@ -38,5 +38,13 @@
     ],
     "evidence": "original-markdown-roundtrip.json",
     "integration": "Not yet connected to HTTP content projection; no substitute serializer introduced"
+  },
+  "projection_stage": {
+    "implementation": "PageSyncStore.export_blocks snapshots canonical topLevelBlockIds + blocksById into export_blocks on each successful commit",
+    "atomicity": "Projection sequence and Yjs update share one exclusive temporary write and atomic replacement",
+    "validation": "Ordered markdown and agent_instructions only; missing/duplicate/unsupported block yields null rather than partial output; orphan blocks omitted",
+    "tests": "73 Python tests pass, including ordering, unavailable projection, replay and failed atomic write",
+    "runtime": "Not installed in running adapter yet; old documents need explicit backfill or new commit",
+    "remaining": "Invoke original CZ/sZ serializer for HTTP response and verify matching sequence before returning"
   }
 }
