@@ -1,0 +1,33 @@
+{
+  "stateName": "demo-probe-20261013-c",
+  "coldStart": true,
+  "authFilePresent": false,
+  "actions": [
+    "Show original content window",
+    "Select Ingenier\u00eda demo role",
+    "Continue",
+    "Omitir",
+    "Confirm Ir a ChatGPT"
+  ],
+  "observedResult": "Original rail, sidebar, new-chat canvas and contenteditable composer loaded",
+  "source": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\recovered-frontend\\readable\\assets\\app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "sourceRanges": [
+    [
+      448328,
+      448338
+    ],
+    [
+      464267,
+      464324
+    ]
+  ],
+  "screenshot": "evidence\\original-demo-shell.png",
+  "screenshotSha256": "4f2db0820ba6da2aaaa4eb38f2c40565f252b5ccc3942e552c21881346f4954f",
+  "limitations": [
+    "Empty synthetic projects/chats; feature behavior incomplete.",
+    "Focus-dependent onboarding transition corroborated by source and visible progression, not an exhaustive event trace.",
+    "CDP document.visibilityState reported hidden while document.hasFocus was true; use native window capture for composited visuals.",
+    "No network-isolation or Rust-port-completion claim."
+  ]
+}
