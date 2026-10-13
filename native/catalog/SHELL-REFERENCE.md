@@ -121,3 +121,7 @@ Section persistence follow-up: native workspace settings now store collapsed_sid
 
 
 Section indicator follow-up: native heading is now a focusable semantic Button with aria-expanded and stable focus handles. Down chevron appears on header hover or focus; right chevron stays visible when collapsed. Enter/Space are captured before framework default actions, verified by restore-on-open UI test. 61 workspace tests passed before the capture-phase adjustment; targeted keyboard test passed afterward. Remaining differences: source reveals on whole-section hover, uses focus-visible instead of all focus, animates rotation and paints a2px outline; these details remain unported.
+
+
+## Section composition
+Replaced flat rows with per-section containers: recovered sidebarScroll at app-initial428807 uses gap-4 (16px), HF147870 plain list uses gap-px (1px), and sidebar-navigation CSS25477 supplies4px scroll-content top padding. UF with explicit collapsed flag has no extra heading/body gap. Group hover now spans each section, matching P1o group-hover/nav-section chevron reveal. Existing61 workspace tests pass. Real executable capture qa/native-sections-23.png inspected. Sticky heading behavior, hover actions and focus-visible-only distinction remain pending.

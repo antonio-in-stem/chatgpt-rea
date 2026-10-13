@@ -395,3 +395,7 @@ Recovered sidebar-item geometry applied to chat/project/Show more rows. Correcte
 
 ## Durable section collapse
 60 existing workspace tests and12 core tests pass; added restore-on-open UI test passes (61 total workspace tests now). Production executable builds. Collapsed state is loaded from workspace settings with backward-compatible serde default.
+
+
+## Sidebar section layout
+61 workspace tests passed; build passed; qa/native-sections-23.png inspected after source-derived16px section /1px row gaps and4px top content inset.

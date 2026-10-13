@@ -393,15 +393,15 @@ impl WorkspaceApp {
                     .child(self.shell_icon("search", "Search chats", 709, Action::Search, cx))
                     .child(self.shell_icon("sidebar", "Close sidebar", 700, Action::Sidebar, cx)),
             );
-        let mut recents = div().w_full().flex().flex_col().gap(px(2.));
+        let mut recents = div().w_full().flex().flex_col().gap(px(16.));
         let section = |label: &'static str, cx: &mut Context<Self>| {
             let collapsed = self.workspace.settings.collapsed_sidebar_sections.contains(sidebar_section_key(label));
             let index = match label { "Pinned" => 0, "Chats" => 1, _ => 2 };
             let focus = &self.section_focus[index];
             div().id(SharedString::from(format!("sidebar-section-{label}"))).test_support()
-                .group(label).track_focus(focus).tab_stop(true).role(Role::Button)
+                .track_focus(focus).tab_stop(true).role(Role::Button)
                 .aria_label(label).aria_expanded(!collapsed).cursor_pointer()
-                .w_full().h(px(30.)).mt(px(16.)).px(px(8.))
+                .w_full().h(px(30.)).px(px(8.))
                 .flex().items_center().gap(px(4.))
                 .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                 .font_weight(FontWeight::MEDIUM)
@@ -433,22 +433,29 @@ impl WorkspaceApp {
         for pinned in [true, false] {
             let rows = all_chats.iter().filter(|(_, c)| c.pinned == pinned && (pinned || c.project_id.is_none())).collect::<Vec<_>>();
             let label = if pinned { "Pinned" } else { "Chats" };
-            if !rows.is_empty() { recents = recents.child(section(label, cx)); }
-            if self.workspace.settings.collapsed_sidebar_sections.contains(sidebar_section_key(label)) { continue; }
+            if rows.is_empty() { continue; }
+            let group = div().id(SharedString::from(format!("sidebar-group-{label}"))).test_support()
+                .group(label).w_full().flex().flex_col().child(section(label,cx));
+            if self.workspace.settings.collapsed_sidebar_sections.contains(sidebar_section_key(label)) {
+                recents = recents.child(group);
+                continue;
+            }
+            let mut items = div().w_full().flex().flex_col().gap(px(1.));
             let visible=sidebar_visible_indices(rows.len(),if pinned { usize::MAX } else { self.recent_limit },rows.iter().position(|(_,chat)|chat.id==self.active));
             for (i, chat) in visible.iter().map(|index|rows[*index]) {
-                recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
+                items = items.child(self.nav(chat.title.clone(), 100 + *i,
                     Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx));
             }
             if !pinned && rows.len() > visible.len() {
-                recents = recents.child(self.nav("Show more", 901, Action::ShowMoreChats, false, cx));
+                items = items.child(self.nav("Show more", 901, Action::ShowMoreChats, false, cx));
             }
+            recents = recents.child(group.child(items));
         }
-        if !self.workspace.projects.is_empty() { recents = recents.child(section("Projects", cx)); }
+        let mut project_items = div().w_full().flex().flex_col().gap(px(1.));
         for (index, project) in self.workspace.projects.iter().enumerate().filter(|_| !self.workspace.settings.collapsed_sidebar_sections.contains("threads")) {
             let collapsed = self.collapsed_sidebar_projects.contains(&project.id);
             let id = project.id.clone();
-            recents = recents.child(Button::new(("sidebar-project", index)).ghost()
+            project_items = project_items.child(Button::new(("sidebar-project", index)).ghost()
                 .w_full().h(px(30.)).p_0().relative().rounded(px(0.))
                 .accessibility_label(format!("{} {}", if collapsed { "Expand" } else { "Collapse" }, project.name))
                 .child(div().w_full().px(px(8.)).flex().items_center().gap(px(8.))
@@ -466,12 +473,12 @@ impl WorkspaceApp {
                 let limit = self.sidebar_project_limits.get(&project.id).copied().unwrap_or(5);
                 let visible=sidebar_visible_indices(rows.len(),limit,rows.iter().position(|(_,chat)|chat.id==self.active));
                 for (i, chat) in visible.iter().map(|index|rows[*index]) {
-                    recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
+                    project_items = project_items.child(self.nav(chat.title.clone(), 100 + *i,
                         Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx));
                 }
                 if rows.len() > visible.len() {
                     let project_id = project.id.clone();
-                    recents = recents.child(Button::new(("sidebar-project-more", index)).ghost()
+                    project_items = project_items.child(Button::new(("sidebar-project-more", index)).ghost()
                         .w_full().h(px(30.)).p_0().relative().rounded(px(0.))
                         .justify_start().text_size(native_ui::typography::TextRole::Small.in_app(cx))
                         .text_color(cx.theme().colors.muted_foreground)
@@ -484,6 +491,11 @@ impl WorkspaceApp {
                         })));
                 }
             }
+        }
+        if !self.workspace.projects.is_empty() {
+            recents = recents.child(div().id("sidebar-group-Projects").test_support()
+                .group("Projects").w_full().flex().flex_col()
+                .child(section("Projects",cx)).child(project_items));
         }
         div()
             .id("sidebar").test_support()
@@ -519,7 +531,7 @@ impl WorkspaceApp {
             .child(header)
             .child(self.sidebar_row("new-chat", "New chat", 0, Action::New, false, cx))
             .child(div().id("recents").test_support().track_scroll(&self.recents_scroll)
-                .flex_1().min_h_0().mt(px(16.)).overflow_y_scroll().child(recents))
+                .flex_1().min_h_0().mt(px(4.)).overflow_y_scroll().child(recents))
     }
     fn shell_menu(&self, dialog: Dialog, window: &Window, cx: &mut Context<Self>) -> AnyElement {
         let mut panel = div()
