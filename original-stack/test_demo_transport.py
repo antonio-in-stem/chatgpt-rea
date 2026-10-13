@@ -2,7 +2,7 @@ import json
 import unittest
 from websockets.asyncio.client import connect
 from websockets.asyncio.server import serve
-from demo_transport import handle_message
+from demo_transport import handle_message, FIXTURES
 
 class TransportTests(unittest.IsolatedAsyncioTestCase):
     async def test_roundtrip_preserves_id_without_retaining_values(self):
@@ -21,7 +21,7 @@ class TransportTests(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn('must-not-be-retained',json.dumps(seen))
         self.assertEqual(seen[0]['paramKeys'],['token'])
     async def test_fixture_methods_do_not_produce_credentials(self):
-        for method in ["initialize", "account/read", "configRequirements/read", "getAuthStatus"]:
+        for method in ["initialize", *FIXTURES]:
             reply,_=handle_message(json.dumps({"id": "fixture", "method": method}))
             self.assertEqual(reply["id"], "fixture")
             self.assertIn("result",reply)

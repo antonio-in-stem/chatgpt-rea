@@ -5,6 +5,7 @@ const ajv=new Ajv({allErrors:true,strict:false});
 for(const [format,max] of [['uint',Number.MAX_SAFE_INTEGER],['uint16',65535],['uint64',Number.MAX_SAFE_INTEGER]]){
  ajv.addFormat(format,{type:'number',validate:value=>Number.isSafeInteger(value)&&value>=0&&value<=max});
 }
+ajv.addFormat('int64',{type:'number',validate:Number.isSafeInteger});
 const fixtureFile=JSON.parse(fs.readFileSync(path.join(__dirname,'demo-fixtures.json'),'utf8'));
 const initialize={schema:'v1/InitializeResponse.json'};
 const cases={initialize,...fixtureFile};

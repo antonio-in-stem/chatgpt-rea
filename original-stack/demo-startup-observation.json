@@ -1,0 +1,34 @@
+{
+  "stateName": "demo-probe-20261013-a",
+  "transport": "loopback WebSocket via CODEX_APP_SERVER_WS_URL",
+  "observedMethods": {
+    "account/gatewayOAuth/read": 3,
+    "account/read": 31,
+    "collaborationMode/list": 4,
+    "config/batchWrite": 1,
+    "config/read": 13,
+    "configRequirements/read": 4,
+    "experimentalFeature/enablement/set": 1,
+    "experimentalFeature/list": 6,
+    "fs/readFile": 1,
+    "getAuthStatus": 13,
+    "initialize": 1,
+    "marketplace/add": 4,
+    "mcpServerStatus/list": 12,
+    "plugin/installed": 3,
+    "plugin/list": 8,
+    "project/list": 1,
+    "remoteControl/status/read": 1,
+    "thread/list": 12,
+    "windowsSandbox/readiness": 1
+  },
+  "authFilePresentAfterProbe": false,
+  "rendererObservation": "Original connection gateway screen with Demo contract not implemented; no sidebar/composer yet",
+  "runtimeStoppedAfterProbe": true,
+  "limitations": [
+    "No network isolation claim: unchanged runtime may contact startup services.",
+    "No account action or login performed.",
+    "Read fixtures added after this capture have schema validation, not yet runtime verification.",
+    "Unknown requests including mutations and fs/readFile remain unimplemented."
+  ]
+}

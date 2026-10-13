@@ -22,5 +22,71 @@
       "authToken": null,
       "requiresOpenaiAuth": false
     }
+  },
+  "project/list": {
+    "schema": "v2/ProjectListResponse.json",
+    "result": {
+      "data": [],
+      "nextCursor": null
+    }
+  },
+  "plugin/list": {
+    "schema": "v2/PluginListResponse.json",
+    "result": {
+      "marketplaces": [],
+      "marketplaceLoadErrors": [],
+      "featuredPluginIds": []
+    }
+  },
+  "experimentalFeature/list": {
+    "schema": "v2/ExperimentalFeatureListResponse.json",
+    "result": {
+      "data": [],
+      "nextCursor": null
+    }
+  },
+  "remoteControl/status/read": {
+    "schema": "v2/RemoteControlStatusReadResponse.json",
+    "result": {
+      "status": "disabled",
+      "serverName": "REA Demo",
+      "installationId": "rea-demo-local",
+      "environmentId": null
+    }
+  },
+  "config/read": {
+    "schema": "v2/ConfigReadResponse.json",
+    "result": {
+      "config": {
+        "analytics": null,
+        "approval_policy": null,
+        "approvals_reviewer": null,
+        "apps": null,
+        "browser_use": null,
+        "compact_prompt": null,
+        "computer_use": null,
+        "desktop": null,
+        "developer_instructions": null,
+        "forced_chatgpt_workspace_id": null,
+        "forced_login_method": null,
+        "instructions": null,
+        "model": null,
+        "model_auto_compact_token_limit": null,
+        "model_auto_compact_token_limit_scope": null,
+        "model_context_window": null,
+        "model_provider": null,
+        "model_reasoning_effort": null,
+        "model_reasoning_summary": null,
+        "model_verbosity": null,
+        "review_model": null,
+        "sandbox_mode": null,
+        "sandbox_workspace_write": null,
+        "service_tier": null,
+        "tools": null,
+        "web_search": null
+      },
+      "origins": {},
+      "layers": []
+    }
   }
 }
