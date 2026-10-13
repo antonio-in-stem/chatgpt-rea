@@ -81,3 +81,14 @@ test('source filters use artifact type and keep incoming-share collection isolat
  const catalog=path.join(root,'demo-pages.json'),state=JSON.parse(fs.readFileSync(catalog));state.libraryFiles[0].library_artifact_type='writing_block';fs.writeFileSync(catalog,JSON.stringify(state));
  assert.equal(pages('POST','/files/library',{source:'uploaded'}).items.length,0);assert.equal(pages('POST','/files/library',{source:'generated'}).items[0].id,id);
 }));
+
+
+test('spreadsheet filters preserve original MIME precedence and CSV/TSV key distinction',()=>fixture(async({root,pages})=>{
+ const samples=[['table.csv','text/csv',true],['TABLE.XLSX','application/octet-stream',true],['table.bin','application/vnd.ms-excel',true],['table.tsv','text/tab-separated-values',false],['table.csv','application/pdf',false],['table.csv','application/vnd.google-apps.document',false],['table.pdf','application/vnd.google-apps.spreadsheet',true],['notes.txt','text/plain',false]];
+ const files=samples.map(([name,mime],i)=>({id:'libfile-rea-'+(i+1),name,mime_type:mime,parent_directory_id:null,library_file_category:'document',record_creation_time:'2026-01-01T00:00:00Z'}));
+ fs.writeFileSync(path.join(root,'demo-pages.json'),JSON.stringify({version:1,sequence:0,items:[],libraryFiles:files}));
+ const expected=files.filter((f,i)=>samples[i][2]).map(f=>f.id).sort();
+ assert.deepEqual(pages('GET','/files/library/nodes?categories=spreadsheets').items.map(f=>f.id).sort(),expected);
+ assert.deepEqual(pages('POST','/files/library',{categories:['spreadsheets']}).items.map(f=>f.id).sort(),expected);
+ assert.ok(!pages('GET','/files/library/nodes?categories=documents').items.some(f=>f.name==='table.csv'&&f.mime_type==='text/csv'));
+}));

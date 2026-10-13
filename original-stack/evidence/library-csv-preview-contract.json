@@ -14,11 +14,21 @@
     "Three columns and three rows preserve Unicode, quoted commas and escaped double quotes",
     "Selecting C2 changed the address display to C2 and the value bar showed café, demo",
     "Original zoom menu offered 25%, 50%, 100%, 200%; selecting 200% visibly doubled the grid scale while preserving C2",
-    "Original Download produced the exact uploaded 72-byte file"
+    "Original Download produced the exact uploaded 72-byte file",
+    "After full process restart, Spreadsheets filter returned only the persisted CSV, excluding PNG, PDF and Pages",
+    "Opening the filtered CSV rendered the same three columns and rows; viewer restarted at A1 and 100%"
   ],
   "limits": [
     "Request edits was disabled; this verification does not establish spreadsheet editing",
-    "Other spreadsheet formats, category filtering and restart persistence have not been verified in this pass",
+    "Other spreadsheet formats and editing remain unverified",
     "Cell automation is deliberately restricted to this fixture, 1280x820 viewport, 100% zoom and observed canvas points"
-  ]
+  ],
+  "filter_sources": [
+    "app-initial-b8e1c8014bb4.js:158344-158372",
+    "app-shared-737655e1fb23.js:259724-259775,259894-259904,259976,260055-260077"
+  ],
+  "filter_contract": "Original IL accepts keys sheet/csv. Classifier applies Google MIME overrides before PDF and CSV/TSV/Excel branches. TSV retains key tsv, which IL does not accept; this surprising distinction is preserved rather than silently normalized.",
+  "filter_observation_before": "Original Spreadsheets filter displayed No items found despite the uploaded CSV; demo adapter lacked spreadsheet matching.",
+  "filter_implementation": "Added filename/MIME spreadsheet projection to nodes and classic listing; excludes these sheets from generic Documents matching. Existing stored uploads need no migration. Other category classifiers are not claimed complete.",
+  "validation": "53 Node tests pass, including MIME precedence, uppercase extensions and the original CSV/TSV filter distinction; original runtime filtering and reopen after restart verified."
 }
