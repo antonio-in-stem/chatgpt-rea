@@ -1,0 +1,47 @@
+{
+  "method": "Static inspection of formatted recovered production bundles; aliases resolved through their exports/imports",
+  "aliases": {
+    "initial.Kh": "shared.pZ via uSt",
+    "initial.yje": "shared.lZ via dSt",
+    "initial.lBe": "shared.fZ via lSt",
+    "initial.Yu": "shared.dZ via cSt"
+  },
+  "observations": [
+    "lZ reads feature gate 68267662",
+    "dZ returns an allowed account id, otherwise null",
+    "fZ and pZ require dZ to be non-null",
+    "Custom section query enabled requires yje AND lBe AND pinnedThreads bridge",
+    "Move-to-section menu returns no entries when Kh is false"
+  ],
+  "runtimeLimitations": [
+    "Feature-gate evaluated value was not measured directly",
+    "No fake authentication or renderer patch was introduced",
+    "Creating a section by app-server RPC does not establish an allowed renderer account"
+  ],
+  "sources": [
+    {
+      "file": "app-shared-737655e1fb23.js",
+      "readableSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "firstLine": 183047,
+      "lastLine": 183078,
+      "purpose": "Account availability and feature gate atoms",
+      "excerpt": "  }))();\n}\nvar lZ;\nfunction uZ() {\n  return (uZ = t(() => {\n    (gA(), bF(), tW(), (lZ = J(X, ({ get: e }) => e($U, `68267662`))));\n  }))();\n}\nvar dZ, fZ, pZ;\nfunction mZ() {\n  return (mZ = t(() => {\n    (gA(),\n      PG(),\n      bq(),\n      bF(),\n      uZ(),\n      (dZ = J(X, ({ get: e }) => {\n        let t = e(DG);\n        if (t.status === `allowed` && `accountId` in t) return t.accountId;\n        let n = e(_q);\n        return n.status === `allowed` &&\n          `accountId` in n &&\n          n.accountId != null &&\n          n.accountId === e(TG).authenticatedAccountId\n          ? n.accountId\n          : null;\n      })),\n      (fZ = J(X, ({ get: e }) => e(dZ) != null)),\n      (pZ = J(X, ({ get: e }) => e(fZ))));\n  }))();\n}\nfunction hUn(e) {"
+    },
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "readableSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "firstLine": 360599,
+      "lastLine": 360610,
+      "purpose": "Move-to-section menu availability",
+      "excerpt": "    }),\n    onSelect: () => DVo(e),\n  };\n}\nfunction h0(e, t, { isPinned: n, onUnpin: r, sections: i }) {\n  if (!e.get(Kh)) return [];\n  let a = i ?? e.get(jve),\n    o = Array.isArray(t) ? t : [t],\n    s = a.find((e) => o.every((t) => e.itemKeys.includes(t)));\n  return [\n    {\n      id: `move-to-custom-section`,"
+    },
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "readableSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "firstLine": 447087,
+      "lastLine": 447132,
+      "purpose": "Custom section query eligibility",
+      "excerpt": "      WRs(),\n      YRs(),\n      (tzs = W()),\n      (nzs = Tu(q, ({ get: e }) =>\n        !e(yje) || !e(lBe)\n          ? []\n          : e(Ie).filter((t) => !Rl(t) && e(Vs, t) === `connected` && ePe(e(Uo, t))),\n      )),\n      (rzs = kl(q, (e, { get: t, scope: n }) => {\n        let r = t(Yu);\n        return {\n          enabled: t(yje) && t(lBe) && Pd?.pinnedThreads != null,\n          queryFn: async ({ signal: t }) => {\n            let i = Pd?.pinnedThreads;\n            if (i == null) throw Error(`App server custom sections are unavailable`);\n            let a = await uh(i.listSections({ hostId: e }), t);\n            if (r == null || n.get(Yu) !== r) return { ...a, deletedSectionIds: [] };\n            let o = n.get(yxe)[r]?.appServerDeletedSectionIds,\n              s = await Promise.all(\n                a.sections\n                  .filter(({ id: t }) => o?.includes(t) && !n.get(ETe).has(`${r}\\0${e}\\0${t}`))\n                  .map(async ({ id: t }) => {\n                    let a = `${r}\\0${e}\\0${t}`;\n                    n.set(ETe, (e) => new Set([...e, a]));\n                    try {\n                      return (await uh(i.deleteSection({ hostId: e, sectionId: t })), t);\n                    } finally {\n                      n.set(ETe, (e) => {\n                        let t = new Set(e);\n                        return (t.delete(a), t);\n                      });\n                    }\n                  }),\n              );\n            return {\n              hostIds: a.hostIds,\n              sections: a.sections.filter(({ id: e }) => !s.includes(e)),\n              deletedSectionIds: s,\n            };\n          },\n          queryKey: [`app-server-custom-sections`, e, r],\n          staleTime: Qg.FIVE_SECONDS,\n          structuralSharing: !1,\n        };\n      })),\n      (izs = kl("
+    }
+  ]
+}
