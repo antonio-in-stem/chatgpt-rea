@@ -221,6 +221,18 @@ impl WorkspaceApp {
         };
         let mut row = div().id(("sidebar-row-content", key)).group(format!("sidebar-row-{key}")).relative().test_support().w_full().h_full().pl(px(left_padding)).pr(px(8.)).flex().items_center().gap(px(8.)).min_w_0();
         if let Action::Chat(id) = &action {
+            if let Some(focus) = self.sidebar_chat_focus.get(id) {
+                let own_focus=focus.clone();
+                let target=id.clone();
+                row=row.track_focus(focus).tab_stop(true).role(Role::Button)
+                    .aria_label(label.clone())
+                    .on_key_down(cx.listener(move |s,event: &KeyDownEvent,w,cx| {
+                        if own_focus.is_focused(w) && matches!(event.keystroke.key.as_str(),"enter"|"space") {
+                            cx.stop_propagation();
+                            s.act(Action::Chat(target.clone()),w,cx);
+                        }
+                    }));
+            }
             let id=id.clone();
             row = row.on_mouse_down(MouseButton::Right, cx.listener(move |s,event: &MouseDownEvent,w,cx| {
                 s.chat_action_target=Some(id.clone());
@@ -237,7 +249,8 @@ impl WorkspaceApp {
             if self.workspace.settings.codex_surface {
                 let id = id.clone();
                 row = row.child(div().absolute().right(px(8.)).top(px(5.))
-                    .invisible().group_hover(format!("sidebar-row-{key}"), |style| style.visible())
+                    .when(self.sidebar_focused_chat.as_ref()!=Some(&id), |d| d.invisible())
+                    .group_hover(format!("sidebar-row-{key}"), |style| style.visible())
                     .child(Button::new(("sidebar-archive",key)).ghost().size(px(20.)).p_0()
                         .accessibility_label("Archive task").tooltip("Archive task")
                         .child(native_ui::icon("sidebar-archive",16.))
@@ -250,6 +263,7 @@ impl WorkspaceApp {
             }
         }
         Button::new(("nav", key))
+            .tab_stop(!matches!(action,Action::Chat(_)))
             .ghost()
             .accessibility_label(label)
             .w_full()
@@ -848,6 +862,18 @@ impl WorkspaceApp {
 }
 impl Render for WorkspaceApp {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        self.sidebar_focused_chat=self.sidebar_chat_focus.iter()
+            .find(|(_,focus)| focus.contains_focused(window,cx)).map(|(id,_)| id.clone());
+        self.sidebar_chat_focus.retain(|id,_| self.workspace.conversations.iter().any(|chat| &chat.id==id));
+        for chat in &self.workspace.conversations {
+            if !self.sidebar_chat_focus.contains_key(&chat.id) {
+                let focus=cx.focus_handle();
+                cx.on_focus_in(&focus,window,|_,_,cx| cx.notify()).detach();
+                cx.on_focus_out(&focus,window,|_,_,_,cx| cx.notify()).detach();
+                self.sidebar_chat_focus.insert(chat.id.clone(),focus);
+            }
+        }
+
         let title: SharedString = match self.route {
             Route::Chat => self
                 .workspace

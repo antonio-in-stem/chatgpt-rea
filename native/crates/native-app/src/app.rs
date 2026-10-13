@@ -149,6 +149,8 @@ pub struct WorkspaceApp {
     shell_menu_index: usize,
     shell_trigger_focus: Vec<FocusHandle>,
     section_focus: Vec<FocusHandle>,
+    sidebar_chat_focus: std::collections::HashMap<String, FocusHandle>,
+    sidebar_focused_chat: Option<String>,
     chat_action_target: Option<String>,
     chat_menu_anchor: Option<Point<Pixels>>,
     project_submenu: Option<usize>,
@@ -284,6 +286,8 @@ impl WorkspaceApp {
         }
         let app = Self {
             section_focus,
+            sidebar_chat_focus: Default::default(),
+            sidebar_focused_chat: None,
             chat_action_target: None,
             chat_menu_anchor: None,
             project_submenu: None,

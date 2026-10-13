@@ -441,3 +441,38 @@ fn sidebar_archive_hover_action_preserves_active_chat(cx: &mut TestAppContext) {
         assert!(saved.conversation(&target).unwrap().archived);
     }).unwrap();
 }
+
+#[gpui_kit::test]
+fn sidebar_archive_keyboard_action_preserves_active_chat(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage,1280.);
+    cx.update_window(handle,|_,window,cx| {
+        let (active,target)=app.update(cx,|s,cx| {
+            s.workspace.settings.codex_surface=true;
+            s.workspace.conversations.clear();
+            let active=s.workspace.create_conversation();
+            s.workspace.append_message(&active,native_core::MessageRole::User,"Active chat").unwrap();
+            s.workspace.conversation_mut(&active).unwrap().pinned=true;
+            let target=s.workspace.create_conversation();
+            s.workspace.append_message(&target,native_core::MessageRole::User,"Other chat").unwrap();
+            s.switch_chat(active.clone(),window,cx);
+            cx.notify();
+            (active,target)
+        });
+        window.render_frame(cx);
+        let focus=app.read(cx).sidebar_chat_focus.get(&target).unwrap().clone();
+        window.focus(&focus,cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).sidebar_focused_chat.as_deref(),Some(target.as_str()));
+        window.press("tab",cx);
+        window.render_frame(cx);
+        assert!(!focus.is_focused(window));
+        window.press("enter",cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).active,active);
+        assert!(app.read(cx).workspace.conversation(&target).unwrap().archived);
+        assert!(!app.read(cx).workspace.conversation(&active).unwrap().archived);
+        let saved=native_core::Workspace::load(storage.0.join("workspace.json")).unwrap();
+        assert!(saved.conversation(&target).unwrap().archived);
+    }).unwrap();
+}
