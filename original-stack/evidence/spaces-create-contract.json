@@ -1,5 +1,5 @@
 {
-  "status": "v33 original creation/reload verified; scoped library and inherited child membership implemented/tested, rebuild pending",
+  "status": "v34 original scoped library, child creation, edit and reload verified",
   "create": {
     "method": "POST",
     "path": "/spaces/v2",
@@ -79,7 +79,11 @@
     "Cancelled without submitting",
     "Original Create a space dialog submitted with synthetic name Original Space demo; sidebar displays created space",
     "Reload then Space retains synthetic space in sidebar and All listing",
-    "Opening created space reports Could not load all pages; demo backend missing GET /spaces/{space_id}/pages"
+    "Opening created space reports Could not load all pages; demo backend missing GET /spaces/{space_id}/pages",
+    "v34 existing space opens library without load error; lists root and scoped child",
+    "New > Page original menu creates editable child; title Space child demo and body Created from the original space library. entered via original editor",
+    "Reload then reopen space lists child; reopen child retains title and body",
+    "Synthetic canonical child metadata retains space membership and parent=root page"
   ],
   "unknowns": [
     "Exhaustive response schema",
@@ -99,7 +103,7 @@
     "Empty root body; no invented starter content",
     "Workspace-default creation explicitly unsupported in personal demo",
     "Invitation/share and appearance fallback not implemented",
-    "Space archive pending; scoped listing/child creation requires package rebuild and UI verification",
+    "Space archive and restore pending",
     "Creation and persistence verified; root editor startup not verified, default view is scoped library"
   ],
   "tests": "28 Node tests pass; includes scoped membership inheritance, unrelated-space exclusion, parent filtering, pagination, canonical rename search, archive exclusions and invalid space/parent/limit"

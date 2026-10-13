@@ -1,0 +1,55 @@
+{
+  "status": "Static recovered contract; implementation pending",
+  "source": "app-initial-b8e1c8014bb4.js",
+  "archive": {
+    "method": "DELETE",
+    "path": "/spaces/{space_id}",
+    "body": null,
+    "response": "discarded after success",
+    "lines": "408331-408394"
+  },
+  "restore": {
+    "method": "POST",
+    "path": "/spaces/{space_id}/restore",
+    "body": null,
+    "response": "discarded after success",
+    "lines": "492222-492256",
+    "retry": "409 with retryable=true, up to three attempts, waits 500/1000ms"
+  },
+  "archived_list": {
+    "method": "GET",
+    "path": "/spaces/v2",
+    "query": {
+      "status": "archived",
+      "limit": 50,
+      "cursor": "optional"
+    },
+    "response": [
+      "items",
+      "next_cursor",
+      "archive_retention_days optional"
+    ],
+    "lines": "492183-492198"
+  },
+  "permissions": {
+    "lines": "405604-405620",
+    "requires": [
+      "drive backing",
+      "readable live root with matching drive_space_id",
+      "creator identity equals derived principal",
+      "space not in protected ils collection"
+    ],
+    "principal": "NFe ? userId.split(\"__\")[0] : userId.split(\"__\")[0] + \"__\" + accountId"
+  },
+  "ui_evidence": [
+    "space-archive-confirmation-dialog-1ac0e6e37f94.js:80-100 says space and its pages move to trash together;133-144 checks mode/account/duplicate submission",
+    "space-trash-items-1f82b82c43fd.js:643-675 Restore Space;570-588,781-799 permanent delete restricted to page kind",
+    "app-initial:164776-164781 root explicitly sorted first; frontend permits root in scoped list, does not prove server always includes it"
+  ],
+  "unknowns": [
+    "Meaning of protected ils collection",
+    "Restore policy for previously archived descendants",
+    "Full backend schema and archived-space error status",
+    "No permanent space delete contract observed in this bounded route"
+  ]
+}
