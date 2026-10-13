@@ -2,6 +2,24 @@ import base64,json,tempfile,unittest
 from pathlib import Path
 from demo_page_sync import PageSyncStore,y
 class PageSyncTests(unittest.TestCase):
+ def test_prepare_legacy_export_preserves_canonical_history_and_is_idempotent(self):
+  with tempfile.TemporaryDirectory(prefix='rea-export-migrate-') as directory:
+   folder=Path(directory);(folder/'demo-pages.json').write_text(json.dumps({'items':[{'metadata':{'page_id':'rea-page-1','deleted_at':'archived'}}]}))
+   doc=y.YDoc()
+   with doc.begin_transaction() as tx:
+    doc.get_array('topLevelBlockIds').append(tx,'a')
+    doc.get_map('blocksById').set(tx,'a',{'kind':'markdown','markdown':'Original'})
+   old={'sequence':3,'update':base64.b64encode(y.encode_state_as_update(doc)).decode(),'receipts':{'r':{'sequence':3}},'checkpoints':[{'envelope':'unchanged'}],'updated_at':'original-time'}
+   file=folder/'rea-page-1-document.json';file.write_text(json.dumps(old))
+   store=PageSyncStore(folder)
+   pending=file.with_suffix('.pending');pending.write_text('foreign')
+   with self.assertRaises(FileExistsError):store.prepare_exports()
+   self.assertEqual(json.loads(file.read_text()),old);self.assertEqual(pending.read_text(),'foreign');pending.unlink()
+   self.assertEqual(store.prepare_exports(),1)
+   saved=json.loads(file.read_text());projection=saved.pop('export_blocks')
+   self.assertEqual(saved,old);self.assertEqual(projection['sequence'],3)
+   self.assertEqual(projection['blocks'][0]['markdown'],'Original')
+   raw=file.read_bytes();self.assertEqual(store.prepare_exports(),0);self.assertEqual(file.read_bytes(),raw)
  def test_export_blocks_order_and_unsupported_shapes(self):
   doc=y.YDoc()
   self.assertEqual(PageSyncStore.export_blocks(doc,0),{'sequence':0,'blocks':[]})

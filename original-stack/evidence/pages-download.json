@@ -28,8 +28,7 @@
   ],
   "gap": "Concurrent-edit and archive error recovery UI unverified; runtime rich export paths match",
   "remaining": [
-    "Verify concurrent-edit/archived export failure UI recovery",
-    "Fresh legacy document migration workflow beyond current demo state"
+    "Verify concurrent-edit/archived export failure UI recovery"
   ],
   "fidelity": "No custom export UI or approximate Markdown serializer introduced",
   "serializer": {
@@ -60,5 +59,13 @@
     "content_contract": "id/kind/markdown/metadata blocks match original applyPageRead at app-initial:341860-341884",
     "tests": "37 Node tests pass; 73 Python tests previously passed for projection",
     "runtime": "v39 original sidebar HTTP download and native Save As verified"
+  },
+  "legacy_projection": {
+    "implementation": "PageSyncStore.prepare_exports invoked before adapter starts serving",
+    "behavior": "Backfills and repairs derived projections for existing nonpermanently-deleted document files, including archived pages; creates no missing documents",
+    "preservation": "Canonical update, sequence, receipts, checkpoints and timestamps remain unchanged; idempotent byte-preserving no-op after preparation",
+    "concurrency": "Exclusive pending file and final source-byte recheck; foreign pending file preserved; linked files refused",
+    "tests": "74 Python tests pass including legacy migration, history preservation, pending-file conflict and repeated no-op",
+    "runtime": "Current v39 data already backfilled manually; automatic path takes effect on next adapter launch"
   }
 }

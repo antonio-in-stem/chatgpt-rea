@@ -16,6 +16,32 @@ class PageSyncStore:
         self.directory=Path(directory)
         self.token=secrets.token_urlsafe(32)
         self.clients={}
+    def prepare_exports(self):
+        """Backfill derived projections before the launcher exposes the adapter."""
+        catalog=self.directory/'demo-pages.json'
+        if not catalog.exists():return 0
+        count=0
+        for item in json.loads(catalog.read_text(encoding='utf-8'))['items']:
+            page_id=item['metadata']['page_id']
+            if not re.fullmatch(r'rea-page-[1-9][0-9]*',page_id):raise ValueError('Invalid page ID')
+            if item.get('permanentlyDeleted'):continue
+            file=self.directory/(page_id+'-document.json')
+            if file.is_symlink():raise ValueError('Linked document is not a demo state file')
+            if not file.exists():continue
+            raw=file.read_bytes();state=json.loads(raw)
+            doc=y.YDoc();y.apply_update(doc,base64.b64decode(state['update'],validate=True))
+            projection=self.export_blocks(doc,state['sequence'])
+            if 'export_blocks' in state and state['export_blocks']==projection:continue
+            state['export_blocks']=projection
+            temporary=file.with_suffix('.pending');owned=False
+            try:
+                with temporary.open('x',encoding='utf-8') as stream:
+                    owned=True;json.dump(state,stream)
+                if file.read_bytes()!=raw:raise ValueError('Document changed during projection preparation')
+                temporary.replace(file);count+=1
+            finally:
+                if owned and temporary.exists():temporary.unlink()
+        return count
     def publish_endpoint(self,endpoint, **metadata):
         (self.directory/'demo-pages-runtime.json').write_text(json.dumps({**metadata,'endpoint':endpoint,'token':self.token}),encoding='utf-8')
     def load(self,page_id):

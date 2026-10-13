@@ -113,6 +113,7 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
     threads = demo_threads.ThreadStore(thread_state,streaming=True)
     recovered_turns=threads.recover_active_turns()
     pages=PageSyncStore(output.parent)
+    pages.prepare_exports()
     clients = set()
     tasks=set()
     async def publish(notification):
