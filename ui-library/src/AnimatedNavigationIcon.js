@@ -1,8 +1,9 @@
+import {createNavigationFallbackIcons} from './NavigationFallbackIcons.js';
 import {classNames} from './classNames.js';
 import {createMotionPreference} from './motionPreference.js';
 // par: controls activation only. Supply the original renderer and static glyph registry.
-export function createAnimatedNavigationIcon({React,AnimatedIcon,fallbackIcons,motionPreference,mergeClasses=classNames}){
- if(!AnimatedIcon || !fallbackIcons)throw new TypeError('AnimatedIcon renderer and fallbackIcons registry are required');
+export function createAnimatedNavigationIcon({React,AnimatedIcon,fallbackIcons=createNavigationFallbackIcons(React),motionPreference,mergeClasses=classNames}){
+ if(!AnimatedIcon)throw new TypeError('AnimatedIcon renderer is required');
  const h=React.createElement,useReducedMotion=createMotionPreference(React,motionPreference);
  return function AnimatedNavigationIcon({className,animation,Icon,staticIcon}){
   const FallbackIcon=(animation==null ? undefined : fallbackIcons[animation]) ?? Icon;

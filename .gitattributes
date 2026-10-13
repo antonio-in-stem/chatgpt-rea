@@ -4,3 +4,5 @@ native/crates/native-ui/assets/*.svg -text
 ui-library/styles/original/** -text
 
 ui-library/animations/** -text
+
+ui-library/src/NavigationFallbackIcons.js -text

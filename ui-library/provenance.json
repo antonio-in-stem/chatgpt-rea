@@ -205,7 +205,6 @@
     "method": "12 data modules evaluated in isolated contexts; original Lottie and React-adapter bodies preserved with injected React and copied bundler helper.",
     "verification": "Differential animation objects and source hashes; unchanged runtime body check. Browser playback not yet verified.",
     "pending": [
-      "Sar fallback glyphs",
       "inherited-color observer and remapping",
       "matched rendered comparison"
     ]
@@ -214,11 +213,20 @@
     "source": "app-initial-b8e1c8014bb4.js",
     "symbol": "par",
     "file": "src/AnimatedNavigationIcon.js",
-    "transformation": "Compiler memo slots removed; stable useCallback replaces app event callback wrapper; motion preference adapter replaces account preference store. Renderer and original fallback registry are required explicit dependencies.",
+    "transformation": "Compiler memo slots removed; stable useCallback replaces app event callback wrapper; motion preference adapter replaces account preference store. Renderer is an explicit dependency; original fallback glyph registry included.",
     "verification": "Differential DOM states and activation/cancellation against recovered par.",
     "limits": [
       "Browser animation playback not verified",
-      "Renderer/color observer and fallback glyph registry not integrated"
+      "Renderer/color observer not integrated"
+    ]
+  },
+  "navigationFallbackIcons": {
+    "manifest": "navigation-icons-manifest.json",
+    "file": "src/NavigationFallbackIcons.js",
+    "verification": "Seven original SVG functions executed against extracted factory across prop overrides; source/body hashes checked.",
+    "limits": [
+      "Not all rail icons",
+      "Matched visual comparison pending"
     ]
   }
 }

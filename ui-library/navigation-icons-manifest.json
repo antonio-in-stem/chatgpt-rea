@@ -1,0 +1,19 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "bodySha256": "1067a6c5f45708c7a329bc6f74187f5b14e12ecf4abdf2fa5c6957d98c485819",
+  "registry": {
+    "sidebar-library": "qir",
+    "sidebar-more": "Xir",
+    "sidebar-new-chat": "$ir",
+    "sidebar-plugins": "nar",
+    "sidebar-projects": "aar",
+    "sidebar-search": "car",
+    "sidebar-tasks": "dar"
+  },
+  "transformation": "Original initializer and SVG bodies retained. Bundler initialization and JSX runtime supplied locally; React injected. No application imports.",
+  "limits": [
+    "Seven animation fallback glyphs only, not all rail artwork",
+    "Matched visual comparison pending"
+  ]
+}

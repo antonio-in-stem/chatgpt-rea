@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Twenty-eight tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Twenty-nine tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -80,12 +80,14 @@ The controller exposes the persistence promise so consumers can handle rejection
 
 In a browser, `createSvgLottie(React)` from `@rea/ui/SvgLottie` produces the recovered `SvgLottie` wrapper. Pass `animationData`, `autoplay`, `loop`, `onComplete`, and `onDOMLoaded` through to the original `useLottie` hook. Clone the exported animation object before handing it to Lottie, since playback may mutate animation data. This is the low-level renderer, not yet the complete navigation animation component.
 
-The original navigation wrapper waits 300 ms after mouse entry, starts immediately on visible keyboard focus, resets on leave/blur/completion, and suppresses animation for reduced motion. The trigger wrapper is now extracted as `createAnimatedNavigationIcon`. The exact fallback glyph registry and automatic inherited-color handling are still pending integration. Asset and runtime differential checks pass; browser playback and matched original visual checks remain pending.
+The original navigation wrapper waits 300 ms after mouse entry, starts immediately on visible keyboard focus, resets on leave/blur/completion, and suppresses animation for reduced motion. The trigger wrapper is now extracted as `createAnimatedNavigationIcon`. The exact fallback glyph registry is now included; automatic inherited-color handling remains pending. Asset and runtime differential checks pass; browser playback and matched original visual checks remain pending.
 
 Reproduce this extraction with `node scripts/extract-animations.mjs ../original-stack/state/recovered-all/readable/assets`. It rejects changed existing outputs. Source-comparison tests need that local recovered source directory.
 
 ### Navigation animation activation
 
-`createAnimatedNavigationIcon({React, AnimatedIcon, fallbackIcons, motionPreference})` returns the `par` navigation wrapper. Supply the original-compatible animation renderer and fallback glyph registry explicitly, then pass the returned component as `AnimatedIcon` to `createReaUI`. The lower-level `SvgLottie` is not a drop-in renderer: the color observer, animation-name lookup and readiness/fallback handling belong to the still-pending renderer assembly.
+`createAnimatedNavigationIcon({React, AnimatedIcon, fallbackIcons, motionPreference})` returns the `par` navigation wrapper. Supply the original-compatible animation renderer, then pass the returned component as `AnimatedIcon` to `createReaUI`. The default fallback registry contains the seven recovered SVGs; `fallbackIcons` is an optional consumer override. The lower-level `SvgLottie` is not a drop-in renderer: the color observer, animation-name lookup and readiness/fallback handling belong to the still-pending renderer assembly.
 
 The wrapper accepts `{animation, Icon, staticIcon, className}`. It finds the enclosing button/menuitem, preserves the original idle/loading/ready visibility, and cancels timers and event listeners on cleanup. Tests execute both this extraction and the recovered `par` with identical states/events: mouse-only 300 ms delay, focus-visible gating, blur/leave, ready/completion, missing target and reduced motion. These are controlled structural/event comparisons; real browser timing and visual parity remain unverified.
+
+`createNavigationFallbackIcons(React)` also exposes those seven SVG components independently. Their 20×20 geometry, currentColor paint, and original prop precedence are preserved. `navigation-icons-manifest.json` records their symbols and source hash. This registry is the one used by animation fallback rendering; it is not a complete catalog of rail icons. Regenerate using `node scripts/extract-navigation-icons.mjs ../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js`.
