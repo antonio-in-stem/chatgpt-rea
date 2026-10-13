@@ -13,7 +13,7 @@ test('original V1 lookup recognizes all selected demo gates including explicit f
  assert.equal(data.has_updates,true);
  assert.equal(data.user.userID,'rea-demo-user');
  const lookup=new scope.e.V1InitializeContainer(data);
- for(const [name,value] of Object.entries({'3085093835':true,'2200939124':true,'637432221':true,'2120612410':true,'770071981':false})){
+ for(const [name,value] of Object.entries({'3085093835':true,'2200939124':true,'637432221':true,'2120612410':true,'1032827878':true,'770071981':false})){
    assert.equal(lookup.getGate(name).value,value);
    assert.equal(lookup.getGate(name).rule_id,'rea-demo');
  }

@@ -8,7 +8,10 @@
     "mentions": "inbox-2e21c8f183ef.js:204,239",
     "creationCapabilities": "app-shared-737655e1fb23.js:237707-237748 enum/schema/consumer",
     "createSpace": "app-initial-b8e1c8014bb4.js:167022",
-    "createPage": "app-initial-b8e1c8014bb4.js:167066"
+    "createPage": "app-initial-b8e1c8014bb4.js:167066",
+    "personalPageAvailability": "app-shared-737655e1fb23.js:237669 a3r gate1032827878; app-initial:345477 p1; slate-create-menu:1811-1860 Ar disabled=s||c!=null",
+    "createPageDraft": "app-initial-b8e1c8014bb4.js:345959-346198 optimistic metadata, POST/pages result, attachRemotePage",
+    "realtimeToken": "app-initial-b8e1c8014bb4.js:164542-164583 wDr schema and TDr connection"
   },
   "implemented": [
     "GET /spaces/v2 items/next_cursor",
@@ -21,13 +24,18 @@
   ],
   "fixtureState": "empty",
   "runtimeVerified": {
-    "runtimePid": 100912,
-    "adapterPid": 94576,
-    "launcherSession": 52962,
-    "packageSha256": "537a4b31180df525c90d53509ec7d36f3c4cfd8a69b91a92e7952e20c4580ca0",
+    "runtimePid": 100156,
+    "adapterPid": 72064,
+    "launcherSession": 15653,
+    "packageSha256": "3f9bcef0ae48045e03ddf1f3b432a08963d237f606aa6b7a6861de3a4e01249f",
     "observed": [
       "Space sidebar and main view no longer show loading errors",
-      "Original New menu exposes Page, Slides, Sheet, Site, Folder, Space, Upload files"
+      "Original New menu exposes Page, Slides, Sheet, Site, Folder, Space, Upload files",
+      "v16 Page menu was aria-disabled: personal drive gate absent; menu visibility was not creation coverage",
+      "v17 original personal-drive gate1032827878 enabled through demo Statsig response",
+      "New page opens original optimistic page editor and Recents Untitled page",
+      "Original Insert menu shows headings, lists, checklist, quote, code, math, table, divider, link to page, prompt and highlight",
+      "POST/pages remains unimplemented; original sync attention banner and Retry remain visible. No successful persistence or realtime sync claimed."
     ]
   },
   "tests": 1,
