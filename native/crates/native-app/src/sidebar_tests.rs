@@ -302,3 +302,39 @@ fn saved_section_collapse_is_applied_on_open(cx: &mut TestAppContext) {
         assert!(window.try_find(("sidebar-project",0usize)).is_some());
     }).unwrap();
 }
+
+#[gpui_kit::test]
+fn sidebar_context_menu_targets_unopened_chat(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage,1280.);
+    cx.update_window(handle,|_,window,cx| {
+        let (active,target)=app.update(cx,|s,cx| {
+            s.workspace.conversations.clear();
+            let active=s.workspace.create_conversation();
+            s.workspace.append_message(&active,native_core::MessageRole::User,"Active chat").unwrap();
+            s.workspace.conversation_mut(&active).unwrap().pinned=true;
+            let target=s.workspace.create_conversation();
+            s.workspace.append_message(&target,native_core::MessageRole::User,"Other chat").unwrap();
+            s.switch_chat(active.clone(),window,cx);
+            cx.notify();
+            (active,target)
+        });
+        window.render_frame(cx);
+        window.right_click(("sidebar-row-content",101usize),cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).active,active);
+        assert_eq!(app.read(cx).chat_action_target.as_deref(),Some(target.as_str()));
+        window.press("down",cx);
+        window.press("enter",cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).workspace.conversation(&target).unwrap().pinned);
+        assert_eq!(app.read(cx).active,active);
+        window.right_click(("sidebar-row-content",101usize),cx);
+        window.render_frame(cx);
+        app.update(cx,|s,cx| s.act(super::Action::ConfirmDelete,window,cx));
+        window.render_frame(cx);
+        assert!(app.read(cx).workspace.conversation(&target).is_err());
+        assert!(app.read(cx).workspace.conversation(&active).is_ok());
+        assert_eq!(app.read(cx).active,active);
+    }).unwrap();
+}

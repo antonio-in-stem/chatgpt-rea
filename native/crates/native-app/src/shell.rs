@@ -184,7 +184,16 @@ impl WorkspaceApp {
             Action::Chat(id) if self.workspace.conversations.iter().any(|c| &c.id == id && !c.pinned && c.project_id.is_some()) => 32.,
             _ => 8.,
         };
-        let mut row = div().w_full().pl(px(left_padding)).pr(px(8.)).flex().items_center().gap(px(8.)).min_w_0();
+        let mut row = div().id(("sidebar-row-content", key)).test_support().w_full().h_full().pl(px(left_padding)).pr(px(8.)).flex().items_center().gap(px(8.)).min_w_0();
+        if let Action::Chat(id) = &action {
+            let id=id.clone();
+            row = row.on_mouse_down(MouseButton::Right, cx.listener(move |s,event: &MouseDownEvent,w,cx| {
+                s.chat_action_target=Some(id.clone());
+                s.chat_menu_anchor=Some(event.position);
+                s.open_shell_menu(Dialog::ChatMenu,w,cx);
+                cx.stop_propagation();
+            }));
+        }
         if let Some(icon) = icon {
             row = row.child(native_ui::icon(icon, 20.).text_color(cx.theme().colors.foreground));
         }
@@ -603,7 +612,7 @@ impl WorkspaceApp {
         } else if dialog == Dialog::ChatMenu {
             let pinned = self
                 .workspace
-                .conversation(&self.active)
+                .conversation(&self.chat_target())
                 .is_ok_and(|c| c.pinned);
             vec![
                 ("edit", "Rename", 702, Action::Rename),
@@ -675,7 +684,10 @@ impl WorkspaceApp {
             .when(dialog == Dialog::ChatMenu, |d| {
                 // Align with More's right edge:138px caption controls +8px gap.
                 // Popup-specific gap/width remain pending source/runtime confirmation.
-                d.top(px(86.)).right(px(18.))
+                if let Some(anchor)=self.chat_menu_anchor {
+                    d.left(anchor.x.min(window.viewport_size().width-px(256.)).max(px(4.)))
+                        .top(anchor.y.min(window.viewport_size().height-px(200.)).max(px(4.)))
+                } else { d.top(px(86.)).right(px(18.)) }
             })
             .when(
                 matches!(dialog, Dialog::AccountMenu | Dialog::HelpMenu),
@@ -991,5 +1003,6 @@ impl Render for WorkspaceApp {
         root
     }
 }
+
 
 

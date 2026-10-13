@@ -146,6 +146,8 @@ pub struct WorkspaceApp {
     shell_menu_index: usize,
     shell_trigger_focus: Vec<FocusHandle>,
     section_focus: Vec<FocusHandle>,
+    chat_action_target: Option<String>,
+    chat_menu_anchor: Option<Point<Pixels>>,
     previous_focus: Option<FocusHandle>,
     composer: Entity<TextareaState>,
     search: Entity<InputState>,
@@ -201,6 +203,10 @@ pub struct WorkspaceApp {
     tools: Vec<Entity<ToolSurface>>,
 }
 impl WorkspaceApp {
+    fn chat_target(&self) -> String {
+        self.chat_action_target.clone().unwrap_or_else(|| self.active.clone())
+    }
+
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
         let base = std::env::var_os("LOCALAPPDATA")
             .map(PathBuf::from)
@@ -272,6 +278,8 @@ impl WorkspaceApp {
         }
         let app = Self {
             section_focus,
+            chat_action_target: None,
+            chat_menu_anchor: None,
             workspace,
             path,
             load_error,
@@ -711,6 +719,8 @@ impl WorkspaceApp {
             Action::Send => self.send(window, cx),
             Action::Stop => self.stop(),
             Action::ChatMenu => {
+                self.chat_action_target = None;
+                self.chat_menu_anchor = None;
                 self.open_shell_menu(Dialog::ChatMenu, window, cx);
             }
             Action::AccountMenu | Action::BrandMenu | Action::HelpMenu => {
@@ -739,6 +749,8 @@ impl WorkspaceApp {
                 self.search.update(cx, |input, cx| input.focus(window, cx));
             }
             Action::Close => {
+                self.chat_action_target = None;
+                self.chat_menu_anchor = None;
                 if self.dialog == Some(Dialog::ProjectEditor) {
                     self.project_editing = false;
                 }
@@ -767,16 +779,18 @@ impl WorkspaceApp {
                 }
             }
             Action::Pin => {
-                if let Ok(c) = self.workspace.conversation_mut(&self.active) {
+                if let Ok(c) = self.workspace.conversation_mut(&self.chat_target()) {
                     c.pinned = !c.pinned;
                 }
                 self.persist();
+                self.act(Action::Close, window, cx);
             }
             Action::Archive => {
-                if let Ok(c) = self.workspace.conversation_mut(&self.active) {
+                if let Ok(c) = self.workspace.conversation_mut(&self.chat_target()) {
                     c.archived = !c.archived;
                 }
                 self.persist();
+                self.act(Action::Close, window, cx);
             }
             Action::DeleteChat => {
                 self.previous_focus = window.focused(cx);
@@ -784,8 +798,11 @@ impl WorkspaceApp {
                 window.focus(&self.modal_focus, cx);
             }
             Action::ConfirmDelete => {
-                self.stop();
-                let _ = self.workspace.delete_conversation(&self.active);
+                let target = self.chat_target();
+                let deleting_active = target == self.active;
+                if deleting_active { self.stop(); }
+                let _ = self.workspace.delete_conversation(&target);
+                if deleting_active {
                 let id = self
                     .workspace
                     .conversations
@@ -793,13 +810,15 @@ impl WorkspaceApp {
                     .map(|c| c.id.clone())
                     .unwrap_or_else(|| self.workspace.create_conversation());
                 self.switch_chat(id, window, cx);
+                }
                 self.persist();
+                self.act(Action::Close, window, cx);
             }
             Action::Rename => {
                 self.previous_focus = window.focused(cx);
                 let title = self
                     .workspace
-                    .conversation(&self.active)
+                    .conversation(&self.chat_target())
                     .map(|c| c.title.clone())
                     .unwrap_or_default();
                 self.rename
@@ -809,7 +828,7 @@ impl WorkspaceApp {
             }
             Action::SaveRename => {
                 let title = self.rename.read(cx).value().to_string();
-                match self.workspace.rename_conversation(&self.active, &title) {
+                match self.workspace.rename_conversation(&self.chat_target(), &title) {
                     Ok(()) => {
                         self.act(Action::Close, window, cx);
                         self.persist();
@@ -1089,7 +1108,7 @@ impl WorkspaceApp {
             Action::ChooseProject(project) => {
                 match self
                     .workspace
-                    .assign_project(&self.active, project.as_deref())
+                    .assign_project(&self.chat_target(), project.as_deref())
                 {
                     Ok(()) => {
                         self.persist();
