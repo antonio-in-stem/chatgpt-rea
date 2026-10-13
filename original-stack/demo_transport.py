@@ -93,7 +93,9 @@ async def run(port, output, project_state, config_state, thread_state):
                 if reply is not None:
                     await socket.send(json.dumps(reply))
                 for notification in notifications:
-                    await asyncio.gather(*(client.send(json.dumps(notification)) for client in tuple(clients)), return_exceptions=True)
+                    deliveries=await asyncio.gather(*(client.send(json.dumps(notification)) for client in tuple(clients)), return_exceptions=True)
+                    with output.open("a",encoding="utf-8") as stream:
+                        stream.write(json.dumps({"kind":"notification-sent","method":notification["method"],"delivered":sum(not isinstance(result,BaseException) for result in deliveries),"failed":sum(isinstance(result,BaseException) for result in deliveries)})+"\n")
         except ConnectionClosed:
             pass
         finally:

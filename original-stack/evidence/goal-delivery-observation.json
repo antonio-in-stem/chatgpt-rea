@@ -1,0 +1,32 @@
+{
+  "notifications": [
+    {
+      "kind": "notification-sent",
+      "method": "thread/goal/cleared",
+      "delivered": 1,
+      "failed": 0
+    },
+    {
+      "kind": "notification-sent",
+      "method": "thread/goal/updated",
+      "delivered": 2,
+      "failed": 0
+    },
+    {
+      "kind": "notification-sent",
+      "method": "thread/goal/updated",
+      "delivered": 1,
+      "failed": 0
+    },
+    {
+      "kind": "notification-sent",
+      "method": "thread/goal/updated",
+      "delivered": 1,
+      "failed": 0
+    }
+  ],
+  "clearControlsAfter": 0,
+  "pausedTextElapsed": "1m 5s",
+  "rendererModified": false,
+  "previousStaleControlsRootCause": "unknown"
+}
