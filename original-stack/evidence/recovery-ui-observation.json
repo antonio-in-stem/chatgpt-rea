@@ -1,0 +1,10 @@
+{
+  "scenario": "persisted incomplete demo turn recovered at adapter startup",
+  "statuses": [
+    "failed",
+    "completed"
+  ],
+  "firstPartialText": "Partial demo response before restart.",
+  "secondUserMessage": "Continue after the simulated restart.\n",
+  "originalRendererModified": false
+}
