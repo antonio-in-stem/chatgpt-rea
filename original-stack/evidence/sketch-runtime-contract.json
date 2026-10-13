@@ -1,0 +1,25 @@
+{
+  "scope": "Original composer Sketch editor with synthetic pointer input; renderer unchanged",
+  "sources": [
+    "sketch-d706a5709dee.js:15520-15622",
+    "sketch-d706a5709dee.js:17462-17569",
+    "app-primary-19fe57fd8c00.js:66302-66330,66577-66600"
+  ],
+  "contract": "Sketch export is queued through original image attachment integration with sketchId, filename and replaceImageId; localPath starts unset. Original Codex filename is Codex Sketch.png.",
+  "runtime_observations": [
+    "Original Add files and more > Sketch opened original editor with Pen, Text, Shapes, Eraser, color palette and history controls",
+    "Empty editor disabled Undo, Redo and Attach sketch",
+    "Real pointer stroke rendered white zigzag; Undo and Attach sketch became enabled",
+    "Undo removed visible stroke, disabled Undo/Attach and enabled Redo",
+    "Redo restored stroke; Attach sketch exported a decoded373x151 PNG into original composer",
+    "Clicking draft Codex Sketch.png reopened original editor with drawing and Undo state",
+    "Original Use blue palette action followed by another pointer stroke and Attach sketch updated the attachment; only one Remove Codex Sketch.png control remained",
+    "Synthetic send followed by renderer reload and reopening restored a decoded373x151 history image"
+  ],
+  "limitations": [
+    "Text, shape, eraser, selection and thickness controls not yet exercised",
+    "Cancel/draft retention, history sketch re-editing and cross-process editable document persistence remain unverified",
+    "No cloud sketch generation or model inference"
+  ],
+  "automation": "draw-demo-sketch emits bounded pointer gestures only when original Close sketch editor and one unobscured data-sketch-canvas-surface are present; no drawing component replacement or canvas state injection"
+}

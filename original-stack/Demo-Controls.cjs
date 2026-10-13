@@ -67,6 +67,7 @@ const fs=require('node:fs'),path=require('node:path');
   else if(operation==='dialog-key'&&['Escape','Tab'].includes(label))expression=`(()=>{const dialog=document.activeElement?.closest('[role="dialog"]');if(!dialog||!dialog.querySelector('[aria-label="Cerrar vista previa de tabla"]'))throw Error('Focused original table preview required');return {focused:true}})()`;
   else if(operation==='search-key'&&['Enter','Escape','ArrowDown','ArrowUp'].includes(label))expression=`(()=>{if(!document.activeElement?.matches('input[role="combobox"]'))throw Error('Focused search combobox required');return {focused:true}})()`;
   else if(['insert-focused','replace-focused'].includes(operation)&&label)expression=`(()=>{const e=document.activeElement;if(!e||(!e.isContentEditable&&!(e instanceof HTMLTextAreaElement)&&!(e instanceof HTMLInputElement&&["text","search"].includes(e.type))))throw Error('Focused editable required');return {tag:e.tagName,editable:true}})()`;
+  else if(operation==='draw-demo-sketch')expression=`(()=>{if(!document.querySelector('button[aria-label="Close sketch editor"]'))throw Error('Original sketch editor required');const surfaces=[...document.querySelectorAll('[data-sketch-canvas-surface]')].filter(e=>e.getBoundingClientRect().width>0);if(surfaces.length!==1)throw Error('One visible original sketch surface required');const e=surfaces[0],r=e.getBoundingClientRect();const points=[[.25,.35],[.35,.25],[.45,.35],[.55,.25],[.65,.35]].map(([x,y])=>({x:r.x+x*r.width,y:r.y+y*r.height}));if(points.some(p=>!e.contains(document.elementFromPoint(p.x,p.y))))throw Error('Sketch surface obscured');return {points}})()`;
   else if(operation==='click-demo-sheet-cell'&&/^[A-C][1-3]$/.test(label))expression=`(()=>{if(innerWidth!==1280||innerHeight!==820||![...document.querySelectorAll('button')].some(e=>e.innerText.trim()==='100%')||!document.body.innerText.includes('Rea Library Table')||!document.body.innerText.includes('CSV import')||document.querySelector('[role="dialog"]'))throw Error('Original synthetic CSV viewer required');const x=414+(${JSON.stringify(label)}.charCodeAt(0)-65)*68,y=162+(Number(${JSON.stringify(label)}[1])-1)*20;const target=document.elementFromPoint(x,y);if(!target||target.tagName!=='CANVAS')throw Error('Observed CSV canvas point no longer matches');return {x,y}})()`;
   else if(operation==='describe'&&label)expression=`[...document.querySelectorAll('[aria-label]')].filter(e=>e.getAttribute('aria-label')===${JSON.stringify(label)}).map(e=>({html:e.outerHTML,ancestor:e.parentElement?.outerHTML.slice(0,5000),rect:e.getBoundingClientRect().toJSON()}))`;
   else if(operation==='locate'&&label)expression=`[...document.querySelectorAll('*')].filter(e=>e.children.length===0&&e.textContent.trim()===${JSON.stringify(label)}).map(e=>e.parentElement.parentElement.parentElement.outerHTML.slice(0,2400))`;
@@ -94,6 +95,13 @@ const fs=require('node:fs'),path=require('node:path');
    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:2});
    await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:2});
    console.log(JSON.stringify({operation,shortcut:'Ctrl+Enter'}));
+  }else if(operation==='draw-demo-sketch'){
+   const points=result.result.value.points;
+   await send('Input.dispatchMouseEvent',{type:'mouseMoved',...points[0]});
+   await send('Input.dispatchMouseEvent',{type:'mousePressed',...points[0],button:'left',buttons:1,clickCount:1});
+   try{for(let segment=1;segment<points.length;segment++)for(let step=1;step<=10;step++){const a=points[segment-1],b=points[segment];await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:a.x+(b.x-a.x)*step/10,y:a.y+(b.y-a.y)*step/10,button:'left',buttons:1});await new Promise(r=>setTimeout(r,12));}}
+   finally{await send('Input.dispatchMouseEvent',{type:'mouseReleased',...points.at(-1),button:'left',buttons:0,clickCount:1});}
+   console.log(JSON.stringify({originalSketchGesture:true}));
   }else if(operation==='drag-page-row'){
    const {from,to}=result.result.value;
    await send('Input.dispatchMouseEvent',{type:'mouseMoved',...from});
