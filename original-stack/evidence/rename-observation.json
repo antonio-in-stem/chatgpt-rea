@@ -1,0 +1,21 @@
+{
+  "profile": "demo-first-run-audit",
+  "threadId": "019cc001-0000-7000-8000-000000000001",
+  "before": "Frontend Conversation Demo",
+  "after": "Original UI rename demo",
+  "actions": [
+    "Acciones del chat",
+    "Renombrar",
+    "fill Título del chat",
+    "Guardar"
+  ],
+  "verified": [
+    "persisted thread.name",
+    "original sidebar label after runtime restart"
+  ],
+  "rendererModified": false,
+  "limitations": [
+    "cancel and invalid titles untested",
+    "multiple windows untested"
+  ]
+}

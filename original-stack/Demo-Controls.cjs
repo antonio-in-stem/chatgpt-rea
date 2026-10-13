@@ -39,7 +39,8 @@ const fs=require('node:fs'),path=require('node:path');
    const {x,y}=result.result.value;
    await send('Input.dispatchMouseEvent',{type:'mouseMoved',x,y});
    if(operation==='click'){
-   const hit=await send('Runtime.evaluate',{returnByValue:true,expression:`(()=>{const e=document.elementFromPoint(${x},${y})?.closest('button,a,[role="button"],[role="link"],[role^="menuitem"]');return !!e&&(e.innerText.trim()===${JSON.stringify(label)}||e.getAttribute('aria-label')===${JSON.stringify(label)})()`});
+   const hit=await send('Runtime.evaluate',{returnByValue:true,expression:`(()=>{const e=document.elementFromPoint(${x},${y})?.closest('button,a,[role="button"],[role="link"],[role^="menuitem"]');return !!e&&(e.innerText.trim()===${JSON.stringify(label)}||e.getAttribute('aria-label')===${JSON.stringify(label)});})()`});
+   if(hit.exceptionDetails)throw Error('Hit-test evaluation failed: '+(hit.exceptionDetails.exception?.description||hit.exceptionDetails.text));
    if(hit.result.value!==true)throw Error('Control is obscured or moved; reveal it with hover and retry');
    await send('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',clickCount:1});
    await send('Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',clickCount:1});
