@@ -152,3 +152,21 @@ test('page pins persist with original metadata and preserve document state',()=>
   assert.equal(call('GET','/pages/rea-page-1').metadata.title,'Pinned demo');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+test('canonical document symbol projects consistently into page, catalog, nodes and pins',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-page-symbol-'));
+ const settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'symbol',title:'Symbol demo',initial_blocks:[]});
+  const file=path.join(dir,'rea-page-1-document.json');
+  const symbol={kind:'icon',value:'rocket',color:'blue'};
+  fs.writeFileSync(file,JSON.stringify({sequence:5,title:'Symbol demo',symbol}));
+  const page=call('GET','/pages/rea-page-1');assert.deepEqual(page.metadata.symbol,symbol);assert.equal(page.metadata.projection_through_sequence,5);
+  assert.deepEqual(call('GET','/pages/catalog').items[0].symbol,symbol);
+  assert.deepEqual(call('GET','/files/library/nodes?include_pages=true').items[0].page_metadata.symbol,symbol);
+  assert.deepEqual(call('POST','/files/library',{include_pages:true}).items[0].page_metadata.symbol,symbol);
+  call('POST','/pins/pages/rea-page-1');assert.deepEqual(call('GET','/pins/pages')[0].metadata.symbol,symbol);
+  fs.writeFileSync(file,JSON.stringify({sequence:6,title:'Symbol demo',symbol:{kind:'none'}}));
+  assert.deepEqual(call('GET','/pages/rea-page-1').metadata.symbol,{kind:'none'});
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

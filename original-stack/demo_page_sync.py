@@ -44,6 +44,7 @@ class PageSyncStore:
         state['sequence']+=1
         state['update']=base64.b64encode(y.encode_state_as_update(doc)).decode()
         state['title']=json.loads(doc.get_text('title').to_json())
+        state['symbol']=json.loads(doc.get_map('pagesMetadata').to_json()).get('symbol')
         state['receipts'][key]={'digest':digest,'sequence':state['sequence']}
         temporary=file.with_suffix('.pending');owned=False
         try:

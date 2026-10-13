@@ -55,7 +55,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(operationId){item.archiveOperations??={};Object.defineProperty(item.archiveOperations,operationId,{value:result,enumerable:true,writable:true,configurable:true});}
   persist();return result;
  }
- const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;const parent=state.items.find(x=>x.metadata.page_id===item.metadata.parent?.page_id);const meta={...item.metadata,has_children:state.items.some(x=>live(x)&&x.metadata.parent?.page_id===item.metadata.page_id)};if(parent){const parentFile=path.join(path.dirname(settingsPath),parent.metadata.page_id+'-document.json');meta.parent={page_id:parent.metadata.page_id,title:fs.existsSync(parentFile)?JSON.parse(fs.readFileSync(parentFile,'utf8')).title??parent.metadata.title:parent.metadata.title};}return {metadata:doc?{...meta,title:doc.title??meta.title,current_sequence:doc.sequence}:meta,content:doc?null:item.content,document_bootstrap:null};};
+ const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;const parent=state.items.find(x=>x.metadata.page_id===item.metadata.parent?.page_id);const meta={...item.metadata,has_children:state.items.some(x=>live(x)&&x.metadata.parent?.page_id===item.metadata.page_id)};if(parent){const parentFile=path.join(path.dirname(settingsPath),parent.metadata.page_id+'-document.json');meta.parent={page_id:parent.metadata.page_id,title:fs.existsSync(parentFile)?JSON.parse(fs.readFileSync(parentFile,'utf8')).title??parent.metadata.title:parent.metadata.title};}return {metadata:doc?{...meta,title:doc.title??meta.title,current_sequence:doc.sequence,projection_through_sequence:doc.sequence,symbol:doc.symbol??null}:meta,content:doc?null:item.content,document_bootstrap:null};};
  if(pins){
   if(method==='GET')return state.items.filter(x=>live(x)&&x.pinnedAt).sort((a,b)=>a.pinnedAt.localeCompare(b.pinnedAt)).map(x=>({item:{id:x.metadata.page_id},metadata:read(x).metadata}));
   const item=state.items.find(x=>x.metadata.page_id===pinId&&!x.permanentlyDeleted);if(!item)throw Error('Unknown demo page');
@@ -81,7 +81,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(query.get('include_pages')!=='true'||parent||(categories.length&&!categories.includes('pages')))return {items:[],cursor:null};
   const needle=(query.get('q')||'').toLowerCase();
   const items=state.items.filter(live).map(x=>read(x).metadata).filter(x=>x.title.toLowerCase().includes(needle));
-  return pageSlice(items.map(x=>({kind:'file',id:x.page_id,file_id:x.page_id,name:x.title,parent_directory_id:null,library_artifact_type:'page',access_kind:'owned',updated_at:x.updated_at,record_creation_time:x.created_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:null}})),query.get('cursor'),Number(query.get('limit')||50));
+  return pageSlice(items.map(x=>({kind:'file',id:x.page_id,file_id:x.page_id,name:x.title,parent_directory_id:null,library_artifact_type:'page',access_kind:'owned',updated_at:x.updated_at,record_creation_time:x.created_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}})),query.get('cursor'),Number(query.get('limit')||50));
  }
  if(tree){
   const item=state.items.find(x=>x.metadata.page_id===treeRoute[1]&&live(x));if(!item)throw Error('Unavailable demo page');
@@ -102,7 +102,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(input.limit!=null&&(!Number.isInteger(input.limit)||input.limit<1||input.limit>100))throw Error('Invalid library limit');
   if(input.include_pages!==true||(input.categories?.length&&!input.categories.includes('pages')))return {items:[],cursor:null};
   const items=state.items.filter(x=>!x.permanentlyDeleted&&Boolean(x.metadata.deleted_at)===Boolean(input.trashed_only)).map(x=>read(x).metadata).filter(x=>!input.q||x.title.toLowerCase().includes(String(input.q).toLowerCase())).filter(x=>!input.allowlist_ids||input.allowlist_ids.includes(x.page_id));
-  return pageSlice(items.map(x=>({id:x.page_id,file_id:x.page_id,file_name:x.title,directory_id:null,library_artifact_type:'page',updated_at:x.updated_at,record_creation_time:x.created_at,last_used_at:state.items.find(v=>v.metadata.page_id===x.page_id).lastUsedAt??x.updated_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:null}})),input.cursor,input.limit||50);
+  return pageSlice(items.map(x=>({id:x.page_id,file_id:x.page_id,file_name:x.title,directory_id:null,library_artifact_type:'page',updated_at:x.updated_at,record_creation_time:x.created_at,last_used_at:state.items.find(v=>v.metadata.page_id===x.page_id).lastUsedAt??x.updated_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}})),input.cursor,input.limit||50);
  }
  if(token){
   const item=state.items.find(x=>x.metadata.page_id===route.split('/')[2]);if(!item||item.permanentlyDeleted||item.metadata.deleted_at)throw Error('Unavailable demo page');
@@ -121,7 +121,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(!Number.isSafeInteger(offset)||offset>available.length)throw Error('Unknown demo page cursor');
   const selected=available.slice(offset,offset+limit);
   const catalog=route==='/pages/catalog';
-  const result={items:selected.map(stored=>{const x={...stored,metadata:read(stored).metadata};return catalog?{id:x.metadata.page_id,title:x.metadata.title,open:{kind:'page',page_id:x.metadata.page_id},access_kind:'owned',created_at:x.metadata.created_at,updated_at:x.metadata.updated_at,last_used_at:x.lastUsedAt??x.metadata.updated_at,symbol:null}:route==='/pages/archived'?{...x.metadata,archived_at:x.metadata.deleted_at,size_bytes:null}:x.metadata}),next_cursor:offset+limit<available.length?'offset:'+(offset+limit):null};
+  const result={items:selected.map(stored=>{const x={...stored,metadata:read(stored).metadata};return catalog?{id:x.metadata.page_id,title:x.metadata.title,open:{kind:'page',page_id:x.metadata.page_id},access_kind:'owned',created_at:x.metadata.created_at,updated_at:x.metadata.updated_at,last_used_at:x.lastUsedAt??x.metadata.updated_at,symbol:x.metadata.symbol??null}:route==='/pages/archived'?{...x.metadata,archived_at:x.metadata.deleted_at,size_bytes:null}:x.metadata}),next_cursor:offset+limit<available.length?'offset:'+(offset+limit):null};
   if(catalog)result.order_by=url.searchParams.get('order_by')||'last_used_at';
   return result;
  }

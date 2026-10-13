@@ -1,0 +1,37 @@
+{
+  "scope": "Original Pages symbol persistence and metadata projection",
+  "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+  "contracts": [
+    "156259 METADATA root pagesMetadata",
+    "156296-156318 Rgr: none/emoji/value and icon/value/color",
+    "156319-156326 cL reads symbol from Y.Map",
+    "156340-156346 zgr mutates original Y.Map symbol",
+    "165945-165973 dOr updates sidebar/library by projection_through_sequence"
+  ],
+  "runtimeEvidence": [
+    "v28 original Change icon opens shipped emoji/icon picker",
+    "Original rocket selection renders in editor+sidebar; canonical seq20 persisted",
+    "v29 original Icons > Code Brackets stores kind:icon,value:function,color:black",
+    "Original Use Blue > Code Brackets commits canonical sequence22 color:blue",
+    "Reload > Space before opening document renders original blue SVG in sidebar16px and library20px; both rgb(51,156,255)"
+  ],
+  "pending": null,
+  "limits": [
+    "Older demo canonical files without symbol projection refresh it on next original edit; canonical symbol itself preserved",
+    "None/reset and full icon catalog not runtime verified"
+  ],
+  "runtime": {
+    "package": "v29",
+    "asar": "585405530e4e74a270cc867dc6b3756099bb1c18f59459947290f52e67d185ac",
+    "symbol": {
+      "value": "function",
+      "kind": "icon",
+      "color": "blue"
+    },
+    "sequence": 22,
+    "tests": {
+      "node": 22,
+      "python": 66
+    }
+  }
+}
