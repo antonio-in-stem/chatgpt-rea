@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "projects": [],
+  "documents": [],
+  "conversations": [
+    {
+      "id": "bubble-audit",
+      "title": "Original UI rename demo",
+      "project_id": null,
+      "messages": [
+        {
+          "id": "demo-user-1",
+          "role": "user",
+          "content": "Show the conversation components with formatted demo content.",
+          "parent_id": null
+        },
+        {
+          "id": "demo-assistant-1",
+          "role": "assistant",
+          "content": "This is a **local demo transcript** rendered by the original frontend.\n\n- Sidebar navigation\n- Conversation spacing\n- Message actions\n\n```rust\nfn main() {\n    println!(\"Frontend demo\");\n}\n```\n\n| Component | State |\n| --- | --- |\n| Message | Complete |\n| Composer | Ready |",
+          "parent_id": "demo-user-1"
+        }
+      ],
+      "draft": "",
+      "archived": false,
+      "pinned": false
+    }
+  ],
+  "settings": {
+    "codex_surface": true,
+    "sidebar_width": 340,
+    "dark_mode": true,
+    "provider_url": "",
+    "model": "Demo"
+  }
+}

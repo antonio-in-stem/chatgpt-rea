@@ -80,13 +80,21 @@ impl WorkspaceApp {
             .text_size(native_ui::typography::TextRole::Body.in_app(cx))
             .line_height(px(24.))
             .when(user, |s| {
+                let mut surface = cx.theme().colors.muted;
+                if cx.theme().mode.is_dark() {
+                    // Original normal dark bubble: text-neutral (#dfdfdf) at 5%.
+                    surface = rgb(0xdfdfdf).into();
+                    surface.a = 0.05;
+                }
                 s.ml_auto()
+                    .line_height(px(22.75))
+                    .font_weight(FontWeight(430.))
                     .max_w(relative(0.7))
                     .px(px(16.))
                     .py(px(10.))
                     .relative()
                     .child(native_ui::corners::squircle_surface(
-                        22., cx.theme().colors.muted,
+                        22., surface,
                     ))
             })
             .child(TextView::markdown(
