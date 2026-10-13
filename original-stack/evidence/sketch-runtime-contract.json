@@ -14,12 +14,16 @@
     "Redo restored stroke; Attach sketch exported a decoded373x151 PNG into original composer",
     "Clicking draft Codex Sketch.png reopened original editor with drawing and Undo state",
     "Original Use blue palette action followed by another pointer stroke and Attach sketch updated the attachment; only one Remove Codex Sketch.png control remained",
-    "Synthetic send followed by renderer reload and reopening restored a decoded373x151 history image"
+    "Synthetic send followed by renderer reload and reopening restored a decoded373x151 history image",
+    "v53 original Shapes menu lists Line, Arrow, Rectangle, Ellipse, Triangle, Diamond, Star and Heart; only Rectangle exercised in this pass",
+    "Rectangle selected through original menu and bounded diagonal pointer drag rendered a white rectangle with eight selection handles; no canvas state injection",
+    "Original Eraser plus diagonal pointer drag removed portions of opposite rectangle corners; view screenshot confirmed partial geometry erasure",
+    "Original Undo restored the closed rectangle visually; Attach sketch exported a decoded374x302 image into the original composer"
   ],
   "limitations": [
-    "Text, shape, eraser, selection and thickness controls not yet exercised",
+    "Text, other shape variants, selection transformations and thickness controls remain unverified; Rectangle, partial erasure and erasure undo exercised",
     "Cancel/draft retention, history sketch re-editing and cross-process editable document persistence remain unverified",
     "No cloud sketch generation or model inference"
   ],
-  "automation": "draw-demo-sketch emits bounded pointer gestures only when original Close sketch editor and one unobscured data-sketch-canvas-surface are present; no drawing component replacement or canvas state injection"
+  "automation": "draw-demo-sketch emits bounded pointer gestures only when original Close sketch editor and one unobscured data-sketch-canvas-surface are present; no drawing component replacement or canvas state injection; optional box gesture uses two bounded surface-relative points for rectangle/eraser testing"
 }
