@@ -46,6 +46,20 @@
         "sizes": 84,
         "radiusOverrides": 5
       }
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "formattedSourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "components": [
+        "SearchField"
+      ],
+      "symbols": [
+        "PJa",
+        "vZ"
+      ],
+      "dependencies": "SearchIcons.js retains shared TAi, $er, ttr, zcr artwork and wxi leading/compact wrappers",
+      "transformation": "Removed compiler memo slots; inferred descriptive names; caller owns query and receives updates. Optional formatMessage callback replaces app localization service.",
+      "status": "45 differential cases and independent browser filtering/clear/select flow pass; pixel parity pending"
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

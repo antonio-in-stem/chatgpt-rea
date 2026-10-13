@@ -6,7 +6,7 @@
     297486,
     297752
   ],
-  "status": "Traced, not yet extracted",
+  "status": "Extracted as SearchField; nine variants covered by differential tests",
   "variants": [
     "default",
     "settings",
@@ -24,7 +24,7 @@
     "Clear button shown only for nonempty query and isClearable",
     "Supports readOnly, disabled, inputRole, inputKey, inputRef, trailingControl"
   ],
-  "dependenciesPending": [
+  "dependenciesRecovered": [
     "SPe / app-shared gE search icon",
     "qve / app-shared Snt 16px search icon",
     "Bee / app-shared Cnt 20px search icon",
@@ -32,5 +32,13 @@
     "rm / app-shared ok responsive icon",
     "vZ sidebar icon wrapper",
     "Localization clearLabel fallback"
+  ],
+  "verification": [
+    "Original PJa class and input/clear subtree comparison: 45 cases",
+    "Browser: filter Windows, select Windows application, search zzzz produces No results, clear restores input focus and empty query"
+  ],
+  "limits": [
+    "No matched original screenshot comparison",
+    "Responsive icon wrappers and literal SVG geometry retained; full icon pipeline differential comparison pending"
   ]
 }

@@ -1,3 +1,5 @@
+import {createSearchField} from './SearchField.js';
+import {createSearchIcons} from './SearchIcons.js';
 import {createMenuInput} from './MenuInput.js';
 import {createButton} from './Button.js';
 import {createSpinner} from './Spinner.js';
@@ -5,7 +7,7 @@ export {buttonColors,buttonSizes,buttonRadii,sizeRadii} from './buttonVariants.j
 import {classNames} from './classNames.js';
 export {classNames} from './classNames.js';
 // Consumer supplies its React and motion runtime; no ChatGPT host or service is imported.
-export function createReaUI({React, motion, mergeClasses=classNames, requestFrame = callback => window.requestAnimationFrame(callback)}) {
+export function createReaUI({React, motion, mergeClasses=classNames, formatMessage, requestFrame = callback => window.requestAnimationFrame(callback)}) {
   if (!React?.createElement || !React?.useId || !motion?.span || typeof mergeClasses !== 'function')
     throw new TypeError('React, motion.span and mergeClasses are required');
   const h = React.createElement;
@@ -29,5 +31,5 @@ export function createReaUI({React, motion, mergeClasses=classNames, requestFram
   }
   const Spinner=createSpinner(React,mergeClasses);
   const Button=createButton({React,mergeClasses,Spinner});
-  return {Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
+  return {SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
 }
