@@ -1,0 +1,35 @@
+{
+  "source": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\extracted\\.vite\\build\\preload.js",
+  "sha256": "a3e622f8d80a83e58fb3cfcc640fa7e14e6461cccdae9ef7d7b0c821dde256b7",
+  "range": [
+    3325,
+    4767
+  ],
+  "nativeChannels": [
+    "codex_desktop:chunked-message-ack",
+    "codex_desktop:connect-app-host",
+    "codex_desktop:get-build-flavor",
+    "codex_desktop:get-fast-mode-rollout-metrics",
+    "codex_desktop:get-initial-sidebar-bootstrap",
+    "codex_desktop:get-sentry-init-options",
+    "codex_desktop:get-shared-object-snapshot",
+    "codex_desktop:get-system-theme-variant",
+    "codex_desktop:mcp-app-sandbox-host-message",
+    "codex_desktop:message-for-view",
+    "codex_desktop:message-from-view",
+    "codex_desktop:remote-hosted-pip-video-frame",
+    "codex_desktop:show-context-menu",
+    "codex_desktop:start-file-drag",
+    "codex_desktop:start-link-drag",
+    "codex_desktop:system-theme-variant-updated",
+    "codex_desktop:trigger-sentry-test",
+    "codex_desktop:worker:${e}:for-view",
+    "codex_desktop:worker:${e}:from-view"
+  ],
+  "limitations": [
+    "Static bridge object extraction; not a complete host protocol schema.",
+    "Runtime original renderer served on app://, excluded by REA file-page listing.",
+    "Separate userData/appdata/CLI-home did not establish isolated account state; original-account data observed in renderer.",
+    "Copy stopped after observation; no login action or account mutation performed by agent."
+  ]
+}

@@ -1,4 +1,4 @@
-param([switch]$WaitForExit)
+param([switch]$WaitForExit,[switch]$InspectRuntime)
 $ErrorActionPreference='Stop'
 $runtime=Join-Path $PSScriptRoot 'pristine'
 $inventoryPath=Join-Path $PSScriptRoot 'runtime-inventory.json'
@@ -23,6 +23,10 @@ $start.Environment['APPDATA']=Join-Path $state 'appdata'
 $start.Environment['LOCALAPPDATA']=Join-Path $state 'localappdata'
 foreach($key in @('OPENAI_API_KEY','CODEX_ACCESS_TOKEN','NODE_OPTIONS','ELECTRON_RUN_AS_NODE')){$start.Environment.Remove($key) | Out-Null}
 $start.ArgumentList.Add('--user-data-dir='+(Join-Path $state 'profile'))
+if($InspectRuntime){
+ $start.ArgumentList.Add('--remote-debugging-address=127.0.0.1')
+ $start.ArgumentList.Add('--remote-debugging-port=0')
+}
 $process=[Diagnostics.Process]::Start($start)
 [pscustomobject]@{pid=$process.Id;executable=$start.FileName;profile=(Join-Path $state 'profile');startedUtc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $state 'last-launch.json') -Encoding utf8
 if($WaitForExit){$process.WaitForExit();[pscustomobject]@{pid=$process.Id;exitCode=$process.ExitCode}}else{[pscustomobject]@{pid=$process.Id;executable=$start.FileName}}

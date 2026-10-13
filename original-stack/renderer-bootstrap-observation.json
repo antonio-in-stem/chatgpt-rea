@@ -1,0 +1,45 @@
+{
+  "capturedUtc": "2026-10-13T01:29:42.886Z",
+  "targetId": "32DD100700B1AE706AA6D4FE43298FFF",
+  "method": "read-only CDP Runtime.evaluate on isolated app:// renderer",
+  "result": {
+    "url": "app://-/index.html",
+    "windowType": "electron",
+    "bridgeMethods": [
+      "windowType",
+      "acknowledgeChunkedMessage",
+      "getPreloadStartedAtMs",
+      "sendMessageFromView",
+      "getPathForFile",
+      "startFileDrag",
+      "startLinkDrag",
+      "sendWorkerMessageFromView",
+      "subscribeToWorkerMessages",
+      "showContextMenu",
+      "getFastModeRolloutMetrics",
+      "getSharedObjectSnapshotValue",
+      "getInitialSidebarBootstrap",
+      "getSystemThemeVariant",
+      "subscribeToSystemThemeVariant",
+      "triggerSentryTestError",
+      "getSentryInitOptions",
+      "getDesktopUserAgent",
+      "getAppSessionId",
+      "getBuildFlavor",
+      "isDeviceCheckSupported",
+      "isIntelMacBuild"
+    ],
+    "bodyStyle": {
+      "fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "430",
+      "backgroundColor": "rgba(0, 0, 0, 0)"
+    },
+    "loginVisible": false,
+    "composerPresent": true,
+    "rootDataset": {
+      "codexWindowType": "electron",
+      "codexOs": "win32"
+    }
+  }
+}
