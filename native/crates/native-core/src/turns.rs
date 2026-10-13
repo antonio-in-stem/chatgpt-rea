@@ -13,6 +13,49 @@ pub struct ConversationTurn {
 }
 
 impl Conversation {
+    /// One optional separator per message position, attached only to a turn's
+    /// first member. Unassociated legacy messages break history adjacency.
+    pub fn timestamp_separators(&self, now_ms: i64) -> Result<Vec<Option<i64>>, String> {
+        use crate::timestamps::{LocalTimestampEntry, LocalTimestampTurn, select_local_separators};
+        validate_turns(self)?;
+        let starts: HashMap<_, _> = self
+            .turns
+            .iter()
+            .map(|turn| (turn.message_ids[0].as_str(), turn))
+            .collect();
+        let mut entries = Vec::new();
+        let mut positions = Vec::new();
+        let mut index = 0;
+        while index < self.messages.len() {
+            positions.push(index);
+            if let Some(turn) = starts.get(self.messages[index].id.as_str()) {
+                let members = &self.messages[index..index + turn.message_ids.len()];
+                entries.push(LocalTimestampEntry::Turn(LocalTimestampTurn {
+                    has_user_input: members
+                        .iter()
+                        .any(|message| message.role == MessageRole::User),
+                    has_agent_message: members
+                        .iter()
+                        .any(|message| message.role == MessageRole::Assistant),
+                    turn_started_at_ms: turn.started_at_ms,
+                    final_assistant_started_at_ms: turn.final_assistant_started_at_ms,
+                }));
+                index += members.len();
+            } else {
+                entries.push(LocalTimestampEntry::Excluded);
+                index += 1;
+            }
+        }
+        let mut result = vec![None; self.messages.len()];
+        for (position, timestamp) in positions
+            .into_iter()
+            .zip(select_local_separators(&entries, now_ms))
+        {
+            result[position] = timestamp;
+        }
+        Ok(result)
+    }
+
     /// Upsert a lifecycle snapshot atomically; invalid memberships leave state intact.
     pub fn record_turn(&mut self, turn: ConversationTurn) -> Result<(), String> {
         let mut candidate = self.clone();
@@ -34,6 +77,9 @@ pub(crate) fn validate_turns(conversation: &Conversation) -> Result<(), String> 
         .enumerate()
         .map(|(i, message)| (message.id.as_str(), i))
         .collect();
+    if positions.len() != conversation.messages.len() || positions.contains_key("") {
+        return Err("Empty or duplicate message identity".into());
+    }
     let mut turn_ids = HashSet::new();
     let mut claimed = HashSet::new();
     let mut last_end = None;

@@ -102,3 +102,65 @@ fn branches_remap_membership_and_remove_truncated_assistant_time() {
     assert_eq!(w.conversation(&c).unwrap(), &original);
     w.validate().unwrap();
 }
+
+#[test]
+fn separators_attach_once_to_explicit_turn_start_and_preserve_unknown_history() {
+    let (mut w, c, _, _) = fixture();
+    assert_eq!(
+        w.conversation(&c)
+            .unwrap()
+            .timestamp_separators(4_000_000)
+            .unwrap(),
+        vec![Some(100), None]
+    );
+    let u = w.append_message(&c, MessageRole::User, "next").unwrap();
+    let a = w
+        .append_message(&c, MessageRole::Assistant, "next answer")
+        .unwrap();
+    w.conversation_mut(&c)
+        .unwrap()
+        .record_turn(ConversationTurn {
+            id: "next".into(),
+            message_ids: vec![u, a],
+            started_at_ms: Some(3_600_201),
+            final_assistant_started_at_ms: Some(3_600_202),
+        })
+        .unwrap();
+    assert_eq!(
+        w.conversation(&c).unwrap().timestamp_separators(0).unwrap(),
+        vec![None, None, Some(3_600_201), None]
+    );
+    // Removing metadata must not invent grouping from otherwise identical roles.
+    w.conversation_mut(&c).unwrap().turns.remove(0);
+    assert_eq!(
+        w.conversation(&c)
+            .unwrap()
+            .timestamp_separators(10_000_000)
+            .unwrap(),
+        vec![None; 4]
+    );
+}
+#[test]
+fn unknown_message_between_turns_breaks_assistant_adjacency() {
+    let (mut w, c, _, _) = fixture();
+    w.append_message(&c, MessageRole::System, "unknown history")
+        .unwrap();
+    let u = w.append_message(&c, MessageRole::User, "later").unwrap();
+    w.conversation_mut(&c)
+        .unwrap()
+        .record_turn(ConversationTurn {
+            id: "later".into(),
+            message_ids: vec![u],
+            started_at_ms: Some(8_000_000),
+            final_assistant_started_at_ms: None,
+        })
+        .unwrap();
+    assert_eq!(
+        w.conversation(&c).unwrap().timestamp_separators(0).unwrap(),
+        vec![None; 4]
+    );
+    w.conversation_mut(&c).unwrap().turns[0]
+        .message_ids
+        .push("missing".into());
+    assert!(w.conversation(&c).unwrap().timestamp_separators(0).is_err());
+}

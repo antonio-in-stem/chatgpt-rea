@@ -103,3 +103,10 @@ Conversation now accepts optional persisted turns containing an ID, ordered mess
 Branching remaps both turn IDs and message references, removes turns outside the retained history and clears the final-assistant time for a truncated turn. Complete retained turns preserve timing. These are native storage decisions needed for independent branches, not claims of recovering the original backend persistence format. Three integration tests verify roundtrip/legacy loading, atomic rejection and full/partial branches; 18 unit tests and both 384-case timestamp differential tests also pass. The full native-workspace cargo check passes with the pre-existing unused action warning.
 
 The demo response lifecycle still needs to supply these explicit turn snapshots, and chat_view still lacks timestamp rendering. This turn changes the persistent model and branch integrity only; it does not establish visual parity or an updated packaged executable.
+
+
+## Persisted turns connected to timestamp selection
+
+Conversation::timestamp_separators now projects validated explicit turn membership into the recovered local selector and returns one optional separator at each message position. A selected separator attaches only to the first member of its turn. Unassociated legacy messages create excluded groups, breaking adjacency rather than fabricating a turn from adjacent roles. Invalid message/turn references return an error before indexing.
+
+Two additional integration tests cover first-turn placement, a strict gap after a completed assistant, unknown history before/between explicit turns and malformed membership. The native-core suite passes with 18 unit tests, five turn-storage/selection integration tests and two differential tests covering 768 original-JavaScript cases. This connects persisted data to selection only: the response lifecycle must still populate explicit turns, and the view still needs localized formatting and separator rendering.
