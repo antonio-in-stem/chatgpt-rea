@@ -1,0 +1,12 @@
+{
+  "verificationScope": "Targeted repair; full audit required",
+  "selectedFile": "dotnet.native.k09zdxq5tw.js",
+  "files": 15087,
+  "expected": 15087,
+  "javascript": 14771,
+  "css": 316,
+  "originalBytes": 385608865,
+  "readableBytes": 490677841,
+  "errors": [],
+  "astDifferences": []
+}

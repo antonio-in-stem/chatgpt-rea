@@ -379,3 +379,14 @@ The first all-assets pass reported an AST difference for dotnet.native.k09zdxq5t
 The first all-assets process completed with 15,087 records (14,771 JS/MJS and 316 CSS), 385,608,865 original bytes and 490,677,728 formatted bytes. It exited 1 for the single previously diagnosed dotnet.native.k09zdxq5tw.js AST difference; there were no parse/format errors. The corrective incremental pass is running and has not yet been accepted as a final audit.
 
 A checkpoint issue was also found: a short incremental run could finish on cached files without writing its updated manifest. Recover-AllAssets now unconditionally writes the manifest after the loop. The already-running corrective process loaded the prior script, so its final manifest must be checked and, if needed, regenerated with the fixed version before auditing. Do not infer success from summary.json alone.
+
+
+## Full selected renderer asset recovery verified
+
+The corrective pass completed with zero parse/format errors and zero AST differences. Its old checkpoint implementation left the manifest stale, so the fixed script repaired the exact dotnet.native.k09zdxq5tw.js record using --file=dotnet.native.k09zdxq5tw.js, then Audit-RecoveredAssets checked the entire selection. The targeted repair flag explicitly labels its summary as requiring a full audit; it does not substitute for that audit.
+
+Final coverage: 15,087 top-level renderer files (14,771 JavaScript/MJS with positive AST equivalence, 316 parsed/formatted CSS), 385,608,865 original bytes and 490,677,841 readable bytes. All source/output hashes and record coverage passed. Manifest SHA-256: e31322ee62833b33604b0378d1377ec134c75771fd9228ef360242dcb6874c6e. There are 45,410 literal import/export references with zero missing relative targets; six bare references are process/module in dotnet bundles and remain runtime-dependent observations.
+
+Readable files: original-stack/state/recovered-all/readable/assets. Full provenance: state/recovered-all/manifest.json. Literal dependency map: state/recovered-all/dependency-edges.json. The compact definitive audit and summary are retained in evidence/recovered-renderer-audit.json and evidence/recovered-renderer-summary.json. The generated readable tree remains ignored to avoid committing roughly 491 MB of duplicate production code; scripts reproduce it locally from the existing extraction.
+
+This completes readability/coverage recovery for the selected top-level distributed JS/MJS/CSS, not original TypeScript recovery, native executable decompilation, all nested package code, CSS semantic equivalence, all runtime features, or the exact Rust port. The runnable reference remains the untouched packaged runtime.
