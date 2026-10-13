@@ -730,7 +730,7 @@ impl WorkspaceApp {
             size(px(248.),px(if has_project { 238. } else { 174. })),window.viewport_size());
         let choices = self.project_menu_choices();
         let submenu_bounds = menu_geometry::submenu(parent_bounds,px(if has_project { 94. } else { 70. }),
-            size(px(248.),px((choices.len() as f32*32.+14.).min(300.))),window.viewport_size());
+            size(px(248.),px((choices.len() as f32*32.+14.+if choices.len()>1 { 9. } else { 0. }).min(300.))),window.viewport_size());
         if dialog == Dialog::ChatMenu {
             panel = panel.w(parent_bounds.size.width).max_h(parent_bounds.size.height).overflow_y_scroll();
         }
@@ -757,10 +757,16 @@ impl WorkspaceApp {
                     .track_scroll(&self.project_menu_scroll).track_focus(&self.modal_focus).on_mouse_down(MouseButton::Left, |_,_,cx| cx.stop_propagation()).p(px(6.)).rounded(px(14.))
                     .border_1().border_color(cx.theme().colors.border).bg(cx.theme().colors.popover).shadow_lg()
                     .children(self.project_menu_choices().into_iter().enumerate().map(|(index,(label,action))| {
-                        Button::new(("chat-project-option",index)).ghost().tab_stop(false)
-                            .w_full().h(px(32.)).flex_shrink_0().px(px(8.)).justify_start().label(label)
-                            .when(self.project_submenu == Some(index),|b| b.bg(cx.theme().colors.secondary))
-                            .on_click(cx.listener(move |s,_,w,cx| s.act(action.clone(),w,cx)))
+                        // Keep one scroll child per choice; the separator is not selectable.
+                        div().w_full().flex_shrink_0().flex().flex_col()
+                            .when(index == 1, |row| row.child(div().mx(px(8.)).my(px(4.)).h(px(1.)).bg(cx.theme().colors.border)))
+                            .child(Button::new(("chat-project-option",index)).ghost().tab_stop(false)
+                                .w_full().h(px(32.)).flex_shrink_0().px(px(8.)).justify_start()
+                                .child(div().flex().items_center().gap(px(8.))
+                                    .child(native_ui::icon(if index == 0 { "menu-new-project" } else { "menu-project" },16.))
+                                    .child(label))
+                                .when(self.project_submenu == Some(index),|b| b.bg(cx.theme().colors.secondary))
+                                .on_click(cx.listener(move |s,_,w,cx| s.act(action.clone(),w,cx))))
                     })))
             })
             .when(dialog == Dialog::HelpMenu, |anchor| {

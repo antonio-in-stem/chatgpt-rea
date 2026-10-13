@@ -1,0 +1,18 @@
+[
+  {
+    "name": "menu-new-project",
+    "symbol": "V7n",
+    "source": "app-shared-737655e1fb23.js",
+    "line": 196759,
+    "binding": "jas OVe <- mtt <- wpr <- V7n",
+    "sha256": "4c1b445a26f6d960ab8a799a94cf26140dfd7b4610efbbae8422ad8e4162406b"
+  },
+  {
+    "name": "menu-project",
+    "symbol": "G7n",
+    "source": "app-shared-737655e1fb23.js",
+    "line": 196821,
+    "binding": "jas am <- ott <- xpr <- G7n",
+    "sha256": "da3af2f9171cc1e6c98cfd552a7a8f749c9e0d75092db4b32118ba2c914a3d8d"
+  }
+]
