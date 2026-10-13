@@ -8,7 +8,8 @@ import uuid
 from pathlib import Path
 
 THREAD = json.loads((Path(__file__).parent / "demo-thread.json").read_text(encoding="utf-8"))
-METHODS = {"thread/search", "thread/list", "thread/read", "thread/turns/list", "thread/resume", "thread/goal/get", "thread/items/list"}
+PINNED_SECTION = "01984de2-8f74-7c91-a3b2-5c5e937cf318"
+METHODS = {"threadSection/list", "thread/search", "thread/list", "thread/read", "thread/turns/list", "thread/resume", "thread/goal/get", "thread/items/list"}
 
 class ThreadError(ValueError):
     pass
@@ -83,6 +84,10 @@ def handle(method, params, thread_data=None, archived=False):
     if params is None and method == "thread/list":params={}
     if not isinstance(params, dict):
         raise ThreadError("Expected object parameters")
+    if method == "threadSection/list":
+        result=page([{"id":PINNED_SECTION,"name":"Pinned","appearance":None}],params,"demo-section:")
+        result.pop("backwardsCursor")
+        return result
     thread = copy.deepcopy(THREAD if thread_data is None else thread_data)
     if method == "thread/search":return search_threads([{"thread":thread,"archived":archived}],params)
     if method == "thread/list":
@@ -90,7 +95,7 @@ def handle(method, params, thread_data=None, archived=False):
             raise ThreadError("Unsupported demo thread filter")
         matches = bool(params.get("archived")) == archived
         for key, field in [("sectionId","section"),("projectId","projectId"),("parentThreadId","parentThreadId")]:
-            if key in params and params[key] != thread[field]: matches = False
+            if key in params and params[key] != ((thread[field] or {}).get("id") if field=="section" else thread[field]): matches = False
         for key, field in [("modelProviders","modelProvider"),("sourceKinds","source")]:
             if params.get(key) and thread[field] not in params[key]: matches = False
         cwd=params.get("cwd")
@@ -142,7 +147,7 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt", "thread/revert", "thread/rollback"}
+    MUTATIONS = {"thread/section/move", "thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt", "thread/revert", "thread/rollback"}
     METHODS = METHODS | MUTATIONS
 
     def __init__(self, path, streaming=False):
@@ -243,6 +248,7 @@ class ThreadStore:
     def handle(self, method, params):
         if params is None and method == "thread/list":params={}
         if not isinstance(params,dict):raise ThreadError("Expected object parameters")
+        if method == "threadSection/list":return handle(method,params),None
         if method == "thread/start":return self._start(params)
         if method == "thread/search":return search_threads(self.data["threads"].values(),params),None
         if method == "thread/list":
@@ -263,6 +269,10 @@ class ThreadStore:
                 rows.extend(handle(method,per_thread,entry["thread"],entry["archived"])["data"])
             sort_key=params.get("sortKey") or "created_at"
             keys={"created_at":"createdAt","updated_at":"updatedAt","recency_at":"recencyAt"}
+            if sort_key == "section_position":
+                if params.get("sectionId") != PINNED_SECTION:raise ThreadError("Section ordering requires the demo pinned section")
+                rows.sort(key=lambda t:(self.data["threads"][t["id"]].get("sectionPosition",0),t["id"]),reverse=params.get("sortDirection")=="desc")
+                return page(rows,params,"demo-thread:"),None
             if sort_key not in keys:raise ThreadError("Unsupported demo thread sort")
             rows.sort(key=lambda t:(t[keys[sort_key]] or 0,t["id"]),reverse=params.get("sortDirection")!="asc")
             return page(rows,params,"demo-thread:"),None
@@ -278,6 +288,24 @@ class ThreadStore:
         data=copy.deepcopy(self.data)
         entry=data["threads"][thread_id]
         thread=entry["thread"]
+        if method == "thread/section/move":
+            if "sectionId" not in params or params["sectionId"] not in (None,PINNED_SECTION):raise ThreadError("Unknown demo section")
+            destination=params["sectionId"]
+            before=params.get("beforeThreadId")
+            if before is not None and not isinstance(before,str):raise ThreadError("Invalid section anchor")
+            if destination is None and before is not None:raise ThreadError("Unsectioned move cannot specify an anchor")
+            if before is not None and (before not in data["threads"] or (data["threads"][before]["thread"]["section"] or {}).get("id")!=destination):raise ThreadError("Anchor is not in destination section")
+            if before==thread_id:return {},None
+            if (thread["section"] or {}).get("id")!=destination:thread["sectionEnteredAt"]=int(time.time()) if destination else None
+            thread["section"]={"id":PINNED_SECTION,"name":"Pinned","appearance":None} if destination else None
+            if destination:
+                ordered=sorted((value for key,value in data["threads"].items() if key!=thread_id and (value["thread"]["section"] or {}).get("id")==destination),key=lambda e:(e.get("sectionPosition",0),e["thread"]["id"]))
+                at=next((i for i,e in enumerate(ordered) if e["thread"]["id"]==before),len(ordered))
+                ordered.insert(at,entry)
+                for position,value in enumerate(ordered):value["sectionPosition"]=position
+            else:entry.pop("sectionPosition",None)
+            self._commit(data)
+            return {},None
         if method == "thread/rollback":
             if thread["historyMode"]!="legacy":raise ThreadError("Rollback requires legacy demo history")
             count=params.get("numTurns")

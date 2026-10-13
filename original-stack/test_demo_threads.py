@@ -2,7 +2,7 @@ import unittest
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
-from demo_threads import THREAD,handle,ThreadError,ThreadStore
+from demo_threads import THREAD,handle,ThreadError,ThreadStore,PINNED_SECTION
 
 class ThreadTests(unittest.TestCase):
     def test_search_matches_body_and_archive_filter_without_exposing_history(self):
@@ -40,6 +40,35 @@ class ThreadTests(unittest.TestCase):
         self.assertIn("Straße final match",result["data"][0]["snippet"])
         self.assertTrue(result["data"][0]["snippet"].startswith("…"))
         self.assertEqual(handle("thread/search",{"searchTerm":"  "},thread)["data"],[])
+
+    def test_pinned_section_order_survives_reload_and_unpin_preserves_history(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            fork,_=store.handle("thread/fork",{"threadId":THREAD["id"],"lastTurnId":THREAD["turns"][0]["id"]})
+            other=fork["thread"]["id"]
+            for tid in [THREAD["id"],other]:store.handle("thread/section/move",{"threadId":tid,"sectionId":PINNED_SECTION})
+            query={"sectionId":PINNED_SECTION,"sortKey":"section_position"}
+            ids=lambda s:[t["id"] for t in s.handle("thread/list",query)[0]["data"]]
+            self.assertEqual(ids(store),[THREAD["id"],other])
+            store.handle("thread/section/move",{"threadId":other,"sectionId":PINNED_SECTION,"beforeThreadId":THREAD["id"]})
+            self.assertEqual(ids(ThreadStore(path)),[other,THREAD["id"]])
+            store.handle("thread/section/move",{"threadId":other,"sectionId":None})
+            reloaded=ThreadStore(path)
+            self.assertEqual(ids(reloaded),[THREAD["id"]])
+            thread=reloaded.handle("thread/read",{"threadId":other,"includeTurns":True})[0]["thread"]
+            self.assertIsNone(thread["sectionEnteredAt"])
+            self.assertEqual(thread["turns"],THREAD["turns"])
+
+    def test_invalid_section_move_is_atomic(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json")
+            for bad in ({"sectionId":"unknown"},{"sectionId":PINNED_SECTION,"beforeThreadId":"missing"},{"sectionId":None,"beforeThreadId":THREAD["id"]}):
+                with self.assertRaises(ThreadError):store.handle("thread/section/move",{"threadId":THREAD["id"],**bad})
+                self.assertIsNone(store.data["threads"][THREAD["id"]]["thread"]["section"])
+            with patch.object(Path,"replace",side_effect=OSError("disk unavailable")):
+                with self.assertRaises(OSError):store.handle("thread/section/move",{"threadId":THREAD["id"],"sectionId":PINNED_SECTION})
+            self.assertIsNone(store.data["threads"][THREAD["id"]]["thread"]["section"])
 
     def test_list_omits_history_and_honors_filters(self):
         self.assertEqual(handle("thread/list",{})["data"][0]["turns"],[])

@@ -1,0 +1,19 @@
+{
+  "file": "src-CP7XXlpZ.js",
+  "sha256": "79623d50989f9efbcb8e5752c56b3cc608a0f5993c05112e03e11b718ac7a586",
+  "method": "Static fragments from original host bundle; character offsets",
+  "fragments": [
+    {
+      "characterOffset": 40080,
+      "fragment": "var di=`01984de2-8f74-7c91-a3b2-5c5e937cf318`,fi=new Map;function pi(e){return e!=null&&F(e)&&P(e,`0.148.0-alpha.7`)>=0}function mi({version:e,isLocal:t}){return e==null?t:e===`0.0.0`||!F(e)||pi(e)}function hi(e){return pi(e)}var gi=class{adapter;constructor(e){this.adapter=e}async listHostSectionThreadIds(e,t=e.pinnedSectionId){let n=[],r=null;do{let i=await this.adapter.listThreads(e,{cursor:r,limit:100,modelProviders:[],sectionId:t,sortKey:`section_position`,sourceKinds:ii,useStateDbOnly:!0});n.push(...i.data.map(e=>e.id)),r=i.nextCursor}while(r!=null);return n}async listSections(e){let t=await Promise.all(e.map(async e=>{let t=[],n=null;do{let r=await this.adapter.listSections(e,{cursor:n,limit:100});t.push(...r.data.filter(({id:e})=>e!==di).map(({id:t,name:n})=>({hostId:e.hostId,id:t,name:n}))),n=r.nextCursor}while(n!=null);return t}));return{hostIds:e.map(({hostId:e})=>e),sections:t.flat()}}async createSection(e,t,n){let r=`${e.ho"
+    },
+    {
+      "characterOffset": 40357,
+      "fragment": "async listHostSectionThreadIds(e,t=e.pinnedSectionId){let n=[],r=null;do{let i=await this.adapter.listThreads(e,{cursor:r,limit:100,modelProviders:[],sectionId:t,sortKey:`section_position`,sourceKinds:ii,useStateDbOnly:!0});n.push(...i.data.map(e=>e.id)),r=i.nextCursor}while(r!=null);return n}async listSections(e){let t=await Promise.all(e.map(async e=>{let t=[],n=null;do{let r=await this.adapter.listSections(e,{cursor:n,limit:100});t.push(...r.data.filter(({id:e})=>e!==di).map(({id:t,name:n})=>({hostId:e.hostId,id:t,name:n}))),n=r.nextCursor}while(n!=null);return t}));return{hostIds:e.map(({hostId:e})=>e),sections:t.flat()}}async createSection(e,t,n){let r=`${e.hostId}\\0${n}`,i=fi.get(r);if(i!=null)return i;let a=this.adapter.createSection(e,{name:t}).then(({section:{id:e,name:t}})=>({id:e,name:t}));fi.set(r,a);try{return await a}finally{fi.get(r)===a&&fi.delete(r)}}async updateSection(e,t,n){await this.adapter.updateSection(e,{section"
+    },
+    {
+      "characterOffset": 41899,
+      "fragment": "async setThreadPinned(e,t){let{threadId:n,pinned:r,beforeThreadId:i}=t;if(e.isPinned===r)return!1;let a=r&&i!=null?await this.findThreadOwner(i,[e]):null;return this.setThreadSection(e,{beforeThreadId:a?.isPinned?i:null,sectionId:r?e.pinnedSectionId:null,threadId:n})}async setThreadSection(e,t){let{threadId:n,sectionId:r,beforeThreadId:i,previousSectionId:a}=t;if(r==null&&e.sectionId==null)return!0;if(a!=null&&e.sectionId!==a||e.sectionId===r&&i===void 0)return!1;let o=!1;r!=null&&r!==e.pinnedSectionId&&e.sectionId!==r&&i!=null&&(await this.adapter.moveThread(e,{beforeThreadId:null,sectionId:r,threadId:n}),o=!0);try{await this.adapter.moveThread(e,{beforeThreadId:i??null,sectionId:r,threadId:n})}catch(t){throw o&&await this.adapter.moveThread(e,{beforeThreadId:null,sectionId:e.sectionId,threadId:n}),t}return!0}async movePinnedThread(e,t){let{threadId:n,beforeThreadId:r}=t;return e.isPinned?this.setThreadSection(e,{beforeThreadId:r,secti"
+    }
+  ]
+}

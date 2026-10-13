@@ -6,13 +6,15 @@ ajv.addFormat('uint32',{type:'number',validate:n=>Number.isInteger(n)&&n>=0&&n<=
 ajv.addFormat('int32',{type:'number',validate:n=>Number.isInteger(n)&&n>=-2147483648&&n<=2147483647});
 for(const [f,max] of [['uint',Number.MAX_SAFE_INTEGER],['uint16',65535],['uint64',Number.MAX_SAFE_INTEGER]])ajv.addFormat(f,{type:'number',validate:n=>Number.isSafeInteger(n)&&n>=0&&n<=max});
 const code=`import json
-from demo_threads import handle,THREAD,ThreadStore
+from demo_threads import handle,THREAD,ThreadStore,PINNED_SECTION
 from pathlib import Path
 import tempfile
 from demo_transport import handle_message
 samples=[['ThreadResumeResponse',handle('thread/resume',{'threadId':THREAD['id']})],['ThreadListResponse',handle('thread/list',{})],['ThreadReadResponse',handle('thread/read',{'threadId':THREAD['id'],'includeTurns':True})],['ThreadTurnsListResponse',handle('thread/turns/list',{'threadId':THREAD['id'],'itemsView':'full'})]]
 with tempfile.TemporaryDirectory() as directory:
  store=ThreadStore(Path(directory)/'thread.json')
+ pinned,_=store.handle('thread/section/move',{'threadId':THREAD['id'],'sectionId':PINNED_SECTION})
+ samples.extend([['ThreadSectionMoveResponse',pinned],['ThreadSectionListResponse',handle('threadSection/list',{})]])
  started,event=store.handle('thread/start',{'historyMode':'paginated'})
  samples.extend([['ThreadStartResponse',started],['ThreadStartedNotification',event['params']]])
  turn,events=store.handle('turn/start',{'threadId':started['thread']['id'],'input':[{'type':'text','text':'Demo message','text_elements':[]}]})
