@@ -217,3 +217,25 @@ test('versions paginate immutable metadata and bootstrap hashes exact envelope b
   call('POST','/pages/rea-page-1/archive',{});assert.throws(()=>call('GET','/pages/rea-page-1/versions'),/Unavailable/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('spaces create root atomically and project canonical title through list/detail',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-spaces-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  assert.deepEqual(call('GET','/spaces/v2').items,[]);
+  fs.writeFileSync(path.join(dir,'demo-pages.json.pending'),'foreign');
+  assert.throws(()=>call('POST','/spaces/v2',{name:'Rejected'}));assert.equal(fs.existsSync(path.join(dir,'demo-pages.json')),false);fs.unlinkSync(path.join(dir,'demo-pages.json.pending'));
+  const space=call('POST','/spaces/v2',{name:'  Original Space  '});
+  assert.equal(space.id,'rea-space-1');assert.equal(space.name,'Original Space');assert.equal(space.backing_type,'drive');
+  assert.equal(space.root_page_id,'rea-page-1');assert.equal(space.root_page.metadata.drive_space_id,space.id);assert.equal(space.root_page_metadata.page_id,space.root_page_id);assert.equal(space.root_page_metadata.access.can_write,true);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(dir,'demo-pages.json'))).items[0].seedTitle,'Original Space');
+  assert.equal(call('GET','/pages/'+space.root_page_id).metadata.title,'Original Space');
+  const other=call('POST','/spaces/v2',{name:'Second'});assert.notEqual(other.root_page_id,space.root_page_id);
+  assert.equal(call('GET','/spaces/v2?limit=1').next_cursor,'offset:1');assert.equal(call('GET','/spaces/v2?limit=1&cursor=offset:1').items[0].id,space.id);
+  fs.writeFileSync(path.join(dir,'rea-page-1-document.json'),JSON.stringify({sequence:1,title:'Renamed root',symbol:{kind:'emoji',value:'X'}}));
+  assert.equal(call('GET','/spaces/v2/rea-space-1?include_root_page_metadata=true').name,'Renamed root');
+  assert.equal(call('GET','/spaces/v2').items.find(x=>x.id===space.id).symbol.value,'X');
+  assert.throws(()=>call('POST','/spaces/v2',{name:' '}),/Invalid/);assert.throws(()=>call('POST','/spaces/v2',{name:'x'.repeat(51)}),/Invalid/);
+  assert.throws(()=>call('POST','/spaces/v2',{name:'No',make_workspace_default:true}),/not supported/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

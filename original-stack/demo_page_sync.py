@@ -25,6 +25,20 @@ class PageSyncStore:
         file=self.directory/(page_id+'-document.json')
         state=json.loads(file.read_text(encoding='utf-8')) if file.exists() else {'sequence':0,'update':'AAA=','receipts':{}}
         doc=y.YDoc()
+        if not file.exists():
+            item=next(x for x in pages['items'] if x['metadata']['page_id']==page_id)
+            if 'seedTitle' in item:
+                with doc.begin_transaction() as transaction:
+                    doc.get_text('title').insert(transaction,0,item['seedTitle'])
+                state['title']=item['seedTitle']
+                state['update']=base64.b64encode(y.encode_state_as_update(doc)).decode()
+                temporary=file.with_suffix('.pending');owned=False
+                try:
+                    with temporary.open('x',encoding='utf-8') as stream:
+                        owned=True;json.dump(state,stream)
+                    temporary.replace(file)
+                finally:
+                    if owned and temporary.exists():temporary.unlink()
         y.apply_update(doc,base64.b64decode(state['update'],validate=True))
         return file,state,doc
     def sync(self,page_id):

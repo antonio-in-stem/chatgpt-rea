@@ -94,6 +94,17 @@ class PageSyncTests(unittest.TestCase):
    with doc.begin_transaction() as tx:doc.get_map('pagesMetadata').set(tx,'symbol',{'kind':'icon','value':'function','color':'blue'})
    second=commit('symbol');self.assertEqual(len(second['checkpoints']),2);self.assertEqual(second['block_attributions'],{})
    self.assertEqual(len(commit('unchanged')['checkpoints']),2)
+ def test_space_root_seed_is_stable_and_not_reapplied_after_edit(self):
+  with tempfile.TemporaryDirectory(prefix='rea-space-root-') as directory:
+   folder=Path(directory);(folder/'demo-pages.json').write_text(json.dumps({'items':[{'metadata':{'page_id':'rea-page-1'},'seedTitle':'Original Space'}]}))
+   first=PageSyncStore(folder).sync('rea-page-1');second=PageSyncStore(folder).sync('rea-page-1')
+   self.assertEqual(first['update'],second['update'])
+   doc=y.YDoc();y.apply_update(doc,base64.b64decode(first['update']))
+   self.assertEqual(json.loads(doc.get_text('title').to_json()),'Original Space')
+   with doc.begin_transaction() as tx:doc.get_text('title').insert(tx,0,'Renamed ')
+   PageSyncStore(folder).commit('rea-page-1',{'client_update_id':'rename','update':base64.b64encode(y.encode_state_as_update(doc)).decode()})
+   restored=y.YDoc();y.apply_update(restored,base64.b64decode(PageSyncStore(folder).sync('rea-page-1')['update']))
+   self.assertEqual(json.loads(restored.get_text('title').to_json()),'Renamed Original Space')
  def test_archived_and_deleted_pages_reject_sync_and_commit(self):
   with tempfile.TemporaryDirectory(prefix='rea-page-sync-') as directory:
    folder=Path(directory);file=folder/'demo-pages.json';store=PageSyncStore(folder)

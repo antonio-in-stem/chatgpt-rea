@@ -1,5 +1,5 @@
 {
-  "status": "Recovered contract; original creation dialog opened/cancelled; backend not implemented",
+  "status": "Create/list/detail adapter implemented and tested; not installed or runtime verified",
   "create": {
     "method": "POST",
     "path": "/spaces/v2",
@@ -79,5 +79,19 @@
     "Exhaustive response schema",
     "Archive principal identity variant",
     "Actual create and root startup not yet verified"
-  ]
+  ],
+  "implemented": [
+    "POST spaces/v2 stores space plus root metadata in one atomic demo-pages.json replacement",
+    "GET list pagination and direct detail project canonical root title/symbol",
+    "Root metadata drive_space_id equals space id; write/comment true, share false",
+    "Root Yjs title seeded once on first sync, persisted before response and never re-seeded after edits"
+  ],
+  "limits": [
+    "Empty root body; no invented starter content",
+    "Workspace-default creation explicitly unsupported in personal demo",
+    "Invitation/share and appearance fallback not implemented",
+    "Space archive and scoped child listing/creation pending",
+    "UI creation/root startup still unverified"
+  ],
+  "tests": "72 Python +27 Node pass; creation write-failure atomicity, root identity, list pagination, rename projection and root sync persistence covered"
 }
