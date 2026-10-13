@@ -11,7 +11,9 @@
     "createPage": "app-initial-b8e1c8014bb4.js:167066",
     "personalPageAvailability": "app-shared-737655e1fb23.js:237669 a3r gate1032827878; app-initial:345477 p1; slate-create-menu:1811-1860 Ar disabled=s||c!=null",
     "createPageDraft": "app-initial-b8e1c8014bb4.js:345959-346198 optimistic metadata, POST/pages result, attachRemotePage",
-    "realtimeToken": "app-initial-b8e1c8014bb4.js:164542-164583 wDr schema and TDr connection"
+    "realtimeToken": "app-initial-b8e1c8014bb4.js:164542-164583 wDr schema and TDr connection",
+    "httpPreview": "app-initial:341839-341895 applyPageRead title/blocks/through_sequence",
+    "catalogOwned": "app-initial:158275-158315 access_kind must be owned"
   },
   "implemented": [
     "GET /spaces/v2 items/next_cursor",
@@ -20,7 +22,8 @@
     "GET /pages/mentions/inbox items/next_cursor",
     "GET /pins/pages array",
     "POST /files/library items/cursor",
-    "GET /pages/creation-capabilities original enum values workbook/presentation/document"
+    "GET /pages/creation-capabilities original enum values workbook/presentation/document",
+    "demo_pages_http.cjs personal POST/pages idempotent metadata and empty content, GET/pages and catalog pagination, GET/pages/rea-page-N; integrated in builder but not installed yet"
   ],
   "fixtureState": "empty",
   "runtimeVerified": {
@@ -42,6 +45,7 @@
   "pending": [
     "Nonempty pages/spaces and persistent create/edit/trash",
     "Editor realtime/bootstrap dependency",
-    "File upload and folder flow"
+    "File upload and folder flow",
+    "Build/install pending page HTTP adapter and verify creation/read in original UI; active runtime remains v17"
   ]
 }

@@ -1,0 +1,25 @@
+{
+  "artifact": "app-initial-b8e1c8014bb4.js",
+  "observation": "static recovered-source audit, not runtime verification",
+  "sources": {
+    "token": "164542-164624 token schema, endpoint query token, subprotocol pages-realtime-room.{id}",
+    "legacySync": "162629-162673 sync_step_2 schema;340803-340853 capability negotiation;341001-341061 sync request",
+    "updates": "162678-162724 committed_update and ack schemas;334835-335046 document_update processing",
+    "bootstrap": "163158 schema;341261 SEo validation",
+    "roots": "156255-156430 title Y.Text, blocksById Y.Map, topLevelBlockIds Y.Array;335100 full sync initializes roots"
+  },
+  "minimumProtocol": [
+    "server_capabilities capabilities:[]",
+    "sync_step_1 -> sync_step_2 committed_sequence/session_id/update(base64 Yjs)/capabilities:[]",
+    "apply document_update to real canonical Yjs state; persist and deduplicate client_update_id",
+    "committed_update contiguous sequence/update_id/update; ack same sequence/client_update_id/update_id",
+    "ping iteration -> pong iteration",
+    "reconnect returns canonical full state and sequence"
+  ],
+  "limitations": [
+    "No runtime synchronization verified",
+    "HTTP bootstrap cannot use rootless empty Yjs update",
+    "Legacy capabilities are insufficient for typed blocks, comments, collaborator cursors and semantic operations"
+  ],
+  "next": "Implement isolated loopback Yjs document service with persisted receipts, then verify original editor text edit and reload. Do not fabricate successful ACKs."
+}
