@@ -5,6 +5,7 @@ const {createDemoIdentity}=require('./demo_identity.cjs');
 const {demoStatsigBootstrap}=require('./demo_feature_flags.cjs');
 const {demoSidebarSettings}=require('./demo_sidebar_settings.cjs');
 const {demoPluginHttp}=require('./demo_plugin_http.cjs');
+const {demoSkillFile}=require('./demo_skill_file.cjs');
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const [avatarPngPath,outputDirectory]=process.argv.slice(2);
 if(!avatarPngPath)throw Error('Pass an explicit local demo PNG path');
@@ -31,6 +32,7 @@ values.http={
  '/wham/onboarding/context':{role:null,desktop_onboarding_completed_at:'2026-10-13T00:00:00Z'}
 };
 const replacements=[
+ ['"read-file":async({path:e,hostId:t})=>{','"read-file":async({path:e,hostId:t})=>{const demoSkill=demoSkillFile(e,t);if(demoSkill!==null)return demoSkill;'],
  ['async function O_(e){','async function O_(e){return structuredClone(__reaDemoIdentity.accountInfo);'],
  ['readAccountInfo(e=!1){','readAccountInfo(e=!1){return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.accountInfo)});'],
  ['readAccounts(e,t=!1){','readAccounts(e,t=!1){return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.accounts)});'],
@@ -42,7 +44,7 @@ for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;

@@ -15,23 +15,34 @@
   "validation": {
     "pythonTests": 63,
     "schemaSamples": 11,
-    "schemas": 7
+    "schemas": 7,
+    "hostContentTests": 1
   },
   "rendererModified": false,
   "runtimeVerification": {
-    "runtimePid": 68872,
-    "adapterPid": 80980,
-    "launcherSession": 54513,
+    "runtimePid": 94404,
+    "adapterPid": 70048,
+    "launcherSession": 92548,
     "observed": [
-      "Installed and Personal cards render Rea UI Demo",
-      "Original card opens original modal",
-      "Modal has Uninstall, Try now, Close dialog",
-      "Content displays Unable to load skill contents"
+      "Original modal renders synthetic markdown using original typography, list and code block",
+      "Disable skill pointer click sets enabled=false and renders Disabled badge",
+      "Page.reload then reopen preserves Disabled badge",
+      "Enable skill pointer click sets enabled=true",
+      "Try now opens new conversation with Rea UI Demo chip in composer"
     ]
   },
   "pending": [
-    "Host skill content read contract",
-    "Original enable/disable UI",
-    "Remove/add and Try now workflows"
-  ]
+    "Remove/add workflows",
+    "Sending skill reference and reopening resulting history",
+    "Other catalog states"
+  ],
+  "contentContract": {
+    "consumer": "app-initial-b8e1c8014bb4.js:Iil:544281",
+    "host": "main-BklS_2Y2.js:66129",
+    "request": "read-file {path,hostId}",
+    "response": "{contents:string}",
+    "demoOnlyPath": "C:/REA-Demo/skills/rea-ui-demo/SKILL.md",
+    "packageSha256": "5a4e3deb0021fdf1d2303027bdd9ccafd4b642cd62a4f7657457fd106d16cda1",
+    "runtimeVerification": "verified original markdown headings/list/code, no error"
+  }
 }
