@@ -84,7 +84,7 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt", "thread/revert"}
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt", "thread/revert", "thread/rollback"}
     METHODS = METHODS | MUTATIONS
 
     def __init__(self, path, streaming=False):
@@ -219,6 +219,16 @@ class ThreadStore:
         data=copy.deepcopy(self.data)
         entry=data["threads"][thread_id]
         thread=entry["thread"]
+        if method == "thread/rollback":
+            if thread["historyMode"]!="legacy":raise ThreadError("Rollback requires legacy demo history")
+            count=params.get("numTurns")
+            if type(count) is not int or not 1 <= count <= len(thread["turns"]):raise ThreadError("Invalid demo rollback count")
+            if any(t["status"]=="inProgress" for t in thread["turns"]):raise ThreadError("Cannot roll back an active demo turn")
+            thread["turns"]=thread["turns"][:-count]
+            thread.update(updatedAt=int(time.time()),status={"type":"idle"})
+            self._commit(data)
+            # Recovered B9t/_8t consume a full thread with retained turns.
+            return {"thread":copy.deepcopy(thread)},None
         if method == "thread/revert":
             if thread["historyMode"]!="paginated":raise ThreadError("Revert requires paginated demo history")
             if any(t["status"]=="inProgress" for t in thread["turns"]):raise ThreadError("Cannot revert an active demo turn")

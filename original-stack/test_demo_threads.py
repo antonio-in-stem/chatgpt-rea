@@ -286,6 +286,20 @@ class ThreadTests(unittest.TestCase):
         self.assertEqual(handle("thread/items/list",{**params,"sortDirection":"desc"})["data"][0],second["data"][0])
         with self.assertRaises(ThreadError):handle("thread/items/list",{"threadId":THREAD["id"],"cursor":anchor})
 
+    def test_legacy_rollback_preserves_earlier_turns(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            store.handle("turn/start",{"threadId":THREAD["id"],"input":[{"type":"text","text":"Later message"}]})
+            for count in (0,-1,True,99):
+                with self.assertRaises(ThreadError):store.handle("thread/rollback",{"threadId":THREAD["id"],"numTurns":count})
+            response,event=store.handle("thread/rollback",{"threadId":THREAD["id"],"numTurns":1})
+            self.assertIsNone(event)
+            self.assertEqual(response["thread"]["turns"],THREAD["turns"])
+            self.assertEqual(ThreadStore(path).handle("thread/read",{"threadId":THREAD["id"],"includeTurns":True})[0]["thread"]["turns"],THREAD["turns"])
+            response,_=store.handle("thread/rollback",{"threadId":THREAD["id"],"numTurns":1})
+            self.assertEqual(response["thread"]["turns"],[])
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

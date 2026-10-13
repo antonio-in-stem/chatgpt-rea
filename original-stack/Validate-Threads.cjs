@@ -27,6 +27,10 @@ with tempfile.TemporaryDirectory() as directory:
  for method,rs,ns,params in [('thread/goal/set','ThreadGoalSetResponse','ThreadGoalUpdatedNotification',{'threadId':THREAD['id'],'objective':'Demo goal'}),('thread/goal/clear','ThreadGoalClearResponse','ThreadGoalClearedNotification',{'threadId':THREAD['id']})]:
   result,event=store.handle(method,params)
   samples.extend([[rs,result],[ns,event['params']]])
+ legacy=ThreadStore(Path(directory)/'legacy.json')
+ rollback,_=legacy.handle('thread/rollback',{'threadId':THREAD['id'],'numTurns':1})
+ # Structural Thread wrapper check only; no original legacy rollback schema was exported.
+ samples.append(['ThreadReadResponse',rollback])
  result,event=store.handle('thread/fork',{'threadId':THREAD['id'],'lastTurnId':THREAD['turns'][0]['id']})
  samples.extend([['ThreadForkResponse',result],['ThreadStartedNotification',event['params']]])
  streaming=ThreadStore(Path(directory)/'streaming.json',streaming=True)
