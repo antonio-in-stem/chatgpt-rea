@@ -12,6 +12,7 @@ from demo_config import ConfigStore, ConfigError
 import demo_threads
 import demo_plugins
 import demo_skills
+from demo_page_sync import PageSyncStore
 
 MAX_FRAME_BYTES = 1024 * 1024
 FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
@@ -110,6 +111,7 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
     config = ConfigStore(config_state, FIXTURES["config/read"]["result"]["config"])
     threads = demo_threads.ThreadStore(thread_state,streaming=True)
     recovered_turns=threads.recover_active_turns()
+    pages=PageSyncStore(output.parent)
     clients = set()
     tasks=set()
     async def publish(notification):
@@ -140,6 +142,9 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
             error=task.exception()
             if error is not None:print(json.dumps({"kind":"stream-finalization-error","errorType":type(error).__name__}),flush=True)
     async def connection(socket):
+        if socket.request.path.startswith("/demo-pages/"):
+            await pages.connection(socket)
+            return
         clients.add(socket)
         try:
             async for raw in socket:
@@ -156,6 +161,7 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
         except ConnectionClosed:pass
         finally:clients.discard(socket)
     async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES) as server:
+        pages.publish_endpoint("ws://127.0.0.1:"+str(server.sockets[0].getsockname()[1]))
         print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
                           "mode": "demo-contract-adapter", "simulatedWindowsReadiness":demo_sandbox_state,"executesTools":False,"recoveredDemoTurns":recovered_turns, "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
         try:await asyncio.Future()

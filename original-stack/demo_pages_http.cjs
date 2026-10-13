@@ -6,12 +6,19 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const listing=method==='GET'&&(route==='/pages'||route==='/pages/catalog');
  const detail=method==='GET'&&/^\/pages\/rea-page-[1-9][0-9]*$/.test(route);
  const create=method==='POST'&&route==='/pages';
- if(!listing&&!detail&&!create)return null;
+ const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
+ if(!listing&&!detail&&!create&&!token)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
  if(state.version!==1||!Array.isArray(state.items)||!Number.isSafeInteger(state.sequence))throw Error('Invalid demo page store');
- const read=item=>({metadata:item.metadata,content:item.content,document_bootstrap:null});
+ const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;return {metadata:doc?{...item.metadata,title:doc.title??item.metadata.title,current_sequence:doc.sequence}:item.metadata,content:doc?null:item.content,document_bootstrap:null};};
+ if(token){
+  const item=state.items.find(x=>x.metadata.page_id===route.split('/')[2]);if(!item)throw Error('Unknown demo page');
+  const runtime=JSON.parse(fs.readFileSync(path.join(path.dirname(settingsPath),'demo-pages-runtime.json'),'utf8'));
+  if(!/^ws:\/\/127\.0\.0\.1:[1-9][0-9]*$/.test(runtime.endpoint)||typeof runtime.token!=='string'||runtime.token.length<32)throw Error('Invalid demo realtime endpoint');
+  return {document_type:'page',stream_kind:'content',endpoint:runtime.endpoint+'/demo-pages/'+item.metadata.page_id,token:runtime.token,granted_scope:'write',page_metadata:{page_id:item.metadata.page_id,document_type:'page',title:read(item).metadata.title,access:{can_read:true,can_write:true}}};
+ }
  if(detail){const item=state.items.find(x=>x.metadata.page_id===route.slice(7));if(!item)throw Error('Unknown demo page');return read(item);}
  if(listing){
   const cursor=url.searchParams.get('cursor'),rawLimit=url.searchParams.get('limit');
@@ -21,7 +28,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(!Number.isSafeInteger(offset)||offset>state.items.length)throw Error('Unknown demo page cursor');
   const selected=state.items.slice(offset,offset+limit);
   const catalog=route==='/pages/catalog';
-  const result={items:selected.map(x=>catalog?{id:x.metadata.page_id,title:x.metadata.title,open:{kind:'page',page_id:x.metadata.page_id},access_kind:'owned',created_at:x.metadata.created_at,updated_at:x.metadata.updated_at,last_used_at:x.metadata.updated_at,symbol:null}:x.metadata),next_cursor:offset+limit<state.items.length?'offset:'+(offset+limit):null};
+  const result={items:selected.map(stored=>{const x={...stored,metadata:read(stored).metadata};return catalog?{id:x.metadata.page_id,title:x.metadata.title,open:{kind:'page',page_id:x.metadata.page_id},access_kind:'owned',created_at:x.metadata.created_at,updated_at:x.metadata.updated_at,last_used_at:x.metadata.updated_at,symbol:null}:x.metadata}),next_cursor:offset+limit<state.items.length?'offset:'+(offset+limit):null};
   if(catalog)result.order_by=url.searchParams.get('order_by')||'last_used_at';
   return result;
  }

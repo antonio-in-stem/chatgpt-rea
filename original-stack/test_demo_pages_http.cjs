@@ -24,6 +24,7 @@ test('personal page creation is idempotent, persistent, paged and explicit about
   assert.throws(()=>call('POST','/pages',{...input,idempotency_key:'third'}));
   assert.equal(fs.readFileSync(path.join(dir,'demo-pages.json.pending'),'utf8'),'foreign lock');
   assert.equal(call('GET','/pages').items.length,2);
-  assert.equal(call('POST','/pages/rea-page-1/realtime-token',{}),null);
+  fs.writeFileSync(path.join(dir,'demo-pages-runtime.json'),JSON.stringify({endpoint:'ws://127.0.0.1:12345',token:'x'.repeat(32)}));
+  assert.equal(call('POST','/pages/rea-page-1/realtime-token',{}).endpoint,'ws://127.0.0.1:12345/demo-pages/rea-page-1');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
