@@ -2,6 +2,7 @@
 import copy
 import base64
 import hashlib
+import secrets
 import json
 import time
 import uuid
@@ -148,7 +149,8 @@ def handle(method, params, thread_data=None, archived=False):
 
 class ThreadStore:
     MUTATIONS = {"thread/section/move", "thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt", "thread/revert", "thread/rollback"}
-    METHODS = METHODS | MUTATIONS
+    SECTION_METHODS = {"threadSection/list","threadSection/create","threadSection/update","threadSection/delete"}
+    METHODS = METHODS | MUTATIONS | SECTION_METHODS
 
     def __init__(self, path, streaming=False):
         self.streaming=streaming
@@ -158,6 +160,8 @@ class ThreadStore:
             data = {"version":2,"threads":{data["thread"]["id"]:data}}
         if data.get("version") != 2 or not isinstance(data.get("threads"),dict):
             raise ThreadError("Unsupported demo thread store")
+        data.setdefault("sections",{})
+        if not isinstance(data["sections"],dict):raise ThreadError("Invalid section store")
         self.data = data
 
     def _commit(self, data):
@@ -166,6 +170,49 @@ class ThreadStore:
         temporary.write_text(json.dumps(data,indent=2),encoding="utf-8")
         temporary.replace(self.path)
         self.data = data
+
+    def _sections(self):
+        return {PINNED_SECTION:{"id":PINNED_SECTION,"name":"Pinned","appearance":None},**self.data["sections"]}
+
+    def _section_operation(self, method, params):
+        if method=="threadSection/list":
+            result=page(copy.deepcopy(list(self._sections().values())),params,"demo-section:")
+            result.pop("backwardsCursor")
+            return result,None
+        identifier=params.get("sectionId")
+        if method!="threadSection/create":
+            if not isinstance(identifier,str) or identifier not in self.data["sections"]:raise ThreadError("Unknown or reserved demo section")
+        if method!="threadSection/delete":
+            name=params.get("name")
+            if not isinstance(name,str) or not name.strip():raise ThreadError("Section name required")
+            appearance=params.get("appearance")
+            if appearance is not None and (not isinstance(appearance,dict) or set(appearance)!={"icon","color"} or any(v is not None and not isinstance(v,str) for v in appearance.values())):raise ThreadError("Invalid section appearance")
+        data=copy.deepcopy(self.data)
+        if method=="threadSection/delete":
+            del data["sections"][identifier]
+            for entry in data["threads"].values():
+                if (entry["thread"]["section"] or {}).get("id")==identifier:
+                    entry["thread"].update(section=None,sectionEnteredAt=None)
+                    entry.pop("sectionPosition",None)
+            result={}
+        else:
+            if method=="threadSection/create":
+                # Timestamp-based UUIDv7 identity; randomness disambiguates same-ms creates.
+                while True:
+                    bits=(int(time.time()*1000)<<80)|(7<<76)|(secrets.randbits(12)<<64)|(2<<62)|secrets.randbits(62)
+                    identifier=str(uuid.UUID(int=bits))
+                    if identifier not in self._sections():break
+                section={"id":identifier,"name":name.strip(),"appearance":copy.deepcopy(appearance)}
+            else:
+                section=data["sections"][identifier]
+                section["name"]=name.strip()
+                if "appearance" in params:section["appearance"]=copy.deepcopy(appearance)
+            data["sections"][identifier]=section
+            for entry in data["threads"].values():
+                if (entry["thread"]["section"] or {}).get("id")==identifier:entry["thread"]["section"]=copy.deepcopy(section)
+            result={"section":copy.deepcopy(section)}
+        self._commit(data)
+        return result,None
 
     def end_failed_turn(self, thread_id, turn_id, message, ended_at_ms=None):
         data=copy.deepcopy(self.data)
@@ -248,7 +295,7 @@ class ThreadStore:
     def handle(self, method, params):
         if params is None and method == "thread/list":params={}
         if not isinstance(params,dict):raise ThreadError("Expected object parameters")
-        if method == "threadSection/list":return handle(method,params),None
+        if method in self.SECTION_METHODS:return self._section_operation(method,params)
         if method == "thread/start":return self._start(params)
         if method == "thread/search":return search_threads(self.data["threads"].values(),params),None
         if method == "thread/list":
@@ -270,7 +317,7 @@ class ThreadStore:
             sort_key=params.get("sortKey") or "created_at"
             keys={"created_at":"createdAt","updated_at":"updatedAt","recency_at":"recencyAt"}
             if sort_key == "section_position":
-                if params.get("sectionId") != PINNED_SECTION:raise ThreadError("Section ordering requires the demo pinned section")
+                if not isinstance(params.get("sectionId"),str) or params["sectionId"] not in self._sections():raise ThreadError("Section ordering requires an existing demo section")
                 rows.sort(key=lambda t:(self.data["threads"][t["id"]].get("sectionPosition",0),t["id"]),reverse=params.get("sortDirection")=="desc")
                 return page(rows,params,"demo-thread:"),None
             if sort_key not in keys:raise ThreadError("Unsupported demo thread sort")
@@ -289,7 +336,7 @@ class ThreadStore:
         entry=data["threads"][thread_id]
         thread=entry["thread"]
         if method == "thread/section/move":
-            if "sectionId" not in params or params["sectionId"] not in (None,PINNED_SECTION):raise ThreadError("Unknown demo section")
+            if "sectionId" not in params or (params["sectionId"] is not None and (not isinstance(params["sectionId"],str) or params["sectionId"] not in self._sections())):raise ThreadError("Unknown demo section")
             destination=params["sectionId"]
             before=params.get("beforeThreadId")
             if before is not None and not isinstance(before,str):raise ThreadError("Invalid section anchor")
@@ -297,7 +344,7 @@ class ThreadStore:
             if before is not None and (before not in data["threads"] or (data["threads"][before]["thread"]["section"] or {}).get("id")!=destination):raise ThreadError("Anchor is not in destination section")
             if before==thread_id:return {},None
             if (thread["section"] or {}).get("id")!=destination:thread["sectionEnteredAt"]=int(time.time()) if destination else None
-            thread["section"]={"id":PINNED_SECTION,"name":"Pinned","appearance":None} if destination else None
+            thread["section"]=copy.deepcopy(self._sections()[destination]) if destination else None
             if destination:
                 ordered=sorted((value for key,value in data["threads"].items() if key!=thread_id and (value["thread"]["section"] or {}).get("id")==destination),key=lambda e:(e.get("sectionPosition",0),e["thread"]["id"]))
                 at=next((i for i,e in enumerate(ordered) if e["thread"]["id"]==before),len(ordered))

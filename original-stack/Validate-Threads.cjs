@@ -13,6 +13,13 @@ from demo_transport import handle_message
 samples=[['ThreadResumeResponse',handle('thread/resume',{'threadId':THREAD['id']})],['ThreadListResponse',handle('thread/list',{})],['ThreadReadResponse',handle('thread/read',{'threadId':THREAD['id'],'includeTurns':True})],['ThreadTurnsListResponse',handle('thread/turns/list',{'threadId':THREAD['id'],'itemsView':'full'})]]
 with tempfile.TemporaryDirectory() as directory:
  store=ThreadStore(Path(directory)/'thread.json')
+ section,_=store.handle('threadSection/create',{'name':'Library','appearance':{'icon':'folder','color':'blue'}})
+ samples.append(['ThreadSectionCreateResponse',section])
+ updated,_=store.handle('threadSection/update',{'sectionId':section['section']['id'],'name':'Components'})
+ samples.append(['ThreadSectionUpdateResponse',updated])
+ samples.append(['ThreadSectionListResponse',store.handle('threadSection/list',{})[0]])
+ deleted,_=store.handle('threadSection/delete',{'sectionId':section['section']['id']})
+ samples.append(['ThreadSectionDeleteResponse',deleted])
  pinned,_=store.handle('thread/section/move',{'threadId':THREAD['id'],'sectionId':PINNED_SECTION})
  samples.extend([['ThreadSectionMoveResponse',pinned],['ThreadSectionListResponse',handle('threadSection/list',{})]])
  started,event=store.handle('thread/start',{'historyMode':'paginated'})

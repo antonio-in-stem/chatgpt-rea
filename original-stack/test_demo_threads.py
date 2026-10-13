@@ -70,6 +70,48 @@ class ThreadTests(unittest.TestCase):
                 with self.assertRaises(OSError):store.handle("thread/section/move",{"threadId":THREAD["id"],"sectionId":PINNED_SECTION})
             self.assertIsNone(store.data["threads"][THREAD["id"]]["thread"]["section"])
 
+    def test_custom_sections_rename_and_delete_preserve_transcripts(self):
+        import uuid
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            created,_=store.handle("threadSection/create",{"name":"Library","appearance":{"icon":"folder","color":"blue"}})
+            sid=created["section"]["id"]
+            self.assertEqual(uuid.UUID(sid).version,7)
+            store.handle("thread/section/move",{"threadId":THREAD["id"],"sectionId":sid})
+            updated,_=store.handle("threadSection/update",{"sectionId":sid,"name":"Components"})
+            self.assertEqual(updated["section"]["appearance"],created["section"]["appearance"])
+            self.assertEqual(updated["section"]["id"],sid)
+            reloaded=ThreadStore(path)
+            pinned=reloaded.handle("thread/list",{"sectionId":sid,"sortKey":"section_position"})[0]["data"][0]
+            self.assertEqual(pinned["section"]["name"],"Components")
+            reloaded.handle("threadSection/update",{"sectionId":sid,"name":"Components","appearance":None})
+            self.assertIsNone(reloaded.data["threads"][THREAD["id"]]["thread"]["section"]["appearance"])
+            reloaded.handle("threadSection/delete",{"sectionId":sid})
+            final=ThreadStore(path)
+            thread=final.handle("thread/read",{"threadId":THREAD["id"],"includeTurns":True})[0]["thread"]
+            self.assertIsNone(thread["section"])
+            self.assertEqual(thread["turns"],THREAD["turns"])
+            self.assertEqual(len(final.handle("threadSection/list",{})[0]["data"]),1)
+
+    def test_custom_section_validation_and_failed_delete_are_atomic(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json")
+            for params in ({"name":" "},{"name":"A","appearance":{"color":"blue"}},{"name":"A","appearance":{"icon":False,"color":None}}):
+                with self.assertRaises(ThreadError):store.handle("threadSection/create",params)
+            for method in ("threadSection/update","threadSection/delete"):
+                with self.assertRaises(ThreadError):store.handle(method,{"sectionId":PINNED_SECTION,"name":"Other"})
+            created,_=store.handle("threadSection/create",{"name":"Library"})
+            sid=created["section"]["id"]
+            store.handle("thread/section/move",{"threadId":THREAD["id"],"sectionId":sid})
+            with patch.object(Path,"replace",side_effect=OSError("disk unavailable")):
+                with self.assertRaises(OSError):store.handle("threadSection/delete",{"sectionId":sid})
+            self.assertIn(sid,store.data["sections"])
+            self.assertEqual(store.data["threads"][THREAD["id"]]["thread"]["section"]["id"],sid)
+            first=store.handle("threadSection/list",{"limit":1})[0]
+            second=store.handle("threadSection/list",{"limit":1,"cursor":first["nextCursor"]})[0]
+            self.assertEqual(second["data"][0]["id"],sid)
+
     def test_list_omits_history_and_honors_filters(self):
         self.assertEqual(handle("thread/list",{})["data"][0]["turns"],[])
         self.assertEqual(handle("thread/list",{"archived":True})["data"],[])

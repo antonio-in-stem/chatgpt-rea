@@ -1,0 +1,13 @@
+{
+  "creationMethod": "Direct loopback demo RPC, not original menu UI",
+  "section": {
+    "id": "01a13374-549c-7ccc-bbff-3f8ee898271e",
+    "name": "Component Library Demo",
+    "appearance": null
+  },
+  "threadId": "019cc001-0000-7000-8000-000000000001",
+  "visibleInOriginalSidebarAfterRestart": false,
+  "originalMenuCreationVerified": false,
+  "testSectionRemovedThroughRpc": true,
+  "nextInvestigation": "Original host section registration/cache and discovery path"
+}
