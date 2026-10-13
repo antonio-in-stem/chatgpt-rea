@@ -108,3 +108,6 @@ Native rail destination buttons now paint 64-segment corner cutouts over square 
 
 ## Sidebar row geometry checkpoint
 app-initial356765 assigns sidebar-item to sidebar rows. Shared CSS15802 sets radius-lg and codex-corner-shape; this is 10px *1.25=12.5px with superellipse(1.5), without the rail button second multiplier. Sidebar-navigation at25475 retains30px height,8px cell padding and13px text-sm in Electron. Native chats, project rows, nested chats and Show more now use these corner cutouts. Padding lives inside row content, because the native Button content wrapper would otherwise inset the cutout layer; the actual executable capture caught this issue and the corrected qa/native-sidebar-22.png was inspected. Nested chat content retains32px indentation. Profile/mode menus and other controls remain pending. 59 workspace tests pass after the final composition change.
+
+
+Sidebar selection: app-initial356765–356782 uses bg-primary-ghost-hover for selected/open rows, same as hover. Shared CSS5724 resolves this to app-color-background-button-secondary-hover, whose color-mix definition at5303 is white8% dark / foreground5% light. Native selected chat rows now use that alpha token rather than secondary white5%. Native hover already uses the corresponding theme hover token. Exact selected+pressed and focus-outline behavior still needs comparison.

@@ -187,7 +187,8 @@ impl WorkspaceApp {
             .text_size(native_ui::typography::TextRole::Small.in_app(cx))
             .child(row)
             .child(sidebar_row_corners(cx))
-            .when(selected, |b| b.bg(cx.theme().colors.secondary))
+            // Recovered row selected/open state uses bg-primary-ghost-hover.
+            .when(selected, |b| b.bg(native_ui::tokens::secondary_hover(cx.theme().mode.is_dark())))
             .on_click(cx.listener(move |this, _, window, cx| this.act(action.clone(), window, cx)))
     }
     fn nav(
