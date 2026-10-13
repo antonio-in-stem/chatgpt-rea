@@ -1,0 +1,47 @@
+{
+  "method": "Static search of extracted CSS; offsets are Unicode character offsets, not binary addresses",
+  "rules": [
+    {
+      "file": "app-initial-99e8b4b455fa.css",
+      "sha256": "1a75f9180b89d2457dc09e4efea288436c9cf6d44e5ba59b2c03d3d571b7bf61",
+      "characterOffset": 13690,
+      "ruleFragment": "@supports (corner-shape:superellipse(1.5)){[data-composer-radius-variant=default] ._ComposerLayoutReplyContext_boifs_2{corner-shape:var(--codex-corner-shape)}"
+    },
+    {
+      "file": "app-initial-99e8b4b455fa.css",
+      "sha256": "1a75f9180b89d2457dc09e4efea288436c9cf6d44e5ba59b2c03d3d571b7bf61",
+      "characterOffset": 30005,
+      "ruleFragment": "@supports (corner-shape:superellipse(1.5)){._LoadingResultsShimmer_1a4hf_2{corner-shape:var(--codex-corner-shape)}"
+    },
+    {
+      "file": "app-initial-99e8b4b455fa.css",
+      "sha256": "1a75f9180b89d2457dc09e4efea288436c9cf6d44e5ba59b2c03d3d571b7bf61",
+      "characterOffset": 76750,
+      "ruleFragment": "@supports (corner-shape:superellipse(1.5)){:where(.messaging-root) .room-row,:where(.messaging-root) .connection-row,:where(.messaging-root) .new-group-row,:where(.messaging-root) .mailbox-tab,:where(.messaging-root) .button:not(.reply-chain-close),:where(.messaging-root) .message-action-button,:where(.messaging-root) .thread-rename-dialog,:where(.messaging-root) .info-popover{corner-shape:superellipse(1.5)}"
+    },
+    {
+      "file": "app-primary-6a01c6b721a4.css",
+      "sha256": "4fa4b28e72c437f924e45aeeff2b4c26f23f37fe29048258779f816c212f1574",
+      "characterOffset": 1895,
+      "ruleFragment": "@supports (corner-shape:superellipse(1.5)){._attached_1hrlq_36{corner-shape:var(--codex-corner-shape)}"
+    },
+    {
+      "file": "app-primary-6a01c6b721a4.css",
+      "sha256": "4fa4b28e72c437f924e45aeeff2b4c26f23f37fe29048258779f816c212f1574",
+      "characterOffset": 17003,
+      "ruleFragment": "@supports (corner-shape:superellipse(1.5)){._ViewToggle_tovi5_190,._FastModeToggle_tovi5_54,._ResetToDefault_tovi5_219{corner-shape:var(--codex-corner-shape)}"
+    },
+    {
+      "file": "app-shared-9a94b907ed47.css",
+      "sha256": "69f929f71947824fed18365d54c8aa0c975a856649339e585a50f6f547e215d7",
+      "characterOffset": 8323,
+      "ruleFragment": "._Button_eg66f_2:where([data-squircle]){border-radius:calc(var(--button-radius) * 1.25);corner-shape:superellipse(1.5)}"
+    },
+    {
+      "file": "app-shared-9a94b907ed47.css",
+      "sha256": "69f929f71947824fed18365d54c8aa0c975a856649339e585a50f6f547e215d7",
+      "characterOffset": 1260489,
+      "ruleFragment": "@supports (corner-shape:superellipse(1.5)){:root{--codex-corner-radius-scale:1.25;--codex-corner-shape:superellipse(1.5);--corner-radius-scale:var(--codex-corner-radius-scale);--radius-md:calc(var(--radius-md-base) * var(--corner-radius-scale));--radius-lg:calc(var(--radius-lg-base) * var(--corner-radius-scale));--radius-xl:calc(var(--radius-xl-base) * var(--corner-radius-scale));--radius-2xl:calc(var(--radius-2xl-base) * var(--corner-radius-scale));--radius-3xl:calc(var(--radius-3xl-base) * var(--corner-radius-scale));--radius-4xl:calc(var(--radius-4xl-base) * var(--corner-radius-scale))}"
+    }
+  ]
+}

@@ -248,3 +248,11 @@ Observed surfaces in this state:
 | Permission control | 13 px type, 18 px line height |
 
 These measurements explain why uniform corner rounding and flat approximated surfaces lose fidelity. They are a baseline for the later native port, not universal layout constants. Responsive widths, alternate themes, message bubbles and interaction states remain to be measured. Matching computed styles alone does not reproduce Chromium text rasterization or compositing.
+
+## Message bubble contours and permission-chip hover
+
+Static inspection of user-message-bd254db1d77f.js identified the actual bubble class `_bubble_11evq_1`; this build does not use the previously attempted data-message-author-role selector. The measurement tool now anchors to that shipped class, whose version dependence is explicit. The extracted user-message-f152e09d34c3.css is retained unchanged as evidence/user-message.recovered.css. Additional hashed CSS fragments in superellipse-source.json show the supported superellipse feature branch and the 1.25 radius-scale variable; fragments are static evidence, not proof that every listed rule applies to this screen.
+
+The runtime report render-metrics-message-1090x760.json covers 119 nodes and now includes corner-shape, filters and masks. The observed regular user bubble has 22 px radii with `superellipse(1.5)`, a 70% maximum width, 10 px vertical / 16 px horizontal padding and a translucent background. Its text actually uses Segoe UI. The bubble container's inherited 16 px font does not describe its text descendants; use the fontSamples node styles when porting text. Compact and temporary variants have separate extracted rules but have not been exercised here.
+
+Demo-Controls supports hover via mouseMoved without a click. Hovering Cambiar permisos changed its background from transparent to rgba(255,255,255,0.08), retaining its existing text color, 28 px height and `superellipse(1)` corner shape. permission-hover-observation.json records the baseline-relative change; original-permission-hover.png visually confirms the chip highlight and original tooltip. Tooltip geometry and timing were not measured. No renderer/CSS changes were made. A native rounded rectangle with only the same radius is therefore insufficient to reproduce every original contour; the superellipse shape is part of the measured contract.

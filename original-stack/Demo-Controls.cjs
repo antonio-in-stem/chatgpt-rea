@@ -18,21 +18,23 @@ const fs=require('node:fs'),path=require('node:path');
  try{
   let expression;
   if(operation==='inspect')expression=`[...document.querySelectorAll('button,a,[role="button"],[role="link"],[role="menuitem"],input')].map(e=>({tag:e.tagName,role:e.getAttribute('role'),label:e.getAttribute('aria-label'),text:(e.innerText||'').slice(0,100),type:e.type,disabled:!!e.disabled}))`;
-  else if((operation==='click'||operation==='activate'||operation==='activate-text')&&label)expression=`(()=>{const text=${JSON.stringify(label)};let matches=[...document.querySelectorAll('button,a,[role="button"],[role="link"],[role="menuitem"]')].filter(e=>e.innerText.trim()===text||(${JSON.stringify(operation)}!=='activate-text'&&e.getAttribute('aria-label')===text)).filter(e=>e.getBoundingClientRect().width>0);if(matches.length===0&&${JSON.stringify(operation)}==='activate')matches=[...document.querySelectorAll('span')].filter(e=>e.children.length===0&&e.textContent.trim()===text&&e.getBoundingClientRect().width>0);if(matches.length!==1||matches[0].disabled)throw Error('Expected one enabled control');if(${JSON.stringify(operation)}==='activate'||${JSON.stringify(operation)}==='activate-text'){matches[0].click();return {activated:text}}const r=matches[0].getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`;
+  else if((operation==='click'||operation==='hover'||operation==='activate'||operation==='activate-text')&&label)expression=`(()=>{const text=${JSON.stringify(label)};let matches=[...document.querySelectorAll('button,a,[role="button"],[role="link"],[role="menuitem"]')].filter(e=>e.innerText.trim()===text||(${JSON.stringify(operation)}!=='activate-text'&&e.getAttribute('aria-label')===text)).filter(e=>e.getBoundingClientRect().width>0);if(matches.length===0&&${JSON.stringify(operation)}==='activate')matches=[...document.querySelectorAll('span')].filter(e=>e.children.length===0&&e.textContent.trim()===text&&e.getBoundingClientRect().width>0);if(matches.length!==1||matches[0].disabled)throw Error('Expected one enabled control');if(${JSON.stringify(operation)}==='activate'||${JSON.stringify(operation)}==='activate-text'){matches[0].click();return {activated:text}}const r=matches[0].getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`;
   else if(operation==='insert-focused'&&label)expression=`(()=>{const e=document.activeElement;if(!e||(!e.isContentEditable&&!(e instanceof HTMLTextAreaElement)))throw Error('Focused editable required');return {tag:e.tagName,editable:true}})()`;
   else if(operation==='locate'&&label)expression=`[...document.querySelectorAll('*')].filter(e=>e.children.length===0&&e.textContent.trim()===${JSON.stringify(label)}).map(e=>e.parentElement.parentElement.parentElement.outerHTML.slice(0,2400))`;
   else if(operation==='fill'&&label&&value!==undefined)expression=`(()=>{const matches=[...document.querySelectorAll('input')].filter(e=>e.getAttribute('aria-label')===${JSON.stringify(label)});if(matches.length!==1)throw Error('Expected one input');const input=matches[0];Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,${JSON.stringify(value)});input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));return {filled:${JSON.stringify(label)}}})()`;
-  else throw Error('Supported operations: inspect, click, activate, activate-text, fill, insert-focused');
+  else throw Error('Supported operations: inspect, click, hover, activate, activate-text, fill, insert-focused');
   const result=await send('Runtime.evaluate',{returnByValue:true,expression});
   if(result.exceptionDetails)throw Error(result.exceptionDetails.text);
   if(operation==='insert-focused'){
    await send('Input.insertText',{text:label});console.log(JSON.stringify({inserted:true}));
-  }else if(operation==='click'){
+  }else if(operation==='click'||operation==='hover'){
    const {x,y}=result.result.value;
    await send('Input.dispatchMouseEvent',{type:'mouseMoved',x,y});
+   if(operation==='click'){
    await send('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',clickCount:1});
    await send('Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',clickCount:1});
-   console.log(JSON.stringify({clicked:label,x,y}));
+   }
+   console.log(JSON.stringify({operation,label,x,y}));
   }else console.log(JSON.stringify(result.result.value));
  }finally{clearTimeout(timer);ws.close()}
 })().catch(e=>{console.error(e.message);process.exitCode=1});

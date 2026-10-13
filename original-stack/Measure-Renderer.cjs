@@ -4,7 +4,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 
 function measureRenderer() {
-  const properties = ['display','position','box-sizing','width','height','min-width','max-width','min-height','max-height','padding-top','padding-right','padding-bottom','padding-left','margin-top','margin-right','margin-bottom','margin-left','gap','row-gap','column-gap','border-top-left-radius','border-top-right-radius','border-bottom-right-radius','border-bottom-left-radius','border-top-width','border-right-width','border-bottom-width','border-left-width','border-top-color','border-right-color','border-bottom-color','border-left-color','border-top-style','background-color','background-image','color','box-shadow','opacity','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-rendering','overflow-x','overflow-y','align-items','justify-content','flex-direction','flex-grow','flex-shrink','transform','clip-path','transition-property','transition-duration','transition-timing-function'];
+  const properties = ['display','position','box-sizing','width','height','min-width','max-width','min-height','max-height','padding-top','padding-right','padding-bottom','padding-left','margin-top','margin-right','margin-bottom','margin-left','gap','row-gap','column-gap','corner-shape','corner-top-left-shape','corner-top-right-shape','corner-bottom-right-shape','corner-bottom-left-shape','border-top-left-radius','border-top-right-radius','border-bottom-right-radius','border-bottom-left-radius','border-top-width','border-right-width','border-bottom-width','border-left-width','border-top-color','border-right-color','border-bottom-color','border-left-color','border-top-style','background-color','background-image','background-clip','backdrop-filter','filter','mask-image','color','box-shadow','opacity','font-family','font-size','font-weight','font-style','line-height','letter-spacing','text-rendering','overflow-x','overflow-y','align-items','justify-content','flex-direction','flex-grow','flex-shrink','transform','clip-path','transition-property','transition-duration','transition-timing-function'];
   const nodes = [], ids = new Map();
   const variables = e => {const s=getComputedStyle(e);return Object.fromEntries([...s].filter(p=>p.startsWith('--')).map(p=>[p,s.getPropertyValue(p)]))};
   const rootVariables=variables(document.documentElement);
@@ -36,7 +36,7 @@ function measureRenderer() {
     composer:document.querySelector('[contenteditable="true"]'),
     composerSend:document.querySelector('button[aria-label="Enviar"]'),
     composerPermissions:document.querySelector('button[aria-label="Cambiar permisos"]'),
-    userMessage:document.querySelector('[data-message-author-role="user"]'),
+    userMessage:document.querySelector('._bubble_11evq_1'),
   };
   const chains = {}, fontSamples = {};
   for(const [name,e] of Object.entries(anchors)) {
