@@ -20,6 +20,15 @@ class TransportTests(unittest.IsolatedAsyncioTestCase):
                 self.assertEqual(reply['error']['code'],-32601)
         self.assertNotIn('must-not-be-retained',json.dumps(seen))
         self.assertEqual(seen[0]['paramKeys'],['token'])
+    async def test_fixture_methods_do_not_produce_credentials(self):
+        for method in ["initialize", "account/read", "configRequirements/read"]:
+            reply,_=handle_message(json.dumps({"id": "fixture", "method": method}))
+            self.assertEqual(reply["id"], "fixture")
+            self.assertIn("result",reply)
+        reply,_=handle_message(json.dumps({"id":1,"method":"account/read"}))
+        self.assertIsNone(reply["result"]["account"])
+        self.assertFalse(reply["result"]["requiresOpenaiAuth"])
+
     async def test_notifications_and_malformed_frames(self):
         self.assertIsNone(handle_message('{"method":"initialized"}')[0])
         self.assertEqual(handle_message('{broken')[0]['error']['code'],-32700)

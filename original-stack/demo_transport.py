@@ -8,6 +8,7 @@ from pathlib import Path
 from websockets.asyncio.server import serve
 
 MAX_FRAME_BYTES = 1024 * 1024
+FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
 
 
 def handle_message(raw):
@@ -27,6 +28,13 @@ def handle_message(raw):
                    "paramsType": type(params).__name__}
     if "id" not in message:
         return None, observation
+    if message["method"] == "initialize":
+        return {"id": request_id, "result": {
+            "userAgent": "rea-demo/0.162.0-alpha.17.2",
+            "codexHome": str((Path(__file__).parent / "state" / "demo-home").resolve()),
+            "platformFamily": "windows", "platformOs": "windows"}}, observation
+    if message["method"] in FIXTURES:
+        return {"id": request_id, "result": FIXTURES[message["method"]]["result"]}, observation
     # Fail closed until a source-derived fixture for this method exists.
     return {"id": request_id, "error": {"code": -32601, "message": "Demo contract not implemented"}}, observation
 
@@ -42,7 +50,7 @@ async def run(port, output):
                 await socket.send(json.dumps(reply))
     async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES) as server:
         print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
-                          "mode": "contract-recorder", "fixtureMethods": []}), flush=True)
+                          "mode": "demo-contract-adapter", "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
         await asyncio.Future()
 
 if __name__ == "__main__":

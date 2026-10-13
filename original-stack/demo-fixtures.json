@@ -1,0 +1,17 @@
+{
+  "account/read": {
+    "schema": "v2/GetAccountResponse.json",
+    "result": {
+      "account": null,
+      "requiresOpenaiAuth": false,
+      "workspaceRouting": null
+    }
+  },
+  "configRequirements/read": {
+    "schema": "v2/ConfigRequirementsReadResponse.json",
+    "result": {
+      "supportsIndependentSpeedModes": true,
+      "requirements": null
+    }
+  }
+}

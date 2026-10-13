@@ -44,3 +44,11 @@ Static source Yo in application-network-startup-CfAQmSYg.js selects CODEX_APP_SE
 demo_transport.py is a loopback-only WebSocket contract recorder. It never connects upstream; it logs method names/parameter keys only, not parameter values. Unknown requests return method-not-implemented and notifications receive no reply. It has no fixture methods yet and therefore cannot boot the app as a usable offline demo. Two tests exercise actual WebSocket request/reply, ID correlation, redaction of parameter values, notification behavior and malformed input. Python websockets was already available locally; no dependency was installed.
 
 The original runtime has NOT been launched against this recorder. Account/profile and native network isolation must be resolved before using it to observe startup, and response schemas must be recovered before implementing fixtures. No frontend components or styles were changed.
+
+## Exported authoritative protocol
+
+The shipped pristine/resources/codex.exe (codex-cli0.162.0-alpha.17.2) exported1,335 JSON-schema/TypeScript files using app-server generate-json-schema --experimental and app-server generate-ts --experimental. protocol-manifest.json records the generator SHA256, commands and every output SHA256. These are generated protocol bindings, not recovered original UI TypeScript.
+
+The local adapter now supports initialize, account/read and configRequirements/read. Values represent synthetic no-account/no-policy state; initialize identifies itself as rea-demo and uses only state/demo-home. All other requests still fail explicitly. GetAuthStatus remains unimplemented because its legacy TypeScript definition was exported but its JSON-schema response was not found in this export; this matters to startup.
+
+Three Python transport tests pass. Validate-Fixtures.cjs validates the actual handler output against the exported response schemas using an already installed Ajv package passed as its argument. Schemars uint/uint16/uint64 extensions are registered, with wide integers conservatively restricted to the JS-safe range. The current fixtures contain no wide integer values. All three responses validate. Shape validity does not prove original frontend startup compatibility, feature availability or account/network isolation. The original runtime remains stopped; no app launch against these fixtures has occurred.
