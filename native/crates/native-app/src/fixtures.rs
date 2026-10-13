@@ -63,7 +63,40 @@ pub fn activity(status: native_core::ActivityStatus) -> native_core::TurnActivit
         entries:vec![
             ActivityEntry::Commentary { text:"I'll inspect the layout and check the component states.".into() },
             ActivityEntry::Command { command:"cargo check --workspace".into(),
-                output:"Demo output — no command was executed.\nFinished checking the example workspace.".into(),exit_code:0 },
+                output:"Demo output — no command was executed.\nFinished checking the example workspace.".into(),exit_code: if status==ActivityStatus::Working { None } else { Some(0) },
+                status:if status==ActivityStatus::Working { native_core::CommandStatus::Running } else { native_core::CommandStatus::Completed } },
         ],
+    }
+}
+
+pub fn finish_activity(activity:&mut native_core::TurnActivity,stopped:bool) {
+    use native_core::{ActivityEntry,ActivityStatus,CommandStatus};
+    activity.status=if stopped {ActivityStatus::Stopped} else {ActivityStatus::Worked};
+    for entry in &mut activity.entries {
+        if let ActivityEntry::Command{status,exit_code,..}=entry {
+            if *status==CommandStatus::Running {
+                *status=if stopped {CommandStatus::Stopped} else {CommandStatus::Completed};
+                *exit_code=if stopped {None} else {Some(0)};
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod activity_transition_tests {
+    use super::*;
+    use native_core::*;
+    #[test]
+    fn finishing_or_stopping_changes_only_running_commands() {
+        for stopped in [false,true] {
+            let mut activity=activity(ActivityStatus::Working);
+            activity.entries.push(ActivityEntry::Command {command:"prior".into(),output:String::new(),exit_code:Some(2),status:CommandStatus::Completed});
+            finish_activity(&mut activity,stopped);
+            assert_eq!(activity.status,if stopped {ActivityStatus::Stopped} else {ActivityStatus::Worked});
+            assert!(matches!(&activity.entries[1],ActivityEntry::Command{status,exit_code,..}
+                if *status==if stopped {CommandStatus::Stopped} else {CommandStatus::Completed}
+                && *exit_code==if stopped {None} else {Some(0)}));
+            assert!(matches!(&activity.entries[2],ActivityEntry::Command{exit_code:Some(2),status:CommandStatus::Completed,..}));
+        }
     }
 }

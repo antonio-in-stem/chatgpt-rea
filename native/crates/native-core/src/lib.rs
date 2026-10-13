@@ -56,11 +56,18 @@ pub struct ChatMessage {
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all="snake_case")]
 pub enum ActivityStatus { Working, Worked, Stopped, Paused, Unknown, Loading }
+#[derive(Debug, Default, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all="snake_case")]
+pub enum CommandStatus { Running, #[default] Completed, Stopped }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(tag="kind",rename_all="snake_case")]
 pub enum ActivityEntry {
     Commentary { text: String },
-    Command { command: String, output: String, exit_code: i32 },
+    Command {
+        command: String, output: String,
+        #[serde(default)] exit_code: Option<i32>,
+        #[serde(default)] status: CommandStatus,
+    },
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct TurnActivity {
@@ -718,5 +725,20 @@ mod tests {
         let d = w.documents[0].id.clone();
         w.delete_document(&d).unwrap();
         assert!(w.delete_document(&d).is_err());
+    }
+}
+
+#[cfg(test)]
+mod activity_compat_tests {
+    use super::*;
+    #[test]
+    fn legacy_command_number_and_absent_status_remain_completed() {
+        let entry:ActivityEntry=serde_json::from_str(r#"{"kind":"command","command":"demo","output":"ok","exit_code":0}"#).unwrap();
+        assert!(matches!(entry,ActivityEntry::Command{exit_code:Some(0),status:CommandStatus::Completed,..}));
+        for status in [CommandStatus::Running,CommandStatus::Stopped,CommandStatus::Completed] {
+            let entry=ActivityEntry::Command{command:"demo".into(),output:String::new(),exit_code:None,status};
+            let saved=serde_json::to_string(&entry).unwrap();
+            assert_eq!(serde_json::from_str::<ActivityEntry>(&saved).unwrap(),entry);
+        }
     }
 }

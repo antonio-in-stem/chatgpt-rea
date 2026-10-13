@@ -466,7 +466,7 @@ impl WorkspaceApp {
         if self.streaming {
             if let Ok(chat)=self.workspace.conversation_mut(&self.active) {
                 if let Some(activity)=chat.messages.last_mut().and_then(|m|m.activity.as_mut()) {
-                    activity.status=native_core::ActivityStatus::Stopped;
+                    crate::fixtures::finish_activity(activity,true);
                 }
             }
         }
@@ -583,7 +583,7 @@ impl WorkspaceApp {
                 if app.generation == token {
                     app.streaming = false;
                     if let Ok(chat)=app.workspace.conversation_mut(&conversation) {
-                        if let Some(activity)=chat.messages.last_mut().and_then(|m|m.activity.as_mut()) { activity.status=native_core::ActivityStatus::Worked; }
+                        if let Some(activity)=chat.messages.last_mut().and_then(|m|m.activity.as_mut()) { crate::fixtures::finish_activity(activity,false); }
                     }
                     app.persist();
                     cx.notify();

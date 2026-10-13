@@ -43,8 +43,8 @@ impl WorkspaceApp {
             for (index,entry) in activity.entries.iter().enumerate() {
                 details=details.child(match entry {
                     native_core::ActivityEntry::Commentary{text}=>div().child(TextView::markdown(("activity-comment",index),text.clone())).into_any_element(),
-                    native_core::ActivityEntry::Command{command,output,exit_code}=>
-                        self.command_activity_view(id,index,command,output,*exit_code,cx),
+                    native_core::ActivityEntry::Command{command,output,exit_code,status}=>
+                        self.command_activity_view(id,index,command,output,*exit_code,*status,cx),
                 });
             }
             content=content.child(details);
@@ -54,12 +54,13 @@ impl WorkspaceApp {
 }
 
 impl WorkspaceApp {
-    fn command_activity_view(&self,id:&str,index:usize,command:&str,output:&str,exit_code:i32,cx:&mut Context<Self>)->AnyElement {
+    fn command_activity_view(&self,id:&str,index:usize,command:&str,output:&str,exit_code:Option<i32>,status:native_core::CommandStatus,cx:&mut Context<Self>)->AnyElement {
         let colors=cx.theme().colors.clone();
         let expanded=self.expanded_commands.contains(&(id.to_owned(),index));
         let key=format!("{id}-{index}");
         let message=id.to_owned();
-        let heading=if expanded { "Ran command".to_owned() } else { format!("Ran {command}") };
+        let verb=match status {native_core::CommandStatus::Running=>"Running",native_core::CommandStatus::Completed=>"Ran",native_core::CommandStatus::Stopped=>"Stopped"};
+        let heading=if expanded { format!("{verb} command") } else { format!("{verb} {command}") };
         let mut row=div().w_full().min_w_0().flex().flex_col()
             .child(Button::new(SharedString::from(format!("command-toggle-{key}"))).ghost()
                 .w_full().h(px(20.)).p_0().rounded(px(4.)).text_size(px(13.))
@@ -78,10 +79,17 @@ impl WorkspaceApp {
                     .child(native_ui::icon("copy",12.).text_color(colors.muted_foreground))
                     .on_click(cx.listener(move |s,_,w,cx|s.act(Action::Copy(value.clone()),w,cx)))
             };
-            let footer=div().w_full().flex().items_center().justify_end().gap(px(4.))
+            let success=status==native_core::CommandStatus::Completed && exit_code==Some(0);
+            let footer_label=match status {
+                native_core::CommandStatus::Running=>String::new(),
+                native_core::CommandStatus::Stopped=>"Stopped".into(),
+                native_core::CommandStatus::Completed if success=>"Success".into(),
+                native_core::CommandStatus::Completed=>format!("Exit code {}",exit_code.map(|v|v.to_string()).unwrap_or("unknown".into())),
+            };
+            let footer=div().id(SharedString::from(format!("command-footer-{key}"))).test_support().w_full().flex().items_center().justify_end().gap(px(4.))
                 .px(px(10.)).pt(px(2.)).pb(px(4.)).text_size(px(13.)).text_color(colors.muted_foreground)
-                .when(exit_code==0,|s|s.child(native_ui::icon("check",12.).text_color(colors.muted_foreground)))
-                .child(if exit_code==0 { "Success".into() } else { format!("Exit code {exit_code}") });
+                .when(success,|s|s.child(native_ui::icon("check",12.).text_color(colors.muted_foreground)))
+                .child(footer_label);
             row=row.child(div().pt(px(8.)).pb(px(4.)).child(
                 div().id(SharedString::from(format!("command-body-{key}"))).test_support()
                     .w_full().min_w_0().rounded(px(8.)).border_1().border_color(colors.border)

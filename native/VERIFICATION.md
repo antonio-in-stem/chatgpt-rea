@@ -354,3 +354,24 @@ byte for markup-like output, output-height limit and toggling. Build/package SHA
 Inspected real compact-state capture qa/native-command-19.png, PID46296.
 Expanded body verified by native UI test, not a new real-window screenshot.
 Full frontend parity remains incomplete.
+
+
+## Command lifecycle checkpoint — 2026-10-13 UTC
+Ported the state distinction observed in sC/OC and user-message-attachments yn:
+Running / Completed / Stopped, with optional exit code. While running, footer
+reserves its source padding with no success text. Stopped has Stopped; completed
+zero has Success; nonzero/missing has Exit code N/unknown. Row labels follow the
+state. This supersedes the prior completed-only data-model limitation.
+
+New Codex demo activity starts with a running command; completion/stopping only
+transitions entries still running, preserving already completed results. These
+are local frontend transitions; commands are never executed. Old numeric exit
+codes and absent status deserialize as completed, preserving existing saved data.
+
+Validation: 59 workspace tests and 12 core tests pass, including legacy deserialize,
+missing exit-code roundtrips and stop/finish transitions preserving prior failures.
+Build/package SHA256 cd99280eb420937426bead8dde88584d657b94e4c2dc1ed8b2d9d76fc94afa7a.
+Preview PID46296 stopped after verifying its executable path. No new real-window
+capture this checkpoint. Remaining: visual state matrix, ANSI/cwd, hover-only
+copy controls, fades, animation, accessibility expanded state and broader shell
+fidelity. Full frontend clone remains incomplete.
