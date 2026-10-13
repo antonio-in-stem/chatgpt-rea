@@ -28,12 +28,14 @@
       "Disable skill pointer click sets enabled=false and renders Disabled badge",
       "Page.reload then reopen preserves Disabled badge",
       "Enable skill pointer click sets enabled=true",
-      "Try now opens new conversation with Rea UI Demo chip in composer"
+      "Try now opens new conversation with Rea UI Demo chip in composer",
+      "Try now chip plus synthetic text sends successfully",
+      "Persisted input is text containing [$rea-ui-demo](C:/REA-Demo/skills/rea-ui-demo/SKILL.md), not UserInput.skill",
+      "Page.reload then reopen thread restores Rea UI Demo presentation in user message"
     ]
   },
   "pending": [
     "Remove/add workflows",
-    "Sending skill reference and reopening resulting history",
     "Other catalog states"
   ],
   "contentContract": {
@@ -44,5 +46,45 @@
     "demoOnlyPath": "C:/REA-Demo/skills/rea-ui-demo/SKILL.md",
     "packageSha256": "5a4e3deb0021fdf1d2303027bdd9ccafd4b642cd62a4f7657457fd106d16cda1",
     "runtimeVerification": "verified original markdown headings/list/code, no error"
+  },
+  "lifecycleSourceAudit": {
+    "recommended-skills": {
+      "host": "main-BklS_2Y2.js:66071",
+      "provider": "src-BJv5Mk7n.js:68767-68792",
+      "shape": "{skills,fetchedAt,source,repoRoot,error}",
+      "itemFields": [
+        "id",
+        "name",
+        "description",
+        "shortDescription",
+        "iconSmall",
+        "iconLarge",
+        "repoPath"
+      ]
+    },
+    "install-recommended-skill": {
+      "host": "main-BklS_2Y2.js:66082",
+      "params": [
+        "hostId",
+        "skillId",
+        "repoPath",
+        "installRoot",
+        "skillStatsigOverride",
+        "forceReinstall",
+        "source"
+      ],
+      "result": "{success,destination,error}"
+    },
+    "remove-skill": {
+      "host": "main-BklS_2Y2.js:66116",
+      "params": [
+        "hostId",
+        "skillPath"
+      ],
+      "result": "{success,deletedPath,error}",
+      "provider": "src-BJv5Mk7n.js:u0:69123",
+      "behavior": "Original validates candidate within skill roots then removes directory; demo must simulate state only"
+    },
+    "renderer": "use-skills-page-data-788923216b82.js:B,q; skill-card-0dfdfcb53527.js:418 invalidates recommended-skills after removal"
   }
 }
