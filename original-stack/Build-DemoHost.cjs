@@ -6,6 +6,7 @@ const {demoStatsigBootstrap}=require('./demo_feature_flags.cjs');
 const {demoSidebarSettings}=require('./demo_sidebar_settings.cjs');
 const {demoPluginHttp}=require('./demo_plugin_http.cjs');
 const {demoAutomationHttp}=require('./demo_automation_http.cjs');
+const {demoLocalAutomations}=require('./demo_local_automations.cjs');
 const {demoSkillFile}=require('./demo_skill_file.cjs');
 const {demoSkillLifecycle}=require('./demo_skill_lifecycle.cjs');
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
@@ -34,10 +35,11 @@ values.http={
  '/wham/onboarding/context':{role:null,desktop_onboarding_completed_at:'2026-10-13T00:00:00Z'}
 };
 const replacements=[
+ ['"list-automations":async()=>{','"list-automations":async()=>{return demoLocalAutomations(`list`,{},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(','"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(await Promise.reject(Error(`REA demo does not execute scheduled tasks`)),'],
- ['"automation-create":e=>this.automationsService.create(e)','"automation-create":e=>{throw Error(`REA local automation demo contract pending`)}'],
- ['"automation-update":e=>this.automationsService.update(e)','"automation-update":e=>{throw Error(`REA local automation demo contract pending`)}'],
- ['"automation-delete":e=>this.automationsService.delete(e)','"automation-delete":e=>{throw Error(`REA local automation demo contract pending`)}'],
+ ['"automation-create":e=>this.automationsService.create(e)','"automation-create":e=>demoLocalAutomations(`create`,e,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`))'],
+ ['"automation-update":e=>this.automationsService.update(e)','"automation-update":e=>demoLocalAutomations(`update`,e,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`))'],
+ ['"automation-delete":e=>this.automationsService.delete(e)','"automation-delete":e=>demoLocalAutomations(`delete`,e,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`))'],
 
  ['"recommended-skills":async({hostId:e,refresh:t})=>{','"recommended-skills":async({hostId:e,refresh:t})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`catalog`,{hostId:e},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"install-recommended-skill":async({hostId:e,skillId:t,repoPath:n,installRoot:r,skillStatsigOverride:a,forceReinstall:o,source:s})=>{','"install-recommended-skill":async({hostId:e,skillId:t,repoPath:n,installRoot:r,skillStatsigOverride:a,forceReinstall:o,source:s})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`install`,{hostId:e,skillId:t,repoPath:n,installRoot:r},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
@@ -54,7 +56,7 @@ for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoLocalAutomations.toString()+'\n'+demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;

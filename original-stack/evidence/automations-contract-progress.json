@@ -70,9 +70,10 @@
   "statusClassifier": "Nonlocal, non-condition_watch and empty next_run_times -> completed; otherwise is_enabled -> active or paused",
   "implemented": "Stateful GET listing and POST save/set_status/remove in isolated demo-automations.json; exclusive temp write and atomic replacement",
   "pending": [
-    "Replace local automation-create/update/delete with synthetic persistence before next launch",
-    "Build pending local mutation/run-now guards",
-    "Verify complete local and remote lifecycle separately"
+    "Build and install v15 before relaunch",
+    "Original UI local create/edit/pause/delete",
+    "Cloud HTTP lifecycle still unverified",
+    "Preview scheduling semantics remain synthetic"
   ],
   "validation": {
     "httpTests": 2,
@@ -98,5 +99,21 @@
     "launcherSession": 43932,
     "launcherTerminal": true,
     "taskPaused": true
+  },
+  "localContract": {
+    "host": "main-BklS_2Y2.js:z_e:52070",
+    "itemBuilder": "src-BJv5Mk7n.js:rI:48434",
+    "createUpdateResponse": "{item}",
+    "deleteResponse": "{item,success,status}",
+    "listResponse": "{items}",
+    "implementation": "demo_local_automations.cjs",
+    "store": "demo-local-automations.json",
+    "schedulerFilesWritten": false,
+    "runNow": "blocked before original function",
+    "validation": {
+      "tests": 1,
+      "uniqueHostSeams": 14,
+      "patchedSyntaxValid": true
+    }
   }
 }
