@@ -70,10 +70,10 @@
   "statusClassifier": "Nonlocal, non-condition_watch and empty next_run_times -> completed; otherwise is_enabled -> active or paused",
   "implemented": "Stateful GET listing and POST save/set_status/remove in isolated demo-automations.json; exclusive temp write and atomic replacement",
   "pending": [
-    "Build and install v15 before relaunch",
-    "Original UI local create/edit/pause/delete",
+    "Original UI editing and reload persistence",
     "Cloud HTTP lifecycle still unverified",
-    "Preview scheduling semantics remain synthetic"
+    "Preview scheduling semantics remain synthetic",
+    "Run-now is blocked, not simulated"
   ],
   "validation": {
     "httpTests": 2,
@@ -114,6 +114,24 @@
       "tests": 1,
       "uniqueHostSeams": 14,
       "patchedSyntaxValid": true
+    }
+  },
+  "localRuntimeVerification": {
+    "packageSha256": "5b75096d0df47937ef6be10ac51eded030e149210d6c8370535e34d50b177ee4",
+    "runtimePid": 90616,
+    "adapterPid": 88672,
+    "launcherSession": 97618,
+    "observed": [
+      "New task original form creates rea-local-task-1 only in demo-local-automations.json",
+      "Original task row shows schedule and opens demo conversation",
+      "Original menu Pause persists PAUSED and renders Paused label",
+      "Resume persists ACTIVE",
+      "Delete opens original confirmation; Delete scheduled task removes record and returns No scheduled tasks"
+    ],
+    "schedulerCheck": "Only prior synthetic automation.toml exists and remains PAUSED; no new scheduler file created",
+    "finalStore": {
+      "items": [],
+      "sequence": 1
     }
   }
 }
