@@ -43,6 +43,13 @@ fn paint_shell_frame(bounds: Bounds<Pixels>, shell: Hsla, border: Hsla, window: 
     window.paint_quad(quad(bounds, radii, Hsla::transparent_black(), px(1.), border, BorderStyle::Solid));
 }
 
+fn sidebar_backdrop(cx: &App) -> Hsla {
+    if cx.theme().mode.is_dark() { rgb(0x191b21).into() } else { cx.theme().colors.sidebar }
+}
+fn sidebar_row_corners(cx: &App) -> impl IntoElement {
+    // .sidebar-item -> radius-lg (10px * global 1.25), no button multiplier.
+    native_ui::corners::squircle_cutouts(12.5, sidebar_backdrop(cx))
+}
 impl WorkspaceApp {
     fn open_shell_menu(&mut self, dialog: Dialog, window: &mut Window, cx: &mut Context<Self>) {
         if self.dialog.is_none() {
@@ -161,7 +168,11 @@ impl WorkspaceApp {
         cx: &mut Context<Self>,
     ) -> Button {
         let label: SharedString = label.into();
-        let mut row = div().w_full().flex().items_center().gap(px(8.)).min_w_0();
+        let left_padding = match &action {
+            Action::Chat(id) if self.workspace.conversations.iter().any(|c| &c.id == id && !c.pinned && c.project_id.is_some()) => 32.,
+            _ => 8.,
+        };
+        let mut row = div().w_full().pl(px(left_padding)).pr(px(8.)).flex().items_center().gap(px(8.)).min_w_0();
         if let Some(icon) = icon {
             row = row.child(native_ui::icon(icon, 20.).text_color(cx.theme().colors.foreground));
         }
@@ -171,10 +182,11 @@ impl WorkspaceApp {
             .accessibility_label(label)
             .w_full()
             .h(px(30.))
-            .px(px(8.))
-            .rounded(px(10.))
+            .p_0()
+            .relative().rounded(px(0.))
             .text_size(native_ui::typography::TextRole::Small.in_app(cx))
             .child(row)
+            .child(sidebar_row_corners(cx))
             .when(selected, |b| b.bg(cx.theme().colors.secondary))
             .on_click(cx.listener(move |this, _, window, cx| this.act(action.clone(), window, cx)))
     }
@@ -405,13 +417,14 @@ impl WorkspaceApp {
             let collapsed = self.collapsed_sidebar_projects.contains(&project.id);
             let id = project.id.clone();
             recents = recents.child(Button::new(("sidebar-project", index)).ghost()
-                .w_full().h(px(30.)).px(px(8.)).rounded(px(10.))
+                .w_full().h(px(30.)).p_0().relative().rounded(px(0.))
                 .accessibility_label(format!("{} {}", if collapsed { "Expand" } else { "Collapse" }, project.name))
-                .child(div().w_full().flex().items_center().gap(px(8.))
+                .child(div().w_full().px(px(8.)).flex().items_center().gap(px(8.))
                     .child(native_ui::icon(if collapsed { "chevron-right" } else { "projects" }, 16.)
                         .text_color(cx.theme().colors.muted_foreground))
                     .child(div().min_w_0().flex_1().truncate().text_left()
                         .text_size(native_ui::typography::TextRole::Small.in_app(cx)).child(project.name.clone())))
+                .child(sidebar_row_corners(cx))
                 .on_click(cx.listener(move |s, _, _, cx| {
                     if !s.collapsed_sidebar_projects.remove(&id) { s.collapsed_sidebar_projects.insert(id.clone()); }
                     cx.notify();
@@ -422,15 +435,16 @@ impl WorkspaceApp {
                 let visible=sidebar_visible_indices(rows.len(),limit,rows.iter().position(|(_,chat)|chat.id==self.active));
                 for (i, chat) in visible.iter().map(|index|rows[*index]) {
                     recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
-                        Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx).pl(px(32.)));
+                        Action::Chat(chat.id.clone()), self.route == Route::Chat && self.active == chat.id, cx));
                 }
                 if rows.len() > visible.len() {
                     let project_id = project.id.clone();
                     recents = recents.child(Button::new(("sidebar-project-more", index)).ghost()
-                        .w_full().h(px(30.)).pl(px(32.)).pr(px(8.)).rounded(px(10.))
+                        .w_full().h(px(30.)).p_0().relative().rounded(px(0.))
                         .justify_start().text_size(native_ui::typography::TextRole::Small.in_app(cx))
                         .text_color(cx.theme().colors.muted_foreground)
-                        .label("Show more").accessibility_label(format!("Show more chats in {}",project.name))
+                        .child(div().w_full().pl(px(32.)).pr(px(8.)).child("Show more")).accessibility_label(format!("Show more chats in {}",project.name))
+                        .child(sidebar_row_corners(cx))
                         .on_click(cx.listener(move |s,_,_,cx| {
                             let limit=s.sidebar_project_limits.entry(project_id.clone()).or_insert(5);
                             *limit=limit.saturating_add(10);
@@ -445,7 +459,7 @@ impl WorkspaceApp {
             .w(width)
             .h_full()
             .flex_shrink_0()
-            .bg(if cx.theme().mode.is_dark() { rgb(0x191b21).into() } else { cx.theme().colors.sidebar })
+            .bg(sidebar_backdrop(cx))
             .px(px(8.))
             .pt(px(8.))
             .pb(px(8.))
