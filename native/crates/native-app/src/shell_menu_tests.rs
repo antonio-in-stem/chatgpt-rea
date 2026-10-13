@@ -257,3 +257,41 @@ fn codex_model_effort_slider_and_chat_selection_persist(cx:&mut TestAppContext) 
     }).unwrap();
     let _=std::fs::remove_dir_all(path);
 }
+
+#[gpui_kit::test]
+fn titlebar_history_restores_chat_drafts_and_truncates_forward_branch(cx: &mut TestAppContext) {
+    let (window, app, path) = fixture(cx);
+    cx.update_window(window, |_, window, cx| {
+        window.render_frame(cx);
+        let first = app.read(cx).active.clone();
+        app.update(cx, |s,cx| {
+            s.composer.update(cx,|input,cx| input.set_value("retained draft",window,cx));
+            s.act(Action::New,window,cx);
+        });
+        let second = app.read(cx).active.clone();
+        window.render_frame(cx);
+        window.click("navigation-back",cx);
+        assert_eq!(app.read(cx).active, first);
+        assert_eq!(app.read(cx).composer.read(cx).value(), "retained draft");
+        window.render_frame(cx);
+        window.click("navigation-forward",cx);
+        assert_eq!(app.read(cx).active, second);
+        app.update(cx,|s,cx| s.act(Action::Route(Route::Library),window,cx));
+        window.render_frame(cx);
+        window.click("navigation-back",cx);
+        assert_eq!(app.read(cx).active, second);
+        assert!(app.read(cx).route == Route::Chat);
+        app.update(cx,|s,cx| s.act(Action::Route(Route::Projects),window,cx));
+        assert!(app.read(cx).history_target(true).is_none());
+        window.render_frame(cx);
+        window.click("navigation-back",cx);
+        assert!(app.read(cx).route == Route::Chat);
+        // A removed chat must not become an invalid history destination.
+        app.update(cx,|s,cx| {
+            s.workspace.conversations.retain(|c| c.id != first);
+            s.act(Action::NavigateHistory(false),window,cx);
+        });
+        assert_eq!(app.read(cx).active, second);
+    }).unwrap();
+    let _ = std::fs::remove_dir_all(path);
+}

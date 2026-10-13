@@ -8,7 +8,7 @@ mod chat_actions;
 #[path = "chat_motion.rs"]
 mod chat_motion;
 use chat_actions::ChatMessageActions;
-use gpui_kit::base::FocusTrapElement;
+use gpui_kit::base::{FocusTrapElement, Disableable};
 use gpui_kit::component::{
     input::{Input, InputEvent, InputState, Textarea, TextareaState},
     text::TextView,
@@ -33,6 +33,7 @@ enum Route {
 #[derive(Clone)]
 enum Action {
     Route(Route),
+    NavigateHistory(bool),
     Chat(String),
     New,
     Send,
@@ -126,6 +127,8 @@ pub struct WorkspaceApp {
     path: PathBuf,
     load_error: Option<String>,
     route: Route,
+    history: Vec<(Route, String)>,
+    history_index: usize,
     active: String,
     sidebar: bool,
     sidebar_resize: Option<(Pixels, Pixels)>,
@@ -260,6 +263,8 @@ impl WorkspaceApp {
             path,
             load_error,
             route: Route::Chat,
+            history: Vec::new(),
+            history_index: 0,
             active,
             sidebar: true,
             sidebar_resize: None,
@@ -428,6 +433,8 @@ impl WorkspaceApp {
         }
     }
     fn switch_chat(&mut self, id: String, window: &mut Window, cx: &mut Context<Self>) {
+        let draft = self.composer.read(cx).value().to_string();
+        let _ = self.workspace.set_draft(&self.active, draft);
         self.stop();
         self.navigation_motion.take();
         self.navigation_hover = None;
@@ -619,7 +626,13 @@ impl WorkspaceApp {
         self.stream_response(prompt, cx);
     }
     fn act(&mut self, action: Action, window: &mut Window, cx: &mut Context<Self>) {
+        if let Action::NavigateHistory(forward) = action {
+            self.navigate_history(forward, window, cx);
+            return;
+        }
+        self.record_location();
         match action {
+            Action::NavigateHistory(_) => unreachable!(),
             Action::Route(route) => {
                 self.route = route;
                 self.dialog = None;
@@ -1069,6 +1082,7 @@ impl WorkspaceApp {
             }
             Action::Preview => self.doc_preview = !self.doc_preview,
         }
+        self.record_location();
         cx.notify();
     }
 }
@@ -1136,3 +1150,5 @@ mod shell_menu_tests;
 include!("share_dialog.rs");
 
 include!("permissions_demo.rs");
+
+include!("navigation_history.rs");

@@ -14,6 +14,8 @@ pub fn icon_data(name: &str) -> &'static [u8] {
         "rail-activity" => include_bytes!("../assets/rail-activity.svg"),
         "rail-activity-attention" => include_bytes!("../assets/rail-activity-attention.svg"),
         "wordmark" => include_bytes!("../assets/chatgpt-wordmark.svg"),
+        "arrow-left" => include_bytes!("../assets/arrow_left-40991fb9b16f.svg"),
+        "arrow-right" => include_bytes!("../assets/arrow_right-7532e350d6ae.svg"),
         "plus" => include_bytes!("../assets/composer_plus-451d93cbdc23.svg"),
         "mic" => include_bytes!("../assets/composer_mic-1c2dfc365b22.svg"),
         "voice" => include_bytes!("../assets/voice_5_bars_soundwave-36e8087185c0.svg"),

@@ -838,7 +838,15 @@ impl Render for WorkspaceApp {
         let titlebar = div().id("application-titlebar").test_support()
             .h(px(40.)).flex_shrink_0().flex().items_center().justify_between()
             .window_control_area(WindowControlArea::Drag)
-            .child(div().pl(px(8.)).flex().items_center()
+            .child(div().pl(px(4.)).flex().items_center().gap(px(4.))
+                .children([(false, "navigation-back", "Back", "arrow-left"),
+                    (true, "navigation-forward", "Forward", "arrow-right")].into_iter().map(|(forward,id,label,icon)| {
+                    Button::new(id).ghost().w(px(28.)).h(px(28.)).p_0().rounded(px(6.))
+                        .disabled(self.history_target(forward).is_none())
+                        .accessibility_label(label).tooltip(label)
+                        .child(native_ui::icon(icon,16.).text_color(if self.history_target(forward).is_some() { cx.theme().colors.foreground } else { cx.theme().colors.muted_foreground }))
+                        .on_click(cx.listener(move |s,_,w,cx| s.act(Action::NavigateHistory(forward),w,cx)))
+                }))
                 .child(self.shell_icon("sidebar", "Toggle sidebar", 720, Action::Sidebar, cx)))
             .child(controls);
         let mut surface = div().id("workspace-surface").test_support().flex_1().min_w_0()

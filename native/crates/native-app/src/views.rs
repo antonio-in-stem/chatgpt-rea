@@ -107,7 +107,7 @@ impl WorkspaceApp {
             .into_any_element()
     }
     fn chat_composer_view(&self, cx: &mut Context<Self>) -> AnyElement {
-        use gpui_kit::component::button::ButtonVariants;
+        use gpui_kit::component::{button::ButtonVariants, Sizable};
         let codex=self.workspace.settings.codex_surface;
         let measured = self.composer_bounds.clone();
         let mut composer = div()
@@ -203,9 +203,11 @@ impl WorkspaceApp {
         }
         composer = composer.child(
             div().id("composer-editor-region").test_support()
-                .min_h(px(44.)).px(px(if codex { 12. } else { 4. })).flex()
+                .min_h(px(44.)).px(px(if codex { 8. } else { 4. })).flex()
                 .when(!codex, |s| s.items_center()).child(
                 Textarea::new(&self.composer)
+                    // XSmall removes vertical padding and retains 4 px inline.
+                    .when(codex, |input| input.xsmall())
                     .appearance(false)
                     .bordered(false)
                     .w_full()

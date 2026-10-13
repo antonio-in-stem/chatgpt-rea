@@ -75,3 +75,26 @@ Remaining: forced-visible active item, one-item tail handling, persisted expansi
 ## Active-row visibility and one-row tail
 Recovered kPo at352158–352172 takes the initial page, appends the forced-visible key if outside it, then renders the complete list in original order when exactly one row remains and hasMore=false. The native fully loaded local catalog now implements this shared rule for recents and project children. Selection does not mutate page expansion. Show more depends on actual visible rows. This supersedes the prior checkpoint's forced-row and one-tail gaps.
 52 native-workspace tests pass, including active-row navigation beyond a5-row project page and boundary cases for a single remaining row. Persisted expansion, source-specific active-key gates outside the chat route, remote loading, sections/reorder and full row actions remain incomplete.
+
+
+### Native history and editor inset checkpoint (2026-10-13 UTC)
+- Shipped source: app-initial-b8e1c8014bb4.js:75444-75449 dispatches
+  navigate-back / navigate-forward host messages. Original arrow_left-40991fb9b16f.svg
+  and arrow_right-7532e350d6ae.svg copied unchanged into native-ui.
+- Titlebar now exposes working back/forward controls. Session-local route/chat
+  history truncates the forward branch after new navigation, skips removed/archived
+  chats, and flushes the outgoing editor draft before switching chats. It is a
+  native demo implementation of the recovered command intent, not a recovered host
+  history implementation. Scroll restoration, browser/panel history, cross-mode
+  navigation and keyboard accelerators remain pending.
+- GPUI component Input::render installs Medium internal padding (10 x, 8 y).
+  Codex textarea now uses XSmall (4 x, 0 y) with an 8 px wrapper to obtain 12 px
+  total inline inset and remove the unintended 8 px vertical inset. Text size and
+  line height remain explicitly controlled. ChatGPT mode stays unchanged.
+- 56 workspace tests passed, including real titlebar click traversal, drafts,
+  forward-branch truncation and deleted destinations. Build/package successful.
+  SHA256: 6484bd79f17b9ce6dabb151b779322be63de821970e511100085f2477c535f11.
+- Inspected own-window capture qa/native-history-17-final.png; initial capture
+  native-history-17.png exposed missing explicit SVG colors, fixed before packaging.
+  Preview PID 37704. Menus and remaining Codex transcript/sidebar fidelity are
+  incomplete; no exact-parity claim.
