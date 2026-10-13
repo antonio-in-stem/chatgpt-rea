@@ -205,9 +205,20 @@
     "method": "12 data modules evaluated in isolated contexts; original Lottie and React-adapter bodies preserved with injected React and copied bundler helper.",
     "verification": "Differential animation objects and source hashes; unchanged runtime body check. Browser playback not yet verified.",
     "pending": [
-      "inherited-color observer and remapping",
+      "exact app lazy-loading/error boundary behavior",
+      "non-navigation default fallback glyphs",
       "matched rendered comparison"
-    ]
+    ],
+    "integration": {
+      "file": "src/AnimatedArtwork.js",
+      "source": "animated-icon-1526fd61ba39.js w/T",
+      "verification": "Search example browser: delayed activation, changing SVG path geometry, completion and leave cleanup.",
+      "limits": [
+        "Consumer React.lazy/Suspense/error boundary replaces app gk loader",
+        "Non-navigation defaults require explicit fallback",
+        "No original matched screenshot comparison"
+      ]
+    }
   },
   "animatedNavigation": {
     "source": "app-initial-b8e1c8014bb4.js",

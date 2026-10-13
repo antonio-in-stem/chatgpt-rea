@@ -44,5 +44,27 @@
     "fix": "Root data-theme=dark, data-codex-os=win32, data-codex-window-type=electron",
     "observed": "Standalone group background resolves to foreground at 10% opacity; selected option black on white; unselected secondary foreground; button font 13px in Windows scenario",
     "limits": "No matched original component screenshot comparison yet; ChoiceButton interactive-* CSS definition unresolved"
+  },
+  "animatedNavigation": {
+    "control": "Focus project search",
+    "initialSvgCount": 1,
+    "at100ms": {
+      "svgCount": 1,
+      "animated": false
+    },
+    "afterGate": {
+      "svgCount": 2,
+      "animated": true,
+      "hiddenStatic": true
+    },
+    "completedSvgCount": 1,
+    "changingPathGeometry": true,
+    "pointerLeaveSvgCount": 1,
+    "observedPaint": "rgb(223,223,223)",
+    "limits": [
+      "Synthetic pointer events used",
+      "Original app screenshot comparison pending",
+      "Other animations and keyboard playback not browser-verified"
+    ]
   }
 }

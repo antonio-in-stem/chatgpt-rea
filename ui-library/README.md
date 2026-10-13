@@ -95,3 +95,11 @@ The wrapper accepts `{animation, Icon, staticIcon, className}`. It finds the enc
 ### Animation color helpers
 
 `createAnimationColorReader()` preserves the original canvas-based CSS color conversion and normalized RGBA output. `recolorAnimation(data, color)` copies a recovered JSON animation before remapping its fill/stroke colors, including nested shape groups and asset layers. It uses structuredClone in place of the bundled cloneDeep for the recovered JSON-only data contract. `observeAnimationColor(element, onColor, reader)` performs the initial read, watches root/element class and style mutations, deduplicates values and returns cleanup. These helpers are extracted; assembly with the animated renderer remains pending. Canvas-call tests use a controlled context, not a browser color-accuracy measurement.
+
+### Connected animated navigation
+
+`createAnimatedArtwork({React, motionPreference})` now connects the recovered data, color helpers and shipped Lottie runtime. Pass its result to `createAnimatedNavigationIcon`, then supply that wrapper as `AnimatedIcon` to `createReaUI`. The example search navigation control uses this chain and retains its focus-search action.
+
+The renderer uses the original wrapper classes, autoplay/loop defaults, color observer, reduced-motion gate, completion and DOM-ready callbacks. React.lazy/Suspense and a local error boundary replace the original application loading service; exact loading/error/retry parity remains unverified. Non-navigation artwork requires an explicit fallback icon, since those additional default glyphs have not been extracted. The example bundles code in one file, so lazy activation does not imply separate network chunks. The shipped expression engine causes esbuild's direct-eval warning; its original code is retained.
+
+Browser verification of the search control observed the static icon at 100 ms, animated SVG after the 300 ms gate, changing path geometry, return to the static icon on completion, and immediate cleanup on pointer leave. This does not establish full original screenshot parity or coverage of every animation. Earlier “pending assembly” notes above describe extraction milestones; this connected renderer supersedes them for the navigation example.
