@@ -22,7 +22,7 @@ function measureRenderer() {
     if(ids.has(e)) return ids.get(e);
     const id = nodes.length, s = getComputedStyle(e), r = e.getBoundingClientRect();
     ids.set(e,id);
-    nodes.push({id,selector:selector(e),tag:e.tagName,classes:e.getAttribute('class'),role:e.getAttribute('role'),ariaLabel:e.getAttribute('aria-label'),ariaExpanded:e.getAttribute('aria-expanded'),ariaHidden:e.getAttribute('aria-hidden'),inert:e.inert,rect:{x:r.x,y:r.y,width:r.width,height:r.height},styles:Object.fromEntries(properties.map(p=>[p,s.getPropertyValue(p)])),variableOverrides:Object.fromEntries(Object.entries(variables(e)).filter(([k,v])=>v!==(e.parentElement?getComputedStyle(e.parentElement).getPropertyValue(k):rootVariables[k]))),scroll:{width:e.scrollWidth,height:e.scrollHeight,left:e.scrollLeft,top:e.scrollTop},focused:document.activeElement===e,hovered:e.matches(':hover')});
+    nodes.push({id,selector:selector(e),tag:e.tagName,classes:e.getAttribute('class'),role:e.getAttribute('role'),ariaLabel:e.getAttribute('aria-label'),ariaExpanded:e.getAttribute('aria-expanded'),ariaChecked:e.getAttribute('aria-checked'),dataState:e.getAttribute('data-state'),dataHighlighted:e.hasAttribute('data-highlighted'),ariaHidden:e.getAttribute('aria-hidden'),inert:e.inert,rect:{x:r.x,y:r.y,width:r.width,height:r.height},styles:Object.fromEntries(properties.map(p=>[p,s.getPropertyValue(p)])),variableOverrides:Object.fromEntries(Object.entries(variables(e)).filter(([k,v])=>v!==(e.parentElement?getComputedStyle(e.parentElement).getPropertyValue(k):rootVariables[k]))),scroll:{width:e.scrollWidth,height:e.scrollHeight,left:e.scrollLeft,top:e.scrollTop},focused:document.activeElement===e,hovered:e.matches(':hover')});
     nodes[id].parentId=e.parentElement?record(e.parentElement):null;
     nodes[id].pseudoElements=Object.fromEntries(["::before","::after"].map(p=>{const ps=getComputedStyle(e,p);return [p,{content:ps.content,...Object.fromEntries(properties.map(k=>[k,ps.getPropertyValue(k)]))}]}));
     return id;
@@ -39,6 +39,11 @@ function measureRenderer() {
     userMessage:document.querySelector('._bubble_11evq_1'),
     userMessageToggle:document.querySelector('._bubble_11evq_1 button[aria-expanded]'),
   };
+  // Capture actual visible portal menus and each interactive row, including nested submenus.
+  for(const [i,menu] of [...document.querySelectorAll('[role="menu"]')].filter(e=>e.getBoundingClientRect().width>0).entries()) {
+    anchors[`menu${i}`]=menu;
+    for(const [j,row] of [...menu.querySelectorAll('[role^="menuitem"]')].filter(e=>e.closest('[role="menu"]')===menu).entries())anchors[`menu${i}Item${j}`]=row;
+  }
   const chains = {}, fontSamples = {};
   for(const [name,e] of Object.entries(anchors)) {
     chains[name]=[];
@@ -71,8 +76,8 @@ function measureRenderer() {
   if(!target)throw Error('Original renderer missing');
   const ws=new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((resolve,reject)=>{ws.onopen=resolve;ws.onerror=reject});
-  let sequence=0;const pending=new Map();
-  ws.onmessage=e=>{const m=JSON.parse(e.data);const p=pending.get(m.id);if(p){pending.delete(m.id);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result)}};
+  let sequence=0;const pending=new Map(),styleSheets=new Map();
+  ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.method==='CSS.styleSheetAdded')styleSheets.set(m.params.header.styleSheetId,m.params.header);const p=pending.get(m.id);if(p){pending.delete(m.id);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result)}};
   const send=(method,params={})=>new Promise((resolve,reject)=>{const id=++sequence;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}))});
   const timer=setTimeout(()=>{for(const p of pending.values())p.reject(Error('Metrics timeout'));ws.close()},20000);
   try{
@@ -83,10 +88,17 @@ function measureRenderer() {
     const metrics=measured.result.value;
     if(!metrics.anchors.composer.length||!metrics.anchors.railHome.length)throw Error('Shell/composer not ready');
     const fontNodeIds=new Set([...Object.values(metrics.anchors).filter(c=>c.length).map(c=>c[0]),...Object.values(metrics.fontSamples).flat()]);
+    const menuNodeIds=new Set(Object.entries(metrics.anchors).filter(([name,c])=>name.startsWith('menu')&&c.length).map(([,c])=>c[0]));
     for(const id of fontNodeIds){
       const node=metrics.nodes[id];
       const found=await send('DOM.querySelector',{nodeId:root.root.nodeId,selector:node.selector});
-      if(found.nodeId)node.platformFonts=(await send('CSS.getPlatformFontsForNode',{nodeId:found.nodeId})).fonts;
+      if(found.nodeId){
+        node.platformFonts=(await send('CSS.getPlatformFontsForNode',{nodeId:found.nodeId})).fonts;
+        if(menuNodeIds.has(id)){
+          const matched=await send('CSS.getMatchedStylesForNode',{nodeId:found.nodeId});
+          node.matchedRules=(matched.matchedCSSRules||[]).map(({rule,matchingSelectors})=>({selectors:rule.selectorList,matchingSelectors,origin:rule.origin,style:rule.style,media:rule.media,supports:rule.supports,source:styleSheets.get(rule.styleSheetId)||null}));
+        }
+      }
     }
     const hash=relative=>crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname,'pristine',relative))).digest('hex');
     const report={capturedUtc:new Date().toISOString(),profile:stateName,targetId:target.id,method:'Read-only computed styles, geometry and CDP platform fonts; no renderer mutation',source:{exeSha256:hash('ChatGPT.exe'),asarSha256:hash('resources/app.asar')},limitations:['One viewport and UI state; not a complete responsive or interaction specification','CSS px; physical dimensions depend on devicePixelRatio','Computed styles do not identify source rules or reproduce Chromium rasterization','Missing anchors are explicit empty arrays'],...metrics};
