@@ -6,7 +6,7 @@ Scope: two read-only REA workers; no Rust edits and no replacement renderer comp
 
 The sections below retain investigation history and are not the current completion checklist. Original profile/avatar and rail are running; queue, plugins, Pages/Spaces, Library upload/viewers and local sharing have later evidence under `evidence/`. None establishes complete frontend coverage.
 
-- Composer attachments: `attachment-native-picker-runtime.json` verifies native Windows single-file PNG/TXT selection and cancel. PNG removal, TXT send and renderer-reload restoration passed. Earlier paste/drop results remain separately recorded. Multi-selection, folder selection, images-only picker and stale/error cases remain open.
+- Composer attachments: `attachment-native-picker-runtime.json` verifies native Windows single-file and mixed PNG/TXT selection and cancel. PNG removal, mixed send, renderer-reload restoration, image preview and byte-exact native download passed. Earlier paste/drop results remain separately recorded. Folder selection, images-only picker, duplicate selection and stale/error cases remain open.
 - Library: `library-csv-preview-contract.json` verifies original CSV grid, selection, zoom, exact download, spreadsheet filtering and reopen after process restart. Spreadsheet editing and other office formats remain open.
 - Local sharing: file/folder/page/space synthetic invitation flows have dedicated contracts. Real incoming collaborators, broader effective access and account-backed behavior remain open.
 - Rust and inferred component restructuring remain deferred by the owner.

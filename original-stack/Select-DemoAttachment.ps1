@@ -1,4 +1,4 @@
-param([Parameter(Mandatory)][ValidatePattern('^demo-[a-zA-Z0-9_-]+$')][string]$StateName,[Parameter(Mandatory)][ValidateSet('png','txt','cancel')][string]$Action)
+param([Parameter(Mandatory)][ValidatePattern('^demo-[a-zA-Z0-9_-]+$')][string]$StateName,[Parameter(Mandatory)][ValidateSet('png','txt','both','cancel')][string]$Action)
 $ErrorActionPreference='Stop'
 $state=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot ('state/'+$StateName))).Path
 if(Test-Path -LiteralPath (Join-Path $state 'codex-home/auth.json')){throw 'Credential-free demo required'}
@@ -23,15 +23,23 @@ $names=if($Action -eq 'cancel'){@('Cancelar','Cancel')}else{@('Abrir','Open')}
 $button=@($elements | Where-Object {$_.Current.AutomationId -eq $buttonId -and $_.Current.ClassName -eq 'Button' -and $_.Current.Name -in $names})
 if($button.Count -ne 1){throw 'Ambiguous picker button'}
 if($Action -ne 'cancel'){
- $fixture=if($Action -eq 'png'){@('rea-library-colors.png','bad602fa778ffb7015abcfaefa50ab8be057254e9fc63bdbaaf243803de481f8')}else{@('rea-library-original.txt','bc6f56fced276607d0ca1ff946bc51bec10f37233774e263ef7095ba46005946')}
- $target=(Resolve-Path -LiteralPath (Join-Path $state $fixture[0])).Path
- if(-not $target.StartsWith($state+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'Fixture outside demo'}
- $check=$target
- while($check -ne $PSScriptRoot){if((Get-Item -LiteralPath $check).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'Reparse fixture path'};$check=[IO.Path]::GetDirectoryName($check);if(-not $check){throw 'Invalid fixture ancestor'}}
- if((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ne $fixture[1]){throw 'Unexpected fixture bytes'}
+ $fixtures=@(
+  @{Kind='png';Name='rea-library-colors.png';Hash='bad602fa778ffb7015abcfaefa50ab8be057254e9fc63bdbaaf243803de481f8'},
+  @{Kind='txt';Name='rea-library-original.txt';Hash='bc6f56fced276607d0ca1ff946bc51bec10f37233774e263ef7095ba46005946'}
+ )
+ $targets=@(foreach($fixture in $fixtures){
+  if($Action -ne 'both' -and $Action -ne $fixture.Kind){continue}
+  $target=(Resolve-Path -LiteralPath (Join-Path $state $fixture.Name)).Path
+  if(-not $target.StartsWith($state+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'Fixture outside demo'}
+  $check=$target
+  while($check -ne $PSScriptRoot){if((Get-Item -LiteralPath $check).Attributes -band [IO.FileAttributes]::ReparsePoint){throw 'Reparse fixture path'};$check=[IO.Path]::GetDirectoryName($check);if(-not $check){throw 'Invalid fixture ancestor'}}
+  if((Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash -ne $fixture.Hash){throw 'Unexpected fixture bytes'}
+  $target
+ })
+ $selection=($targets | ForEach-Object {'"'+$_+'"'}) -join ' '
  $field=@($elements | Where-Object {$_.Current.AutomationId -eq '1148' -and $_.Current.ClassName -eq 'Edit'})
  if($field.Count -ne 1){throw 'Ambiguous picker filename field'}
- [void][DemoAttachmentPicker]::SendMessage([IntPtr]$field[0].Current.NativeWindowHandle,12,[IntPtr]::Zero,$target)
+ [void][DemoAttachmentPicker]::SendMessage([IntPtr]$field[0].Current.NativeWindowHandle,12,[IntPtr]::Zero,$selection)
 }
 if(![DemoAttachmentPicker]::PostMessage([IntPtr]$button[0].Current.NativeWindowHandle,245,[IntPtr]::Zero,[IntPtr]::Zero)){throw 'Picker action failed'}
 Write-Output ('Native picker requested: '+$Action+'; verify renderer result separately')

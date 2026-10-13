@@ -20,13 +20,23 @@
     "Selecting hash-verified rea-library-original.txt produced original named chip and Remove control",
     "Sending synthetic local message displayed TXT filename chip in original history",
     "Demo thread state contains selected TXT context",
-    "After renderer reload and reopening the synthetic conversation, attachment chip and message were restored"
+    "After renderer reload and reopening the synthetic conversation, attachment chip and message were restored",
+    "Native Select files accepted the fixed PNG and TXT together in one selection; original draft controls appeared in PNG then TXT order",
+    "Mixed message persisted original UserInput text and localImage shapes, with both fixture paths represented",
+    "After renderer reload and reopen, TXT chip and decoded PNG history thumbnail96x64 were both restored",
+    "Original image preview opened restored PNG at natural96x64 with objectFit contain",
+    "Original Download image opened native Save As; saved PNG SHA256 matched the selected original exactly"
   ],
-  "automation": "Select-DemoAttachment.ps1 only operates the credential-free demo session executable and Select files window. Accepts fixed png/txt fixtures validated by SHA256, or cancel; checks native control identity and path ancestors. No arbitrary file argument.",
+  "automation": "Select-DemoAttachment.ps1 only operates the credential-free demo session executable and Select files window. Accepts fixed png/txt fixtures, including the fixed pair together validated by SHA256, or cancel; checks native control identity and path ancestors. No arbitrary file argument.",
   "limitations": [
-    "Native multi-selection, folder selection and images-only picker are not verified",
+    "Native folder selection, images-only picker, duplicate selections and mixed-order editing remain unverified",
     "Picker cancellation during composer generation change and picker error toast remain unverified",
-    "This pass verifies PNG selection/removal; image send/reload coverage remains the earlier paste-path evidence",
     "No cloud upload, real account or backend generation is involved"
-  ]
+  ],
+  "download": {
+    "bytes": 176,
+    "sha256": "bad602fa778ffb7015abcfaefa50ab8be057254e9fc63bdbaaf243803de481f8",
+    "original_name_behavior": "Timestamped ChatGPT Image name proposed by original Save As dialog",
+    "verification": "Actual native dialog save into isolated demo state, no overwrite"
+  }
 }

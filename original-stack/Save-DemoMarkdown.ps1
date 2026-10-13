@@ -1,6 +1,6 @@
 param([Parameter(Mandatory)][string]$StateName,[Parameter(Mandatory)][string]$ExpectedName,[Parameter(Mandatory)][string]$OutputName)
 $ErrorActionPreference='Stop'
-if($StateName -notmatch '^demo-[a-zA-Z0-9_-]+$' -or $OutputName -notmatch '^[a-zA-Z0-9_-]+\.md$'){throw 'Explicit demo state and simple Markdown output name required'}
+if($StateName -notmatch '^demo-[a-zA-Z0-9_-]+$' -or $OutputName -notmatch '^[a-zA-Z0-9_-]+\.(md|png)$'){throw 'Explicit demo state and simple Markdown or PNG output name required'}
 $state=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot ('state/'+$StateName))).Path
 if(Test-Path -LiteralPath (Join-Path $state 'codex-home/auth.json')){throw 'Credential-free demo required'}
 $session=Get-Content -LiteralPath (Join-Path $state 'demo-session.json') -Raw | ConvertFrom-Json
