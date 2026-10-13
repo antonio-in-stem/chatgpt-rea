@@ -2,6 +2,15 @@
 
 Scope: two read-only REA workers; no Rust edits and no replacement renderer components. This is a bounded follow-up inventory, not proof of complete screen coverage.
 
+## Current evidence index (supersedes historical pending statements)
+
+The sections below retain investigation history and are not the current completion checklist. Original profile/avatar and rail are running; queue, plugins, Pages/Spaces, Library upload/viewers and local sharing have later evidence under `evidence/`. None establishes complete frontend coverage.
+
+- Composer attachments: `attachment-native-picker-runtime.json` verifies native Windows single-file PNG/TXT selection and cancel. PNG removal, TXT send and renderer-reload restoration passed. Earlier paste/drop results remain separately recorded. Multi-selection, folder selection, images-only picker and stale/error cases remain open.
+- Library: `library-csv-preview-contract.json` verifies original CSV grid, selection, zoom, exact download, spreadsheet filtering and reopen after process restart. Spreadsheet editing and other office formats remain open.
+- Local sharing: file/folder/page/space synthetic invitation flows have dedicated contracts. Real incoming collaborators, broader effective access and account-backed behavior remain open.
+- Rust and inferred component restructuring remain deferred by the owner.
+
 ## Profile / rail
 
 Live original demo: profile button renders its original Settings SVG. Static source: app-initial-b8e1c8014bb4.js function iPo around 351125 reads identity from gp(); profile De is constructed only for authMethod=chatgpt (351270), and the effective profile ke selects Settings when null (351386). Current demo authMethod is null. Thus replacing the SVG would hide the missing identity integration instead of reproducing the source behavior. Next: trace the host identity contract and supply explicit synthetic demo identity through a documented isolated adapter. Merely adding email to account/read is not sufficient evidence. Remaining navigation gates require separate tracing.

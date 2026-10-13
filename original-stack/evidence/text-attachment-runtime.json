@@ -21,5 +21,6 @@
     "txt": "user-message-attachments jn:1820-1959 routes ordinary txt through JG to Pd.openIn.open; no internal preview expected",
     "csv": "Packaged support exists, but breakpoint observed openInSidePanel=false and isAttachmentPreview=false; investigate isUploadedFileViewerEnabled",
     "host": "main JQ.open:112474-112591 returns success boolean; no observed service result yet"
-  }
+  },
+  "nativePickerFollowup": "attachment-native-picker-runtime.json supersedes native single-file PNG/TXT selection pending status; other listed limitations remain scoped to their original observations."
 }

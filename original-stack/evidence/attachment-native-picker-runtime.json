@@ -1,0 +1,32 @@
+{
+  "scope": "Original Windows composer file picker with fixed synthetic PNG and TXT; original renderer and host picker unchanged",
+  "sources": [
+    "app-primary-19fe57fd8c00.js:71267-71278",
+    "app-primary-19fe57fd8c00.js:71359-71373",
+    "app-primary-19fe57fd8c00.js:71397-71404",
+    "app-primary-19fe57fd8c00.js:71554-71571"
+  ],
+  "contract": {
+    "selection": "pickFiles receives imagesOnly; original generation guard discards cancelled or stale results",
+    "host_fallback": "Without browser override, picker receives imagesOnly and pickerTitle",
+    "image": "Selected bytes or read-file-binary contentsBase64 produce dataUrl, filename and localPath",
+    "error": "Original Unable to open file picker toast exists; error branch not exercised"
+  },
+  "runtime_observations": [
+    "Original Add files and more > Files and folders opened native Windows Select files dialog",
+    "Selecting only hash-verified rea-library-colors.png produced original User attachment thumbnail, natural96x64 rendered122x122 objectFit cover",
+    "Original Remove rea-library-colors.png removed the draft attachment",
+    "Reopening native picker and pressing Cancel returned without any fixture attachment chip",
+    "Selecting hash-verified rea-library-original.txt produced original named chip and Remove control",
+    "Sending synthetic local message displayed TXT filename chip in original history",
+    "Demo thread state contains selected TXT context",
+    "After renderer reload and reopening the synthetic conversation, attachment chip and message were restored"
+  ],
+  "automation": "Select-DemoAttachment.ps1 only operates the credential-free demo session executable and Select files window. Accepts fixed png/txt fixtures validated by SHA256, or cancel; checks native control identity and path ancestors. No arbitrary file argument.",
+  "limitations": [
+    "Native multi-selection, folder selection and images-only picker are not verified",
+    "Picker cancellation during composer generation change and picker error toast remain unverified",
+    "This pass verifies PNG selection/removal; image send/reload coverage remains the earlier paste-path evidence",
+    "No cloud upload, real account or backend generation is involved"
+  ]
+}

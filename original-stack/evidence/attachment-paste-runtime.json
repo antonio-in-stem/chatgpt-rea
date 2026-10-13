@@ -95,5 +95,6 @@
       "parentTransform": "none",
       "objectFit": "contain"
     }
-  ]
+  ],
+  "nativePickerFollowup": "attachment-native-picker-runtime.json supersedes native single-file PNG/TXT selection pending status; other listed limitations remain scoped to their original observations."
 }
