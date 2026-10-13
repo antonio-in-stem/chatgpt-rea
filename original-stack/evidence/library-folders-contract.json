@@ -1,0 +1,66 @@
+{
+  "scope": "Original Space library folder flow, recovered contract; implementation pending",
+  "sources": {
+    "create": "library-create-dialog-e0c3919fc0ce.js:48-102,187-249",
+    "validation": "library-name-validation-5559e2ce17f6.js:2-10",
+    "availability": "slate-create-menu-df1a68fe05ff.js:1454-1470",
+    "rename": "app-initial-b8e1c8014bb4.js:492922-492928",
+    "move": "app-initial:493017-493022",
+    "path": "app-initial:289870-289891"
+  },
+  "requests": {
+    "create": {
+      "method": "POST",
+      "path": "/files/library/directories",
+      "body": {
+        "name": "trimmed input",
+        "parent_directory_id": "selected directory or null"
+      },
+      "response": "directory object with id and parent_directory_id; full DTO remains to trace"
+    },
+    "rename": {
+      "method": "PATCH",
+      "path": "/files/library/directories/{directory_id}",
+      "body": {
+        "name": "new name"
+      }
+    },
+    "move": {
+      "method": "PATCH",
+      "path": "/files/library/directories/{directory_id}",
+      "body": {
+        "parent_directory_id": "destination or null"
+      }
+    },
+    "breadcrumbs": {
+      "method": "GET",
+      "path": "/files/library/directories/path",
+      "query": "directory_id",
+      "response": "items array; root consumer finds is_root true"
+    }
+  },
+  "ui_observations": [
+    "Space All > New > Folder opens original New folder dialog",
+    "Auto-focused Folder name input",
+    "Typing .hidden displays Folder names cannot start with dot inline error",
+    "Original Cancel closes dialog without mutation"
+  ],
+  "create_behaviors": [
+    "Blank trimmed name or validation error prevents submission",
+    "409 treated as expected conflict with original conflict-message parser",
+    "Failure keeps unsaved input for retry",
+    "Success closes dialog and updates matching browse cache with node kind directory, item_count0, folder_count0, updated_at",
+    "Invalidates account/user library query cache"
+  ],
+  "next": [
+    "Recover full directory node/access DTO and browse filters before storage implementation",
+    "Implement distinct persistent directory state and merge into library nodes before pagination",
+    "Original create/rename/nested navigation/reload verification",
+    "Recover archive/restore and move-cycle behavior; separate demo policy from original backend facts"
+  ],
+  "limitations": [
+    "No successful create or persisted folder claimed",
+    "Folder icon asset is not folder implementation",
+    "Current library adapter returns pages only and excludes parent directories"
+  ]
+}
