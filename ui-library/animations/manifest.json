@@ -1,0 +1,150 @@
+{
+  "source": "Recovered production assets from OpenAI.Codex_26.1007.2314.0",
+  "animations": [
+    {
+      "key": "hello",
+      "source": "hello-32885a5730fb.js",
+      "sourceSha256": "0b54dcd09ff88dfe2a24315ea4df75ae0fd3de49b1ca4066983f1b91d9af9286",
+      "dataSha256": "f7d1e98fd23c510dc4b4708669366b485840d9fb667ca7ea7f039172598d672b",
+      "width": 500,
+      "height": 500,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 373
+    },
+    {
+      "key": "loader",
+      "source": "loader-b7cf9a60c18f.js",
+      "sourceSha256": "51aecd9888cf42c5cb00e0ba6f227c04a6dfe0d0954688821cfd37bdcb0efd2e",
+      "dataSha256": "55b89d48d15c4919fdb50cdd41caa0f3c092fa8c22567991e0fe1af3c04a64f4",
+      "width": 500,
+      "height": 500,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 721
+    },
+    {
+      "key": "memory",
+      "source": "memory-footnote-icon-aabfb86bd7e0.js",
+      "sourceSha256": "133c692b4fbbd7572609357b13214b9cb901a28bce97d97eac11f71d952d12b4",
+      "dataSha256": "451f9cc0fb5eebecfb9cdd9c7bc1376e9af04376255e7d0a36c98b748e56fca7",
+      "width": 500,
+      "height": 500,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 90
+    },
+    {
+      "key": "sidebar-finances",
+      "source": "sidebar-finances-icon-60f11149b77a.js",
+      "sourceSha256": "5aa7a3e8b7462888cd8ea921db1bb77d872b9821beb671447fded26770f2efec",
+      "dataSha256": "3a299ce9d7d743de022245a2214eb96b75ee9555e151d6c2cef11eeb8b53e300",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-images",
+      "source": "sidebar-images-icon-515d5207fd58.js",
+      "sourceSha256": "9ba27f8d2da30d844b5bdf8a67457aa58d979dae7a03a3e2ed3773a82507ca56",
+      "dataSha256": "96c89a345c6848b75a682cc048c57f81949a148d9cc0584c25eb562518b478ea",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-library",
+      "source": "sidebar-library-icon-a6e81a086025.js",
+      "sourceSha256": "af02752abcd8fab9b56247c6eada44f3f029fd5c92fb5d16bf3363314ae03dc3",
+      "dataSha256": "295abee37b853f312a835794a63b62158f39c6b26bab83928c9eeb6a90b72a58",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-more",
+      "source": "sidebar-more-icon-d710071877e6.js",
+      "sourceSha256": "b0a1d8ef414735d654c481cfe98995b0b5f2e7843435d12325e7201813900f9c",
+      "dataSha256": "a6c2a44522e8768818322ce6efbbe28c94591b32b06e4de531698fd38d3192b9",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-new-chat",
+      "source": "sidebar-new-chat-icon-cbd5d32d0c8e.js",
+      "sourceSha256": "3d58e0386fc58a1305e3a56a1f82c352caacd8c4e9e8b8f8080980ade7ca0a4f",
+      "dataSha256": "562d0a7ebefb15bb8d383d4152844c96ef8445b3142a8aa9ef74164f3e71918c",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-plugins",
+      "source": "sidebar-plugins-icon-8d185e42c466.js",
+      "sourceSha256": "0d3a6aeb3409baa795245e5e391f31ea0de502977bb41db248f863e8d933aae2",
+      "dataSha256": "cd243711cef39276a325f3f012be69883b791c8607643f32021846f45f189eb4",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-projects",
+      "source": "sidebar-projects-icon-55225a1c26e6.js",
+      "sourceSha256": "b22f7a7b806efd60b024a7774dabdf3ce1a335bb3904e42d727bc7af3ff9ee11",
+      "dataSha256": "96ef7f7585919034cc835bb51be0c64fce8d277b0e7c2937008ea55f9e10d476",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-search",
+      "source": "sidebar-search-icon-dee5b5ecb91c.js",
+      "sourceSha256": "d099e83c7f0b48f5806d9ed9e44aabfb369268cb30694f7b546af79a507b9122",
+      "dataSha256": "ab86b89185e0081b14c18c03176d7f40c2768e5a1be5a5d27aa355ece89ef607",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    },
+    {
+      "key": "sidebar-tasks",
+      "source": "sidebar-tasks-icon-a5050e1add74.js",
+      "sourceSha256": "cbd1a555ca009f101503ee20dc105907a0fe184dd044f3a4d9766be34eadff24",
+      "dataSha256": "3b9f482b77a6e15603af42d4d915ddfdafac11a1dcfda870399f3fea0ca1afec",
+      "width": 20,
+      "height": 20,
+      "frameRate": 60,
+      "inPoint": 0,
+      "outPoint": 40
+    }
+  ],
+  "runtime": {
+    "source": "index.umd-9aa69e0b1a1a.js",
+    "sourceSha256": "d6db37433a9f7ae28d07a65b824864d877fac04d7ece4b59e6e6a7ddaa0791c4",
+    "bodySha256": "bc001f4351b6a5e8e5823b1ecf473526605698e6ffa4b277d15b833315fb6236",
+    "engineVersion": "5.13.0",
+    "transformation": "Original formatted body retained. React injected into a factory; CommonJS helper copied from rolldown runtime. Imports, export and unavailable source-map comment removed."
+  },
+  "limits": [
+    "Runtime requires a browser DOM for playback",
+    "Navigation hover/focus wrapper and fallback glyph registry still require extraction",
+    "Data/runtime recovery does not establish rendered pixel parity",
+    "No new license granted by extraction"
+  ]
+}

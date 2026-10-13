@@ -198,5 +198,17 @@
     "ChoiceButton interactive-* selectors not found in recovered CSS: behavior extracted, visual dependency unresolved"
   ],
   "styleBaseline": "styles/manifest.json: three original CSS entrypoints and local URL resources, byte-identical; visual parity pending",
-  "classUtility": "app-shared-737655e1fb23.js Vde/q, export vgn: source execution comparison tests"
+  "classUtility": "app-shared-737655e1fb23.js Vde/q, export vgn: source execution comparison tests",
+  "animatedArtwork": {
+    "manifest": "animations/manifest.json",
+    "renderer": "animated-icon-svg-e85414c6ffc6.js n -> src/SvgLottie.js",
+    "method": "12 data modules evaluated in isolated contexts; original Lottie and React-adapter bodies preserved with injected React and copied bundler helper.",
+    "verification": "Differential animation objects and source hashes; unchanged runtime body check. Browser playback not yet verified.",
+    "pending": [
+      "par navigation trigger wrapper",
+      "Sar fallback glyphs",
+      "inherited-color observer and remapping",
+      "matched rendered comparison"
+    ]
+  }
 }

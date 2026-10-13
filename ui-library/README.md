@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Twenty-four tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Twenty-six tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -73,3 +73,13 @@ The sidebar example now closes/reopens Projects, moves the unread indicator into
 `useSidebarOrder({keys,onOrderChange,getSelectedKeys,decodeDragId})` owns transient order and drop-target state. Supply unique keys and `onOrderChange({keys,nextKeys}) => Promise`; the consumer updates canonical keys. Returned `controller.moveItem(key, offset)` supports explicit movement. Drag methods accept the recovered event shape (`active.rect.current.translated`, `active.id`, `over.id`, `over.rect`) and require a consumer ID decoder. Multiple selected keys retain their displayed order.
 
 The controller exposes the persistence promise so consumers can handle rejection. It clears only its own pending operation; canonical list changes invalidate stale provisional order. Pure helpers are exported for drop placement and batch movement. The example's Move up/Move down buttons are authored controls to exercise this behavior, not recovered menu UI. Pointer/keyboard drag sensors, overlays and announcements are still pending; this is not a claim of working drag-and-drop.
+
+## Original animated artwork
+
+`@rea/ui/animations` exposes 12 recovered Lottie animation objects (hello, loader, memory, finances, images, library, more, new chat, plugins, projects, search and tasks). `animations/manifest.json` records the exact source hashes and timing. The shipped Lottie **5.13.0** runtime and its React adapter are retained; only module dependency boundaries change. No replacement animation engine was installed.
+
+In a browser, `createSvgLottie(React)` from `@rea/ui/SvgLottie` produces the recovered `SvgLottie` wrapper. Pass `animationData`, `autoplay`, `loop`, `onComplete`, and `onDOMLoaded` through to the original `useLottie` hook. Clone the exported animation object before handing it to Lottie, since playback may mutate animation data. This is the low-level renderer, not yet the complete navigation animation component.
+
+The original navigation wrapper waits 300 ms after mouse entry, starts immediately on visible keyboard focus, resets on leave/blur/completion, and suppresses animation for reduced motion. That wrapper, the exact fallback glyph registry, and automatic inherited-color handling are still pending integration. Asset and runtime differential checks pass; browser playback and matched original visual checks remain pending.
+
+Reproduce this extraction with `node scripts/extract-animations.mjs ../original-stack/state/recovered-all/readable/assets`. It rejects changed existing outputs. Source-comparison tests need that local recovered source directory.
