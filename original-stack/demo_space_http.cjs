@@ -2,6 +2,7 @@
 function demoSpaceHttp(method,url,body){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
+ if(method==='GET'&&route==='/pages/creation-capabilities')return {enabled_artifact_document_types:['granola_workbook','granola_presentation','granola_document']};
  const paged=['/spaces/v2','/pages','/pages/catalog','/pages/mentions/inbox'];
  if(method==='GET'&&route==='/pins/pages')return [];
  if(method==='GET'&&paged.includes(route)){

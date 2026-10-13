@@ -5,7 +5,10 @@
     "pageCatalog": "app-initial-b8e1c8014bb4.js:158275",
     "library": "app-initial-b8e1c8014bb4.js:158664",
     "pins": "app-initial-b8e1c8014bb4.js:163875",
-    "mentions": "inbox-2e21c8f183ef.js:204,239"
+    "mentions": "inbox-2e21c8f183ef.js:204,239",
+    "creationCapabilities": "app-shared-737655e1fb23.js:237707-237748 enum/schema/consumer",
+    "createSpace": "app-initial-b8e1c8014bb4.js:167022",
+    "createPage": "app-initial-b8e1c8014bb4.js:167066"
   },
   "implemented": [
     "GET /spaces/v2 items/next_cursor",
@@ -13,15 +16,24 @@
     "GET /pages/catalog items/next_cursor/order_by",
     "GET /pages/mentions/inbox items/next_cursor",
     "GET /pins/pages array",
-    "POST /files/library items/cursor"
+    "POST /files/library items/cursor",
+    "GET /pages/creation-capabilities original enum values workbook/presentation/document"
   ],
   "fixtureState": "empty",
-  "runtimeVerified": false,
+  "runtimeVerified": {
+    "runtimePid": 100912,
+    "adapterPid": 94576,
+    "launcherSession": 52962,
+    "packageSha256": "537a4b31180df525c90d53509ec7d36f3c4cfd8a69b91a92e7952e20c4580ca0",
+    "observed": [
+      "Space sidebar and main view no longer show loading errors",
+      "Original New menu exposes Page, Slides, Sheet, Site, Folder, Space, Upload files"
+    ]
+  },
   "tests": 1,
   "pending": [
-    "Build/install and verify original empty state",
-    "Creation capabilities",
     "Nonempty pages/spaces and persistent create/edit/trash",
-    "Editor realtime/bootstrap dependency"
+    "Editor realtime/bootstrap dependency",
+    "File upload and folder flow"
   ]
 }
