@@ -24,7 +24,7 @@ with tempfile.TemporaryDirectory() as directory:
  samples.extend([['ThreadSectionMoveResponse',pinned],['ThreadSectionListResponse',handle('threadSection/list',{})]])
  started,event=store.handle('thread/start',{'historyMode':'paginated'})
  samples.extend([['ThreadStartResponse',started],['ThreadStartedNotification',event['params']]])
- turn,events=store.handle('turn/start',{'threadId':started['thread']['id'],'input':[{'type':'text','text':'Demo message','text_elements':[]}]})
+ turn,events=store.handle('turn/start',{'threadId':started['thread']['id'],'input':[{'type':'text','text':'Demo message','text_elements':[{'byteRange':{'start':0,'end':4},'placeholder':'Demo'}]}]})
  samples.append(['TurnStartResponse',turn])
  names={'thread/status/changed':'ThreadStatusChangedNotification','turn/started':'TurnStartedNotification','item/started':'ItemStartedNotification','item/completed':'ItemCompletedNotification','item/agentMessage/delta':'AgentMessageDeltaNotification','turn/completed':'TurnCompletedNotification','thread/name/updated':'ThreadNameUpdatedNotification'}
  samples.extend([[names[e['method']],e['params']] for e in events])
