@@ -206,3 +206,9 @@ After restart, the original Editar mensaje control opened the editor. Text enter
 The recovered B9t and _8t consumers require rollbackResponse.thread with the full retained turns array. The exported protocol inventory contains no legacy ThreadRollbackResponse schema. evidence/legacy-rollback.recovered.js retains the production consumer evidence; schema validation checks the structurally equivalent ThreadReadResponse wrapper only, not a claimed original rollback schema.
 
 thread/rollback now removes a positive bounded number of final turns from legacy demo history, rejects active turns and invalid counts, and persists the retained prefix. It returns the complete thread and does not invent an unobserved rollback notification. Only transcript JSON changes; workspace files are never rolled back. Thirty-four tests pass, including preservation/reload of earlier turns and rollback to an empty history. Legacy editing still requires an original-runtime UI test; paginated editing remains separately verified.
+
+## Original legacy message editing verified
+
+A Legacy Edit Demo conversation with historyMode=legacy was opened in the original renderer. Editar mensaje, native text entry into its editor and Enviar issued thread/rollback with numTurns, followed by turn/start. Persistence shows one completed replacement turn containing Legacy message to edit. Updated through the original legacy editor. evidence/original-legacy-message-edited.png retains the native capture. Both legacy and paginated editing now have separate runtime observations.
+
+An additional attempt opened Acciones del chat, but the menu options were not exposed in the inspected renderer DOM; renaming through that menu remains unverified. No host-private callback was invoked to bypass the menu.
