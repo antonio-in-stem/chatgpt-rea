@@ -1,0 +1,11 @@
+{
+  "source": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\extracted\\.vite\\build\\main-BklS_2Y2.js",
+  "sha256": "5cf1544463be9497b85b69051aa5ad32320f9ebdca063ec2ab41abb75b6cadf7",
+  "range": [
+    2622089,
+    2622960
+  ],
+  "observed": "Original host requested project/list; two demo projects returned by persistent adapter but sidebar still showed No hay proyectos.",
+  "inference": "Server catalog and host local project cache are distinct; direct server seed is not sufficient to establish visible sidebar state.",
+  "next": "Trace original UI project creation and host cache migration; keep renderer unchanged."
+}
