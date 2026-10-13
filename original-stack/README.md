@@ -228,3 +228,23 @@ The coordinated launcher was run with a new demo-first-run-audit profile. The or
 After the first runtime and adapter were confirmed absent, the same launcher/profile was reopened. The onboarding did not recur; the persisted conversation was opened through its original sidebar row. Its message actions and composer were present, and the native capture shows the retained transcript. Evidence: first-run-observation.json, original-first-run-composer.png and original-first-run-reopened.png. This verifies the clean-profile basic chat path, not all account-gated features or native credential/network isolation.
 
 The initial in-process PowerShell capture failed with a stack overflow while the app remained alive. Running Capture-OriginalWindow.ps1 using a separate `pwsh -NoProfile -File` process succeeded; use that invocation for repeatable captures. No fix to the capture helper itself is claimed.
+
+## Measured original shell geometry and typography
+
+Run `node original-stack/Measure-Renderer.cjs demo-first-run-audit` while that explicit demo profile is open with inspection enabled. The read-only probe refuses profiles containing codex-home/auth.json and selects only app://-/index.html. It records source executable/ASAR hashes, viewport/DPR, anchor ancestry, computed styles, inherited-variable overrides, pseudo-element styles, focus/hover state and actual platform fonts on text nodes. It does not mutate the renderer. Output is state/<profile>/render-metrics.json.
+
+Evidence/render-metrics-1090x760.json contains 97 measured nodes at 1090x760 CSS pixels and DPR 1 in the reopened demo conversation. Parent references and anchor chains were checked for consistency. The userMessage selector did not match this build and is explicitly empty; bubble geometry is not yet covered. Empty font arrays on containers do not establish a missing font: text descendants report Segoe UI and Segoe UI Semibold.
+
+Observed surfaces in this state:
+
+| Surface | Geometry / finish |
+| --- | --- |
+| Rail | 52 px wide; home button 36x36 px |
+| Sidebar surface | 288 px wide; corners TL/TR/BR/BL = 12/0/0/12 px; translucent Oklab background |
+| Main surface | corners 0/12/4/0 px; rgb(24,24,24) |
+| Composer surface | 713x98 px; 22 px corners; rgb(54,54,54); inset 1 px white shadow at 0.2 alpha |
+| Composer editable | 14 px type, 20 px line height, declared weight 430 |
+| Send button | 28x28 px |
+| Permission control | 13 px type, 18 px line height |
+
+These measurements explain why uniform corner rounding and flat approximated surfaces lose fidelity. They are a baseline for the later native port, not universal layout constants. Responsive widths, alternate themes, message bubbles and interaction states remain to be measured. Matching computed styles alone does not reproduce Chromium text rasterization or compositing.
