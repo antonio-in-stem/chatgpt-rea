@@ -104,3 +104,30 @@ test('original parent creation and move contracts preserve an acyclic recoverabl
   assert.equal(call('GET','/pages').items[0].page_id,'rea-page-3');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+test('library nodes and files lists paginate original shapes and view reports preserve documents',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-page-library-'));
+ const settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  for(let i=1;i<=3;i++)call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'page-'+i,title:'Title '+i,initial_blocks:[]});
+  const first=call('GET','/files/library/nodes?include_pages=true&limit=2');
+  assert.equal(first.items.length,2);assert.equal(first.cursor,'offset:2');
+  assert.equal(first.items[0].kind,'file');assert.equal(first.items[0].access_kind,'owned');assert.equal(first.items[0].name,'Title 3');
+  assert.equal(call('GET','/files/library/nodes?include_pages=true&limit=2&cursor=offset:2').items[0].page_metadata.page_id,'rea-page-1');
+  assert.equal(call('GET','/files/library/nodes?include_pages=true&q=Title%202').items.length,1);
+  assert.equal(call('GET','/files/library/nodes?include_pages=true&parent_directory_id=library:collection:shared-with-me').items.length,0);
+  assert.equal(call('GET','/files/library/nodes?include_pages=false').items.length,0);
+  assert.throws(()=>call('GET','/files/library/nodes?include_pages=true&cursor=unknown'),/cursor/);
+  const recent=call('POST','/files/library',{include_pages:true,limit:2});assert.equal(recent.cursor,'offset:2');
+  assert.equal(call('POST','/files/library',{include_pages:true,limit:2,cursor:recent.cursor}).items.length,1);
+  assert.throws(()=>call('POST','/pages/rea-page-1/views',{observed_sequence:1}),/sequence/);
+  call('POST','/pages/rea-page-1/views',{observed_sequence:0});
+  const stored=JSON.parse(fs.readFileSync(path.join(dir,'demo-pages.json'),'utf8')).items.find(x=>x.metadata.page_id==='rea-page-1');
+  assert.ok(stored.lastUsedAt);assert.equal(stored.metadata.current_sequence,0);
+  assert.equal(call('GET','/pages/catalog').items.find(x=>x.id==='rea-page-1').last_used_at,stored.lastUsedAt);
+  assert.equal(fs.existsSync(path.join(dir,'rea-page-1-document.json')),false);
+  call('POST','/pages/rea-page-1/archive',{});
+  assert.equal(call('GET','/files/library/nodes?include_pages=true').items.length,2);
+  assert.throws(()=>call('POST','/pages/rea-page-1/views',{observed_sequence:0}),/Unavailable/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

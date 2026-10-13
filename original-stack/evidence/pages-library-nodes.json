@@ -1,0 +1,37 @@
+{
+  "scope": "Original library node listing, pagination and page view reporting",
+  "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+  "contracts": [
+    "158509-158570 zyr GET /files/library/nodes, query include_pages, node kind/name/access_kind and cursor",
+    "158664-158713 POST files/library separate file_name contract",
+    "158272-158302 page catalog last_used_at",
+    "343483-343499 POST page views observed_sequence, response body unused"
+  ],
+  "implementation": [
+    "Node listing returns owned personal demo page nodes",
+    "Local views update lastUsedAt only, reject future observed sequences and unavailable pages",
+    "POST library pagination replaces previous count-limit error",
+    "Page catalog sorted by last-used timestamp"
+  ],
+  "tests": {
+    "passed": true,
+    "node": 20
+  },
+  "runtimeVerified": "partial",
+  "limitations": [
+    "All home remains empty on fresh load; root cause still unresolved",
+    "Node endpoint covered by adapter tests, invocation by current All variant not established",
+    "Shared folders/providers unsupported",
+    "Root listing only for nodes; directory pages excluded"
+  ],
+  "runtime": {
+    "package": "v26",
+    "asar": "cead5cfc4f407aaea6a45b7a178d1da7faf7671a01981c5e81987938d709924b",
+    "observations": [
+      "Original Pages section renders four root pages with Name/Source/Last activity columns",
+      "Open Original Pages demo causes original views report; local rea-page-3.lastUsedAt persisted",
+      "No views error for page3 in new runtime log"
+    ],
+    "lastUsedAt": "2026-10-13T11:09:53.812Z"
+  }
+}
