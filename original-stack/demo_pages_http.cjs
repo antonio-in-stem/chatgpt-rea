@@ -4,7 +4,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
  const directoryId=route.match(/^\/files\/library\/directories\/(rea-directory-[1-9][0-9]*)$/)?.[1];
- const directory=(route==='/files/library/directories'&&method==='POST')||(route==='/files/library/directories/path'&&method==='GET')||(directoryId&&['GET','PATCH'].includes(method));
+ const directory=(route==='/files/library/directories'&&method==='POST')||(route==='/files/library/directories/path'&&method==='GET')||(directoryId&&['GET','PATCH','DELETE'].includes(method));
  const sharing=route.match(/^\/(?:pages\/(rea-page-[1-9][0-9]*)|spaces\/v2\/(rea-space-[1-9][0-9]*))\/shares(?:\/(rea-share-[1-9][0-9]*))?$/);
  const recipientSearch=method==='POST'&&route==='/pages/sharing/recipients';
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
@@ -41,6 +41,13 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(directory){
   if(route.endsWith('/path')){let id=directoryParent(url.searchParams.get('directory_id')),items=[];validateDirectoryParent(id);while(id!=null){const item=findDirectory(id);items.unshift(directoryRead(item));id=item.parent_directory_id;}return {items:[directoryRoot,...items]};}
   if(method==='GET')return directoryRead(findDirectory(directoryId));
+  if(method==='DELETE'){
+   findDirectory(directoryId);
+   const removed=new Set([directoryId]);let changed=true;
+   while(changed){changed=false;for(const d of directories)if(removed.has(d.parent_directory_id)&&!removed.has(d.id)){removed.add(d.id);changed=true;}}
+   // Synthetic directories contain only directories; page trees have separate ownership.
+   state.directories=directories.filter(d=>!removed.has(d.id));persist();return {success:true};
+  }
   if(typeof body!=='string'||body.length>65536)throw Error('Expected directory JSON');
   const input=JSON.parse(body);if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['name','parent_directory_id'].includes(k)))throw Error('Invalid directory body');
   const previous=directoryId?findDirectory(directoryId):null;

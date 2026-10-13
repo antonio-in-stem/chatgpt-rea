@@ -403,3 +403,21 @@ test('directory rejected mutations and failed writes preserve previous store',()
   assert.equal(fs.readFileSync(file,'utf8'),before);assert.equal(fs.readFileSync(file+'.pending','utf8'),'foreign');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('directory deletion removes only its subtree and remains atomic on failure',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-directory-delete-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const create=(name,parent_directory_id)=>call('POST','/files/library/directories',{name,parent_directory_id});
+  const a=create('A'),b=create('B',a.id),c=create('C',b.id),other=create('Other');
+  const page=call('POST','/pages',{idempotency_key:'independent',title:'Page',initial_blocks:[],destination:'personal_file_drive'});
+  const file=path.join(dir,'demo-pages.json'),before=fs.readFileSync(file);
+  fs.writeFileSync(file+'.pending','foreign');assert.throws(()=>call('DELETE','/files/library/directories/'+a.id));
+  assert.deepEqual(fs.readFileSync(file),before);assert.equal(fs.readFileSync(file+'.pending','utf8'),'foreign');fs.unlinkSync(file+'.pending');
+  assert.deepEqual(call('DELETE','/files/library/directories/'+a.id),{success:true});
+  for(const node of [a,b,c])assert.throws(()=>call('GET','/files/library/directories/'+node.id),/Unknown/);
+  assert.equal(call('GET','/files/library/directories/'+other.id).name,'Other');
+  assert.equal(call('GET','/pages/'+page.metadata.page_id).metadata.title,'Page');
+  const after=fs.readFileSync(file);assert.throws(()=>call('DELETE','/files/library/directories/'+a.id),/Unknown/);assert.deepEqual(fs.readFileSync(file),after);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

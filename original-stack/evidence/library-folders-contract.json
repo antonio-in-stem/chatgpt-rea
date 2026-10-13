@@ -1,12 +1,14 @@
 {
-  "scope": "Original Space folder contracts with initial persistent demo implementation",
+  "scope": "Original Space folder contracts and persistent demo lifecycle",
   "sources": {
     "create": "library-create-dialog-e0c3919fc0ce.js:48-102,187-249",
     "validation": "library-name-validation-5559e2ce17f6.js:2-10",
     "availability": "slate-create-menu-df1a68fe05ff.js:1454-1470",
     "rename": "app-initial-b8e1c8014bb4.js:492922-492928",
     "move": "app-initial:493017-493022",
-    "path": "app-initial:289870-289891"
+    "path": "app-initial:289870-289891",
+    "delete": "app-initial-b8e1c8014bb4.js:492982-493000; library-item-dialogs-90a15dde2d55.js:130-164",
+    "query_selection": "app-initial-b8e1c8014bb4.js:158201-158226,158509-158568,158631 onward"
   },
   "requests": {
     "create": {
@@ -37,13 +39,27 @@
       "path": "/files/library/directories/path",
       "query": "directory_id",
       "response": "items array; root consumer finds is_root true"
+    },
+    "delete": {
+      "method": "DELETE",
+      "path": "/files/library/directories/{directory_id}",
+      "response": {
+        "success": true
+      },
+      "semantics": "Permanent subtree removal, separate from page Trash"
     }
   },
   "ui_observations": [
     "Space All > New > Folder opens original New folder dialog",
     "Auto-focused Folder name input",
     "Typing .hidden displays Folder names cannot start with dot inline error",
-    "Original Cancel closes dialog without mutation"
+    "Original Cancel closes dialog without mutation",
+    "Original Folder demo created in original New > Folder dialog",
+    "Nested Folder demo created inside parent and shown by original breadcrumb navigation",
+    "Full renderer reload: folder preserved in All > Your items; Suggested is a different ranking query",
+    "Original Rename dialog updates name; renamed parent and child verified after full process restart",
+    "Original Delete folder confirmation states permanent deletion with descendants",
+    "Cancel preserves both directories; confirming removes only synthetic child and renders original empty folder state"
   ],
   "create_behaviors": [
     "Blank trimmed name or validation error prevents submission",
@@ -53,14 +69,16 @@
     "Invalidates account/user library query cache"
   ],
   "next": [
-    "Build/install and verify original create, reload, nested navigation and rename",
-    "Trace original delete/restore and permission menu requirements",
+    "Verify original Move to folder dialog and destination selection",
+    "Implement proper HTTP409 conflict messaging",
+    "Trace directory sharing and file upload contracts",
     "Verify active filters including shared/favorites/sources"
   ],
   "limitations": [
-    "Not built or installed in active v40 yet",
-    "Full directory access DTO remains consumer-inferred",
-    "No UI success, reload or delete lifecycle claim"
+    "Directory access DTO remains consumer-inferred",
+    "Folder subtree deletion currently supports directory-only synthetic contents; file ingestion is not implemented",
+    "Original Suggested ranking is not reproduced by demo backend; use All > Your items for folder enumeration",
+    "Directory sharing and move-dialog UI verification remain pending"
   ],
   "implementation": [
     "Directories stored separately from page items in same atomic demo state file",
@@ -68,12 +86,13 @@
     "Breadcrumbs include synthetic root and ordered ancestors",
     "Library nodes merge directories and pages before pagination; folder children do not leak root pages",
     "Category filtering excludes directories from page-only views",
-    "Cycles, unavailable parents and same-parent duplicate names rejected before persistence"
+    "Cycles, unavailable parents and same-parent duplicate names rejected before persistence",
+    "DELETE permanently removes selected synthetic directory subtree atomically; unrelated pages and sibling folders remain intact"
   ],
   "demo_policies": [
     "255-character name bound and exact case-sensitive duplicate detection are demo choices; original backend behavior not established",
     "Conflicts currently surface generic adapter error; original HTTP409-specific messaging not yet wired",
-    "Root is synthetic My files; no folder archive/delete support yet"
+    "Root is synthetic My files; folders use permanent deletion, not page Trash"
   ],
-  "validation": "42 Node tests pass including nested paths, restart reads, rename/move, counts, merge pagination, category boundaries, cycles and atomic write failure"
+  "validation": "43 Node tests pass. Original UI create/nested navigation/rename/restart/Cancel/delete/empty state verified. No renderer asset modifications."
 }
