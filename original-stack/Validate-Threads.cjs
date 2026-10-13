@@ -15,6 +15,8 @@ with tempfile.TemporaryDirectory() as directory:
  for method,response_schema,event_schema,params in [('thread/name/set','ThreadSetNameResponse','ThreadNameUpdatedNotification',{'threadId':THREAD['id'],'name':'Renamed Demo'}),('thread/archive','ThreadArchiveResponse','ThreadArchivedNotification',{'threadId':THREAD['id']}),('thread/unarchive','ThreadUnarchiveResponse','ThreadUnarchivedNotification',{'threadId':THREAD['id']})]:
   result,event=store.handle(method,params)
   samples.extend([[response_schema,result],[event_schema,event['params']]])
+ result,event=store.handle('thread/fork',{'threadId':THREAD['id'],'lastTurnId':THREAD['turns'][0]['id']})
+ samples.extend([['ThreadForkResponse',result],['ThreadStartedNotification',event['params']]])
 print(json.dumps(samples))`;
 const samples=JSON.parse(cp.execFileSync('python',['-c',code],{cwd:__dirname,encoding:'utf8'}));
 for(const [name,value] of samples){

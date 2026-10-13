@@ -51,8 +51,48 @@ class ThreadTests(unittest.TestCase):
             store=ThreadStore(Path(directory)/"threads.json")
             with patch.object(Path,"replace",side_effect=OSError("disk unavailable")):
                 with self.assertRaises(OSError):store.handle("thread/archive",{"threadId":THREAD["id"]})
-            self.assertFalse(store.data["archived"])
+            self.assertFalse(store.data["threads"][THREAD["id"]]["archived"])
             with self.assertRaises(ThreadError):store.handle("thread/name/set",{"threadId":THREAD["id"],"name":""})
+
+    def test_fork_preserves_parent_and_is_independent_after_reload(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            original=store.handle("thread/read",{"threadId":THREAD["id"],"includeTurns":True})[0]
+            fork,event=store.handle("thread/fork",{"threadId":THREAD["id"],"lastTurnId":THREAD["turns"][0]["id"]})
+            fork_id=fork["thread"]["id"]
+            self.assertNotEqual(fork_id,THREAD["id"])
+            self.assertEqual(fork["thread"]["forkedFromId"],THREAD["id"])
+            self.assertEqual(event["params"]["thread"]["turns"],[])
+            self.assertEqual(store.handle("thread/read",{"threadId":THREAD["id"],"includeTurns":True})[0],original)
+            store=ThreadStore(path)
+            store.handle("thread/name/set",{"threadId":fork_id,"name":"Branch"})
+            self.assertEqual(store.handle("thread/read",{"threadId":THREAD["id"]})[0]["thread"]["name"],THREAD["name"])
+            first=store.handle("thread/list",{"limit":1})[0]
+            second=store.handle("thread/list",{"limit":1,"cursor":first["nextCursor"]})[0]
+            self.assertEqual(len({first["data"][0]["id"],second["data"][0]["id"]}),2)
+
+    def test_legacy_store_migration_preserves_history_and_archive(self):
+        import json
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            path.write_text(json.dumps({"thread":THREAD,"archived":True}),encoding="utf-8")
+            store=ThreadStore(path)
+            self.assertEqual(store.handle("thread/list",{})[0]["data"],[])
+            store.handle("thread/name/set",{"threadId":THREAD["id"],"name":"Migrated"})
+            reloaded=ThreadStore(path)
+            result=reloaded.handle("thread/read",{"threadId":THREAD["id"],"includeTurns":True})[0]["thread"]
+            self.assertEqual(result["turns"],THREAD["turns"])
+            self.assertEqual(result["name"],"Migrated")
+            self.assertEqual(len(reloaded.handle("thread/list",{"archived":True})[0]["data"]),1)
+
+    def test_fork_before_turn_and_invalid_boundary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json")
+            result,_=store.handle("thread/fork",{"threadId":THREAD["id"],"beforeTurnId":THREAD["turns"][0]["id"]})
+            self.assertEqual(result["thread"]["turns"],[])
+            with self.assertRaises(ThreadError):store.handle("thread/fork",{"threadId":THREAD["id"],"lastTurnId":"missing"})
+            self.assertEqual(len(store.data["threads"]),2)
 
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:

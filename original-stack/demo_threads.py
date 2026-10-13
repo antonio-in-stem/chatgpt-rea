@@ -2,6 +2,7 @@
 import copy
 import json
 import time
+import uuid
 from pathlib import Path
 
 THREAD = json.loads((Path(__file__).parent / "demo-thread.json").read_text(encoding="utf-8"))
@@ -68,35 +69,96 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive"}
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork"}
     METHODS = METHODS | MUTATIONS
 
     def __init__(self, path):
         self.path = Path(path)
-        self.data = json.loads(self.path.read_text(encoding="utf-8")) if self.path.exists() else {"thread":copy.deepcopy(THREAD),"archived":False}
+        data = json.loads(self.path.read_text(encoding="utf-8")) if self.path.exists() else {"thread":copy.deepcopy(THREAD),"archived":False}
+        if "thread" in data:
+            data = {"version":2,"threads":{data["thread"]["id"]:data}}
+        if data.get("version") != 2 or not isinstance(data.get("threads"),dict):
+            raise ThreadError("Unsupported demo thread store")
+        self.data = data
 
-    def handle(self, method, params):
-        if method not in self.MUTATIONS:
-            return handle(method,params,self.data["thread"],self.data["archived"]), None
-        if not isinstance(params,dict) or params.get("threadId") != self.data["thread"]["id"]:
-            raise ThreadError("Unknown demo thread")
-        next_data = copy.deepcopy(self.data)
-        thread = next_data["thread"]
-        if method == "thread/name/set":
-            name = params.get("name")
-            if not isinstance(name,str) or not name.strip():raise ThreadError("Thread name must be nonempty")
-            thread["name"] = name
-            response = {}
-            event = {"method":"thread/name/updated","params":{"threadId":thread["id"],"threadName":name}}
-        else:
-            next_data["archived"] = method == "thread/archive"
-            response = {} if next_data["archived"] else {"thread":{**copy.deepcopy(thread),"turns":[]}}
-            event = {"method":"thread/archived" if next_data["archived"] else "thread/unarchived","params":{"threadId":thread["id"]}}
-        thread["updatedAt"] = int(time.time())
-        if "thread" in response:response["thread"]["updatedAt"]=thread["updatedAt"]
+    def _commit(self, data):
         self.path.parent.mkdir(parents=True,exist_ok=True)
         temporary = self.path.with_suffix(".tmp")
-        temporary.write_text(json.dumps(next_data,indent=2),encoding="utf-8")
+        temporary.write_text(json.dumps(data,indent=2),encoding="utf-8")
         temporary.replace(self.path)
-        self.data = next_data
+        self.data = data
+
+    def handle(self, method, params):
+        if params is None and method == "thread/list":params={}
+        if not isinstance(params,dict):raise ThreadError("Expected object parameters")
+        if method == "thread/list":
+            per_thread={**params,"cursor":None,"limit":1}
+            rows=[]
+            for entry in self.data["threads"].values():
+                rows.extend(handle(method,per_thread,entry["thread"],entry["archived"])["data"])
+            sort_key=params.get("sortKey") or "created_at"
+            keys={"created_at":"createdAt","updated_at":"updatedAt","recency_at":"recencyAt"}
+            if sort_key not in keys:raise ThreadError("Unsupported demo thread sort")
+            rows.sort(key=lambda t:(t[keys[sort_key]] or 0,t["id"]),reverse=params.get("sortDirection")!="asc")
+            return page(rows,params,"demo-thread:"),None
+        thread_id=params.get("threadId")
+        if not isinstance(thread_id,str) or thread_id not in self.data["threads"]:
+            raise ThreadError("Unknown demo thread")
+        entry=self.data["threads"][thread_id]
+        if method not in self.MUTATIONS:
+            return handle(method,params,entry["thread"],entry["archived"]),None
+        data=copy.deepcopy(self.data)
+        entry=data["threads"][thread_id]
+        thread=entry["thread"]
+        if method == "thread/fork":
+            for key in ("path","experimentalPredictionMode","ephemeral","config","baseInstructions","developerInstructions","runtimeWorkspaceRoots","permissions","sandbox","approvalPolicy","approvalsReviewer","threadSource"):
+                if params.get(key):raise ThreadError("Unsupported demo fork option: "+key)
+            last,before=params.get("lastTurnId"),params.get("beforeTurnId")
+            if last is not None and before is not None:raise ThreadError("Fork boundaries are mutually exclusive")
+            boundary=last if last is not None else before
+            if boundary is not None:
+                matches=[i for i,t in enumerate(thread["turns"]) if t["id"]==boundary]
+                if not matches:raise ThreadError("Unknown fork turn")
+                index=matches[0]
+                if thread["turns"][index]["status"]=="inProgress":raise ThreadError("Cannot fork an active turn")
+                thread["turns"]=thread["turns"][:index+(last is not None)]
+            thread["id"]=str(uuid.uuid4())
+            thread["forkedFromId"]=thread_id
+            thread["parentThreadId"]=None
+            thread["path"]=None
+            thread["name"]=(thread["name"] or "Demo")+" (fork)"
+            now=int(time.time())
+            thread.update(createdAt=now,updatedAt=now,recencyAt=now,status={"type":"idle"})
+            # Metadata-only model overrides; there is no generation backend.
+            for key in ("model","modelProvider"):
+                if params.get(key) is not None:
+                    if not isinstance(params[key],str):raise ThreadError("Invalid fork model metadata")
+                    thread[key]=params[key]
+            if params.get("cwd") is not None:
+                from pathlib import PureWindowsPath
+                if not isinstance(params["cwd"],str) or not PureWindowsPath(params["cwd"]).is_absolute():raise ThreadError("Absolute demo cwd required")
+                thread["cwd"]=params["cwd"]
+            # The source entry must remain byte-for-byte unchanged.
+            data["threads"][thread_id]=copy.deepcopy(self.data["threads"][thread_id])
+            data["threads"][thread["id"]]={"thread":thread,"archived":False}
+            response=handle("thread/resume",{"threadId":thread["id"],"excludeTurns":params.get("excludeTurns",False)},thread)
+            for key in ("collaborationMode","initialTurnsPage","turnsBackwardsCursor","itemsBackwardsCursor"):response.pop(key)
+            response["model"]=thread["model"] or "rea-demo"
+            response["modelProvider"]=thread["modelProvider"]
+            response["serviceTier"]=params.get("serviceTier")
+            event={"method":"thread/started","params":{"thread":{**copy.deepcopy(thread),"turns":[]}}}
+        else:
+            if method == "thread/name/set":
+                name=params.get("name")
+                if not isinstance(name,str) or not name.strip():raise ThreadError("Thread name must be nonempty")
+                thread["name"]=name
+                response={}
+                event={"method":"thread/name/updated","params":{"threadId":thread_id,"threadName":name}}
+            else:
+                entry["archived"]=method=="thread/archive"
+                response={} if entry["archived"] else {"thread":{**copy.deepcopy(thread),"turns":[]}}
+                event={"method":"thread/archived" if entry["archived"] else "thread/unarchived","params":{"threadId":thread_id}}
+            thread["updatedAt"]=int(time.time())
+            if "thread" in response:response["thread"]["updatedAt"]=thread["updatedAt"]
+        self._commit(data)
         return response,event
