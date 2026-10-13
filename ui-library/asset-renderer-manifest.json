@@ -1,0 +1,28 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "t2n",
+    "n2n",
+    "r2n",
+    "l2n",
+    "u2n",
+    "d2n",
+    "f2n",
+    "p2n",
+    "tlr",
+    "llr",
+    "mlr",
+    "hlr",
+    "rlr",
+    "t5"
+  ],
+  "bodySha256": "0f4c2388b66ccda161912b12c53c1d95b087009e1bcbaed3d231aaed7e94c0c3",
+  "transformation": "Original function bodies retained. React/JSX injected; compiler memo arrays initialized per render (memo optimization removed). Original capability and identifier constants retained.",
+  "limits": [
+    "Consumes trusted recovered preset objects, not arbitrary SVG input",
+    "Preset construction/validation function Z is outside this renderer",
+    "Sprite resources must be supplied by consumer",
+    "Full visual comparison pending"
+  ]
+}

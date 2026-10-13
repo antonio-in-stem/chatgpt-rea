@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createHash} from 'node:crypto';
+if(!process.argv[2])throw Error('Pass recovered app-shared-737655e1fb23.js');
+const bytes=fs.readFileSync(process.argv[2]),source=bytes.toString('utf8');
+const names=['t2n','n2n','r2n','l2n','u2n','d2n','f2n','p2n','tlr','llr','mlr','hlr','rlr','t5'];
+const definitions=names.map(name=>{const start=source.indexOf('function '+name+'(');if(start<0)throw Error(name);return source.slice(start,source.indexOf('\n}',start)+2);});
+const body=definitions.join('\n');
+const output=`// Generated original asset renderer. See asset-renderer-manifest.json.\nexport function createAssetIcon(React){\nconst m2n=/^[A-Za-z_:][A-Za-z0-9_.:-]*$/,h2n=new Set(['icon','mask','clipPath']);\nconst ilr={c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},Ibi=ilr,alr=React;\nconst olr={jsx:(type,props)=>React.createElement(type,props)},Lbi=olr;\n${body}\nreturn t5;\n}\n`;
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..'),target=path.join(root,'src','AssetIcon.js');
+if(fs.existsSync(target)&&fs.readFileSync(target,'utf8')!==output)throw Error('Refusing changed output');
+fs.writeFileSync(target,output);
+fs.writeFileSync(path.join(root,'asset-renderer-manifest.json'),JSON.stringify({source:path.basename(process.argv[2]),sourceSha256:createHash('sha256').update(bytes).digest('hex'),symbols:names,bodySha256:createHash('sha256').update(body).digest('hex'),transformation:'Original function bodies retained. React/JSX injected; compiler memo arrays initialized per render (memo optimization removed). Original capability and identifier constants retained.',limits:['Consumes trusted recovered preset objects, not arbitrary SVG input','Preset construction/validation function Z is outside this renderer','Sprite resources must be supplied by consumer','Full visual comparison pending']},null,2)+'\n');
