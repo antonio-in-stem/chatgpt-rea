@@ -21,7 +21,9 @@
     "Short sidebar labels have no overflow or animation styles",
     "Projects section collapses; rows leave accessibility tree and wrapper remains inert/aria-hidden with no children after exit",
     "Collapsed heading displays unread count 3",
-    "Enter reopens section; Tab focuses first sidebar item"
+    "Enter reopens section; Tab focuses first sidebar item",
+    "Move down twice reorders design from first to last without losing aria-current=page",
+    "Movement controls disable at first/last list boundaries"
   ],
   "build": "npm run build:example succeeded with esbuild 0.28.0",
   "runtimeVersions": {

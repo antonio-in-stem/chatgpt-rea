@@ -11,7 +11,9 @@
     "fRo/pRo/mRo timing and sampled easing",
     "vZ leading icon/disclosure slot",
     "UF/HF/Tar sections and list layout",
-    "P1o section toggle with original ZNi chevron"
+    "P1o section toggle with original ZNi chevron",
+    "q1o item order controller with injected canonical state and ID decoding",
+    "b9r/x9r/S9r/C9r/V4/k9r pending/drop/multiselection algorithms"
   ],
   "nextDependencies": [
     {
@@ -22,7 +24,7 @@
   ],
   "limits": [
     "Not full sidebar/rail component",
-    "Section ordering and drag/drop controllers still pending",
+    "Section ordering, drag sensors, overlay and announcements still pending",
     "ContextMenu implementation still pending",
     "Do not substitute settings icon for actual profile identity"
   ]

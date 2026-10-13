@@ -142,6 +142,33 @@
         "Full sidebar ordering/drag and rail shell pending",
         "No same-state pixel comparison"
       ]
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "formattedSourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "components": [
+        "resolveDisplayedOrder",
+        "resolveDropTarget",
+        "moveItemBefore",
+        "moveSelectionBefore",
+        "useSidebarOrder"
+      ],
+      "symbols": [
+        "b9r",
+        "x9r",
+        "S9r",
+        "C9r",
+        "V4",
+        "k9r"
+      ],
+      "additionalSource": "app-initial q1o controller, Har placement, pP array move",
+      "transformation": "Pure algorithms retained with thread-specific names generalized to keys. Hook compiler caches removed. Consumer decodes drag IDs and persists order; returned persistence promises expose failures without changing pending-operation identity guards.",
+      "status": "Differential ordering/selection/no-op tests pass. Async stale-operation and rejection tests pass. Browser movement retains active selection and disables boundary movement.",
+      "limits": [
+        "No drag sensors or overlay integrated",
+        "Section ordering controller not yet extracted",
+        "Original backend and Codex thread ID parsing deliberately replaced by consumer callbacks"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

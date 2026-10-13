@@ -59,10 +59,16 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Nineteen tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Twenty-two tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
 `examples/SidebarFlow.js` exercises active selection, unread clearing and a working indicator, including Tab/Enter navigation. It is an authored composition of row surfaces; it does not claim to reproduce the full sidebar layout. In the Windows dark CSS scenario, row surfaces resolve to 29px height and 12.5px radius. These are observed example metrics, not yet matched against the original at the same viewport.
 
 The sidebar example now closes/reopens Projects, moves the unread indicator into the collapsed heading, and restores keyboard access on expansion. Section exit uses original height/opacity targets and 300ms easing; its wrapper becomes inert and aria-hidden while collapsed. Reduced motion sets duration to zero.
+
+## Sidebar ordering
+
+`useSidebarOrder({keys,onOrderChange,getSelectedKeys,decodeDragId})` owns transient order and drop-target state. Supply unique keys and `onOrderChange({keys,nextKeys}) => Promise`; the consumer updates canonical keys. Returned `controller.moveItem(key, offset)` supports explicit movement. Drag methods accept the recovered event shape (`active.rect.current.translated`, `active.id`, `over.id`, `over.rect`) and require a consumer ID decoder. Multiple selected keys retain their displayed order.
+
+The controller exposes the persistence promise so consumers can handle rejection. It clears only its own pending operation; canonical list changes invalidate stale provisional order. Pure helpers are exported for drop placement and batch movement. The example's Move up/Move down buttons are authored controls to exercise this behavior, not recovered menu UI. Pointer/keyboard drag sensors, overlays and announcements are still pending; this is not a claim of working drag-and-drop.
