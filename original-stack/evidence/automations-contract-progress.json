@@ -8,8 +8,10 @@
     "hostBody": "main-BklS_2Y2.js:prepareFetchInit:32057 returns request.body unchanged"
   },
   "runtimeObserved": [
-    "Scheduled original page shows loading error from missing GET /automations",
-    "New task opens original dialog with Repeat Daily Time Advanced Cancel Create"
+    "V14 GET /automations now renders No scheduled tasks without loading error",
+    "New task original form accepts Instructions content",
+    "Create uses local automation-create, not HTTP save, and created a heartbeat in isolated demo codex-home",
+    "Stopped verified demo runtime and changed exact synthetic task status ACTIVE to PAUSED"
   ],
   "listingContract": {
     "method": "GET",
@@ -68,9 +70,9 @@
   "statusClassifier": "Nonlocal, non-condition_watch and empty next_run_times -> completed; otherwise is_enabled -> active or paused",
   "implemented": "Stateful GET listing and POST save/set_status/remove in isolated demo-automations.json; exclusive temp write and atomic replacement",
   "pending": [
-    "Build/install new demo package and verify original UI lifecycle",
-    "Complete schedule preview semantics",
-    "Other task/detail/run states"
+    "Replace local automation-create/update/delete with synthetic persistence before next launch",
+    "Build pending local mutation/run-now guards",
+    "Verify complete local and remote lifecycle separately"
   ],
   "validation": {
     "httpTests": 2,
@@ -89,5 +91,12 @@
     "next_run_times uses original shared-preview sentinel 2099-01-01",
     "Schedule stored verbatim; components only common scalar RRULE fields parsed",
     "Removal response shape empty object remains runtime-unverified"
-  ]
+  ],
+  "runtimeState": {
+    "packageSha256": "97fcfa4446675f8658f7ea018e7237b97972e48fdb2ef06d2eb8e12314ef96c1",
+    "stoppedRuntimePid": 73896,
+    "launcherSession": 43932,
+    "launcherTerminal": true,
+    "taskPaused": true
+  }
 }

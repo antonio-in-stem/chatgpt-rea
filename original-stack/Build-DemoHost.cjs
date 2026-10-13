@@ -34,6 +34,11 @@ values.http={
  '/wham/onboarding/context':{role:null,desktop_onboarding_completed_at:'2026-10-13T00:00:00Z'}
 };
 const replacements=[
+ ['"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(','"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(await Promise.reject(Error(`REA demo does not execute scheduled tasks`)),'],
+ ['"automation-create":e=>this.automationsService.create(e)','"automation-create":e=>{throw Error(`REA local automation demo contract pending`)}'],
+ ['"automation-update":e=>this.automationsService.update(e)','"automation-update":e=>{throw Error(`REA local automation demo contract pending`)}'],
+ ['"automation-delete":e=>this.automationsService.delete(e)','"automation-delete":e=>{throw Error(`REA local automation demo contract pending`)}'],
+
  ['"recommended-skills":async({hostId:e,refresh:t})=>{','"recommended-skills":async({hostId:e,refresh:t})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`catalog`,{hostId:e},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"install-recommended-skill":async({hostId:e,skillId:t,repoPath:n,installRoot:r,skillStatsigOverride:a,forceReinstall:o,source:s})=>{','"install-recommended-skill":async({hostId:e,skillId:t,repoPath:n,installRoot:r,skillStatsigOverride:a,forceReinstall:o,source:s})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`install`,{hostId:e,skillId:t,repoPath:n,installRoot:r},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"remove-skill":async({hostId:e,skillPath:t})=>{','"remove-skill":async({hostId:e,skillPath:t})=>{if(e!=null&&e!==`local`)throw Error(`Only local demo skills`);return demoSkillLifecycle(`remove`,{hostId:e,skillPath:t},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
