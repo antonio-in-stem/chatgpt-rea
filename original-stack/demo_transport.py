@@ -11,6 +11,7 @@ from demo_projects import ProjectStore, ProjectError
 from demo_config import ConfigStore, ConfigError
 import demo_threads
 import demo_plugins
+import demo_skills
 
 MAX_FRAME_BYTES = 1024 * 1024
 FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
@@ -33,6 +34,13 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
                    "paramsType": type(params).__name__}
     if "id" not in message:
         return None, observation
+    if config is not None and message["method"] in demo_skills.METHODS:
+        try:
+            return {"id":request_id,"result":demo_skills.SkillStore(config).handle(message["method"],params,demo_threads.THREAD["cwd"])},observation
+        except demo_skills.SkillError as error:
+            return {"id":request_id,"error":{"code":-32602,"message":str(error)}},observation
+        except OSError:
+            return {"id":request_id,"error":{"code":-32603,"message":"Demo skill state could not be saved"}},observation
     if config is not None and message["method"] in demo_plugins.METHODS:
         try:
             return {"id":request_id,"result":demo_plugins.PluginStore(config).handle(message["method"],params)},observation

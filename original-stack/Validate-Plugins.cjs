@@ -7,9 +7,14 @@ const code=`import json,tempfile
 from pathlib import Path
 from demo_config import ConfigStore
 from demo_plugins import PluginStore,MARKETPLACE,PLUGIN_ID
+from demo_skills import SkillStore,NAME
 samples=[]
 with tempfile.TemporaryDirectory() as directory:
  config=ConfigStore(Path(directory)/'config.json',{})
+ skills=SkillStore(config)
+ samples.append(['SkillsListResponse',skills.handle('skills/list',{},'C:/demo')])
+ samples.append(['SkillsConfigWriteResponse',skills.handle('skills/config/write',{'name':NAME,'enabled':False},'C:/demo')])
+ samples.append(['SkillsListResponse',skills.handle('skills/list',{'cwds':['C:/demo']},'C:/demo')])
  store=PluginStore(config)
  params={'pluginName':'rea-demo','marketplacePath':MARKETPLACE}
  for method,name in [('plugin/list','PluginListResponse'),('plugin/installed','PluginInstalledResponse'),('plugin/read','PluginReadResponse')]:

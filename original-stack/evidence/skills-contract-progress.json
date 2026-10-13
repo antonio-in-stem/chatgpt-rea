@@ -1,0 +1,37 @@
+{
+  "sources": [
+    "protocol/typescript/v2/SkillMetadata.ts",
+    "protocol/typescript/v2/SkillsConfigWriteParams.ts",
+    "protocol/typescript/v2/SkillsConfigWriteResponse.ts",
+    "state/recovered-all/readable/assets/skill-card-0dfdfcb53527.js:482"
+  ],
+  "contract": "Original skill card uses name selector for colon-qualified names, path otherwise; sends enabled boolean to skills/config/write",
+  "implemented": [
+    "Synthetic user skill metadata scoped to requested cwds",
+    "Persistent enabled state",
+    "Exact synthetic selector validation",
+    "Atomic write failure preserves prior state"
+  ],
+  "validation": {
+    "pythonTests": 63,
+    "schemaSamples": 11,
+    "schemas": 7
+  },
+  "rendererModified": false,
+  "runtimeVerification": {
+    "runtimePid": 68872,
+    "adapterPid": 80980,
+    "launcherSession": 54513,
+    "observed": [
+      "Installed and Personal cards render Rea UI Demo",
+      "Original card opens original modal",
+      "Modal has Uninstall, Try now, Close dialog",
+      "Content displays Unable to load skill contents"
+    ]
+  },
+  "pending": [
+    "Host skill content read contract",
+    "Original enable/disable UI",
+    "Remove/add and Try now workflows"
+  ]
+}
