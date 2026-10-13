@@ -1,0 +1,38 @@
+{
+  "source": "C:\\Program Files\\WindowsApps\\OpenAI.Codex_26.1007.2314.0_x64__2p2nqsd0c76g0\\app",
+  "capturedUtc": "2026-10-13T01:22:11.7397745Z",
+  "runtime": "Owl Chromium / Electron compatibility",
+  "scope": "Exact launchers, runtime metadata and ASAR. Not a standalone executable distribution.",
+  "files": [
+    {
+      "path": "ChatGPT.exe",
+      "bytes": 4781872,
+      "sha256": "13d7ee588d7ae20f04f7aa25a65ae82917ada81501304ac8f5e679d0b3306601"
+    },
+    {
+      "path": "Codex.exe",
+      "bytes": 20272,
+      "sha256": "7f5d9ffb52db7dce878658eb8f67d99f231474188827e3b827bca3a7479abebe"
+    },
+    {
+      "path": "owl-shell-runtime.json",
+      "bytes": 104,
+      "sha256": "19ecc36c928abe789c1dec4c788c719eb583017e1cc7e2a293b280e0b32fedb5"
+    },
+    {
+      "path": "resources\\app.asar",
+      "bytes": 567399024,
+      "sha256": "c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038"
+    },
+    {
+      "path": "resources\\owl-app.ini",
+      "bytes": 62,
+      "sha256": "ea3de53dffddbdadf3f7520dc740001d0f7b4005cb9e167f73a170e737e83e2d"
+    },
+    {
+      "path": "resources\\owl-electron-app.json",
+      "bytes": 215,
+      "sha256": "2bfc0f03e3eb9d072367d42fff9aeeaaed6d46405c6ec266678e37a213d8364b"
+    }
+  ]
+}
