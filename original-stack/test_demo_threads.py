@@ -200,6 +200,31 @@ class ThreadTests(unittest.TestCase):
             with self.assertRaises(ThreadError):store.handle("turn/start",{"threadId":identifier,"input":[{"type":"text","text":"blocked"}]})
             self.assertEqual(len(ThreadStore(path).data["threads"][identifier]["thread"]["turns"]),1)
 
+    def test_stream_interrupt_preserves_partial_output_and_rejects_late_events(self):
+        import copy
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path,streaming=True)
+            started,_=store.handle("thread/start",{})
+            thread_id=started["thread"]["id"]
+            response,events=store.handle("turn/start",{"threadId":thread_id,"input":[{"type":"text","text":"Streaming demo"}]})
+            turn_id=response["turn"]["id"]
+            for event in events:
+                if event["method"]=="item/agentMessage/delta":
+                    piece=copy.deepcopy(event);piece["params"]["delta"]="Partial"
+                    store.apply_stream_event(thread_id,turn_id,piece)
+                    break
+                store.apply_stream_event(thread_id,turn_id,event)
+            with self.assertRaises(ThreadError):store.handle("turn/start",{"threadId":thread_id,"input":[{"type":"text","text":"overlap"}]})
+            response,ended=store.handle("turn/interrupt",{"threadId":thread_id,"turnId":turn_id})
+            self.assertEqual(response,{})
+            self.assertEqual(ended[0]["params"]["turn"]["status"],"interrupted")
+            self.assertFalse(store.apply_stream_event(thread_id,turn_id,piece))
+            saved=ThreadStore(path).handle("thread/read",{"threadId":thread_id,"includeTurns":True})[0]["thread"]
+            self.assertEqual(saved["turns"][0]["items"][-1]["text"],"Partial")
+            self.assertEqual(saved["status"],{"type":"idle"})
+            self.assertEqual(saved["turns"][0]["status"],"interrupted")
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

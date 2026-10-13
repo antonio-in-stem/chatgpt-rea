@@ -70,10 +70,11 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start"}
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt"}
     METHODS = METHODS | MUTATIONS
 
-    def __init__(self, path):
+    def __init__(self, path, streaming=False):
+        self.streaming=streaming
         self.path = Path(path)
         data = json.loads(self.path.read_text(encoding="utf-8")) if self.path.exists() else {"thread":copy.deepcopy(THREAD),"archived":False}
         if "thread" in data:
@@ -88,6 +89,28 @@ class ThreadStore:
         temporary.write_text(json.dumps(data,indent=2),encoding="utf-8")
         temporary.replace(self.path)
         self.data = data
+
+    def apply_stream_event(self, thread_id, turn_id, event):
+        data=copy.deepcopy(self.data)
+        thread=data["threads"][thread_id]["thread"]
+        turn=next(t for t in thread["turns"] if t["id"]==turn_id)
+        if turn["status"]=="interrupted":return False
+        method,params=event["method"],event["params"]
+        if method in ("item/started","item/completed"):
+            item=copy.deepcopy(params["item"])
+            turn["items"]=[i for i in turn["items"] if i["id"]!=item["id"]]+[item]
+        elif method=="item/agentMessage/delta":
+            item=next(i for i in turn["items"] if i["id"]==params["itemId"])
+            item["text"]+=params["delta"]
+        elif method=="turn/completed":
+            now=int(time.time())
+            turn.update(status="completed",completedAt=now,durationMs=max(0,now-turn["startedAt"])*1000)
+            params["turn"]=copy.deepcopy(turn)
+            thread.update(updatedAt=now,recencyAt=now)
+        elif method=="thread/status/changed":thread["status"]=copy.deepcopy(params["status"])
+        else:return True
+        self._commit(data)
+        return True
 
     def _start(self, params):
         from pathlib import PureWindowsPath
@@ -159,13 +182,23 @@ class ThreadStore:
         data=copy.deepcopy(self.data)
         entry=data["threads"][thread_id]
         thread=entry["thread"]
+        if method == "turn/interrupt":
+            turn=next((t for t in thread["turns"] if t["id"]==params.get("turnId")),None)
+            if turn is None or turn["status"]!="inProgress":raise ThreadError("No matching active demo turn")
+            now=int(time.time())
+            turn.update(status="interrupted",completedAt=now,durationMs=max(0,now-turn["startedAt"])*1000)
+            thread["status"]={"type":"idle"}
+            self._commit(data)
+            return {},[{"method":"turn/completed","params":{"threadId":thread_id,"turn":copy.deepcopy(turn)}},{"method":"thread/status/changed","params":{"threadId":thread_id,"status":{"type":"idle"}}}]
         if method == "turn/start":
             from demo_turns import build_turn
             if entry["archived"]:raise ThreadError("Cannot send to an archived demo chat")
             try:start,completed,events,text=build_turn(thread_id,params)
             except ValueError as error:raise ThreadError(str(error)) from error
-            thread["turns"].append(completed)
+            if any(t["status"]=="inProgress" for t in thread["turns"]):raise ThreadError("A demo turn is already active")
+            thread["turns"].append(copy.deepcopy(start) if self.streaming else completed)
             thread.update(updatedAt=completed["completedAt"],recencyAt=completed["completedAt"],preview=text[:160],status={"type":"idle"})
+            if self.streaming:thread["status"]={"type":"active","activeFlags":[]}
             if not thread.get("name"):
                 thread["name"]=text.strip().splitlines()[0][:80]
                 events.append({"method":"thread/name/updated","params":{"threadId":thread_id,"threadName":thread["name"]}})

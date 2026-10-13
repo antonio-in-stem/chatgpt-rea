@@ -27,6 +27,11 @@ with tempfile.TemporaryDirectory() as directory:
   samples.extend([[rs,result],[ns,event['params']]])
  result,event=store.handle('thread/fork',{'threadId':THREAD['id'],'lastTurnId':THREAD['turns'][0]['id']})
  samples.extend([['ThreadForkResponse',result],['ThreadStartedNotification',event['params']]])
+ streaming=ThreadStore(Path(directory)/'streaming.json',streaming=True)
+ started,_=streaming.handle('turn/start',{'threadId':THREAD['id'],'input':[{'type':'text','text':'Interrupt demo'}]})
+ stopped,events=streaming.handle('turn/interrupt',{'threadId':THREAD['id'],'turnId':started['turn']['id']})
+ samples.append(['TurnInterruptResponse',stopped])
+ samples.extend([[names[e['method']],e['params']] for e in events])
 samples.append(['ThreadGoalGetResponse',handle('thread/goal/get',{'threadId':THREAD['id']})])
 samples.append(['HooksListResponse',handle_message(json.dumps({'id':1,'method':'hooks/list','params':{'cwds':[THREAD['cwd']]}}))[0]['result']])
 print(json.dumps(samples))`;

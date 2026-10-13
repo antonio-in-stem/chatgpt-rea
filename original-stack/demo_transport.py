@@ -79,34 +79,50 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
     return {"id": request_id, "error": {"code": -32601, "message": "Demo contract not implemented"}}, observation
 
 
-async def run(port, output, project_state, config_state, thread_state, demo_sandbox_state="notConfigured"):
+async def run(port, output, project_state, config_state, thread_state, demo_sandbox_state="notConfigured", demo_chunk_delay=0.6):
     output.parent.mkdir(parents=True, exist_ok=True)
     projects = ProjectStore(project_state)
     config = ConfigStore(config_state, FIXTURES["config/read"]["result"]["config"])
-    threads = demo_threads.ThreadStore(thread_state)
+    threads = demo_threads.ThreadStore(thread_state,streaming=True)
     clients = set()
+    tasks=set()
+    async def publish(notification):
+        deliveries=await asyncio.gather(*(client.send(json.dumps(notification)) for client in tuple(clients)), return_exceptions=True)
+        with output.open("a",encoding="utf-8") as stream:
+            stream.write(json.dumps({"kind":"notification-sent","method":notification["method"],"delivered":sum(not isinstance(result,BaseException) for result in deliveries),"failed":sum(isinstance(result,BaseException) for result in deliveries)})+"\n")
+    async def stream_turn(thread_id,turn_id,events):
+        for event in events:
+            pieces=[event]
+            if event["method"]=="item/agentMessage/delta":
+                delta=event["params"]["delta"]
+                pieces=[{"method":event["method"],"params":{**event["params"],"delta":delta[i:i+12]}} for i in range(0,len(delta),12)]
+            for piece in pieces:
+                if piece["method"]=="item/agentMessage/delta":await asyncio.sleep(demo_chunk_delay)
+                if not threads.apply_stream_event(thread_id,turn_id,piece):return
+                await publish(piece)
     async def connection(socket):
         clients.add(socket)
         try:
             async for raw in socket:
-                notifications = []
-                reply, observation = handle_message(raw, projects, notifications, config, threads, demo_sandbox_state)
-                with output.open("a", encoding="utf-8") as stream:
-                    stream.write(json.dumps(observation) + "\n")
-                if reply is not None:
-                    await socket.send(json.dumps(reply))
-                for notification in notifications:
-                    deliveries=await asyncio.gather(*(client.send(json.dumps(notification)) for client in tuple(clients)), return_exceptions=True)
-                    with output.open("a",encoding="utf-8") as stream:
-                        stream.write(json.dumps({"kind":"notification-sent","method":notification["method"],"delivered":sum(not isinstance(result,BaseException) for result in deliveries),"failed":sum(isinstance(result,BaseException) for result in deliveries)})+"\n")
-        except ConnectionClosed:
-            pass
-        finally:
-            clients.discard(socket)
+                notifications=[]
+                reply,observation=handle_message(raw,projects,notifications,config,threads,demo_sandbox_state)
+                with output.open("a",encoding="utf-8") as stream:stream.write(json.dumps(observation)+"\n")
+                if reply is not None:await socket.send(json.dumps(reply))
+                if observation.get("method")=="turn/start" and reply is not None and "result" in reply:
+                    task=asyncio.create_task(stream_turn(json.loads(raw)["params"]["threadId"],reply["result"]["turn"]["id"],notifications))
+                    tasks.add(task)
+                    task.add_done_callback(tasks.discard)
+                else:
+                    for notification in notifications:await publish(notification)
+        except ConnectionClosed:pass
+        finally:clients.discard(socket)
     async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES) as server:
         print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
                           "mode": "demo-contract-adapter", "simulatedWindowsReadiness":demo_sandbox_state,"executesTools":False, "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
-        await asyncio.Future()
+        try:await asyncio.Future()
+        finally:
+            for task in tasks:task.cancel()
+            await asyncio.gather(*tasks,return_exceptions=True)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -116,5 +132,7 @@ if __name__ == "__main__":
     parser.add_argument("--config-state", type=Path, default=Path(__file__).parent / "state" / "demo-config.json")
     parser.add_argument("--thread-state", type=Path, default=Path(__file__).parent / "state" / "demo-threads.json")
     parser.add_argument("--demo-sandbox-state", choices=["ready","notConfigured","updateRequired"], default="notConfigured", help="Simulated UI state only; does not configure or provide Windows sandboxing")
+    parser.add_argument("--demo-chunk-delay", type=float, default=0.6, help="Seconds between synthetic text chunks")
     args = parser.parse_args()
-    asyncio.run(run(args.port, args.output, args.project_state, args.config_state, args.thread_state, args.demo_sandbox_state))
+    if not 0 <= args.demo_chunk_delay <= 10:parser.error("Demo delay must be between 0 and 10 seconds")
+    asyncio.run(run(args.port, args.output, args.project_state, args.config_state, args.thread_state, args.demo_sandbox_state, args.demo_chunk_delay))
