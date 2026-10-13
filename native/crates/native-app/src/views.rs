@@ -1294,7 +1294,8 @@ impl WorkspaceApp {
             .flex_col()
             .gap_4();
         match dialog {
-            Dialog::Share
+            Dialog::EditMenu
+            | Dialog::Share
             | Dialog::ChatMenu
             | Dialog::AccountMenu
             | Dialog::BrandMenu

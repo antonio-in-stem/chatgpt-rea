@@ -40,6 +40,7 @@ impl WorkspaceApp {
         let Some(dialog) = self.dialog else {
             return false;
         };
+        if dialog == Dialog::EditMenu { return self.edit_menu_key(event,window,cx); }
         let count = match dialog {
             Dialog::BrandMenu => 2,
             Dialog::AccountMenu => 2,
@@ -847,7 +848,10 @@ impl Render for WorkspaceApp {
                         .child(native_ui::icon(icon,16.).text_color(if self.history_target(forward).is_some() { cx.theme().colors.foreground } else { cx.theme().colors.muted_foreground }))
                         .on_click(cx.listener(move |s,_,w,cx| s.act(Action::NavigateHistory(forward),w,cx)))
                 }))
-                .child(self.shell_icon("sidebar", "Toggle sidebar", 720, Action::Sidebar, cx)))
+                .child(self.shell_icon("sidebar", "Toggle sidebar", 720, Action::Sidebar, cx))
+                .child(Button::new("application-edit-menu").ghost().h(px(28.)).px(px(10.))
+                    .label("Edit").text_size(px(13.)).rounded(px(4.))
+                    .on_click(cx.listener(|s,_,w,cx| s.act(Action::EditMenu,w,cx)))))
             .child(controls);
         let mut surface = div().id("workspace-surface").test_support().flex_1().min_w_0()
             .h_full().flex().rounded_tl(px(16.)).rounded_tr(px(16.))
@@ -879,7 +883,9 @@ impl Render for WorkspaceApp {
         }
         if let Some(dialog) = self.dialog {
             root = root.child(
-                if matches!(
+                if dialog == Dialog::EditMenu {
+                    self.edit_menu_view(cx)
+                } else if matches!(
                     dialog,
                     Dialog::ChatMenu | Dialog::AccountMenu | Dialog::BrandMenu | Dialog::HelpMenu
                 ) {

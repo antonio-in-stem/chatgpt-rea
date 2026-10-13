@@ -34,6 +34,8 @@ enum Route {
 enum Action {
     Route(Route),
     NavigateHistory(bool),
+    EditMenu,
+    EditCommand(usize),
     Chat(String),
     New,
     Send,
@@ -92,6 +94,7 @@ enum Action {
 }
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Dialog {
+    EditMenu,
     Share,
     ChatMenu,
     AccountMenu,
@@ -633,6 +636,16 @@ impl WorkspaceApp {
         self.record_location();
         match action {
             Action::NavigateHistory(_) => unreachable!(),
+            Action::EditMenu => {
+                if self.dialog == Some(Dialog::EditMenu) { self.act(Action::Close,window,cx); }
+                else {
+                    self.previous_focus=window.focused(cx);
+                    self.dialog=Some(Dialog::EditMenu);
+                    self.shell_menu_index=0;
+                    window.focus(&self.modal_focus,cx);
+                }
+            }
+            Action::EditCommand(index) => self.run_edit_command(index,window,cx),
             Action::Route(route) => {
                 self.route = route;
                 self.dialog = None;
@@ -1152,3 +1165,5 @@ include!("share_dialog.rs");
 include!("permissions_demo.rs");
 
 include!("navigation_history.rs");
+
+include!("edit_menu.rs");

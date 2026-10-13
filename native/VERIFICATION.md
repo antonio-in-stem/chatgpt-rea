@@ -286,3 +286,20 @@ This checkpoint does not establish visual parity.
   native-history-17.png exposed missing explicit SVG colors, fixed before packaging.
   Preview PID 37704. Menus and remaining Codex transcript/sidebar fidelity are
   incomplete; no exact-parity claim.
+
+
+### Windows Edit menu checkpoint — 2026-10-13 UTC
+Recovered host function bZe from original .vite/build/main-BklS_2Y2.js,
+retained in catalog/windows-edit-menu.original.js with parent digest/range in
+catalog/WINDOWS-MENUS.md. This is static source evidence, not runtime observation.
+Ported all seven Windows Edit roles, separators, keyboard row traversal and
+Escape/click-away dismissal. Actions restore prior focus before dispatching to
+the native input engine. The titlebar exposes Edit; File/View/Help are pending.
+Popup dimensions and positioning are provisional; disabled-item availability,
+typeahead, Alt menu activation, cross-menu traversal and localization remain.
+
+Validation: existing 56-test workspace suite passed. New targeted UI test passed
+for menu Select All -> Delete -> Undo and Escape. Windows build and packaging
+passed. SHA256 4b9fef9478b0116fac6497c4026d0f7d8b24ba617e7dee43143b9c0947b29ed6.
+Previous preview PID 37704 was stopped after checking its executable path.
+No new visual-parity claim; overall requested clone remains incomplete.
