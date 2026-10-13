@@ -85,3 +85,12 @@ ChatMessage now retains optional sent_at_ms; newly appended messages receive the
 
 Validation: native-core has 18 passing unit tests plus the 384-case differential integration test. The generated fixture covers finite integer milliseconds only; JavaScript nonfinite/fractional timestamps are outside the Rust model contract. No updated native executable or screenshot is claimed for this model-only change.
 `cargo check -p native-workspace --locked --offline` also passed; the existing unused Theme/Fixture action warning remains.
+
+
+## Original local-turn timestamp projection
+
+Recovered local-conversation-thread-turn-entries-a91ee5eaba74.js lines 481-491 feeds the selector one group per eligible rendered local turn. Non-turn rows, Aeon turns, server-preserved messages and missing turns produce null groups. Nonempty params.input contributes a user item with turnStartedAtMs; presence of an agentMessage contributes an assistant item with finalAssistantStartedAtMs. Activity-only turns can therefore yield an empty group, distinct from an excluded/null group. Multiple agentMessage items do not create multiple timestamp items.
+
+Native-core now exposes LocalTimestampEntry (Excluded or Turn) and LocalTimestampTurn to reproduce this projection before selection. Generate-TimestampOracle hash-pins the original local module and runs its exact B.map expression, followed by original timestamp selection, for another 384 deterministic cases. The original N predicate is supplied as normalized eligibility: classification of voice/history rows itself is not covered. Both differential tests pass (768 total cases) alongside 18 unit tests. The extracted expression is retained in original-stack/evidence/local-timestamp-projection.recovered.js.
+
+The existing native conversation model remains a flat message list, so this new function is not yet wired to chat_view. Real turn identity and final-assistant timing must be retained before integration; grouping arbitrary adjacent messages would change the original behavior. Date formatting, separator rendering and scroll layout remain pending. No UI parity or newly packaged executable is claimed.

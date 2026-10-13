@@ -52,3 +52,48 @@ fn agrees_with_recovered_original_javascript() {
         );
     }
 }
+
+#[test]
+fn local_turn_projection_agrees_with_original() {
+    use native_core::timestamps::{
+        LocalTimestampEntry, LocalTimestampTurn, select_local_separators,
+    };
+    let fixture: serde_json::Value =
+        serde_json::from_str(include_str!("fixtures/local-timestamps-original.json")).unwrap();
+    let cases = fixture["cases"].as_array().unwrap();
+    assert_eq!(cases.len(), 384);
+    for (index, case) in cases.iter().enumerate() {
+        let entries: Vec<_> = case["entries"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|entry| {
+                if entry["eligible"] == false
+                    || entry["isAeonThread"] == true
+                    || entry["preserveServerUserMessages"] == true
+                    || entry["turn"].is_null()
+                {
+                    LocalTimestampEntry::Excluded
+                } else {
+                    let turn = &entry["turn"];
+                    LocalTimestampEntry::Turn(LocalTimestampTurn {
+                        has_user_input: !turn["params"]["input"].as_array().unwrap().is_empty(),
+                        has_agent_message: turn["items"]
+                            .as_array()
+                            .unwrap()
+                            .iter()
+                            .any(|item| item["type"] == "agentMessage"),
+                        turn_started_at_ms: turn["turnStartedAtMs"].as_i64(),
+                        final_assistant_started_at_ms: turn["finalAssistantStartedAtMs"].as_i64(),
+                    })
+                }
+            })
+            .collect();
+        let expected: Vec<Option<i64>> = serde_json::from_value(case["expected"].clone()).unwrap();
+        assert_eq!(
+            select_local_separators(&entries, case["nowMs"].as_i64().unwrap()),
+            expected,
+            "local original case {index}"
+        );
+    }
+}

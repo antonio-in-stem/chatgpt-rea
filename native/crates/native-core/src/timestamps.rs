@@ -10,6 +10,51 @@ pub struct TimestampItem {
     pub breaks_previous_adjacency: bool,
 }
 
+/// Timestamp inputs from an original local turn; activity items are not messages.
+#[derive(Clone, Copy, Debug)]
+pub struct LocalTimestampTurn {
+    pub has_user_input: bool,
+    pub has_agent_message: bool,
+    pub turn_started_at_ms: Option<i64>,
+    pub final_assistant_started_at_ms: Option<i64>,
+}
+
+/// Excluded entries represent non-turn rows, Aeon/server-preserved turns, or
+/// unloaded turns. They reset adjacency exactly like the original null group.
+#[derive(Clone, Copy, Debug)]
+pub enum LocalTimestampEntry {
+    Excluded,
+    Turn(LocalTimestampTurn),
+}
+
+pub fn select_local_separators(entries: &[LocalTimestampEntry], now_ms: i64) -> Vec<Option<i64>> {
+    let groups: Vec<_> = entries
+        .iter()
+        .map(|entry| match entry {
+            LocalTimestampEntry::Excluded => None,
+            LocalTimestampEntry::Turn(turn) => {
+                let mut items = Vec::with_capacity(2);
+                if turn.has_user_input {
+                    items.push(TimestampItem {
+                        role: MessageRole::User,
+                        sent_at_ms: turn.turn_started_at_ms,
+                        breaks_previous_adjacency: false,
+                    });
+                }
+                if turn.has_agent_message {
+                    items.push(TimestampItem {
+                        role: MessageRole::Assistant,
+                        sent_at_ms: turn.final_assistant_started_at_ms,
+                        breaks_previous_adjacency: false,
+                    });
+                }
+                Some(items)
+            }
+        })
+        .collect();
+    select_separators(&groups, now_ms)
+}
+
 pub fn select_separators(groups: &[Option<Vec<TimestampItem>>], now_ms: i64) -> Vec<Option<i64>> {
     let mut previous: Option<TimestampItem> = None;
     let mut seen_user = false;
