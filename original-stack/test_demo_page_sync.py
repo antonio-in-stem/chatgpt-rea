@@ -65,6 +65,23 @@ class PageSyncTests(unittest.TestCase):
    second=commit('new-block');self.assertEqual(second['block-a'],first['block-a']);self.assertIn('block-b',second)
    with doc.begin_transaction() as tx:doc.get_map('blocksById').pop(tx,'block-a')
    self.assertEqual(set(commit('delete')),{'block-b'})
+ def test_checkpoints_freeze_original_yjs_state_and_replay_does_not_duplicate(self):
+  with tempfile.TemporaryDirectory(prefix='rea-checkpoints-') as directory:
+   folder=Path(directory);(folder/'demo-pages.json').write_text(json.dumps({'items':[{'metadata':{'page_id':'rea-page-1'}}]}))
+   store=PageSyncStore(folder);doc=y.YDoc()
+   with doc.begin_transaction() as tx:doc.get_text('title').insert(tx,0,'First version')
+   message={'client_update_id':'first','update':base64.b64encode(y.encode_state_as_update(doc)).decode()}
+   store.commit('rea-page-1',message);store.commit('rea-page-1',message)
+   first=json.loads((folder/'rea-page-1-document.json').read_text())['checkpoints']
+   self.assertEqual(len(first),1)
+   with doc.begin_transaction() as tx:doc.get_text('title').insert(tx,0,'Second: ')
+   store.commit('rea-page-1',{'client_update_id':'second','update':base64.b64encode(y.encode_state_as_update(doc)).decode()})
+   final=json.loads((folder/'rea-page-1-document.json').read_text())['checkpoints']
+   self.assertEqual(final[0],first[0]);self.assertEqual(len(final),2)
+   snapshot=json.loads(final[0]['envelope']);restored=y.YDoc();y.apply_update(restored,base64.b64decode(snapshot['yjs_state_update_base64']))
+   self.assertEqual(json.loads(restored.get_text('title').to_json()),'First version')
+   self.assertEqual(base64.b64decode(snapshot['state_vector_base64']),y.encode_state_vector(restored))
+   self.assertEqual(snapshot['through_sequence'],1)
  def test_archived_and_deleted_pages_reject_sync_and_commit(self):
   with tempfile.TemporaryDirectory(prefix='rea-page-sync-') as directory:
    folder=Path(directory);file=folder/'demo-pages.json';store=PageSyncStore(folder)

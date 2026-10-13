@@ -185,3 +185,23 @@ test('detail attribution projection is opt-in and preserves recorded block actor
   assert.deepEqual(projected.actor_displays,[{account_user_id:'rea-demo-user',display_name:'Demo'}]);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('versions paginate immutable metadata and bootstrap hashes exact envelope bytes',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-versions-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'versions',title:'Page',initial_blocks:[]});
+  assert.deepEqual(call('GET','/pages/rea-page-1/versions').items,[]);
+  const checkpoints=[1,2].map(n=>({checkpoint_id:'demo-checkpoint-'+n,through_sequence:n,created_at:'2026-10-13T12:00:00Z',editor_summary_version:1,actor_summaries:[],envelope:JSON.stringify({format:'openai.page.yjs',schema_version:2,page_id:'rea-page-1',stream_kind:'content',through_sequence:n,yjs_state_update_base64:'AAA=',state_vector_base64:'AA=='})}));
+  fs.writeFileSync(path.join(dir,'rea-page-1-document.json'),JSON.stringify({sequence:3,title:'Page',checkpoints}));
+  const listing=call('GET','/pages/rea-page-1/versions?limit=1&stream_kind=content');
+  assert.equal(listing.items[0].checkpoint_id,'demo-checkpoint-2');assert.equal(listing.items[0].envelope,undefined);assert.equal(listing.next_cursor,'offset:1');
+  assert.equal(call('GET','/pages/rea-page-1/versions?limit=1&cursor=offset:1').items[0].checkpoint_id,'demo-checkpoint-1');
+  const descriptor=call('GET','/pages/rea-page-1/versions/demo-checkpoint-1/checkpoint-bootstrap?stream_kind=content&prefer_lite_checkpoint=true').checkpoint;
+  assert.equal(descriptor.representation,'full');assert.equal(descriptor.observed_head_sequence,3);assert.equal(descriptor.through_sequence,1);
+  assert.equal(descriptor.byte_size,Buffer.byteLength(checkpoints[0].envelope));assert.equal(descriptor.content_hash,require('node:crypto').createHash('sha256').update(checkpoints[0].envelope).digest('hex'));
+  assert.throws(()=>call('GET','/pages/rea-page-1/versions/demo-checkpoint-3/checkpoint-bootstrap'),/Unknown/);
+  assert.throws(()=>call('GET','/pages/rea-page-1/versions?stream_kind=scratch'),/Unsupported/);
+  call('POST','/pages/rea-page-1/archive',{});assert.throws(()=>call('GET','/pages/rea-page-1/versions'),/Unavailable/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

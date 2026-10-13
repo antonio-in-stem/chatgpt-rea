@@ -41,6 +41,7 @@ class PageSyncStore:
         if old:
             if old['digest']!=digest:raise ValueError('Conflicting update ID')
             return {'type':'ack','client_update_id':key,'update_id':key,'sequence':old['sequence']},None
+        before_title=json.loads(doc.get_text('title').to_json())
         before_blocks=json.loads(doc.get_map('blocksById').to_json())
         y.apply_update(doc,raw)
         after_blocks=json.loads(doc.get_map('blocksById').to_json())
@@ -55,6 +56,10 @@ class PageSyncStore:
         state['update']=base64.b64encode(y.encode_state_as_update(doc)).decode()
         state['title']=json.loads(doc.get_text('title').to_json())
         state['symbol']=json.loads(doc.get_map('pagesMetadata').to_json()).get('symbol')
+        if before_blocks!=after_blocks or before_title!=state['title']:
+            # Freeze actual committed content; never reconstruct historical snapshots from current state.
+            envelope={'format':'openai.page.yjs','schema_version':2,'page_id':page_id,'stream_kind':'content','through_sequence':state['sequence'],'yjs_state_update_base64':state['update'],'state_vector_base64':base64.b64encode(y.encode_state_vector(doc)).decode()}
+            state.setdefault('checkpoints',[]).append({'checkpoint_id':'demo-checkpoint-'+str(state['sequence']),'through_sequence':state['sequence'],'created_at':changed_at,'editor_summary_version':1,'actor_summaries':[{'actor_type':'user','account_user_id':'rea-demo-user'}],'envelope':json.dumps(envelope,separators=(',',':'))})
         state['receipts'][key]={'digest':digest,'sequence':state['sequence']}
         temporary=file.with_suffix('.pending');owned=False
         try:

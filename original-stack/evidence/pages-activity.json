@@ -56,7 +56,15 @@
       "yjs_state_update_base64",
       "state_vector_base64"
     ],
-    "dependency": "Current pagesRealtime:void0 means no host checkpoint downloader. Need downloadCheckpoint and cancelCheckpointDownload/disposable promise compatible bridge without breaking current WebSocket sync; selecting snapshots unimplemented."
+    "dependency": "Current pagesRealtime:void0 means no host checkpoint downloader. Need downloadCheckpoint and cancelCheckpointDownload/disposable promise compatible bridge without breaking current WebSocket sync; selecting snapshots unimplemented.",
+    "implemented_not_runtime_verified": [
+      "Canonical document stores frozen full Yjs envelopes after title/block changes, sequence IDs and state vectors",
+      "GET versions paginates metadata descending through_sequence",
+      "GET checkpoint-bootstrap returns full descriptor with exact UTF-8 byte_size and SHA256, observed head and expiry",
+      "Download URL uses reserved rea-demo.invalid and is not yet connected to a downloader"
+    ],
+    "source_endpoint_constraint": "app-shared-737655e1fb23.js:105114-105140 zAt requires OpenAI wss endpoint when allowLocal=false. app-initial164595 invokes it whenever pagesRealtime service exists. Restoring downloader service alone breaks local ws sync.",
+    "tests": "Frozen snapshot survives subsequent edit; replay does not duplicate checkpoint; vector matches restored Yjs; pagination/hash and archived rejection tested.69 Python +24 Node passed."
   },
   "views_pending": {
     "route": "GET /pages/{page_id}/views?limit=20&cursor=...",

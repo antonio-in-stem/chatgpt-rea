@@ -4,6 +4,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
  const listing=method==='GET'&&(route==='/pages'||route==='/pages/catalog'||route==='/pages/archived');
+ const versionRoute=method==='GET'&&route.match(/^\/pages\/(rea-page-[1-9][0-9]*)\/versions(?:\/(demo-checkpoint-[1-9][0-9]*)\/checkpoint-bootstrap)?$/);
  const detail=method==='GET'&&/^\/pages\/rea-page-[1-9][0-9]*$/.test(route);
  const create=method==='POST'&&route==='/pages';
  const treeRoute=route.match(/^\/pages\/(rea-page-[1-9][0-9]*)\/(metadata|personal-move-admission)$/);
@@ -16,7 +17,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
+ if(!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
@@ -69,6 +70,21 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(!Number.isInteger(limit)||limit<1||limit>100)throw Error('Invalid demo library limit');
   return {items:items.slice(offset,offset+limit),cursor:offset+limit<items.length?'offset:'+(offset+limit):null};
  };
+ if(versionRoute){
+  const item=state.items.find(x=>x.metadata.page_id===versionRoute[1]&&live(x));if(!item)throw Error('Unavailable demo page');
+  if(url.searchParams.get('stream_kind')&&url.searchParams.get('stream_kind')!=='content')throw Error('Unsupported checkpoint stream');
+  const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');
+  const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;
+  const checkpoints=doc?.checkpoints??[];
+  if(versionRoute[2]){
+   const checkpoint=checkpoints.find(x=>x.checkpoint_id===versionRoute[2]);if(!checkpoint)throw Error('Unknown demo checkpoint');
+   const bytes=Buffer.from(checkpoint.envelope,'utf8'),hash=require('node:crypto').createHash('sha256').update(bytes).digest('hex');
+   return {page_id:item.metadata.page_id,stream_kind:'content',checkpoint:{page_id:item.metadata.page_id,stream_kind:'content',checkpoint_id:checkpoint.checkpoint_id,through_sequence:checkpoint.through_sequence,observed_head_sequence:doc.sequence,schema_version:2,representation:'full',content_hash:hash,byte_size:bytes.length,download_url:'https://rea-demo.invalid/checkpoints/'+item.metadata.page_id+'/'+checkpoint.checkpoint_id,expires_at:new Date(Date.now()+3600000).toISOString()}};
+  }
+  const rows=checkpoints.slice().sort((a,b)=>b.through_sequence-a.through_sequence).map(({envelope,...metadata})=>metadata);
+  const result=pageSlice(rows,url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||20));
+  return {items:result.items,next_cursor:result.cursor,actor_displays:[{account_user_id:'rea-demo-user',display_name:'Demo'}],current_editor_summary:{editor_summary_version:1,actor_summaries:[{actor_type:'user',account_user_id:'rea-demo-user'}]}};
+ }
  if(view){
   const item=state.items.find(x=>x.metadata.page_id===route.split('/')[2]&&live(x));if(!item)throw Error('Unavailable demo page');
   const input=JSON.parse(body||'{}');if(!Number.isSafeInteger(input.observed_sequence)||input.observed_sequence<0||input.observed_sequence>read(item).metadata.current_sequence)throw Error('Invalid observed page sequence');
