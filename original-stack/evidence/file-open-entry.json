@@ -1,0 +1,15 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "lineNumber": 1698,
+  "columnNumber": 165712,
+  "observed": {
+    "openInSidePanel": false,
+    "isAttachmentPreview": false,
+    "hostId": "local",
+    "hasScope": true,
+    "path": "C:/Users/PC/Repositories/chatgpt-rea/.worktrees/native-windows/original-stack/state/demo-profile-host-v1/rea-demo-note.csv"
+  },
+  "method": "Breakpoint at original file-open entry; read-only expression; resumed unchanged",
+  "sourceSha256": "799331dde54905c4df5e360f23a9621141759e2c0acb230aeab909f9904b646f",
+  "limitation": "Entry parameters verified; external open service success and internal viewer eligibility not yet verified."
+}

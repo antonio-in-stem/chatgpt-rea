@@ -48,10 +48,10 @@ const fs=require('node:fs'),path=require('node:path');
   const result=await send('Runtime.evaluate',{returnByValue:true,expression});
   if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);
   if(operation==='drop-demo-file'){
-   const file=path.join(state,'rea-demo-note.txt');fs.writeFileSync(file,'REA synthetic text attachment. No private content.\n');
+   const extension=label||'txt';if(!['txt','csv'].includes(extension))throw Error('Only synthetic txt/csv fixtures');const file=path.join(state,'rea-demo-note.'+extension);fs.writeFileSync(file,extension==='csv'?'Component,State\nSidebar,Ready\nComposer,Ready\n':'REA synthetic text attachment. No private content.\n');
    const {x,y}=result.result.value;const data={items:[],files:[file],dragOperationsMask:1};
    for(const type of ['dragEnter','dragOver','drop'])await send('Input.dispatchDragEvent',{type,x,y,data});
-   console.log(JSON.stringify({dropped:'rea-demo-note.txt',synthetic:true}));
+   console.log(JSON.stringify({dropped:path.basename(file),synthetic:true}));
   }else if(operation==='reload-demo'){await send('Page.reload',{ignoreCache:false});console.log(JSON.stringify({reloaded:true}));
   }else if(operation==='scroll-code'){
    const {x,y}=result.result.value;await send('Input.dispatchMouseEvent',{type:'mouseWheel',x,y,deltaX:Number(label),deltaY:0});console.log(JSON.stringify({operation,deltaX:Number(label),before:result.result.value}));
