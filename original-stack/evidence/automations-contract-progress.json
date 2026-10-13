@@ -3,7 +3,9 @@
     "listing": "app-shared-737655e1fb23.js:254224",
     "statusClassifier": "app-shared-737655e1fb23.js:253092",
     "createPayload": "app-shared-737655e1fb23.js:253171",
-    "updatePayload": "app-shared-737655e1fb23.js:253151"
+    "updatePayload": "app-shared-737655e1fb23.js:253151",
+    "previewObject": "shared-task-dialog-43e8ed53665b.js:Ve:162-254",
+    "hostBody": "main-BklS_2Y2.js:prepareFetchInit:32057 returns request.body unchanged"
   },
   "runtimeObserved": [
     "Scheduled original page shows loading error from missing GET /automations",
@@ -64,15 +66,28 @@
     }
   },
   "statusClassifier": "Nonlocal, non-condition_watch and empty next_run_times -> completed; otherwise is_enabled -> active or paused",
-  "implemented": "Empty paginated GET only; Build-DemoHost integration added, runtime not rebuilt yet",
+  "implemented": "Stateful GET listing and POST save/set_status/remove in isolated demo-automations.json; exclusive temp write and atomic replacement",
   "pending": [
-    "Load empty state in runtime",
-    "Complete automation response object schema",
-    "Persisted demo create/edit/pause/remove",
-    "No real task execution"
+    "Build/install new demo package and verify original UI lifecycle",
+    "Complete schedule preview semantics",
+    "Other task/detail/run states"
   ],
   "validation": {
-    "httpTests": 1,
-    "passed": true
-  }
+    "httpTests": 2,
+    "passed": true,
+    "covers": [
+      "create/edit identifiers",
+      "active and paused filters",
+      "pagination",
+      "failed write preserves prior state and foreign pending file",
+      "remove",
+      "unknown task rejection"
+    ]
+  },
+  "limitations": [
+    "No scheduler or task execution",
+    "next_run_times uses original shared-preview sentinel 2099-01-01",
+    "Schedule stored verbatim; components only common scalar RRULE fields parsed",
+    "Removal response shape empty object remains runtime-unverified"
+  ]
 }
