@@ -1,3 +1,5 @@
+import {createResponsiveIcons} from './ResponsiveIcon.js';
+export {createResponsiveIcons} from './ResponsiveIcon.js';
 import {createDisclosureIcon} from './DisclosureIcon.js';
 export {createDisclosureIcon} from './DisclosureIcon.js';
 export {createAnimatedArtwork} from './AnimatedArtwork.js';
@@ -21,7 +23,7 @@ export {buttonColors,buttonSizes,buttonRadii,sizeRadii} from './buttonVariants.j
 import {classNames} from './classNames.js';
 export {classNames} from './classNames.js';
 // Consumer supplies its React and motion runtime; no ChatGPT host or service is imported.
-export function createReaUI({React, motion, AnimatePresence, MotionConfig, ContextMenu, Link, ResponsiveIcon, AnimatedIcon, DisclosureIcon, mergeClasses=classNames, formatMessage, motionPreference, visualScale, requestFrame = callback => window.requestAnimationFrame(callback)}) {
+export function createReaUI({React, motion, AnimatePresence, MotionConfig, ContextMenu, Link, ResponsiveIcon, AssetIcon, useDarkTheme, AnimatedIcon, DisclosureIcon, mergeClasses=classNames, formatMessage, motionPreference, visualScale, requestFrame = callback => window.requestAnimationFrame(callback)}) {
   if (!React?.createElement || !React?.useId || !motion?.span || typeof mergeClasses !== 'function')
     throw new TypeError('React, motion.span and mergeClasses are required');
   const h = React.createElement;
@@ -43,8 +45,9 @@ export function createReaUI({React, motion, AnimatePresence, MotionConfig, Conte
           selected ? h(motion.span,{layoutId:animateSelection ? layoutId : undefined,className:compact ? 'absolute inset-0 -z-10 rounded-lg bg-surface shadow-sm' : 'absolute inset-0 -z-10 rounded-xl bg-white shadow-sm',transition:{type:'spring',duration:0.28,bounce:0}}) : null,option.label);
       }));
   }
+  const responsive=createResponsiveIcons({React,AssetIcon,useDarkTheme,mergeClasses});
   const Spinner=createSpinner(React,mergeClasses);
   const Button=createButton({React,mergeClasses,Spinner});
   const MarqueeText=createMarqueeText({React,mergeClasses,motionPreference,visualScale}),SidebarRowSurface=createSidebarRow(React,mergeClasses),SidebarIndent=createSidebarIndent(React);
-  return {NavigationItem:createNavigationItem({React,mergeClasses,Link,ResponsiveIcon,AnimatedIcon,DisclosureIcon:DisclosureIcon ?? createDisclosureIcon(React,mergeClasses),formatMessage}),useSidebarOrder:createUseSidebarOrder(React),...createSidebarSections({React,mergeClasses,motion,AnimatePresence,MotionConfig,ContextMenu,motionPreference,visualScale}),SidebarItem:createSidebarItem({React,mergeClasses,SidebarRowSurface,SidebarIndent,MarqueeText}),MarqueeText,SidebarRowSurface,SidebarIndent,...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
+  return {...responsive,NavigationItem:createNavigationItem({React,mergeClasses,Link,ResponsiveIcon:ResponsiveIcon ?? responsive.ResponsiveIcon,AnimatedIcon,DisclosureIcon:DisclosureIcon ?? createDisclosureIcon(React,mergeClasses),formatMessage}),useSidebarOrder:createUseSidebarOrder(React),...createSidebarSections({React,mergeClasses,motion,AnimatePresence,MotionConfig,ContextMenu,motionPreference,visualScale}),SidebarItem:createSidebarItem({React,mergeClasses,SidebarRowSurface,SidebarIndent,MarqueeText}),MarqueeText,SidebarRowSurface,SidebarIndent,...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
 }
