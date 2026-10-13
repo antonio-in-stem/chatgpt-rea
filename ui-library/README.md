@@ -1,6 +1,6 @@
 # Reusable UI extraction
 
-This package begins the reusable library. It does not import the app host, account, network or demo backend. `createReaUI` takes React, a compatible `motion.span`, the original-compatible class merger and an optional animation-frame scheduler. Component names are inferred; provenance records the recovered production module and its digest.
+This package begins the reusable library. It does not import the app host, account, network or demo backend. `createReaUI` takes React, a compatible `motion.span`, an optional class merger (the recovered concatenation behavior is the default) and an optional animation-frame scheduler. Component names are inferred; provenance records the recovered production module and its digest.
 
 ## Available components
 
@@ -12,13 +12,15 @@ This package begins the reusable library. It does not import the app host, accou
 
 ## Current limitations
 
-Original utility classes are retained verbatim. The standalone theme/CSS extraction and browser visual comparison are pending. Do not claim this package already reproduces the original appearance outside its stylesheet environment. No generic replacement theme is supplied. Rust remains deferred.
+Original utility classes are retained verbatim. Import `@rea/ui/styles.css` for the byte-identical original CSS baseline and its local font dependencies (65 files, about 2.8 MB). This baseline includes global resets and app-specific selectors; it is not yet a minimal isolated theme. Browser visual comparison and root/theme configuration remain pending. No generic replacement theme is supplied. Rust remains deferred.
 
 ## Next extraction order
 
-1. Recover shared class-merging dependency and exact style/token dependency closure; mount and compare these components.
+1. Mount and compare components with the recovered class utility and CSS baseline; document theme/root requirements and narrow style dependencies.
 2. Menus, popovers, dialogs, inputs, chips, tooltips and their keyboard/focus behavior.
 3. Rail/sidebar, conversation layout and composer as reusable patterns with injected data/actions.
 4. Connected flows and state scenarios, including loading, empty and error states.
 
 Use the shipped frontend as the visual/behavior reference. Keep app services behind consumer-provided callbacks; add demo responses only where needed to exercise a flow.
+
+Regenerate the styles with `node scripts/extract-styles.mjs <extracted-webview-assets>`. Existing differing output is rejected. `styles/manifest.json` records each source digest. Preserve original third-party notices; this package does not relicense the extracted assets.

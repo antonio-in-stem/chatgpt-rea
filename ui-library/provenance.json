@@ -23,8 +23,10 @@
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",
   "limitations": [
     "Not original TypeScript",
-    "Requires original CSS/token environment for visual fidelity; portable CSS package not yet extracted",
-    "motion and mergeClasses must use compatible semantics; dependency mapping remains pending",
+    "Portable original CSS baseline available; minimal scoping and visual comparison pending",
+    "motion runtime compatibility and root/theme configuration remain to be verified",
     "Not a finished component library"
-  ]
+  ],
+  "styleBaseline": "styles/manifest.json: three original CSS entrypoints and local URL resources, byte-identical; visual parity pending",
+  "classUtility": "app-shared-737655e1fb23.js Vde/q, export vgn: source execution comparison tests"
 }

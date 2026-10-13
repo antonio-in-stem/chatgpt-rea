@@ -1,5 +1,7 @@
+import {classNames} from './classNames.js';
+export {classNames} from './classNames.js';
 // Consumer supplies its React and motion runtime; no ChatGPT host or service is imported.
-export function createReaUI({React, motion, mergeClasses, requestFrame = callback => window.requestAnimationFrame(callback)}) {
+export function createReaUI({React, motion, mergeClasses=classNames, requestFrame = callback => window.requestAnimationFrame(callback)}) {
   if (!React?.createElement || !React?.useId || !motion?.span || typeof mergeClasses !== 'function')
     throw new TypeError('React, motion.span and mergeClasses are required');
   const h = React.createElement;
