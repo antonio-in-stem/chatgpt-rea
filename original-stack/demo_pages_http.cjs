@@ -195,11 +195,11 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(rawLimit!==null&&(!/^[1-9][0-9]*$/.test(rawLimit)||Number(rawLimit)>100))throw Error('Invalid demo page limit');
   const offset=cursor?Number(cursor.slice(7)):0,limit=Number(rawLimit||50);
   const parentId=url.searchParams.get('parent_page_id');
-  const available=state.items.filter(x=>!x.permanentlyDeleted&&Boolean(x.metadata.deleted_at)===(route==='/pages/archived')).filter(x=>parentId===null||x.metadata.parent?.page_id===parentId).sort((a,b)=>parentId!==null?a.metadata.position-b.metadata.position:route==='/pages/catalog'?Date.parse(b.lastUsedAt??b.metadata.updated_at)-Date.parse(a.lastUsedAt??a.metadata.updated_at):0);
+  const available=state.items.filter(x=>!x.permanentlyDeleted&&Boolean(x.metadata.deleted_at)===(route==='/pages/archived')).filter(x=>parentId===null||x.metadata.parent?.page_id===parentId).map(x=>({...x,metadata:read(x).metadata})).sort((a,b)=>parentId!==null?a.metadata.position-b.metadata.position:route==='/pages/catalog'?Date.parse(b.lastUsedAt??b.metadata.updated_at)-Date.parse(a.lastUsedAt??a.metadata.updated_at):0);
   if(!Number.isSafeInteger(offset)||offset>available.length)throw Error('Unknown demo page cursor');
   const selected=available.slice(offset,offset+limit);
   const catalog=route==='/pages/catalog';
-  const result={items:selected.map(stored=>{const x={...stored,metadata:read(stored).metadata};return catalog?{id:x.metadata.page_id,title:x.metadata.title,open:{kind:'page',page_id:x.metadata.page_id},access_kind:'owned',created_at:x.metadata.created_at,updated_at:x.metadata.updated_at,last_used_at:x.lastUsedAt??x.metadata.updated_at,symbol:x.metadata.symbol??null}:route==='/pages/archived'?{...x.metadata,archived_at:x.metadata.deleted_at,size_bytes:null}:x.metadata}),next_cursor:offset+limit<available.length?'offset:'+(offset+limit):null};
+  const result={items:selected.map(x=>{return catalog?{id:x.metadata.page_id,title:x.metadata.title,open:{kind:'page',page_id:x.metadata.page_id},access_kind:'owned',created_at:x.metadata.created_at,updated_at:x.metadata.updated_at,last_used_at:x.lastUsedAt??x.metadata.updated_at,symbol:x.metadata.symbol??null}:route==='/pages/archived'?{...x.metadata,archived_at:x.metadata.deleted_at,size_bytes:null}:x.metadata}),next_cursor:offset+limit<available.length?'offset:'+(offset+limit):null};
   if(catalog)result.order_by=url.searchParams.get('order_by')||'last_used_at';
   return result;
  }

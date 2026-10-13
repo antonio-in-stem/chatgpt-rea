@@ -14,10 +14,10 @@
     "observed": [
       "Original Pin moves space from Spaces to Pinned",
       "Reload then Space retains Pinned entry",
-      "Original Unpin returns entry to Spaces and removes Pinned section"
+      "Original Unpin returns entry to Spaces and removes Pinned section",
+      "v37 restart: space remains under Spaces without Pinned section, confirming Unpin persistence"
     ],
     "limits": [
-      "Unpin state observed immediately; separate post-Unpin reload not yet checked",
       "Full underlying pin contract not independently traced in this pass"
     ]
   },

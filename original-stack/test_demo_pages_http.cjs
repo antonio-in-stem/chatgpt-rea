@@ -309,3 +309,18 @@ test('canonical edit time projects to page and library without overriding later 
   fs.writeFileSync(doc,JSON.stringify({sequence:1,title:'Legacy'}));assert.equal(call('GET','/pages/'+page.metadata.page_id).metadata.updated_at,'2025-01-03T00:00:00Z');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('catalog orders by the returned last-used value before pagination',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-page-order-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  for(const key of ['first','second'])call('POST','/pages',{destination:'personal_file_drive',idempotency_key:key,title:key,initial_blocks:[]});
+  const file=path.join(dir,'demo-pages.json'),state=JSON.parse(fs.readFileSync(file));
+  for(const x of state.items)x.metadata.updated_at='2025-01-01T00:00:00Z';fs.writeFileSync(file,JSON.stringify(state));
+  fs.writeFileSync(path.join(dir,'rea-page-1-document.json'),JSON.stringify({sequence:1,title:'Edited first',updated_at:'2025-01-03T00:00:00Z'}));
+  let page=call('GET','/pages/catalog?order_by=last_used_at&limit=1');assert.equal(page.items[0].id,'rea-page-1');assert.equal(page.next_cursor,'offset:1');assert.equal(page.items[0].last_used_at,'2025-01-03T00:00:00Z');
+  assert.equal(call('GET','/pages/catalog?limit=1&cursor=offset:1').items[0].id,'rea-page-2');
+  state.items.find(x=>x.metadata.page_id==='rea-page-2').lastUsedAt='2025-01-04T00:00:00Z';fs.writeFileSync(file,JSON.stringify(state));
+  assert.equal(call('GET','/pages/catalog?limit=1').items[0].id,'rea-page-2');
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

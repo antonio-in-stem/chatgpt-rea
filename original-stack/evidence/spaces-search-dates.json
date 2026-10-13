@@ -1,24 +1,26 @@
 {
-  "status": "Original scoped search verified; canonical edit timestamp fix source-only, package rebuild pending",
+  "status": "v37 canonical modification date installed and original library UI verified",
   "runtime": [
     "Original space Search child filters to Space child demo",
     "Search rea no match renders original No matching pages state",
-    "Observed Modified timestamp stayed at initial metadata time after canonical root rename"
+    "Observed Modified timestamp stayed at initial metadata time after canonical root rename",
+    "v37 original Rename saved Original Space demo; scoped library root row displays Modified just now, child retains older date"
   ],
   "source": [
     "library-item-7b7a01d405e4.js:353-414 original Modified/Opened relative date presentation",
-    "page-3ce8f9437b4b.js:781,948 uses metadata.updated_at for freshness"
+    "page-3ce8f9437b4b.js:781,948 uses metadata.updated_at for freshness",
+    "app-initial-b8e1c8014bb4.js:158273-158307 catalog requests order_by=last_used_at and maps updated_at separately"
   ],
   "fix": [
     "Canonical content/title/order/symbol change stores updated_at atomically with Yjs snapshot",
     "Receipt replay and unchanged content do not advance content modification time",
     "HTTP metadata projects canonical timestamp when newer than metadata lifecycle timestamp",
-    "Legacy documents without timestamp retain existing metadata; no invented historical dates"
+    "Legacy documents without timestamp retain existing metadata; no invented historical dates",
+    "Catalog now sorts using the same projected metadata used in its response before pagination; explicit lastUsedAt still takes precedence over fallback modified time"
   ],
-  "tests": "30 Node +7 PageSync tests pass",
+  "tests": "31 Node +72 Python pass; catalog pagination checks edited fallback time and explicit last-use precedence",
   "remaining": [
-    "Rebuild/restart then verify fresh edit timestamp in original UI",
-    "Backend catalog sort ordering by canonical modification time not yet audited",
-    "Full library filtering/sorting and external providers incomplete"
+    "Full library filtering/sorting and external providers incomplete",
+    "Legacy documents without stored canonical update time retain prior metadata"
   ]
 }
