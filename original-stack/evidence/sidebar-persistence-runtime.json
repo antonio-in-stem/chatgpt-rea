@@ -1,0 +1,40 @@
+{
+  "packageSha256": "f6af5de41c07f11758f6b052054a39cb14deedf0479f78e9c2e734e3630f7fe2",
+  "beforeRuntimePid": 52980,
+  "afterRuntimePid": 71012,
+  "actions": [
+    "Original Explore -> Pin Pull requests",
+    "Original Explore -> Pin Projects",
+    "Stop isolated demo runtime",
+    "Launch new isolated demo process with same profile",
+    "Read original renderer controls without repinning"
+  ],
+  "persistedSettings": {
+    "order": [
+      "builtin:sites",
+      "builtin:pull-requests",
+      "builtin:projects"
+    ],
+    "pinOverrides": {
+      "builtin:pull-requests": true,
+      "builtin:projects": true
+    }
+  },
+  "railAfterRestart": [
+    "Home",
+    "Images",
+    "Space",
+    "Scheduled",
+    "Plugins",
+    "Explore",
+    "Sites",
+    "Pull requests",
+    "Projects"
+  ],
+  "verified": "Original UI changes persist and original UI restores both pins in new process",
+  "limitations": [
+    "No pixel-parity claim",
+    "Does not verify all sidebar preferences or remote accounts",
+    "Security and plan-dependent visibility remain pending"
+  ]
+}
