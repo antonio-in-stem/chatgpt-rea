@@ -4,13 +4,15 @@
     "schemas": 5,
     "tool": "Validate-Plugins.cjs"
   },
-  "runtimePid": 48648,
-  "adapterPid": 100316,
+  "runtimePid": 87724,
+  "adapterPid": 99400,
   "observed": [
-    "Original Plugins page opened",
-    "Public and Personal tabs rendered",
-    "No installed plugins is consistent with initial demo state",
-    "Personal tab fails at missing HTTP /ps/plugins/list"
+    "Original Plugins page and Personal tab render local rea-local marketplace and rea-demo card",
+    "Original overlay anchor opens plugin detail with Install plugin",
+    "Original Install plugin persists installed=true, shows Rea Demo in sidebar and Try now in detail",
+    "Original detail More actions > Uninstall persists installed=false and restores Install plugin",
+    "Reinstall then Page.reload retains Rea Demo in Installed sidebar",
+    "Original install refresh requests skills/list successfully"
   ],
   "nextContract": {
     "source": "plugins-query-7732c01b28d6.js:59-76",
@@ -29,9 +31,24 @@
     }
   },
   "pending": [
-    "Personal HTTP plugin item schema",
-    "Local plugin discoverability in current page",
-    "Install/uninstall/toggle UI",
-    "New skills/list handler loaded after adapter restart"
-  ]
+    "Remote personal plugin item schema and nonempty catalog",
+    "Toggle UI (config persistence only tested)",
+    "Try now workflow",
+    "Nonempty Skills catalog and remaining states"
+  ],
+  "personalDependency": {
+    "source": "plugins-skills-tabs-1209ff6abf26.js:Ka",
+    "finding": "Remote error prevents building all sections, including local marketplaces",
+    "implementation": "GET /ps/plugins/list scope USER returns original empty remote pagination shape, while local catalog remains populated",
+    "packageSha256": "6ace5238a1722cd2b3bd8c09769bffe0fcbe253104cee061291b183fb3dd1e22",
+    "rendererModified": false,
+    "runtime": "v9 verified through original controls; renderer unchanged"
+  },
+  "validation": {
+    "pythonTests": 61,
+    "httpContractTests": 1,
+    "result": "passed",
+    "reloadPersistence": true,
+    "softwareInstalled": false
+  }
 }

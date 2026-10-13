@@ -4,6 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypt
 const {createDemoIdentity}=require('./demo_identity.cjs');
 const {demoStatsigBootstrap}=require('./demo_feature_flags.cjs');
 const {demoSidebarSettings}=require('./demo_sidebar_settings.cjs');
+const {demoPluginHttp}=require('./demo_plugin_http.cjs');
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const [avatarPngPath,outputDirectory]=process.argv.slice(2);
 if(!avatarPngPath)throw Error('Pass an explicit local demo PNG path');
@@ -34,14 +35,14 @@ const replacements=[
  ['readAccountInfo(e=!1){','readAccountInfo(e=!1){return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.accountInfo)});'],
  ['readAccounts(e,t=!1){','readAccounts(e,t=!1){return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.accounts)});'],
  ['readWorkspaceSettings(e,t=!1){','readWorkspaceSettings(e,t=!1){if(e.accountId!==__reaDemoIdentity.accountInfo.accountId)throw Error(`Unknown demo account`);return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.workspaceSettings)});'],
- ['async fetchHttp(e,t,n,i,a){','async fetchHttp(e,t,n,i,a){const demoUrl=new URL(t.url,`https://chatgpt.com`);const demoSettings=demoSidebarSettings(String(t.method||`GET`).toUpperCase(),demoUrl,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`));if(demoSettings!==null)return {response:new Response(JSON.stringify(demoSettings),{status:200,headers:{"content-type":"application/json"}})};if(String(t.method).toUpperCase()===`POST`&&demoUrl.origin===`https://chatgpt.com`&&demoUrl.pathname===`/wham/statsig/bootstrap`){return {response:new Response(JSON.stringify(demoStatsigBootstrap()),{status:200,headers:{"content-type":"application/json"}})}}if((String(t.method||`GET`).toUpperCase()===`GET`)&&Object.hasOwn(__reaDemoIdentity.http,demoUrl.pathname)&&demoUrl.origin===`https://chatgpt.com`){return {response:new Response(JSON.stringify(__reaDemoIdentity.http[demoUrl.pathname]),{status:200,headers:{"content-type":"application/json"}})}}throw Error(`REA demo HTTP contract not implemented: `+demoUrl.pathname);']
+ ['async fetchHttp(e,t,n,i,a){','async fetchHttp(e,t,n,i,a){const demoUrl=new URL(t.url,`https://chatgpt.com`);const demoPluginCatalog=demoPluginHttp(String(t.method||`GET`).toUpperCase(),demoUrl);if(demoPluginCatalog!==null)return {response:new Response(JSON.stringify(demoPluginCatalog),{status:200,headers:{"content-type":"application/json"}})};const demoSettings=demoSidebarSettings(String(t.method||`GET`).toUpperCase(),demoUrl,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`));if(demoSettings!==null)return {response:new Response(JSON.stringify(demoSettings),{status:200,headers:{"content-type":"application/json"}})};if(String(t.method).toUpperCase()===`POST`&&demoUrl.origin===`https://chatgpt.com`&&demoUrl.pathname===`/wham/statsig/bootstrap`){return {response:new Response(JSON.stringify(demoStatsigBootstrap()),{status:200,headers:{"content-type":"application/json"}})}}if((String(t.method||`GET`).toUpperCase()===`GET`)&&Object.hasOwn(__reaDemoIdentity.http,demoUrl.pathname)&&demoUrl.origin===`https://chatgpt.com`){return {response:new Response(JSON.stringify(__reaDemoIdentity.http[demoUrl.pathname]),{status:200,headers:{"content-type":"application/json"}})}}throw Error(`REA demo HTTP contract not implemented: `+demoUrl.pathname);']
 ];
 let patched=original.toString('utf8');
 for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;
