@@ -1,3 +1,5 @@
+#[path = "menu_geometry.rs"]
+mod menu_geometry;
 #[path = "conversation_navigation.rs"]
 mod conversation_navigation;
 #[path = "project_sort.rs"]
@@ -150,6 +152,7 @@ pub struct WorkspaceApp {
     chat_action_target: Option<String>,
     chat_menu_anchor: Option<Point<Pixels>>,
     project_submenu: Option<usize>,
+    project_menu_scroll: ScrollHandle,
     project_move_after_create: Option<String>,
     previous_focus: Option<FocusHandle>,
     composer: Entity<TextareaState>,
@@ -284,6 +287,7 @@ impl WorkspaceApp {
             chat_action_target: None,
             chat_menu_anchor: None,
             project_submenu: None,
+            project_menu_scroll: ScrollHandle::new(),
             project_move_after_create: None,
             workspace,
             path,

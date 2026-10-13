@@ -384,3 +384,30 @@ fn project_submenu_create_moves_context_target_and_cancel_preserves_data(cx: &mu
         assert!(app.read(cx).project_move_after_create.is_none());
     }).unwrap();
 }
+
+
+#[gpui_kit::test]
+fn project_submenu_fits_bottom_edge_and_keyboard_scrolls(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage,700.);
+    cx.update_window(handle,|_,window,cx| {
+        app.update(cx,|s,cx| {
+            for i in 0..30 { s.workspace.create_project(&format!("Destination {i}")).unwrap(); }
+            s.chat_menu_anchor=Some(point(px(690.),px(890.)));
+            s.open_shell_menu(super::Dialog::ChatMenu,window,cx);
+            s.act(super::Action::AssignProject,window,cx);
+        });
+        window.render_frame(cx);
+        let bounds=window.find("chat-project-submenu").bounds();
+        assert!(bounds.left()>=px(4.) && bounds.right()<=px(696.));
+        assert!(bounds.top()>=px(4.) && bounds.bottom()<=px(896.));
+        window.press("end",cx);
+        window.render_frame(cx);
+        window.render_frame(cx);
+        assert!(app.read(cx).project_menu_scroll.offset().y<px(0.));
+        window.press("home",cx);
+        window.render_frame(cx);
+        window.render_frame(cx);
+        assert_eq!(app.read(cx).project_submenu,Some(0));
+    }).unwrap();
+}

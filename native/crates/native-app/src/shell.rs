@@ -112,6 +112,7 @@ impl WorkspaceApp {
                     "enter" | "space" => self.act(choices[index].1.clone(),window,cx),
                     _ => return false,
                 }
+                if let Some(selected) = self.project_submenu { self.project_menu_scroll.scroll_to_item(selected); }
                 cx.notify(); cx.stop_propagation(); return true;
             }
         }
@@ -577,7 +578,7 @@ impl WorkspaceApp {
                 .flex_1().min_h_0().mt(px(4.)).overflow_y_scroll().child(recents))
     }
     fn shell_menu(&self, dialog: Dialog, window: &Window, cx: &mut Context<Self>) -> AnyElement {
-        let mut panel = div()
+        let mut panel = div().id("shell-popup-panel").test_support()
             .w(
                 if matches!(dialog, Dialog::AccountMenu | Dialog::HelpMenu) {
                     clamp_sidebar_width(
@@ -724,15 +725,21 @@ impl WorkspaceApp {
                     ),
             );
         }
+        let has_project = self.workspace.conversation(&self.chat_target()).is_ok_and(|c| c.project_id.is_some());
+        let parent_bounds = menu_geometry::fit(self.chat_menu_anchor.unwrap_or(point(window.viewport_size().width-px(266.),px(86.))),
+            size(px(248.),px(if has_project { 238. } else { 174. })),window.viewport_size());
+        let choices = self.project_menu_choices();
+        let submenu_bounds = menu_geometry::submenu(parent_bounds,px(if has_project { 94. } else { 70. }),
+            size(px(248.),px((choices.len() as f32*32.+14.).min(300.))),window.viewport_size());
+        if dialog == Dialog::ChatMenu {
+            panel = panel.w(parent_bounds.size.width).max_h(parent_bounds.size.height).overflow_y_scroll();
+        }
         let anchored = div()
             .absolute()
             .when(dialog == Dialog::ChatMenu, |d| {
                 // Align with More's right edge:138px caption controls +8px gap.
                 // Popup-specific gap/width remain pending source/runtime confirmation.
-                if let Some(anchor)=self.chat_menu_anchor {
-                    d.left(anchor.x.min(window.viewport_size().width-px(256.)).max(px(4.)))
-                        .top(anchor.y.min(window.viewport_size().height-px(256.)).max(px(4.)))
-                } else { d.top(px(86.)).right(px(18.)) }
+                d.left(parent_bounds.left()).top(parent_bounds.top())
             })
             .when(
                 matches!(dialog, Dialog::AccountMenu | Dialog::HelpMenu),
@@ -744,15 +751,14 @@ impl WorkspaceApp {
             .on_mouse_down(MouseButton::Left, |_, _, cx| cx.stop_propagation())
             .child(panel)
             .when(dialog == Dialog::ChatMenu && self.project_submenu.is_some(), |anchor| {
-                let x = self.chat_menu_anchor.map(|p| p.x).unwrap_or(window.viewport_size().width-px(266.));
                 anchor.child(div().id("chat-project-submenu").test_support().absolute()
-                    .left(if x+px(504.) > window.viewport_size().width { px(-248.) } else { px(248.) })
-                    .top_0().w(px(248.)).max_h(px(300.)).flex().flex_col().overflow_y_scroll()
-                    .track_focus(&self.modal_focus).on_mouse_down(MouseButton::Left, |_,_,cx| cx.stop_propagation()).p(px(6.)).rounded(px(14.))
+                    .left(submenu_bounds.left()-parent_bounds.left()).top(submenu_bounds.top()-parent_bounds.top())
+                    .w(submenu_bounds.size.width).max_h(submenu_bounds.size.height).flex().flex_col().overflow_y_scroll()
+                    .track_scroll(&self.project_menu_scroll).track_focus(&self.modal_focus).on_mouse_down(MouseButton::Left, |_,_,cx| cx.stop_propagation()).p(px(6.)).rounded(px(14.))
                     .border_1().border_color(cx.theme().colors.border).bg(cx.theme().colors.popover).shadow_lg()
                     .children(self.project_menu_choices().into_iter().enumerate().map(|(index,(label,action))| {
                         Button::new(("chat-project-option",index)).ghost().tab_stop(false)
-                            .w_full().h(px(32.)).px(px(8.)).justify_start().label(label)
+                            .w_full().h(px(32.)).flex_shrink_0().px(px(8.)).justify_start().label(label)
                             .when(self.project_submenu == Some(index),|b| b.bg(cx.theme().colors.secondary))
                             .on_click(cx.listener(move |s,_,w,cx| s.act(action.clone(),w,cx)))
                     })))
@@ -1062,6 +1068,7 @@ impl Render for WorkspaceApp {
         root
     }
 }
+
 
 
 

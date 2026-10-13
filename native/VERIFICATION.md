@@ -411,3 +411,7 @@ Extracted four SVG literals with exact source bindings and hashes (catalog/chat-
 
 ## Context project submenu
 63 workspace tests pass after replacing the old contextual project dialog path; production build and packaging passed. Added target-preserving create/move/cancel test and adapted the existing pointer destination selection test to the real nested menu.
+
+
+## Nested menu fitting
+65 workspace tests passed, including edge/compact geometry and actual rendered bounds with long project list/keyboard scroll. Production build and package updated.
