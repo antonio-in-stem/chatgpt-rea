@@ -86,6 +86,22 @@ class ThreadTests(unittest.TestCase):
             self.assertEqual(result["name"],"Migrated")
             self.assertEqual(len(reloaded.handle("thread/list",{"archived":True})[0]["data"]),1)
 
+    def test_fork_frontend_metadata_survives_resume(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            params={"threadId":THREAD["id"],"config":{"model_reasoning_effort":"high","features.demo":True},"runtimeWorkspaceRoots":[THREAD["cwd"]],"threadSource":"user","excludeTurns":True}
+            result,_=store.handle("thread/fork",params)
+            self.assertEqual(result["thread"]["turns"],[])
+            branch=result["thread"]["id"]
+            resumed=ThreadStore(path).handle("thread/resume",{"threadId":branch})[0]
+            self.assertEqual(resumed["reasoningEffort"],"high")
+            self.assertEqual(resumed["runtimeWorkspaceRoots"],[THREAD["cwd"]])
+            self.assertEqual(resumed["thread"]["turns"],THREAD["turns"])
+            for invalid in ({"config":[]},{"runtimeWorkspaceRoots":["relative"]},{"threadSource":3}):
+                with self.assertRaises(ThreadError):store.handle("thread/fork",{"threadId":THREAD["id"],**invalid})
+            self.assertEqual(len(ThreadStore(path).data["threads"]),2)
+
     def test_fork_before_turn_and_invalid_boundary(self):
         with tempfile.TemporaryDirectory() as directory:
             store=ThreadStore(Path(directory)/"threads.json")

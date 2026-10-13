@@ -106,13 +106,23 @@ class ThreadStore:
             raise ThreadError("Unknown demo thread")
         entry=self.data["threads"][thread_id]
         if method not in self.MUTATIONS:
-            return handle(method,params,entry["thread"],entry["archived"]),None
+            response=handle(method,params,entry["thread"],entry["archived"])
+            if method == "thread/resume":response.update(copy.deepcopy(entry.get("settings",{})))
+            return response,None
         data=copy.deepcopy(self.data)
         entry=data["threads"][thread_id]
         thread=entry["thread"]
         if method == "thread/fork":
-            for key in ("path","experimentalPredictionMode","ephemeral","config","baseInstructions","developerInstructions","runtimeWorkspaceRoots","permissions","sandbox","approvalPolicy","approvalsReviewer","threadSource"):
+            for key in ("path","experimentalPredictionMode","ephemeral","baseInstructions","developerInstructions","permissions","sandbox","approvalPolicy","approvalsReviewer"):
                 if params.get(key):raise ThreadError("Unsupported demo fork option: "+key)
+            config=params.get("config") if params.get("config") is not None else {}
+            if not isinstance(config,dict):raise ThreadError("Fork config must be an object")
+            roots=params.get("runtimeWorkspaceRoots")
+            if roots is not None:
+                from pathlib import PureWindowsPath
+                if not isinstance(roots,list) or any(not isinstance(root,str) or not PureWindowsPath(root).is_absolute() for root in roots):raise ThreadError("Absolute workspace roots required")
+            source=params.get("threadSource")
+            if source is not None and not isinstance(source,str):raise ThreadError("Invalid thread source")
             last,before=params.get("lastTurnId"),params.get("beforeTurnId")
             if last is not None and before is not None:raise ThreadError("Fork boundaries are mutually exclusive")
             boundary=last if last is not None else before
@@ -146,6 +156,16 @@ class ThreadStore:
             response["model"]=thread["model"] or "rea-demo"
             response["modelProvider"]=thread["modelProvider"]
             response["serviceTier"]=params.get("serviceTier")
+            # Frontend settings are demo metadata only: no tool/config execution.
+            settings=copy.deepcopy(entry.get("settings",{}))
+            settings.update(model=response["model"],modelProvider=response["modelProvider"],serviceTier=response["serviceTier"])
+            if roots is not None:settings["runtimeWorkspaceRoots"]=roots
+            effort=config.get("model_reasoning_effort")
+            if effort is not None:
+                if effort not in ("none","minimal","low","medium","high","xhigh","max","ultra","persistent"):raise ThreadError("Invalid demo reasoning effort")
+                settings["reasoningEffort"]=effort
+            data["threads"][thread["id"]].update(settings=settings,forkConfig=copy.deepcopy(config),threadSource=source)
+            response.update(settings)
             event={"method":"thread/started","params":{"thread":{**copy.deepcopy(thread),"turns":[]}}}
         else:
             if method == "thread/name/set":
