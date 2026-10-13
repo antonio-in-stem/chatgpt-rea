@@ -1,0 +1,83 @@
+{
+  "status": "Recovered contract; original creation dialog opened/cancelled; backend not implemented",
+  "create": {
+    "method": "POST",
+    "path": "/spaces/v2",
+    "body": {
+      "name": "trimmed name",
+      "make_workspace_default": "optional true"
+    },
+    "response": "Space object directly, not wrapper",
+    "fields": [
+      "id",
+      "name",
+      "root_page_id",
+      "backing_type=drive",
+      "symbol",
+      "appearance",
+      "can_edit_appearance",
+      "root_page={metadata,content,document_bootstrap}"
+    ],
+    "root_initialization": "server must create root, normal flow does not initialize body locally"
+  },
+  "list": {
+    "path": "/spaces/v2?limit=100&cursor=...",
+    "response": [
+      "items",
+      "next_cursor",
+      "archive_retention_days"
+    ]
+  },
+  "detail": {
+    "path": "/spaces/v2/{space_id}",
+    "optional_queries": [
+      "include_root_page_metadata",
+      "include_root_page_realtime_bootstrap"
+    ],
+    "response": [
+      "Space fields",
+      "root_page_metadata",
+      "root_page_realtime_bootstrap"
+    ]
+  },
+  "root_invariants": [
+    "metadata.page_id equals root_page_id",
+    "metadata.drive_space_id equals space.id",
+    "space/root not deleted",
+    "metadata.access.can_read",
+    "write/share derive root access flags",
+    "archive requires principal author match, no pending creation",
+    "request_changes mode disables archive/create/share"
+  ],
+  "source": {
+    "new-space-dialog-e43c04c09a37.js": [
+      "389-408 body",
+      "908-929 body",
+      "556-563 name maxlength50"
+    ],
+    "app-initial-b8e1c8014bb4.js": [
+      "167019-167040 POST",
+      "165825-165843 root_page cache",
+      "164855-164959 list",
+      "164981-165086 detail",
+      "160082-160091 root invariants",
+      "405598-405620 permissions"
+    ],
+    "space-a964dadcd5f7.js": [
+      "112-132 server initialization",
+      "180-249 response",
+      "212-266 subsequent icon/invitations"
+    ]
+  },
+  "runtime_observation": [
+    "New space direct DOM activation opened original Create a space dialog after animation",
+    "Space name input placeholder Name the topic or group",
+    "Invite people, Cancel, Create present",
+    "Cancelled without submitting"
+  ],
+  "unknowns": [
+    "Exhaustive response schema",
+    "Archive principal identity variant",
+    "Actual create and root startup not yet verified"
+  ]
+}

@@ -86,7 +86,8 @@
       "Original Restore confirmation states current comments are kept; confirm returns editable original document with historical title",
       "Canonical sequence32 ->33 restore creates third checkpoint and comments map is exactly equal before/after",
       "Reload demo, Space, restored page: historical title persists in original editable textarea",
-      "Renamed back to Original Pages demo through title field; original Versions list shows four snapshots including restore and subsequent rename"
+      "Renamed back to Original Pages demo through title field; original Versions list shows four snapshots including restore and subsequent rename",
+      "v32 Current version shows No recorded editors at checkpoint head; historical snapshots still show Demo."
     ],
     "remaining": [
       "Explicit checkpoint-to-checkpoint selector and range handles",
@@ -104,11 +105,11 @@
   },
   "tests": "71 Python +26 Node pass; PowerShell parser validation passes",
   "runtime": {
-    "pid": 101820,
-    "adapter_pid": 106468,
-    "launcher_session": 93881,
-    "asar_sha256": "0f7f03f9ddba4306f889f362403a0dd0914ead0a72971d155186a646789bd1d0",
-    "exe_sha256": "adb21329552920f502c6e2d10224e957b83d693848a070975ee4399a4c489f2e"
+    "pid": 97380,
+    "adapter_pid": 99076,
+    "launcher_session": 87305,
+    "asar_sha256": "4607e6227ed5c6a2ffd796b25d95abd46aadd3be944e07410f1b8592ed82d5d1",
+    "exe_sha256": "79b4cef0a73a6060cb58205f4f2149f6e72ea773aa8a5c2e2b1ba1ac446cf40d"
   },
   "verified": [
     "Original Page document selection and replacement appended Activity attribution demo to first paragraph",

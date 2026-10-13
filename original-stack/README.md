@@ -2,6 +2,20 @@
 
 Latest direction from the owner: preserve the shipped app and design first; defer the Rust port. The native demo is not the baseline for this phase.
 
+## Current demo entry point (October 13, 2026)
+
+The working demo uses the original shipped renderer and a separately instrumented host. From this worktree, launch the installed demo package with:
+
+```powershell
+./original-stack/Start-Demo.ps1 -StateName demo-profile-host-v1 -DemoHost -DemoPagesTls -InspectRuntime
+```
+
+This command assumes the local captured runtime, installed demo package and Python dependencies are already present; a fresh Git clone alone is not runnable. Recovered production assets and local profiles are intentionally excluded from Git. `HANDOFF.md` at the repository root records the latest installed package, hashes, process state and unbuilt changes.
+
+Pages currently exercises the original rich editor, nested pages, trash/restore, pins/icons, comments, activity and checkpoint preview/comparison/restore against synthetic local data. Versions uses a separate loopback TLS listener and process-scoped hostname/SPKI settings; it does not change system DNS or certificate trust. Renderer JavaScript/CSS remain unchanged. This is not proof that every frontend feature works: shared spaces, other artifact types, external providers and additional interaction states remain incomplete. Rust is deferred.
+
+The sections below are chronological investigation notes. Earlier statements about sign-in blockers or missing features describe earlier builds; consult the current evidence files and root handoff for verified status.
+
 ## Preserved inputs
 
 - `pristine/resources/app.asar`: byte-identical installed production package, not a rewritten UI.
