@@ -1,5 +1,5 @@
 {
-  "status": "v33 installed; original creation and reload persistence verified; scoped library route pending",
+  "status": "v33 original creation/reload verified; scoped library and inherited child membership implemented/tested, rebuild pending",
   "create": {
     "method": "POST",
     "path": "/spaces/v2",
@@ -61,7 +61,10 @@
       "164855-164959 list",
       "164981-165086 detail",
       "160082-160091 root invariants",
-      "405598-405620 permissions"
+      "405598-405620 permissions",
+      "160325-160350 scoped children GET, membership assertion, next_cursor",
+      "160622-160655 scoped search query/pagination and membership assertion",
+      "346130-346154 parent_page_id creation uses POST /pages"
     ],
     "space-a964dadcd5f7.js": [
       "112-132 server initialization",
@@ -87,14 +90,17 @@
     "POST spaces/v2 stores space plus root metadata in one atomic demo-pages.json replacement",
     "GET list pagination and direct detail project canonical root title/symbol",
     "Root metadata drive_space_id equals space id; write/comment true, share false",
-    "Root Yjs title seeded once on first sync, persisted before response and never re-seeded after edits"
+    "Root Yjs title seeded once on first sync, persisted before response and never re-seeded after edits",
+    "GET /spaces/{space_id}/pages validates live space/root and returns only matching drive_space_id metadata with next_cursor",
+    "Scoped query search uses canonical titles, optional parent_page_id filters children and rejects foreign parent",
+    "POST /pages with parent inherits parent drive_space_id; personal roots retain personal scope"
   ],
   "limits": [
     "Empty root body; no invented starter content",
     "Workspace-default creation explicitly unsupported in personal demo",
     "Invitation/share and appearance fallback not implemented",
-    "Space archive and scoped child listing/creation pending",
+    "Space archive pending; scoped listing/child creation requires package rebuild and UI verification",
     "Creation and persistence verified; root editor startup not verified, default view is scoped library"
   ],
-  "tests": "72 Python +27 Node pass; creation write-failure atomicity, root identity, list pagination, rename projection and root sync persistence covered"
+  "tests": "28 Node tests pass; includes scoped membership inheritance, unrelated-space exclusion, parent filtering, pagination, canonical rename search, archive exclusions and invalid space/parent/limit"
 }

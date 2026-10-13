@@ -4,6 +4,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
+ const spacePages=method==='GET'&&route.match(/^\/spaces\/(rea-space-[1-9][0-9]*)\/pages$/);
  const spaces=(route==='/spaces/v2'&&['GET','POST'].includes(method))||(spaceId&&method==='GET');
  const listing=method==='GET'&&(route==='/pages'||route==='/pages/catalog'||route==='/pages/archived');
  const versionRoute=method==='GET'&&route.match(/^\/pages\/(rea-page-[1-9][0-9]*)\/versions(?:\/(demo-checkpoint-[1-9][0-9]*)\/checkpoint-bootstrap)?$/);
@@ -19,7 +20,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
+ if(!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
@@ -88,6 +89,18 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(spaceId){const space=state.spaces.find(x=>x.id===spaceId&&!x.deleted_at);if(!space)throw Error('Unknown demo space');return projectSpace(space);}
   const result=pageSlice(state.spaces.filter(x=>!x.deleted_at).map(projectSpace),url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||100));
   return {items:result.items,next_cursor:result.cursor,archive_retention_days:30};
+ }
+ if(spacePages){
+  const space=state.spaces?.find(x=>x.id===spacePages[1]&&!x.deleted_at);
+  if(!space||!state.items.some(x=>x.metadata.page_id===space.root_page_id&&live(x)))throw Error('Unavailable demo space');
+  const parentId=url.searchParams.get('parent_page_id'),query=(url.searchParams.get('query')||'').toLowerCase();
+  if(parentId!==null){const parent=parentFor(parentId);if(parent.metadata.drive_space_id!==space.id)throw Error('Space parent mismatch');}
+  const rows=state.items.filter(x=>live(x)&&x.metadata.drive_space_id===space.id)
+   .filter(x=>parentId===null||x.metadata.parent?.page_id===parentId)
+   .map(x=>read(x).metadata).filter(x=>x.title.toLowerCase().includes(query));
+  if(parentId!==null)rows.sort((a,b)=>a.position-b.position);
+  const result=pageSlice(rows,url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||50));
+  return {items:result.items,next_cursor:result.cursor};
  }
  if(versionRoute){
   const item=state.items.find(x=>x.metadata.page_id===versionRoute[1]&&live(x));if(!item)throw Error('Unavailable demo page');
@@ -175,7 +188,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(previous){if(previous.fingerprint!==fingerprint)throw Error('Conflicting demo page idempotency key');return read(previous);}
  const parent=parentFor(input.parent_page_id);
  const now=new Date().toISOString(),id='rea-page-'+(++state.sequence);
- const metadata={access:{can_delete:true,can_read:true,can_share:false,can_write:true},created_at:now,creator_account_user_id:'rea-demo-user',current_sequence:0,deleted_at:null,drive_space_id:null,drive_scope:'personal',owner_workspace_id:null,page_id:id,parent:parent?{page_id:parent.metadata.page_id,title:read(parent).metadata.title}:null,position:Date.parse(now)*1024,projection_through_sequence:0,title:input.title,updated_at:now,document_type:'page',has_children:false};
+ const metadata={access:{can_delete:true,can_read:true,can_share:false,can_write:true},created_at:now,creator_account_user_id:'rea-demo-user',current_sequence:0,deleted_at:null,drive_space_id:parent?.metadata.drive_space_id??null,...(parent?.metadata.drive_space_id?{}:{drive_scope:'personal'}),owner_workspace_id:null,page_id:id,parent:parent?{page_id:parent.metadata.page_id,title:read(parent).metadata.title}:null,position:Date.parse(now)*1024,projection_through_sequence:0,title:input.title,updated_at:now,document_type:'page',has_children:false};
  const item={key:input.idempotency_key,fingerprint,metadata,content:{page_id:id,title:input.title,markdown:"",blocks:[],through_sequence:0}};
  state.items.unshift(item);
  persist();

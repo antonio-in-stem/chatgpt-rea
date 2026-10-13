@@ -239,3 +239,29 @@ test('spaces create root atomically and project canonical title through list/det
   assert.throws(()=>call('POST','/spaces/v2',{name:'No',make_workspace_default:true}),/not supported/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('space pages inherit membership, paginate and filter without leaking other spaces',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-space-pages-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const a=call('POST','/spaces/v2',{name:'First'}),b=call('POST','/spaces/v2',{name:'Second'});
+  const create=(key,parent,title)=>call('POST','/pages',{idempotency_key:key,parent_page_id:parent,title,initial_blocks:[]});
+  const child=create('child',a.root_page_id,'Child'),nested=create('nested',child.metadata.page_id,'Nested');
+  create('other',b.root_page_id,'Other');
+  assert.equal(child.metadata.drive_space_id,a.id);assert.equal(nested.metadata.drive_space_id,a.id);
+  assert.equal(child.metadata.drive_scope,undefined);
+  const route='/spaces/'+a.id+'/pages';
+  const list=call('GET',route+'?limit=1');assert.equal(list.next_cursor,'offset:1');
+  const all=call('GET',route).items;assert.equal(all.length,3);assert.ok(all.every(x=>x.drive_space_id===a.id));
+  assert.deepEqual(call('GET',route+'?parent_page_id='+a.root_page_id).items.map(x=>x.page_id),[child.metadata.page_id]);
+  fs.writeFileSync(path.join(dir,nested.metadata.page_id+'-document.json'),JSON.stringify({sequence:2,title:'Renamed'}));
+  assert.equal(call('GET',route+'?query=RENAMED').items[0].page_id,nested.metadata.page_id);
+  assert.throws(()=>call('GET',route+'?parent_page_id='+b.root_page_id),/mismatch/);
+  assert.throws(()=>call('GET','/spaces/rea-space-999/pages'),/Unavailable/);
+  assert.throws(()=>call('GET',route+'?limit=101'),/limit/);
+  call('POST','/pages/'+child.metadata.page_id+'/archive',{});
+  assert.equal(call('GET',route).items.length,1);
+  call('POST','/pages/'+a.root_page_id+'/archive',{});
+  assert.throws(()=>call('GET',route),/Unavailable/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
