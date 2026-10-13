@@ -12,7 +12,7 @@ CSS app-initial-99e8b4b455fa.css3916–3940 supplies the default page-surface ti
 
 ## Screenshot calibration vs source defaults
 
-The supplied screenshot measures rail48, combined left area356, outer top40, panel top corners approximately16. Native shell uses48/40/16 with6px right and2px bottom inset to approach that reference; these are explicit screenshot adjustments, NOT verified source default tokens. Dark shell #1a202f and sidebar #191b21 approximate sampled screenshot pixels; real Electron Mica and alpha layering remain unresolved. Default saved combined width stays340; isolated capture fixture uses356.
+The supplied screenshot measures rail48, combined left area356, outer top40, panel top corners approximately16. Native shell retains48/40 screenshot-calibrated rail/titlebar dimensions. The later SHELL-CORNERS.md checkpoint replaces guessed radii/insets with recovered Windows application-menu geometry:12px corners,2px bottom-right,4px right/bottom insets. Dark shell #1a202f and sidebar #191b21 approximate sampled screenshot pixels; real Electron Mica and alpha layering remain unresolved. Default saved combined width stays340; isolated capture fixture uses356.
 
 ## Implemented
 
@@ -98,3 +98,9 @@ Recovered kPo at352158–352172 takes the initial page, appends the forced-visib
   native-history-17.png exposed missing explicit SVG colors, fixed before packaging.
   Preview PID 37704. Menus and remaining Codex transcript/sidebar fidelity are
   incomplete; no exact-parity claim.
+
+
+## Rail superellipse checkpoint
+Recovered k0o (app-initial:379536) delegates to Wa with pill=false, size=xl. Shared ECe at38771 defaults squircle to !pill && wg.squircle; Qxe at37846 overrides the generic false default to true. CSS xl resolves control-radius-md, overridden to radius-lg; its 10px base scales globally by1.25, then the data-squircle rule scales by1.25 again (15.625px extent). corner-shape is superellipse(1.5), exponent2^1.5.
+
+Native rail destination buttons now paint 64-segment corner cutouts over square button backgrounds. This reusable native-ui helper adds no event handlers or hitboxes; existing hover/selected paint and actions remain. It requires a solid known immediate backdrop and is not a general clip primitive for arbitrary transparency. Profile, sidebar rows and other controls are not yet migrated. Geometry test checks endpoints, bounds and the implicit superellipse equation. Own executable capture qa/native-rail-21.png inspected; 59 workspace tests and2 native-ui tests pass. No assertion of pixel-exact browser antialiasing.

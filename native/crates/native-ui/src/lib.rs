@@ -1,5 +1,6 @@
 //! Shipped vector geometry rendered by the native GPUI SVG renderer.
 //! No webview or JavaScript runtime participates in these controls.
+pub mod corners;
 pub mod tokens;
 pub mod typography;
 use gpui_kit::{prelude::*, *};

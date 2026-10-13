@@ -247,11 +247,14 @@ impl WorkspaceApp {
             (2, "projects", "Projects", Route::Projects),
         ] {
             rail = rail.child(Button::new(("nav", id)).ghost().size(px(36.)).p_0()
-                .rounded(px(10.)).tooltip(label).accessibility_label(label)
+                .relative().rounded(px(0.)).tooltip(label).accessibility_label(label)
                 .when(self.route == route, |b| b.bg(cx.theme().colors.secondary))
                 .child(native_ui::icon(if icon == "rail-home" && self.route == route { "rail-home-selected" } else { icon }, 20.).text_color(if self.route == route {
                     cx.theme().colors.foreground
                 } else { cx.theme().colors.muted_foreground }))
+                // control-radius-md -> radius-lg(10px), global scale then button squircle scale.
+                .child(native_ui::corners::squircle_cutouts(10. * 1.25 * 1.25,
+                    if cx.theme().mode.is_dark() { rgb(0x1a202f).into() } else { cx.theme().colors.sidebar }))
                 .on_click(cx.listener(move |s, _, w, cx| s.act(Action::Route(route), w, cx))));
         }
         rail = rail.child(div().flex_1()).child(

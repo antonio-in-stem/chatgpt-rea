@@ -383,3 +383,7 @@ Recovered source replaces guessed 16px top-only corners with 12/12/2/12px Window
 
 ## Electron text inheritance
 The shell now requests FontWeight(430), matching app-shared-9a94b907ed47.css Electron --font-ui-weight. Explicit child weights remain overrides; Windows font selection may resolve this request to an installed static face, so this does not prove glyph rasterization parity. Command/output rows now inherit configured mono font family/size rather than hardcoded Consolas 12px.
+
+
+## Rail superellipse
+Source-derived superellipse(1.5) and15.625px radius extent now apply to destination rail buttons. Native-ui geometry/typography tests2 pass; workspace tests59 pass; executable capture qa/native-rail-21.png inspected. Sidebar/profile migration remains pending.
