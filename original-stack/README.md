@@ -17,8 +17,14 @@ Keep pristine files unchanged. Future instrumentation, host shims and demo data 
 
 ## Current verification and remaining work
 
-The snapshot script compares source/destination SHA256. This snapshot alone is NOT runnable: chrome.dll, runtime support files, locales, resources outside ASAR and native unpacked modules remain required. No reconstructed application has been launched in this phase. No original-account profile has been copied.
+The snapshot script compares source/destination SHA256. Complete-Runtime.ps1 has now copied and hash-verified all 3,594 files (2,318,386,060 bytes) from the installed app directory, including chrome.dll, locales, resources and unpacked native modules. runtime-inventory.json records each file. Start-Original.ps1 launched that runtime using separate profile, appdata and CLI-home directories. The original Spanish sign-in screen was visually observed in state/original-second-window.png. No original-account profile was copied; no sign-in was performed. This proves packaged-runtime startup, not offline operation of authenticated screens.
 
 The shipped npm scripts reference unavailable monorepo sources and cannot be treated as a usable source build. The executable is a launcher; native decompilation is not a conversion of the renderer back to original React/TypeScript.
 
-Next: provision an isolated complete Owl runtime with sufficient disk space, bind matching unpacked native modules, establish separate profile/app-server state, then observe the unchanged frontend. Authentication-dependent screens require faithful demo data adapters before the app can operate offline. Compare the same content/state/viewport/DPI to the original; do not use Rust interaction tests as visual evidence.
+Next: inspect the original renderer/host initialization boundary and provide explicit demo data adapters in a separate working copy. The sign-in gate currently prevents the interior app from being exercised with the isolated empty account state. Authentication-dependent screens require faithful demo data adapters before the app can operate offline. Compare the same content/state/viewport/DPI to the original; do not use Rust interaction tests as visual evidence.
+
+## Run
+
+Run Start-Original.ps1 from PowerShell. This launches the original app with isolated local state; it is not yet an offline demo. It retains original startup/network behavior, which can download runtime/plugin metadata into state. Do not copy real credentials into that directory to simulate fixtures. Capture-OriginalWindow.ps1 captures only the verified isolated executable and supports WindowIndex because the runtime has a helper window as well as the login window. State and screenshots are excluded from Git.
+
+Space reclaimed for this phase: only native/target/debug/deps, a regenerable Rust build cache (~6 GB). Source and packaged native executables were retained.
