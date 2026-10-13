@@ -1,0 +1,49 @@
+{
+  "scope": "Original Pages archive/restore lifecycle with synthetic local state",
+  "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+  "sourceLocations": [
+    "407995-408070 archive + fallback archived list",
+    "408109-408155 archive-operations start/poll",
+    "492208-492262 restore and delete-forever"
+  ],
+  "additionalSource": "space-trash-items-1f82b82c43fd.js:193,499 (items.page_id and archived_at)",
+  "implementation": [
+    "Atomic local page metadata mutations",
+    "Archived pages excluded from live lists and token/sync writes",
+    "Restore retains canonical Yjs document bytes",
+    "Archive operation receipts replay without applying action twice",
+    "Permanent deletion is logical within demo state; canonical files retained"
+  ],
+  "tests": {
+    "python": 66,
+    "node": 18,
+    "passed": true
+  },
+  "runtimeVerified": true,
+  "limitations": [
+    "Personal pages only; nested pages and spaces not implemented",
+    "Permanent delete and archive-operation polling covered by unit tests, not yet UI",
+    "Recents reappearance verified after reload; immediate recents refresh not established"
+  ],
+  "runtime": {
+    "package": "v23",
+    "asar": "a0d1fc9ffcd0a470be2bfcf04671286242c5cd35ff3b5dc83d8ed56df529e8d9",
+    "pageId": "rea-page-4",
+    "title": "Archive lifecycle demo",
+    "flow": [
+      "Original editor title/body input",
+      "File menu > Delete > confirm",
+      "Trash > Pages lists page with deleted date",
+      "Original actions menu > Restore > confirm",
+      "Trash becomes empty",
+      "Reload > Space > restored Recents item > original editable body"
+    ],
+    "restoredBlocks": {
+      "type": "paragraph",
+      "layout": "normal",
+      "text": "Restore this original editor content.",
+      "headings": [],
+      "table": null
+    }
+  }
+}

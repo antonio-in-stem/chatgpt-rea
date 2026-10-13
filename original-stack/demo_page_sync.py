@@ -20,7 +20,7 @@ class PageSyncStore:
     def load(self,page_id):
         if not re.fullmatch(r'rea-page-[1-9][0-9]*',page_id):raise ValueError('Invalid page ID')
         pages=json.loads((self.directory/'demo-pages.json').read_text(encoding='utf-8'))
-        if not any(x['metadata']['page_id']==page_id for x in pages['items']):raise ValueError('Unknown demo page')
+        if not any(x['metadata']['page_id']==page_id and not x.get('permanentlyDeleted') and not x['metadata'].get('deleted_at') for x in pages['items']):raise ValueError('Unavailable demo page')
         file=self.directory/(page_id+'-document.json')
         state=json.loads(file.read_text(encoding='utf-8')) if file.exists() else {'sequence':0,'update':'AAA=','receipts':{}}
         doc=y.YDoc()

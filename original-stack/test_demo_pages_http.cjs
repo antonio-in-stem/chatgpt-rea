@@ -31,3 +31,43 @@ test('personal page creation is idempotent, persistent, paged and explicit about
   assert.equal(call('POST','/pages/rea-page-1/realtime-token',{}).endpoint,'ws://127.0.0.1:12345/demo-pages/rea-page-1');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+test('archive, restore and permanent deletion preserve document bytes and isolate unavailable pages',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-page-lifecycle-'));
+ const settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'lifecycle',title:'Lifecycle',initial_blocks:[]});
+  const document=JSON.stringify({sequence:4,title:'Recovered title',update:'canonical bytes'});
+  const docFile=path.join(dir,'rea-page-1-document.json');fs.writeFileSync(docFile,document);
+  assert.throws(()=>call('POST','/pages/rea-page-1/delete-forever',{}),/Only trashed/);
+  fs.writeFileSync(path.join(dir,'demo-pages.json.pending'),'foreign');
+  assert.throws(()=>call('POST','/pages/rea-page-1/archive',{}));
+  assert.equal(call('GET','/pages').items.length,1);
+  fs.unlinkSync(path.join(dir,'demo-pages.json.pending'));
+  call('POST','/pages/rea-page-1/archive',{});
+  assert.equal(call('GET','/pages').items.length,0);
+  assert.equal(call('GET','/pages/catalog').items.length,0);
+  const archived=call('GET','/pages/archived').items[0];
+  assert.equal(archived.title,'Recovered title');assert.equal(archived.access.can_write,false);
+  assert.ok(archived.deleted_at);
+  assert.equal(call('POST','/files/library',{include_pages:true}).items.length,0);
+  assert.equal(call('POST','/files/library',{include_pages:true,trashed_only:true}).items[0].id,'rea-page-1');
+  assert.throws(()=>call('POST','/pages/rea-page-1/realtime-token',{}),/Unavailable/);
+  call('POST','/pages/rea-page-1/restore',{});
+  assert.equal(call('GET','/pages').items[0].current_sequence,4);
+  assert.equal(call('GET','/pages/archived').items.length,0);
+  const operation=call('POST','/pages/rea-page-1/archive-operations',{operation_id:'__proto__'});
+  assert.equal(operation.status,'completed');assert.equal(operation.completed_pages,1);
+  assert.deepEqual(call('GET','/pages/rea-page-1/archive-operations/__proto__'),operation);
+  call('POST','/pages/rea-page-1/restore',{});
+  assert.deepEqual(call('POST','/pages/rea-page-1/archive-operations',{operation_id:'__proto__'}),operation);
+  assert.equal(call('GET','/pages').items.length,1,'replayed archive operation must not archive a restored page again');
+  call('POST','/pages/rea-page-1/archive',{});
+  call('POST','/pages/rea-page-1/delete-forever',{});
+  assert.equal(call('GET','/pages/archived').items.length,0);
+  assert.equal(call('POST','/files/library',{include_pages:true,trashed_only:true}).items.length,0);
+  assert.throws(()=>call('GET','/pages/rea-page-1'),/Unknown/);
+  assert.throws(()=>call('POST','/pages/rea-page-1/restore',{}),/Unknown/);
+  assert.equal(fs.readFileSync(docFile,'utf8'),document);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
