@@ -69,3 +69,15 @@ test('original PNG and PDF fixtures retain bytes and expose MIME-specific Librar
   if(kind==='pdf'){const file=path.join(root,'demo-pages.json'),state=JSON.parse(fs.readFileSync(file));state.libraryFiles.find(f=>f.id===id).library_file_category='document';fs.writeFileSync(file,JSON.stringify(state));assert.equal((await call('GET','/files/library/files/'+id).json()).library_file_category,'pdf');assert.equal(pages('GET','/files/library/nodes?categories=pdf').items[0].id,id);assert.equal(pages('POST','/files/library',{categories:['pdfs']}).items[0].id,id);assert.equal(pages('GET','/files/library/nodes?categories=pdfs').items[0].id,id);}
  }
 }));
+
+test('source filters use artifact type and keep incoming-share collection isolated before pagination',()=>fixture(async({root,call,pages})=>{
+ const page=pages('POST','/pages',{destination:'personal_file_drive',idempotency_key:'source-demo',title:'Generated page',initial_blocks:[]});
+ const bytes=Buffer.from('upload'),reservation=await call('POST','/files',create(bytes)).json();call('PUT',reservation.upload_url,bytes);const events=(await call('POST','/files/process_upload_stream',finish(reservation)).text()).trim().split('\n').map(JSON.parse),id=events[1].extra.metadata_object_id;
+ assert.deepEqual(pages('POST','/files/library',{include_pages:true,source:'uploaded',limit:1}).items.map(x=>x.id),[id]);
+ assert.deepEqual(pages('POST','/files/library',{include_pages:true,source:'generated',limit:1}).items.map(x=>x.id),[page.metadata.page_id]);
+ assert.deepEqual(pages('GET','/files/library/nodes?include_pages=true&source=generated&limit=1').items.map(x=>x.id),[page.metadata.page_id]);
+ assert.deepEqual(pages('GET','/files/library/nodes?include_pages=true&source=uploaded&limit=1').items.map(x=>x.id),[id]);
+ for(const source of ['uploaded','generated'])assert.deepEqual(pages('GET','/files/library/nodes?parent_directory_id=library%3Acollection%3Ashared-with-me&include_pages=true&source='+source),{items:[],cursor:null});
+ const catalog=path.join(root,'demo-pages.json'),state=JSON.parse(fs.readFileSync(catalog));state.libraryFiles[0].library_artifact_type='writing_block';fs.writeFileSync(catalog,JSON.stringify(state));
+ assert.equal(pages('POST','/files/library',{source:'uploaded'}).items.length,0);assert.equal(pages('POST','/files/library',{source:'generated'}).items[0].id,id);
+}));

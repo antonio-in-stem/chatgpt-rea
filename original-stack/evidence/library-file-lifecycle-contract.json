@@ -19,7 +19,7 @@
     "empty_trash": "DELETE /files/library/trash -> {deleted_count,failed_count}; original UI separately enumerates pages/archived and deletes pages"
   },
   "implementation": "Local demo supports rename, move, soft delete, restore, permanent metadata removal and batch soft delete. Original renderer files unchanged.",
-  "validation": "50 Node tests pass. Original UI rename, move, trash, restore, individual permanent deletion and Empty trash Cancel/confirm/reload verified. Batch selection remains test-only.",
+  "validation": "51 Node tests pass. Original UI single and multi-file deletion/restoration, rename/move, permanent deletion and Empty trash verified.",
   "demo_policies": [
     "Deleted metadata retains local file bytes; permanent removal prevents future access but does not reclaim bytes",
     "Restore rejects a missing original directory; upstream policy remains unknown",
@@ -38,12 +38,15 @@
     "Separate synthetic copy: original Permanently delete > Delete forever removed its Trash entry",
     "Another synthetic copy: original Empty trash opened Delete forever confirmation; Cancel preserved entry",
     "Empty trash confirmation removed only trashed synthetic file; active Library file and page records preserved",
-    "Full renderer reload kept original Trash is empty state"
+    "Full renderer reload kept original Trash is empty state",
+    "Selecting PNG and PDF checkboxes showed original 2 selected toolbar with Start chat, Download and Delete",
+    "Bulk Delete opened Delete 2 files confirmation and moved both items to Trash",
+    "Selecting both Trash rows showed Restore and Delete forever actions",
+    "Restore selected items confirmation restored both files; Trash returned empty and both persisted records became live"
   ],
   "pending": [
     "Non-text previews",
     "Ranking and complete browse DTO",
-    "30-day automatic expiration advertised by original UI is not implemented in demo",
-    "Original UI multi-selection batch verification"
+    "30-day automatic expiration advertised by original UI is not implemented in demo"
   ]
 }

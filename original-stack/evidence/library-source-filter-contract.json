@@ -1,0 +1,32 @@
+{
+  "scope": "Original Library source filters and empty incoming-sharing collection",
+  "sources": {
+    "classification": "app-initial-b8e1c8014bb4.js:158344-158355",
+    "selection": "app-initial:288845,289321",
+    "nodes": "app-initial:158527-158550",
+    "classic": "app-initial:158664-158684",
+    "shared_collection": "app-initial:158225-158270,158798,289301",
+    "shared_directory_encoding": "app-initial:491463-491482",
+    "page_inclusion": "app-initial-b8e1c8014bb4.js:158509-158524"
+  },
+  "contract": {
+    "uploaded": "typeof node.library_artifact_type !== string",
+    "generated": "typeof node.library_artifact_type === string, including page",
+    "source_selection": "Exactly one uploaded/generated selection produces that source; both or neither produces null",
+    "shared_parent": "library:collection:shared-with-me is an incoming-access collection, never an owned-root alias",
+    "page_inclusion": "Ordinary All nodes request includes Pages only with source null; do not force Pages into a generated-only response when include_pages is absent"
+  },
+  "implementation": "Applies source classification before pagination in nodes and classic listing. Empty incoming collection remains empty; outgoing invitations do not create incoming content.",
+  "validation": "52 Node tests pass. Original Uploaded, both-source selections, Generated empty-state and incoming-shared empty-state verified after package restart.",
+  "limitations": [
+    "No incoming synthetic collaborator grants yet",
+    "Ranking and external providers remain unmodeled",
+    "Unknown virtual shared-directory error status not established; existing demo empty response is not claimed upstream behavior"
+  ],
+  "ui_observations": [
+    "Uploaded alone showed synthetic folder and uploaded PNG/PDF, excluding Pages",
+    "Uploaded plus Generated showed uploads and Pages again",
+    "Removing Uploaded chip left Generated alone and original No items found; this renderer path omits include_pages for source-specific queries and demo has no generated native file artifacts",
+    "Switching to Shared with you reset source chips and showed original Folder is empty / Files and Pages shared with you will live here"
+  ]
+}

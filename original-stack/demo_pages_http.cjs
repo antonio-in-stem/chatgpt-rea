@@ -40,6 +40,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const directories=state.directories??[];
  const allLibraryFiles=(state.libraryFiles??[]).map(f=>f.mime_type==='application/pdf'?{...f,library_file_category:'pdf'}:f);
  const libraryFiles=allLibraryFiles.filter(f=>!f.permanentlyDeleted&&!f.deleted_at);
+ const sourceMatches=(item,source)=>{if(source!=null&&!['uploaded','generated'].includes(source))throw Error('Invalid Library source');return source==null||(source==='generated')===(typeof item.library_artifact_type==='string');};
  const fileCategoryMatches=(f,categories)=>!categories.length||categories.some(c=>c===f.library_file_category||(c==='documents'&&['document','text'].includes(f.library_file_category))||(c==='images'&&f.library_file_category==='image')||(c==='pdfs'&&f.library_file_category==='pdf'));
  const directoryRead=item=>({...item,kind:'directory',is_root:false,access_kind:'owned',is_shared:false,item_count:directories.filter(d=>d.parent_directory_id===item.id).length+libraryFiles.filter(f=>f.parent_directory_id===item.id).length,folder_count:directories.filter(d=>d.parent_directory_id===item.id).length});
  const findDirectory=id=>{const item=directories.find(d=>d.id===id);if(!item)throw Error('Unknown demo directory');return item;};
@@ -247,7 +248,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   const folders=categories.length?[]:directories.filter(d=>d.parent_directory_id===normalizedParent&&d.name.toLowerCase().includes(needle)).map(directoryRead);
   const items=query.get('include_pages')==='true'&&normalizedParent===null&&(!categories.length||categories.includes('pages'))?state.items.filter(live).map(x=>read(x).metadata).filter(x=>x.title.toLowerCase().includes(needle)).map(x=>({kind:'file',id:x.page_id,file_id:x.page_id,name:x.title,parent_directory_id:null,library_artifact_type:'page',access_kind:'owned',updated_at:x.updated_at,record_creation_time:x.created_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}})):[];
   const files=query.get('include_files')==='false'?[]:libraryFiles.filter(f=>f.parent_directory_id===normalizedParent&&f.name.toLowerCase().includes(needle)&&fileCategoryMatches(f,categories));
-  return pageSlice([...folders,...files,...items],query.get('cursor'),Number(query.get('limit')||50));
+  return pageSlice([...folders,...files,...items].filter(item=>sourceMatches(item,query.get('source'))),query.get('cursor'),Number(query.get('limit')||50));
  }
  if(tree){
   const item=state.items.find(x=>x.metadata.page_id===treeRoute[1]&&live(x));if(!item)throw Error('Unavailable demo page');
@@ -269,7 +270,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   const includePages=input.include_pages===true&&(!input.categories?.length||input.categories.includes('pages'));
   const files=input.include_uploaded_files===false?[]:allLibraryFiles.filter(f=>!f.permanentlyDeleted&&Boolean(f.deleted_at)===Boolean(input.trashed_only)&&fileCategoryMatches(f,input.categories??[])&&(!input.q||f.name.toLowerCase().includes(String(input.q).toLowerCase()))&&(!input.allowlist_ids||input.allowlist_ids.includes(f.id))).map(f=>({...f,file_name:f.name,directory_id:f.parent_directory_id,trashed_at:f.deleted_at??null}));
   const items=(includePages?state.items:[]).filter(x=>!x.permanentlyDeleted&&Boolean(x.metadata.deleted_at)===Boolean(input.trashed_only)).map(x=>read(x).metadata).filter(x=>!input.q||x.title.toLowerCase().includes(String(input.q).toLowerCase())).filter(x=>!input.allowlist_ids||input.allowlist_ids.includes(x.page_id));
-  return pageSlice([...files,...items.map(x=>({id:x.page_id,file_id:x.page_id,file_name:x.title,directory_id:null,library_artifact_type:'page',updated_at:x.updated_at,record_creation_time:x.created_at,last_used_at:state.items.find(v=>v.metadata.page_id===x.page_id).lastUsedAt??x.updated_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}}))],input.cursor,input.limit||50);
+  return pageSlice([...files,...items.map(x=>({id:x.page_id,file_id:x.page_id,file_name:x.title,directory_id:null,library_artifact_type:'page',updated_at:x.updated_at,record_creation_time:x.created_at,last_used_at:state.items.find(v=>v.metadata.page_id===x.page_id).lastUsedAt??x.updated_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}}))].filter(item=>sourceMatches(item,input.source)),input.cursor,input.limit||50);
  }
  if(token){
   const item=state.items.find(x=>x.metadata.page_id===route.split('/')[2]);if(!item||item.permanentlyDeleted||item.metadata.deleted_at)throw Error('Unavailable demo page');
