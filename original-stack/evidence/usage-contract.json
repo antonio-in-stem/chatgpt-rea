@@ -1,0 +1,20 @@
+{
+  "scope": "Synthetic usage response for original account UI",
+  "sources": {
+    "request": "app-shared-737655e1fb23.js:236109-236129 I2r GET /wham/usage",
+    "normalization": "app-shared:235701-235716 h2r",
+    "ambient": "app-shared:235672-235699 nullable ambient menu schema",
+    "windows": "app-initial:204740-204786,204848-204860",
+    "identity_guard": "app-initial:204667-204676"
+  },
+  "implementation": [
+    "Exact GET and chatgpt.com origin only",
+    "Fixed demo account/user/free plan, 12% five-hour and 8% weekly consumed",
+    "Reset times use Unix seconds and stable window boundary",
+    "Zero demo credits; no purchases, subscriptions or external actions",
+    "Original ambient profile menu receives Demo usage and 88%/92% remaining rows"
+  ],
+  "provenance": "Values invented as local demo fixtures; consumer shape recovered from shipped code, not real account balances or upstream backend",
+  "validation": "40 Node tests pass before ambient rows addition; focused suite rerun after",
+  "runtime": "Build/install and actual profile panel verification pending"
+}
