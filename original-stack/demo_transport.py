@@ -1,0 +1,53 @@
+"""Loopback-only contract recorder for the recovered app-server transport.
+No upstream connections, credentials, filesystem tools, or invented account data.
+"""
+import argparse
+import asyncio
+import json
+from pathlib import Path
+from websockets.asyncio.server import serve
+
+MAX_FRAME_BYTES = 1024 * 1024
+
+
+def handle_message(raw):
+    """Return an optional RPC reply and a value-free method/shape observation."""
+    try:
+        message = json.loads(raw)
+    except (ValueError, TypeError):
+        return {"id": None, "error": {"code": -32700, "message": "Invalid JSON"}}, {"kind": "parse-error"}
+    if not isinstance(message, dict) or not isinstance(message.get("method"), str):
+        return {"id": None, "error": {"code": -32600, "message": "Invalid request"}}, {"kind": "invalid-request"}
+    request_id = message.get("id")
+    if request_id is not None and (isinstance(request_id, bool) or not isinstance(request_id, (str, int))):
+        return {"id": None, "error": {"code": -32600, "message": "Invalid request ID"}}, {"kind": "invalid-request"}
+    params = message.get("params")
+    observation = {"kind": "request" if "id" in message else "notification", "method": message["method"],
+                   "paramKeys": sorted(params) if isinstance(params, dict) else [],
+                   "paramsType": type(params).__name__}
+    if "id" not in message:
+        return None, observation
+    # Fail closed until a source-derived fixture for this method exists.
+    return {"id": request_id, "error": {"code": -32601, "message": "Demo contract not implemented"}}, observation
+
+
+async def run(port, output):
+    output.parent.mkdir(parents=True, exist_ok=True)
+    async def connection(socket):
+        async for raw in socket:
+            reply, observation = handle_message(raw)
+            with output.open("a", encoding="utf-8") as stream:
+                stream.write(json.dumps(observation) + "\n")
+            if reply is not None:
+                await socket.send(json.dumps(reply))
+    async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES) as server:
+        print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
+                          "mode": "contract-recorder", "fixtureMethods": []}), flush=True)
+        await asyncio.Future()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", type=int, default=0)
+    parser.add_argument("--output", type=Path, default=Path(__file__).parent / "state" / "demo-methods.jsonl")
+    args = parser.parse_args()
+    asyncio.run(run(args.port, args.output))

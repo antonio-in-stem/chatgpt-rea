@@ -1,0 +1,20 @@
+[
+  {
+    "source": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\extracted\\.vite\\build\\application-network-startup-CfAQmSYg.js",
+    "sourceSha256": "cd6e8a8fbc4354a6e6ff19c6e4bf6fc1fb3960c63708c83871357c6238f516a8",
+    "range": [
+      225838,
+      226008
+    ],
+    "extracted": "transport-Yo.recovered.js"
+  },
+  {
+    "source": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\extracted\\.vite\\build\\main-BklS_2Y2.js",
+    "sourceSha256": "5cf1544463be9497b85b69051aa5ad32320f9ebdca063ec2ab41abb75b6cadf7",
+    "range": [
+      3244207,
+      3244319
+    ],
+    "extracted": "transport-A5.recovered.js"
+  }
+]
