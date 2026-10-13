@@ -1,0 +1,64 @@
+{
+  "kind": "static-source-trace",
+  "rendererModified": false,
+  "rustModified": false,
+  "records": [
+    {
+      "name": "renderer-auth-provider",
+      "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+      "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "startLine": 451356,
+      "endLine": 451470,
+      "fragment": "evidence\\renderer-auth-provider.recovered.js",
+      "fragmentSha256": "e095301d9ca96b2353cf13aa91d3d8fa50f4a37661a53c768304e7d434150fef"
+    },
+    {
+      "name": "renderer-profile-selector",
+      "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+      "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "startLine": 351125,
+      "endLine": 351411,
+      "fragment": "evidence\\renderer-profile-selector.recovered.js",
+      "fragmentSha256": "2d13c9c864bd1f9b86712798654e147c99078655e782ddb6ab9ba1c956060354"
+    },
+    {
+      "name": "renderer-current-user",
+      "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+      "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "startLine": 349085,
+      "endLine": 349114,
+      "fragment": "evidence\\renderer-current-user.recovered.js",
+      "fragmentSha256": "a42003dc1f2d2db850b1ab64376d18c9cba9c288dfabc0072d8a05047ab14002"
+    },
+    {
+      "name": "renderer-account-info-bridge",
+      "source": "state/recovered-all/readable/assets/app-shared-737655e1fb23.js",
+      "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "startLine": 228266,
+      "endLine": 228327,
+      "fragment": "evidence\\renderer-account-info-bridge.recovered.js",
+      "fragmentSha256": "2fb2022451b9a58b5beaf8ff488ef6f236026ce511fd04fbe9a018c35673b4c2"
+    },
+    {
+      "name": "host-account-info",
+      "source": "state/recovered-host/readable/assets/main-BklS_2Y2.js",
+      "sourceSha256": "a54f20295e70f8d8fd8523c4b8b98d69618c80832f3a86aeeee117a4b82bacea",
+      "startLine": 29925,
+      "endLine": 30002,
+      "fragment": "evidence\\host-account-info.recovered.js",
+      "fragmentSha256": "7c41d45a4f78554733aaf2afc3248151e126ae81f0f854114f0e2c0d2e2fdb29"
+    }
+  ],
+  "findings": [
+    "AuthProvider EUs supplies profile identity from local auth state and account-info; it does not populate nameAtLogin/profilePictureUrlAtLogin in this provider.",
+    "ZGr obtains account-info via native accessInputs.readAccountInfo or account-info host fetch.",
+    "Host O_ derives account identifiers from getAuthToken payload; no token yields null identifiers.",
+    "vMo queries /me for name/picture when accountId and userId exist.",
+    "Original profile selector uses Settings when effective identity is null."
+  ],
+  "nextAction": "Provide an explicit demo-only host identity and /me fixture boundary in a separate instrumented runtime, preserving pristine renderer and keeping real credentials absent. Do not fabricate a real login or assume account/read alone supplies avatar.",
+  "limitations": [
+    "Static evidence only; synthetic host identity seam has not been implemented or runtime-verified.",
+    "Navigation capabilities and profile visibility endpoint remain separate dependencies."
+  ]
+}

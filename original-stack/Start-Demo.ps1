@@ -3,6 +3,7 @@ param(
  [ValidateSet('ready','notConfigured','updateRequired')][string]$WindowsScenario='ready',
  [ValidateRange(0,10)][double]$ChunkDelay=0.6,
  [switch]$InspectRuntime,
+ [switch]$DemoHost,
  [switch]$DryRun
 )
 $ErrorActionPreference='Stop'
@@ -11,7 +12,8 @@ $runtime=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'pristine')).Path
 $python=(Get-Command python -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 $stores=@{project=Join-Path $state 'demo-projects.json';config=Join-Path $state 'demo-config.json';thread=Join-Path $state 'demo-threads.json'}
 # Preflight uses the same integrity/profile checks as the actual launcher.
-$preflight=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl 'ws://127.0.0.1:1' -DryRun | ConvertFrom-Json
+$preflight=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl 'ws://127.0.0.1:1' -DemoHost:$DemoHost -DryRun | ConvertFrom-Json
+$runtime=Split-Path -Parent $preflight.executable
 if($DryRun){
  [pscustomobject]@{python=$python;executable=$preflight.executable;profile=$preflight.profile;stores=$stores;simulatedWindowsReadiness=$WindowsScenario;executesTools=$false;startsProcesses=$false} | ConvertTo-Json -Depth 4
  return
@@ -38,6 +40,7 @@ try{
  $start.RedirectStandardOutput=$true
  $start.RedirectStandardError=$true
  foreach($argument in @('-u',(Join-Path $PSScriptRoot 'demo_transport.py'),'--output',(Join-Path $state 'demo-methods.jsonl'),'--project-state',$stores.project,'--config-state',$stores.config,'--thread-state',$stores.thread,'--demo-sandbox-state',$WindowsScenario,'--demo-chunk-delay',$ChunkDelay.ToString([Globalization.CultureInfo]::InvariantCulture))){$start.ArgumentList.Add($argument)}
+ if($DemoHost){$start.ArgumentList.Add('--demo-profile-identity')}
  $adapter=[Diagnostics.Process]::Start($start)
  $errors=$adapter.StandardError.ReadToEndAsync()
  $line=$adapter.StandardOutput.ReadLineAsync()
@@ -48,16 +51,18 @@ try{
  foreach($name in @('runtime-stdout.log','runtime-stderr.log')){
   $runtimeLogs+= [IO.FileStream]::new((Join-Path $state $name),[IO.FileMode]::Create,[IO.FileAccess]::Write,[IO.FileShare]::Read,4096,$true)
  }
- $app=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -Visible -PassThru
+ $app=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -DemoHost:$DemoHost -Visible -PassThru
  # Drain both pipes concurrently; never accumulate unbounded runtime logs in memory.
  $runtimeCopies+= $app.StandardOutput.BaseStream.CopyToAsync($runtimeLogs[0])
  $runtimeCopies+= $app.StandardError.BaseStream.CopyToAsync($runtimeLogs[1])
- Write-Host ('Original frontend demo opened. Windows readiness is simulated: '+$WindowsScenario+'. No tools are executed.')
+ Write-Host ('Demo runtime process started; UI readiness is not yet verified. Windows readiness is simulated: '+$WindowsScenario+'. No tools are executed.')
  [pscustomobject]@{runtimePid=$app.Id;adapterPid=$adapter.Id;endpoint=$announcement.endpoint;profile=$preflight.profile;stores=$stores} | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath (Join-Path $state 'demo-session.json') -Encoding utf8
  while(-not $app.WaitForExit(500)){
   foreach($copy in $runtimeCopies){if($copy.IsFaulted){$copy.GetAwaiter().GetResult()}}
   if($adapter.HasExited){throw 'Demo adapter exited while the frontend was open. See adapter-error.log in this profile.'}
  }
+ if($app.ExitCode -ne 0){throw ('Demo runtime exited with code '+$app.ExitCode+'. See runtime-stderr.log in this profile.')}
+
 }finally{
  if($adapter){
   if(-not $adapter.HasExited){$adapter.Kill();$adapter.WaitForExit()}

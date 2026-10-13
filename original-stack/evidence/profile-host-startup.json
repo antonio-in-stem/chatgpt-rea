@@ -1,0 +1,60 @@
+{
+  "runtimePid": 73896,
+  "runtimeExited": true,
+  "result": "native-ASAR-integrity-rejection",
+  "expectedHeaderHash": "6b993af172cfc4425644e357856706390067ea457bc76bc11d0d3d5905c3bab5",
+  "observedHeaderHash": "c575b6a05d8a4d7b21415e1c98ce267b280754721ce33236a25c228cb51ec82e",
+  "executableSha256": "13d7ee588d7ae20f04f7aa25a65ae82917ada81501304ac8f5e679d0b3306601",
+  "expectedHashOffsets": {
+    "ascii": [],
+    "utf-16-le": []
+  },
+  "avatarVerified": false,
+  "pristineModified": false,
+  "runtimeHashReferences": [
+    {
+      "file": "ChatGPT.exe",
+      "encoding": "ascii",
+      "offset": 4752119
+    }
+  ],
+  "correction": "Log order resolved by computing both ASAR JSON-header hashes; expected is pristine hash.",
+  "secondAttempt": {
+    "runtimePid": 13016,
+    "adapterPid": 88540,
+    "integrityAccepted": true,
+    "rendererReached": true,
+    "screen": "Original sign-in screen",
+    "capture": "state/demo-profile-host-v1/content.png",
+    "avatarVerified": false,
+    "pending": "Synthetic logged-in frontend state: current hasChatGptToken false selects sign-in. No real credentials to be used."
+  },
+  "thirdAttempt": {
+    "runtimePid": 88008,
+    "adapterPid": 14352,
+    "packageSha256": "01628806043463781e232de4a19672c0b289b424eba564d31719573e255f35c2",
+    "executableSha256": "ddc0fe148354c662f36c1c927222662f218c0f713f1beeee4b405f609b47cfe8",
+    "simulatedSessionState": "signedIn",
+    "actualTokenSupplied": false,
+    "onboardingAction": "Original Skip button",
+    "modeAction": "Original mode menu -> Codex",
+    "shellReached": true,
+    "avatarVerified": true,
+    "avatar": {
+      "scheme": "data",
+      "naturalWidth": 100,
+      "naturalHeight": 100,
+      "width": 18,
+      "height": 18,
+      "complete": true,
+      "objectFit": "cover",
+      "name": "Demo"
+    },
+    "capture": "evidence/original-demo-profile.png",
+    "remaining": [
+      "Navigation rail layout differs because feature/account configuration is incomplete",
+      "Workspace settings failed to load; send disabled",
+      "Profile routes and account metadata still incomplete"
+    ]
+  }
+}

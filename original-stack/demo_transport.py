@@ -1,5 +1,5 @@
 """Loopback-only contract recorder for the recovered app-server transport.
-No upstream connections, credentials, filesystem tools, or invented account data.
+No upstream connections, credentials or filesystem tools. Synthetic identity is opt-in.
 """
 import argparse
 import asyncio
@@ -147,6 +147,15 @@ if __name__ == "__main__":
     parser.add_argument("--thread-state", type=Path, default=Path(__file__).parent / "state" / "demo-threads.json")
     parser.add_argument("--demo-sandbox-state", choices=["ready","notConfigured","updateRequired"], default="notConfigured", help="Simulated UI state only; does not configure or provide Windows sandboxing")
     parser.add_argument("--demo-chunk-delay", type=float, default=0.6, help="Seconds between synthetic text chunks")
+    parser.add_argument("--demo-profile-identity", action="store_true", help="Synthetic account state for the separately instrumented demo host; no token")
     args = parser.parse_args()
+    if args.demo_profile_identity:
+        account_file = Path(__file__).parent / "state/instrumented-profile-host/demo-account-read.json"
+        demo_account = json.loads(account_file.read_text(encoding="utf-8"))
+        expected = {"account": {"type": "chatgpt", "email": "demo@example.invalid", "planType": "free"}, "requiresOpenaiAuth": False, "workspaceRouting": None}
+        if demo_account != expected:
+            parser.error("Unexpected demo identity fixture")
+        FIXTURES["account/read"]["result"] = demo_account
+        FIXTURES["getAuthStatus"]["result"] = {"authMethod": "chatgpt", "authToken": None, "requiresOpenaiAuth": False}
     if not 0 <= args.demo_chunk_delay <= 10:parser.error("Demo delay must be between 0 and 10 seconds")
     asyncio.run(run(args.port, args.output, args.project_state, args.config_state, args.thread_state, args.demo_sandbox_state, args.demo_chunk_delay))

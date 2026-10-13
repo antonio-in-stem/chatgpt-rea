@@ -1,8 +1,15 @@
-param([Parameter(Mandatory=$true)][int]$DemoProcessId,[Parameter(Mandatory=$true)][string]$OutputPath,[ValidateRange(0,8192)][int]$ClientWidth=0,[ValidateRange(0,8192)][int]$ClientHeight=0,[switch]$Show,[int]$WindowIndex=0)
+param([Parameter(Mandatory=$true)][int]$DemoProcessId,[Parameter(Mandatory=$true)][string]$OutputPath,[ValidateRange(0,8192)][int]$ClientWidth=0,[ValidateRange(0,8192)][int]$ClientHeight=0,[switch]$Show,[int]$WindowIndex=0,[switch]$DemoHost)
 $ErrorActionPreference='Stop'
 if(($ClientWidth -eq 0) -ne ($ClientHeight -eq 0)){throw 'Specify both client dimensions'}
 $process=Get-Process -Id $DemoProcessId
-if($process.Path -ne (Join-Path $PSScriptRoot 'pristine\ChatGPT.exe')){throw 'Only the isolated original runtime may be captured'}
+$expected=Join-Path $PSScriptRoot 'pristine\ChatGPT.exe'
+if($DemoHost){
+ $location=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'state/instrumented-profile-host/runtime-location.json') -Raw | ConvertFrom-Json
+ $expected=Join-Path $location.runtimeRoot 'ChatGPT.exe'
+ $patch=Get-Content -LiteralPath $location.patchManifestPath -Raw | ConvertFrom-Json
+ if((Get-FileHash -LiteralPath $expected -Algorithm SHA256).Hash.ToLowerInvariant() -ne $patch.executablePatch.patchedSha256){throw 'Unexpected instrumented runtime executable'}
+}
+if($process.Path -ne $expected){throw 'Only the explicitly selected isolated runtime may be captured'}
 Add-Type -AssemblyName System.Drawing
 Add-Type @"
 using System;

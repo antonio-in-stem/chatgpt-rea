@@ -366,8 +366,28 @@ impl WorkspaceApp {
             .flex_col()
             .gap(px(20.));
         if let Some(chat) = chat {
+            let now_ms = chrono::Utc::now().timestamp_millis();
+            let separators = chat.timestamp_separators(now_ms).unwrap_or_else(|error| {
+                self.notice = error;
+                vec![None; chat.messages.len()]
+            });
             for (index, message) in chat.messages.iter().enumerate() {
-                messages = messages.child(self.chat_message_view(index, message, window, cx));
+                let view = self.chat_message_view(index, message, window, cx);
+                let mut group = div().w_full().flex().flex_col();
+                if let Some(sent_ms) = separators[index] {
+                    let reference_ms = *self.timestamp_label_times.entry(message.id.clone()).or_insert(now_ms);
+                    if let (Some(sent), Some(now)) = (chrono::DateTime::from_timestamp_millis(sent_ms), chrono::DateTime::from_timestamp_millis(reference_ms)) {
+                        let label = crate::timestamp_label::format(sent.with_timezone(&chrono::Local), now.with_timezone(&chrono::Local));
+                        group = group.child(div()
+                            .id(SharedString::from(format!("timestamp-separator-{}", message.id)))
+                            .test_support().w_full().py(px(16.)).flex().justify_center()
+                            .text_size(px(14.)).line_height(px(20.))
+                            .text_color(cx.theme().colors.muted_foreground)
+                            .child(div().font_weight(FontWeight::MEDIUM).child(label.date))
+                            .child(div().font_weight(FontWeight::NORMAL).child(label.suffix)));
+                    }
+                }
+                messages = messages.child(group.child(view));
             }
         }
         div()

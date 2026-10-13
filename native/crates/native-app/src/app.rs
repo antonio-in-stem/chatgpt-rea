@@ -182,6 +182,7 @@ pub struct WorkspaceApp {
     navigation_hover: Option<String>,
     navigation_ui: conversation_navigation::NavigationUi,
     navigation_motion: Option<Task<()>>,
+    timestamp_label_times: HashMap<String, i64>,
     message_actions: HashMap<String, Entity<ChatMessageActions>>,
     recents_scroll: ScrollHandle,
     projects_scroll: ScrollHandle,
@@ -345,6 +346,7 @@ impl WorkspaceApp {
             navigation_hover: None,
             navigation_ui: Default::default(),
             navigation_motion: None,
+            timestamp_label_times: HashMap::new(),
             message_actions: HashMap::new(),
             recents_scroll: ScrollHandle::new(),
             projects_scroll: ScrollHandle::new(),
@@ -474,6 +476,7 @@ impl WorkspaceApp {
         self.navigation_motion.take();
         self.navigation_hover = None;
         self.navigation_ui = Default::default();
+        self.timestamp_label_times.clear();
         self.active = id;
         self.route = Route::Chat;
         self.edit_message = None;

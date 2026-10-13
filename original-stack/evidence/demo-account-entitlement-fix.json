@@ -1,0 +1,47 @@
+{
+  "failedPackage": "6ba7dbb86eb072c539980aee003ff58335523e99d6c582397fdf2675785c9456",
+  "observedFailure": "Original account consumer accessed missing entitlement.expires_at",
+  "causes": [
+    "TypeError: Cannot read properties of undefined (reading 'expires_at')\n    at app://-/assets/app-primary-19fe57fd8c00.js:7:72684\n    at app://-/assets/app-shared-737655e1fb23.js:294:117083\n    at Object.effect (app://-/assets/app-shared-737655e1fb23.js:294:116174)\n    at x (app://-/assets/app-shared-737655e1fb23.js:294:110415)\n    at app://-/assets/app-shared-737655e1fb23.js:294:111095\n    at app://-/assets/app-shared-737655e1fb23.js:294:47347\n    at Set.forEach (<anonymous>)\n    at t (app://-/assets/app-shared-737655e1fb23.js:294:47336)\n    at l (app://-/assets/app-shared-737655e1fb23.js:294:48061)\n    at Tit (app://-/assets/app-shared-737655e1fb23.js:294:48094)\n    at i (app://-/assets/app-shared-737655e1fb23.js:294:51337)\n    at app://-/assets/app-shared-737655e1fb23.js:294:72277\n    at n (app://-/assets/app-shared-737655e1fb23.js:294:72056)\n    at app://-/assets/app-shared-737655e1fb23.js:294:72169\n    at Array.forEach (<anonymous>)\n    at app://-/assets/app-shared-737655e1fb23.js:294:72157\n    at r (app://-/assets/app-shared-737655e1fb23.js:294:72067)\n    at app://-/assets/app-shared-737655e1fb23.js:294:72148\n    at r (app://-/assets/app-initial-b8e1c8014bb4.js:1618:1386)"
+  ],
+  "originalSource": "app-primary-19fe57fd8c00.js:13259",
+  "fix": "Demo account includes inactive entitlement and last_active_subscription objects; renderer unchanged",
+  "verification": "Six Node tests pass, including original lGe trial selector and original Statsig V1 container",
+  "replacementPackage": "dc900bc3588e6c08a334b4ab96a6f7ae48da1a715cf0582795caeb3c78bfb706",
+  "runtimeVerification": {
+    "runtimePid": 79532,
+    "status": "Original shell rendered; no startup error boundary observed",
+    "viewport": [
+      1280,
+      820
+    ],
+    "dpi": 96,
+    "capture": "../state/demo-profile-host-v1/rail-v5.png",
+    "avatar": {
+      "complete": true,
+      "naturalSize": [
+        100,
+        100
+      ],
+      "renderedSize": [
+        24,
+        24
+      ],
+      "source": "explicit demo packaged asset"
+    },
+    "visibleDestinations": [
+      "Home",
+      "Images",
+      "Space",
+      "Scheduled",
+      "Plugins",
+      "Explore",
+      "Sites"
+    ],
+    "limitations": [
+      "Does not establish complete frontend parity",
+      "Projects and Pull requests subsequently pinned through original UI; DOM confirms presence but latest PrintWindow frame does not show updated rail",
+      "Security unavailable in current demo scenario"
+    ]
+  }
+}

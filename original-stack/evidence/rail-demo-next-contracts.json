@@ -1,0 +1,35 @@
+{
+  "status": "source-derived, implementation pending",
+  "rendererUnmodified": true,
+  "findings": {
+    "pinPersistence": {
+      "read": "GET /settings/user -> settings.sidebar_customization {order, pinOverrides}",
+      "write": "PATCH /settings/account_user_setting query feature=sidebar_customization,value=JSON.stringify(value)",
+      "currentLimitation": "demo host lacks PATCH route; UI pin action observed only in current renderer, not durable proof"
+    },
+    "imagesVisibility": {
+      "condition": "Space enabled plus non-free plan permits pinOverrides[builtin:images]=false; free/free_workspace promotes Images independently",
+      "currentDemo": "free"
+    },
+    "security": {
+      "gate": "1598376",
+      "rpc": "plugin/installed",
+      "condition": "enabled AVAILABLE plugin.id starts codex-security@",
+      "limitation": "Rendering destination does not implement its page flows"
+    },
+    "queue": {
+      "gate": "2120612410",
+      "minimumVersion": "0.148.0-alpha.14",
+      "integrationGap": "thread/queue/start must share stream scheduling currently limited to turn/start"
+    }
+  },
+  "nextAction": "Implement persistent demo sidebar settings boundary first, preserving original renderer and current UI choices; then verify reload",
+  "sidebarPersistenceImplementation": {
+    "module": "original-stack/demo_sidebar_settings.cjs",
+    "package": "S:/rea-profile-package-v6/app.asar",
+    "sha256": "f6af5de41c07f11758f6b052054a39cb14deedf0479f78e9c2e734e3630f7fe2",
+    "tests": "2 passed: fresh-instance persistence; invalid values and commit failure preserve state",
+    "integration": "Build-DemoHost injects original HTTP seam; Start-Original provides profile-scoped path",
+    "runtimeVerified": false
+  }
+}

@@ -5,6 +5,7 @@ param(
  [switch]$Visible,
  [switch]$InspectRuntime,
  [switch]$DryRun,
+ [switch]$DemoHost,
  [ValidatePattern('^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$')][string]$StateName,
  [string]$DemoTransportUrl
 )
@@ -12,6 +13,17 @@ $ErrorActionPreference='Stop'
 if($PassThru -and $WaitForExit){throw 'PassThru and WaitForExit are mutually exclusive'}
 $runtime=Join-Path $PSScriptRoot 'pristine'
 $inventoryPath=Join-Path $PSScriptRoot 'runtime-inventory.json'
+if($DemoHost){
+ if(-not $DemoTransportUrl -or $StateName -notlike 'demo-*'){throw 'Instrumented host requires a named demo and loopback adapter'}
+ $location=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'state/instrumented-profile-host/runtime-location.json') -Raw | ConvertFrom-Json
+ $runtime=$location.runtimeRoot
+ $inventoryPath=$location.inventoryPath
+ $patch=Get-Content -LiteralPath $location.patchManifestPath -Raw | ConvertFrom-Json
+ if($patch.mode -ne 'instrumented-demo-host' -or $patch.rendererFilesModified){throw 'Unexpected host patch manifest'}
+ $asar=Join-Path $runtime 'resources/app.asar'
+ if((Get-FileHash -LiteralPath $asar -Algorithm SHA256).Hash.ToLowerInvariant() -ne $patch.outputSha256){throw 'Demo host package differs from manifest'}
+}
+
 if(-not(Test-Path -LiteralPath $inventoryPath)){throw 'Run Complete-Runtime.ps1 first'}
 $verifiedRuntime=& (Join-Path $PSScriptRoot 'Verify-Runtime.ps1') -RuntimeRoot $runtime -InventoryPath $inventoryPath
 $state=Join-Path $PSScriptRoot 'state'
@@ -45,6 +57,8 @@ foreach($key in @($start.Environment.Keys)){
 # Child-only product configuration; never changes this shell or the user's environment.
 $start.Environment['CODEX_ELECTRON_USER_DATA_PATH']=Join-Path $state 'profile'
 $start.Environment['CODEX_HOME']=Join-Path $state 'codex-home'
+$start.Environment.Remove('REA_DEMO_SETTINGS_PATH') | Out-Null
+if($DemoHost){$start.Environment['REA_DEMO_SETTINGS_PATH']=Join-Path $state 'demo-sidebar-settings.json'}
 if($DemoTransportUrl){$start.Environment['CODEX_APP_SERVER_WS_URL']=$DemoTransportUrl}
 $start.Environment['APPDATA']=Join-Path $state 'appdata'
 $start.Environment['LOCALAPPDATA']=Join-Path $state 'localappdata'

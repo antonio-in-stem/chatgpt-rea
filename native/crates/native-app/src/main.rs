@@ -2,6 +2,7 @@
 extern crate gpui_kit as gpui;
 mod app;
 mod fixtures;
+mod timestamp_label;
 use gpui_kit::component::{Theme, ThemeMode};
 use gpui_kit::*;
 fn main() {
