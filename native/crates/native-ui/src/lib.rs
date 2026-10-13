@@ -7,6 +7,7 @@ use gpui_kit::{prelude::*, *};
 
 pub fn icon_data(name: &str) -> &'static [u8] {
     match name {
+        "sidebar-archive" => include_bytes!("../assets/sidebar-archive.svg"),
         "menu-new-project" => include_bytes!("../assets/menu-new-project.svg"),
         "menu-project" => include_bytes!("../assets/menu-project.svg"),
         "menu-rename" => include_bytes!("../assets/menu-rename.svg"),

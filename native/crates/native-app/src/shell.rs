@@ -219,7 +219,7 @@ impl WorkspaceApp {
             Action::Chat(id) if self.workspace.conversations.iter().any(|c| &c.id == id && !c.pinned && c.project_id.is_some()) => 32.,
             _ => 8.,
         };
-        let mut row = div().id(("sidebar-row-content", key)).test_support().w_full().h_full().pl(px(left_padding)).pr(px(8.)).flex().items_center().gap(px(8.)).min_w_0();
+        let mut row = div().id(("sidebar-row-content", key)).group(format!("sidebar-row-{key}")).relative().test_support().w_full().h_full().pl(px(left_padding)).pr(px(8.)).flex().items_center().gap(px(8.)).min_w_0();
         if let Action::Chat(id) = &action {
             let id=id.clone();
             row = row.on_mouse_down(MouseButton::Right, cx.listener(move |s,event: &MouseDownEvent,w,cx| {
@@ -233,6 +233,22 @@ impl WorkspaceApp {
             row = row.child(native_ui::icon(icon, 20.).text_color(cx.theme().colors.foreground));
         }
         row = row.child(div().flex_1().min_w_0().truncate().child(label.clone()));
+        if let Action::Chat(id) = &action {
+            if self.workspace.settings.codex_surface {
+                let id = id.clone();
+                row = row.child(div().absolute().right(px(8.)).top(px(5.))
+                    .invisible().group_hover(format!("sidebar-row-{key}"), |style| style.visible())
+                    .child(Button::new(("sidebar-archive",key)).ghost().size(px(20.)).p_0()
+                        .accessibility_label("Archive task").tooltip("Archive task")
+                        .child(native_ui::icon("sidebar-archive",16.))
+                        .on_mouse_down(MouseButton::Left, |_,_,cx| cx.stop_propagation())
+                        .on_click(cx.listener(move |s,_,w,cx| {
+                            cx.stop_propagation();
+                            s.chat_action_target = Some(id.clone());
+                            s.act(Action::Archive,w,cx);
+                        }))));
+            }
+        }
         Button::new(("nav", key))
             .ghost()
             .accessibility_label(label)
