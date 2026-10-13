@@ -3,7 +3,7 @@
   "createdThroughOriginalUI": "UI Component Lab",
   "folder": "C:\\Users\\PC\\Documents\\ChatGPT\\UI Component Lab",
   "folderRetained": true,
-  "trustPersistedInDemoConfig": true,
+  "trustPersistedInDemoConfig": false,
   "appAndAdapterRestarted": true,
   "visibleAfterRestart": true,
   "rendererModified": false,
@@ -13,6 +13,8 @@
     "Project move validated in unit/schema tests; no visual reorder test yet.",
     "Synthetic config upsert supports objects/scalars; arrays fail explicitly.",
     "JSON demo config storage differs from real TOML backend; no claim of complete backend fidelity.",
-    "No native Rust completion or full network isolation claim."
-  ]
+    "No native Rust completion or full network isolation claim.",
+    "No projects trust entries were present in demo config; confirmed dialog acceptance and project persistence, not persistent trust semantics."
+  ],
+  "trustPersistenceUnknown": true
 }
