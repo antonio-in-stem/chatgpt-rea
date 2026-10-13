@@ -1,0 +1,27 @@
+{
+  "sources": {
+    "spaces": "app-initial-b8e1c8014bb4.js:164888",
+    "pages": "app-initial-b8e1c8014bb4.js:159961",
+    "pageCatalog": "app-initial-b8e1c8014bb4.js:158275",
+    "library": "app-initial-b8e1c8014bb4.js:158664",
+    "pins": "app-initial-b8e1c8014bb4.js:163875",
+    "mentions": "inbox-2e21c8f183ef.js:204,239"
+  },
+  "implemented": [
+    "GET /spaces/v2 items/next_cursor",
+    "GET /pages items/next_cursor",
+    "GET /pages/catalog items/next_cursor/order_by",
+    "GET /pages/mentions/inbox items/next_cursor",
+    "GET /pins/pages array",
+    "POST /files/library items/cursor"
+  ],
+  "fixtureState": "empty",
+  "runtimeVerified": false,
+  "tests": 1,
+  "pending": [
+    "Build/install and verify original empty state",
+    "Creation capabilities",
+    "Nonempty pages/spaces and persistent create/edit/trash",
+    "Editor realtime/bootstrap dependency"
+  ]
+}
