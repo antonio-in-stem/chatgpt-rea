@@ -1,0 +1,99 @@
+{
+  "runtimePid": 94724,
+  "rendererModified": false,
+  "inputMethod": "Synthetic ClipboardEvent containing File rea-demo-image.png from packaged atlas-app-5b67bfaeebb3.png; original paste handler, not native picker",
+  "observed": [
+    "Original paste event handled",
+    "Composer thumbnail complete natural100x100 rendered122x122 objectFit cover",
+    "Original Remove control cleared image",
+    "Re-paste and original Send persisted content type localImage with original temporary file path",
+    "Temporary PNG still exists, 11162 bytes",
+    "Original history thumbnail loaded before reload",
+    "Original preview loaded natural100x100 objectFit contain",
+    "Original Zoom in changed preview100x100 to110x110",
+    "Original Close preview worked"
+  ],
+  "reloadObservation": "After Page.reload, reopening demo conversation and Scroll to bottom, inspect-images returned []; history restoration unresolved",
+  "pending": [
+    "Native Windows picker",
+    "fileId resolution",
+    "General files and cloud uploads"
+  ],
+  "historyDiagnosis": {
+    "source": "app-shared-737655e1fb23.js:145526",
+    "request": {
+      "initialTurnsPage": {
+        "limit": 5,
+        "itemsView": "full",
+        "sortDirection": "desc"
+      }
+    },
+    "demoBug": "thread/resume initialTurnsPage sliced insertion-order turns without applying sortDirection or itemsView, unlike thread/turns/list",
+    "change": "Resume now delegates initial page to the same thread/turns/list handler",
+    "verification": "58 Python tests passed. After full runtime and adapter restart, original history thumbnail and preview loaded from persisted localImage."
+  },
+  "restoredRuntimePid": 46520,
+  "restoredAdapterPid": 5932,
+  "restoredImages": [
+    {
+      "alt": "",
+      "complete": true,
+      "naturalWidth": 100,
+      "naturalHeight": 100,
+      "sourceKind": "data",
+      "rect": {
+        "x": 14,
+        "y": 782,
+        "width": 24,
+        "height": 24,
+        "top": 782,
+        "right": 38,
+        "bottom": 806,
+        "left": 14
+      },
+      "transform": "none",
+      "parentTransform": "none",
+      "objectFit": "cover"
+    },
+    {
+      "alt": "User attachment",
+      "complete": true,
+      "naturalWidth": 100,
+      "naturalHeight": 100,
+      "sourceKind": "data",
+      "rect": {
+        "x": 1097.5,
+        "y": 487,
+        "width": 78,
+        "height": 78,
+        "top": 487,
+        "right": 1175.5,
+        "bottom": 565,
+        "left": 1097.5
+      },
+      "transform": "none",
+      "parentTransform": "none",
+      "objectFit": "cover"
+    },
+    {
+      "alt": "User attachment",
+      "complete": true,
+      "naturalWidth": 100,
+      "naturalHeight": 100,
+      "sourceKind": "data",
+      "rect": {
+        "x": 590,
+        "y": 360,
+        "width": 100,
+        "height": 100,
+        "top": 360,
+        "right": 690,
+        "bottom": 460,
+        "left": 590
+      },
+      "transform": "none",
+      "parentTransform": "none",
+      "objectFit": "contain"
+    }
+  ]
+}

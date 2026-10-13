@@ -113,7 +113,7 @@ def handle(method, params, thread_data=None, archived=False):
         if params.get("history") or params.get("path"):
             raise ThreadError("Importing arbitrary history is not supported by the demo")
         initial = params.get("initialTurnsPage")
-        turns_page = page(thread["turns"], initial, "demo-turn:") if isinstance(initial, dict) else None
+        turns_page = handle("thread/turns/list", {**initial, "threadId": thread["id"]}, thread) if isinstance(initial, dict) else None
         if params.get("excludeTurns"):thread["turns"]=[]
         thread["status"]={"type":"active","activeFlags":[]} if any(t["status"]=="inProgress" for t in (thread_data or THREAD)["turns"]) else {"type":"idle"}
         return {"thread":thread,"model":"rea-demo","modelProvider":"openai","serviceTier":None,"disabledPluginIds":[],"cwd":thread["cwd"],"runtimeWorkspaceRoots":[thread["cwd"]],"instructionSources":[],"approvalPolicy":"on-request","approvalsReviewer":"user","sandbox":{"type":"readOnly","networkAccess":False},"activePermissionProfile":None,"reasoningEffort":"medium","collaborationMode":None,"multiAgentMode":"explicitRequestOnly","initialTurnsPage":turns_page,"turnsBackwardsCursor":None,"itemsBackwardsCursor":None}

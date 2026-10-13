@@ -5,6 +5,21 @@ from unittest.mock import patch
 from demo_threads import THREAD,handle,ThreadError,ThreadStore,PINNED_SECTION
 
 class ThreadTests(unittest.TestCase):
+    def test_resume_initial_page_returns_newest_turns_and_continues_history(self):
+        import copy
+        thread=copy.deepcopy(THREAD)
+        seed=thread["turns"][0]
+        thread["turns"]=[{**copy.deepcopy(seed),"id":str(i)} for i in range(7)]
+        before=copy.deepcopy(thread)
+        result=handle("thread/resume",{"threadId":thread["id"],"excludeTurns":True,"initialTurnsPage":{"limit":5,"itemsView":"full","sortDirection":"desc"}},thread)
+        first=result["initialTurnsPage"]
+        self.assertEqual([t["id"] for t in first["data"]],["6","5","4","3","2"])
+        self.assertTrue(all(t["itemsView"]=="full" and t["items"] for t in first["data"]))
+        remaining=handle("thread/turns/list",{"threadId":thread["id"],"cursor":first["nextCursor"],"limit":5,"sortDirection":"desc","itemsView":"full"},thread)
+        self.assertEqual([t["id"] for t in remaining["data"]],["1","0"])
+        self.assertEqual(result["thread"]["turns"],[])
+        self.assertEqual(thread,before)
+
     def test_search_matches_body_and_archive_filter_without_exposing_history(self):
         with tempfile.TemporaryDirectory() as directory:
             store=ThreadStore(Path(directory)/"threads.json")

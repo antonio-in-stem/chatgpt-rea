@@ -66,3 +66,9 @@ Actualización de cola: verificados Stop (conserva pendiente y muestra Resume), 
 Resume: breakpoint de solo lectura confirma streaming=true, resumeState=resumed. El manager original conserva ownership del hilo visible tras acabar el turno; no implica evento demo faltante. La ruta gated de Resume queda pendiente/incompatible en ese escenario. Evidencia: original-stack/evidence/queue-resume-guard.json. No borrar ownership artificialmente. No prueba que el producto instalado habilite esta misma combinacion de gates.
 
 Adjuntos: model/list ahora anuncia text+image, requisito demostrado del composer original. La instancia en ejecucion aun cargo la fixture anterior; reiniciar adaptador/runtime antes de verificar selector -> chip -> envio -> historial/visor. Ver evidence/attachment-contract-audit.json. No se afirma verificacion end-to-end.
+
+Runtime94724/adapter76020 (launcher session4961): nueva modalidad cargada. Pegado sintetico PNG -> thumbnail -> quitar -> reenviar -> localImage persistido -> preview/zoom/cerrar verificados. Tras recargar, imagen no aparece; archivo temporal existe. Investigar restauracion de historial. evidence/attachment-paste-runtime.json. Picker nativo y fileId aun pendientes.
+
+Restauracion: se identifico y corrigio thread/resume initialTurnsPage: ignoraba sortDirection/itemsView. Ahora comparte handler thread/turns/list; prueba7turnos comprueba ultimos5, cursor2restantes y no mutacion. 58 pruebas pasan. Nuevo arranque session48862 en validacion para comprobacion visual. No cambiar localImage: contrato original correcto.
+
+VERIFICADO tras correccion: runtime46520/adapter5932, launcher48862 activo. Historial cronologico, thumbnail localImage78x78 y preview100x100 completo reaparecen tras reinicio de ambos procesos. evidence/attachment-paste-runtime.json conserva antes/despues. Se supera la brecha de restauracion observada; selector nativo/fileId/archivos generales siguen pendientes.
