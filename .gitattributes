@@ -1,1 +1,4 @@
 native/crates/native-ui/assets/*.svg -text
+
+# Preserve recovered stylesheet/font bytes and provenance hashes.
+ui-library/styles/original/** -text
