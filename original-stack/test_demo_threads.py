@@ -155,6 +155,29 @@ class ThreadTests(unittest.TestCase):
                 resumed,_=store.handle("thread/goal/set",{"threadId":THREAD["id"],"status":"active"})
             self.assertEqual(resumed["goal"]["timeUsedSeconds"],45)
 
+    def test_start_creates_empty_independent_persistent_sessions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            ids=[]
+            for mode in ("legacy","paginated"):
+                response,event=store.handle("thread/start",{"historyMode":mode,"cwd":THREAD["cwd"],"projectId":"demo-project","threadSource":"user","model":"demo-selected","config":{"model_reasoning_effort":"high"}})
+                thread=response["thread"]
+                ids.append(thread["id"])
+                self.assertEqual(thread["turns"],[])
+                self.assertIsNone(thread["forkedFromId"])
+                self.assertEqual(thread["historyMode"],mode)
+                self.assertEqual(event["params"]["thread"],thread)
+                resumed=ThreadStore(path).handle("thread/resume",{"threadId":thread["id"]})[0]
+                self.assertEqual(resumed["model"],"demo-selected")
+                self.assertEqual(resumed["reasoningEffort"],"high")
+            self.assertEqual(len(set(ids)),2)
+            self.assertEqual(len(store.handle("thread/list",{"projectId":"demo-project"})[0]["data"]),2)
+            self.assertEqual(store.handle("thread/list",{"searchTerm":"no-such-title"})[0]["data"],[])
+            for invalid in ({"cwd":"relative"},{"runtimeWorkspaceRoots":[False]},{"config":[]},{"historyMode":"unknown"}):
+                with self.assertRaises(ThreadError):store.handle("thread/start",invalid)
+            self.assertEqual(len(ThreadStore(path).data["threads"]),3)
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

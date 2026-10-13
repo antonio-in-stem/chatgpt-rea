@@ -38,7 +38,7 @@ def handle(method, params, thread_data=None, archived=False):
         cwd=params.get("cwd")
         if cwd is not None and thread["cwd"] not in (cwd if isinstance(cwd,list) else [cwd]): matches=False
         term=params.get("searchTerm")
-        if term and term.casefold() not in thread["name"].casefold():matches=False
+        if term and term.casefold() not in (thread["name"] or "").casefold():matches=False
         if params.get("sortDirection") not in (None,"asc","desc"):raise ThreadError("Invalid direction")
         thread["turns"]=[]
         return page([thread] if matches else [],params,"demo-thread:")
@@ -70,7 +70,7 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear"}
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start"}
     METHODS = METHODS | MUTATIONS
 
     def __init__(self, path):
@@ -89,9 +89,43 @@ class ThreadStore:
         temporary.replace(self.path)
         self.data = data
 
+    def _start(self, params):
+        from pathlib import PureWindowsPath
+        if params.get("ephemeral"):raise ThreadError("Ephemeral demo sessions are not implemented")
+        for key in ("environments","dynamicTools","selectedCapabilityRoots"):
+            if params.get(key):raise ThreadError("Unsupported demo start option: "+key)
+        config=params.get("config") if params.get("config") is not None else {}
+        if not isinstance(config,dict):raise ThreadError("Start config must be an object")
+        cwd=params.get("cwd") or THREAD["cwd"]
+        if not isinstance(cwd,str) or not PureWindowsPath(cwd).is_absolute():raise ThreadError("Absolute demo cwd required")
+        roots=params.get("runtimeWorkspaceRoots")
+        if roots is None:roots=[cwd]
+        if not isinstance(roots,list) or any(not isinstance(root,str) or not PureWindowsPath(root).is_absolute() for root in roots):raise ThreadError("Absolute workspace roots required")
+        mode=params.get("historyMode") or "legacy"
+        if mode not in ("legacy","paginated"):raise ThreadError("Unknown history mode")
+        for key in ("model","modelProvider","serviceTier","threadSource","projectId"):
+            if params.get(key) is not None and not isinstance(params[key],str):raise ThreadError("Invalid start metadata: "+key)
+        if params.get("daybreakEnabled") is not None and type(params["daybreakEnabled"]) is not bool:raise ThreadError("Invalid daybreak flag")
+        thread=copy.deepcopy(THREAD)
+        identifier=str(uuid.uuid4())
+        now=int(time.time())
+        effort=config.get("model_reasoning_effort") or "medium"
+        if not isinstance(effort,str):raise ThreadError("Invalid reasoning effort")
+        thread.update(id=identifier,sessionId=identifier,name=None,preview="",turns=[],createdAt=now,updatedAt=now,recencyAt=now,cwd=cwd,historyMode=mode,status={"type":"idle"},projectId=params.get("projectId"),threadSource=params.get("threadSource"),daybreakEnabled=params.get("daybreakEnabled"),model=params.get("model") or "rea-demo",modelProvider=params.get("modelProvider") or "openai",reasoningEffort=effort)
+        response=handle("thread/resume",{"threadId":identifier},thread)
+        for key in ("collaborationMode","initialTurnsPage","turnsBackwardsCursor","itemsBackwardsCursor"):response.pop(key)
+        settings={"model":thread["model"],"modelProvider":thread["modelProvider"],"reasoningEffort":effort,"serviceTier":params.get("serviceTier"),"runtimeWorkspaceRoots":roots}
+        response.update(settings)
+        data=copy.deepcopy(self.data)
+        # Store frontend preferences as inert demo metadata; no instructions/tools run.
+        data["threads"][identifier]={"thread":thread,"archived":False,"settings":settings,"startConfig":copy.deepcopy(config)}
+        self._commit(data)
+        return response,{"method":"thread/started","params":{"thread":copy.deepcopy(thread)}}
+
     def handle(self, method, params):
         if params is None and method == "thread/list":params={}
         if not isinstance(params,dict):raise ThreadError("Expected object parameters")
+        if method == "thread/start":return self._start(params)
         if method == "thread/list":
             ancestor=params.get("ancestorThreadId")
             if ancestor is not None and not isinstance(ancestor,str):raise ThreadError("Invalid ancestor")
