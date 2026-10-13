@@ -1,5 +1,5 @@
 {
-  "scope": "Native Library file upload contract audit; not implemented yet",
+  "scope": "Original native Library upload contract and persistent local demo implementation",
   "sources": {
     "input": "slate-create-menu-df1a68fe05ff.js:1381-1400",
     "drop": "library-uploads-28c6a7b1bd7e.js:541-566",
@@ -8,7 +8,10 @@
     "bytes": "app-initial-b8e1c8014bb4.js:99974-100045",
     "finalize": "app-initial-b8e1c8014bb4.js:99670-99735,100061-100196",
     "events": "app-initial-b8e1c8014bb4.js:100242-100274",
-    "host_rpc": "app-shared-737655e1fb23.js:166058-166085,166328-166366"
+    "host_rpc": "app-shared-737655e1fb23.js:166058-166085,166328-166366",
+    "library_id": "app-shared-737655e1fb23.js:102519-102521 /^libfile[-_][A-Za-z0-9_-]+$/",
+    "text_preview": "library-cloud-file-preview-7341c33dad87.js:2231-2258,2347-2353; app-initial:492120-492127,87619-87624",
+    "internal_download_url": "app-initial-b8e1c8014bb4.js:86866-86974,492129-492148"
   },
   "flow": [
     "POST /files creates raw file ID and upload_url",
@@ -73,11 +76,32 @@
     "app-initial:86885-86949 internal URL sanitization and redirects"
   ],
   "unknown": [
-    "Complete Libraryfile browse DTO",
-    "Recognized library ID prefixes",
-    "URL sanitizer accepted demo target shape",
-    "Exact host bytes request representation",
-    "Specialized TXT preview behavior"
+    "Complete Library file browse DTO and root ranking",
+    "Non-text preview and alternate multipart transports",
+    "File rename, move, sharing and removal lifecycle"
   ],
-  "implementation_status": "Read-only REA audit; no upload/preview success claim"
+  "implementation_status": "Local reservation, byte PUT, NDJSON finalization, nested listing, metadata and content/download resolution implemented; original TXT upload, viewer, reload and download verified",
+  "validation": "47 Node tests pass: bytes, finalization, nested counts/filtering, metadata/content routing, repeated finalization, invalid destination, cancellation and atomic failures",
+  "demo_policies": [
+    "Upload URL is reserved .invalid hostname intercepted by host without network",
+    "Bytes persist in demo-state files; reserved entries stay outside Library until successful finalization",
+    "Internal https://chatgpt.com/api/library/files/{id}/content URLs are normalized by original renderer to relative host requests with original request headers",
+    "Folder deletion marks contained Library metadata permanently unavailable; local byte reclamation remains deferred"
+  ],
+  "ui_observations": [
+    "Original New > Upload files selected a synthetic 83-byte TXT through the original file input",
+    "Original upload progress completed and nested folder listed the file with 83 B",
+    "Original viewer displayed Unicode and literal script-like text; no custom replacement viewer",
+    "Full renderer reload preserved the uploaded file and its visible content",
+    "Original Download action saved exactly the selected bytes"
+  ],
+  "byte_validation": {
+    "size": 83,
+    "sha256": "bc6f56fced276607d0ca1ff946bc51bec10f37233774e263ef7095ba46005946",
+    "compared": [
+      "selected synthetic TXT",
+      "persisted upload bytes",
+      "original UI downloaded TXT"
+    ]
+  }
 }

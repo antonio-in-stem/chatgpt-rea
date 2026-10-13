@@ -76,12 +76,12 @@
   ],
   "next": [
     "Implement proper HTTP409 conflict messaging",
-    "Implement original file upload contracts; extend sharing to accepted principals and inherited access",
+    "Extend sharing to accepted principals and inherited access",
     "Verify active filters including shared/favorites/sources"
   ],
   "limitations": [
     "Directory access DTO remains consumer-inferred",
-    "Folder subtree deletion currently supports directory-only synthetic contents; file ingestion is not implemented",
+    "Folder subtree deletion tombstones contained synthetic file metadata; physical byte reclamation is deferred",
     "Original Suggested ranking is not reproduced by demo backend; use All > Your items for folder enumeration",
     "Pending email directory sharing verified separately; create-destination inside move dialog not yet verified"
   ],
@@ -89,7 +89,7 @@
     "Directories stored separately from page items in same atomic demo state file",
     "POST create, GET detail/path, PATCH rename/reparent",
     "Breadcrumbs include synthetic root and ordered ancestors",
-    "Library nodes merge directories and pages before pagination; folder children do not leak root pages",
+    "Library nodes merge directories, uploaded files and pages before pagination; folder children do not leak root pages",
     "Category filtering excludes directories from page-only views",
     "Cycles, unavailable parents and same-parent duplicate names rejected before persistence",
     "DELETE permanently removes selected synthetic directory subtree atomically; unrelated pages and sibling folders remain intact"

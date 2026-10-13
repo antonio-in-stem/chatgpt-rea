@@ -38,7 +38,9 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const directoryRoot={id:'rea-directory-root',name:'My files',kind:'directory',is_root:true,parent_directory_id:null,access_kind:'owned'};
  const directoryParent=value=>value==null||value===directoryRoot.id?null:value;
  const directories=state.directories??[];
- const directoryRead=item=>({...item,kind:'directory',is_root:false,access_kind:'owned',is_shared:false,item_count:directories.filter(d=>d.parent_directory_id===item.id).length,folder_count:directories.filter(d=>d.parent_directory_id===item.id).length});
+ const libraryFiles=(state.libraryFiles??[]).filter(f=>!f.permanentlyDeleted&&!f.deleted_at);
+ const fileCategoryMatches=(f,categories)=>!categories.length||categories.some(c=>c===f.library_file_category||(c==='documents'&&['document','text'].includes(f.library_file_category))||(c==='images'&&f.library_file_category==='image'));
+ const directoryRead=item=>({...item,kind:'directory',is_root:false,access_kind:'owned',is_shared:false,item_count:directories.filter(d=>d.parent_directory_id===item.id).length+libraryFiles.filter(f=>f.parent_directory_id===item.id).length,folder_count:directories.filter(d=>d.parent_directory_id===item.id).length});
  const findDirectory=id=>{const item=directories.find(d=>d.id===id);if(!item)throw Error('Unknown demo directory');return item;};
  const validateDirectoryParent=(id,moving)=>{const seen=new Set(moving?[moving]:[]);while(id!=null){if(seen.has(id))throw Error('Directory hierarchy cycle');seen.add(id);id=findDirectory(id).parent_directory_id;}};
  if(directory){
@@ -48,8 +50,8 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
    findDirectory(directoryId);
    const removed=new Set([directoryId]);let changed=true;
    while(changed){changed=false;for(const d of directories)if(removed.has(d.parent_directory_id)&&!removed.has(d.id)){removed.add(d.id);changed=true;}}
-   // Synthetic directories contain only directories; page trees have separate ownership.
-   state.directories=directories.filter(d=>!removed.has(d.id));persist();return {success:true};
+   // Library files follow their containing subtree; page trees have separate ownership.
+   state.directories=directories.filter(d=>!removed.has(d.id));for(const f of state.libraryFiles??[])if(removed.has(f.parent_directory_id))f.permanentlyDeleted=true;persist();return {success:true};
   }
   if(typeof body!=='string'||body.length>65536)throw Error('Expected directory JSON');
   const input=JSON.parse(body);if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['name','parent_directory_id'].includes(k)))throw Error('Invalid directory body');
@@ -243,7 +245,8 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(normalizedParent!=null)validateDirectoryParent(normalizedParent);
   const folders=categories.length?[]:directories.filter(d=>d.parent_directory_id===normalizedParent&&d.name.toLowerCase().includes(needle)).map(directoryRead);
   const items=query.get('include_pages')==='true'&&normalizedParent===null&&(!categories.length||categories.includes('pages'))?state.items.filter(live).map(x=>read(x).metadata).filter(x=>x.title.toLowerCase().includes(needle)).map(x=>({kind:'file',id:x.page_id,file_id:x.page_id,name:x.title,parent_directory_id:null,library_artifact_type:'page',access_kind:'owned',updated_at:x.updated_at,record_creation_time:x.created_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}})):[];
-  return pageSlice([...folders,...items],query.get('cursor'),Number(query.get('limit')||50));
+  const files=query.get('include_files')==='false'?[]:libraryFiles.filter(f=>f.parent_directory_id===normalizedParent&&f.name.toLowerCase().includes(needle)&&fileCategoryMatches(f,categories));
+  return pageSlice([...folders,...files,...items],query.get('cursor'),Number(query.get('limit')||50));
  }
  if(tree){
   const item=state.items.find(x=>x.metadata.page_id===treeRoute[1]&&live(x));if(!item)throw Error('Unavailable demo page');

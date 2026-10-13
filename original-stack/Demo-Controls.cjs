@@ -12,13 +12,15 @@ const fs=require('node:fs'),path=require('node:path');
  const ws=new WebSocket(target.webSocketDebuggerUrl);
  await new Promise((resolve,reject)=>{ws.onopen=resolve;ws.onerror=reject});
  const timer=setTimeout(()=>{ws.close();process.exitCode=1},10000);
- let sequence=0;const pending=new Map();
- ws.onmessage=e=>{const m=JSON.parse(e.data);if(pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result)}};
+ let sequence=0,libraryFileChooserNode;const pending=new Map();
+ ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.method==='Page.fileChooserOpened')libraryFileChooserNode=m.params.backendNodeId;if(pending.has(m.id)){const p=pending.get(m.id);pending.delete(m.id);m.error?p.reject(Error(JSON.stringify(m.error))):p.resolve(m.result)}};
  const send=(method,params)=>new Promise((resolve,reject)=>{const id=++sequence;pending.set(id,{resolve,reject});ws.send(JSON.stringify({id,method,params}))});
  try{
+  if(operation==='select-library-demo-file'){await send('Page.enable');await send('Page.setInterceptFileChooserDialog',{enabled:true});}
   let expression;
   if(operation==='inspect')expression=`[...document.querySelectorAll('button,a,[role="button"],[role="link"],[role^="menuitem"],input')].map(e=>({tag:e.tagName,role:e.getAttribute('role'),checked:e.getAttribute('aria-checked'),expanded:e.getAttribute('aria-expanded'),label:e.getAttribute('aria-label'),placeholder:e.getAttribute('placeholder'),text:(e.innerText||'').slice(0,100),type:e.type,disabled:!!e.disabled||e.getAttribute('aria-disabled')==='true'}))`;
   else if(operation==='drag-page-row'&&label&&value)expression=`(()=>{if(document.querySelector('[role="dialog"],[role="menu"]'))throw Error('Unobscured page rows required');const point=(label,source=false)=>{const rows=[...document.querySelectorAll('[role="button"][aria-label]')].filter(e=>e.getAttribute('aria-label')===label&&e.getBoundingClientRect().width>0&&(!source||e.getAttribute('aria-roledescription')==='draggable'));if(rows.length!==1)throw Error('One page row required: '+label);const e=rows[0],r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(!e.contains(document.elementFromPoint(x,y)))throw Error('Page row obscured');return {x,y}};return {from:point(${JSON.stringify(label)},true),to:point(${JSON.stringify(value)})}})()`;
+  else if(operation==='select-library-demo-file')expression=`(()=>{const controls=[...document.querySelectorAll('[role^="menuitem"]')].filter(e=>e.innerText.trim()==='Upload files'&&e.getBoundingClientRect().width>0);if(controls.length!==1||controls[0].getAttribute('aria-disabled')==='true')throw Error('Original upload menu item required');controls[0].click();return {pickerRequested:true}})()`;
   else if(operation==='probe-original-markdown'&&typeof label==='string'&&label.length<=65536)expression=`(async()=>{const {CZ}=await import('./assets/app-initial-b8e1c8014bb4.js');if(typeof CZ!=='function')throw Error('Original serializer export missing');const serializer=CZ(message=>message.defaultMessage||message.id);const doc=serializer.parse(${JSON.stringify(label)});return {markdown:serializer.serialize(doc),document:doc.toJSON()}})()`;
   else if(operation==='probe-original-block-markdown'&&typeof label==='string'&&label.length<=65536){
    const blocks=JSON.parse(label);if(!Array.isArray(blocks)||blocks.some(b=>!b||!['markdown','agent_instructions'].includes(b.kind)||typeof b.markdown!=='string'))throw Error('Original page block array required');
@@ -69,7 +71,7 @@ const fs=require('node:fs'),path=require('node:path');
   else if(operation==='locate'&&label)expression=`[...document.querySelectorAll('*')].filter(e=>e.children.length===0&&e.textContent.trim()===${JSON.stringify(label)}).map(e=>e.parentElement.parentElement.parentElement.outerHTML.slice(0,2400))`;
   else if(operation==='fill'&&label&&value!==undefined)expression=`(()=>{const matches=[...document.querySelectorAll('input')].filter(e=>e.getAttribute('aria-label')===${JSON.stringify(label)}||e.getAttribute('placeholder')===${JSON.stringify(label)});if(matches.length!==1)throw Error('Expected one input');const input=matches[0];Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,${JSON.stringify(value)});input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));return {filled:${JSON.stringify(label)}}})()`;
   else throw Error('Supported operations: inspect, inspect-content, inspect-focus, inspect-images, reload-demo, paste-demo-image, paste-demo-file, drop-demo-file, scroll-thread, scroll-code, click, hover, activate, activate-text, fill, insert-focused, search-key, dialog-key, row-action, describe');
-  const result=await send('Runtime.evaluate',{returnByValue:true,awaitPromise:['probe-original-markdown','probe-original-block-markdown'].includes(operation),expression});
+  const result=await send('Runtime.evaluate',{returnByValue:true,userGesture:operation==='select-library-demo-file',awaitPromise:['probe-original-markdown','probe-original-block-markdown'].includes(operation),expression});
   if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);
   if(operation==='plugin-details-menu'){const {x,y}=result.result.value;await send('Input.dispatchMouseEvent',{type:'mousePressed',x,y,button:'left',clickCount:1});await send('Input.dispatchMouseEvent',{type:'mouseReleased',x,y,button:'left',clickCount:1});console.log(JSON.stringify({opened:true}));
   }else if(operation==='drop-demo-file'){
@@ -100,6 +102,12 @@ const fs=require('node:fs'),path=require('node:path');
     await new Promise(r=>setTimeout(r,700));
    }finally{await send('Input.dispatchMouseEvent',{type:'mouseReleased',...to,button:'left',buttons:0,clickCount:1});}
    console.log(JSON.stringify({operation,source:label,destination:value}));
+  }else if(operation==='select-library-demo-file'){
+   const uploadPath=path.join(state,'rea-library-original.txt'),content='Original Library upload demo.\nUnicode: café.\n<script>shown as plain text</script>\n';
+   if(fs.existsSync(uploadPath)){if(fs.readFileSync(uploadPath,'utf8')!==content)throw Error('Unexpected demo fixture contents');}else fs.writeFileSync(uploadPath,content,{flag:'wx'});
+   const deadline=Date.now()+5000;while(!libraryFileChooserNode&&Date.now()<deadline)await new Promise(r=>setTimeout(r,50));
+   if(!Number.isInteger(libraryFileChooserNode))throw Error('Original file chooser did not open');
+   await send('DOM.setFileInputFiles',{backendNodeId:libraryFileChooserNode,files:[uploadPath]});console.log(JSON.stringify({selectedDemoFile:path.basename(uploadPath)}));
   }else if(['insert-focused','replace-focused'].includes(operation)){
    if(operation==='replace-focused'){await send('Input.dispatchKeyEvent',{type:'keyDown',key:'a',code:'KeyA',windowsVirtualKeyCode:65,modifiers:2});await send('Input.dispatchKeyEvent',{type:'keyUp',key:'a',code:'KeyA',windowsVirtualKeyCode:65,modifiers:2});}
    await send('Input.insertText',{text:label});console.log(JSON.stringify({inserted:true}));
@@ -115,5 +123,5 @@ const fs=require('node:fs'),path=require('node:path');
    }
    console.log(JSON.stringify({operation,label,x,y}));
   }else console.log(JSON.stringify(result.result.value));
- }finally{clearTimeout(timer);ws.close()}
+ }finally{if(operation==='select-library-demo-file')await send('Page.setInterceptFileChooserDialog',{enabled:false}).catch(()=>{});clearTimeout(timer);ws.close()}
 })().catch(e=>{console.error(e.message);process.exitCode=1});
