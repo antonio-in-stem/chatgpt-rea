@@ -46,9 +46,9 @@ const fs=require('node:fs'),path=require('node:path');
    await send('Input.dispatchKeyEvent',{type:'keyUp',key:label,code:label,windowsVirtualKeyCode:code});
    console.log(JSON.stringify({operation,key:label}));
   }else if(operation==='opposite-follow-up'){
-   await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:10});
-   await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:10});
-   console.log(JSON.stringify({operation,shortcut:'Ctrl+Shift+Enter'}));
+   await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:2});
+   await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:2});
+   console.log(JSON.stringify({operation,shortcut:'Ctrl+Enter'}));
   }else if(operation==='insert-focused'){
    await send('Input.insertText',{text:label});console.log(JSON.stringify({inserted:true}));
   }else if(operation==='click'||operation==='hover'){

@@ -11,9 +11,22 @@
   ],
   "attempted": "Ctrl+Shift+Enter documented by original followUpQueueMode preference; no queue/add observed in this attempt",
   "unverified": [
-    "Enqueue via composer",
-    "Original queued-message chip",
-    "Edit/reorder/delete/resume via UI"
+    "Automatic advance after response completion",
+    "thread/queue/start path through UI (WebSocket integration test passed)",
+    "Edit/reorder/delete/resume through original UI",
+    "All visual states"
   ],
-  "nextInvestigation": "Original followUpQueueMode setting and composer shortcut dispatch/eligibility"
+  "nextInvestigation": "Why current submissionOptions select turn/start+delete fallback; inspect original queue eligibility/settings before claiming full queue behavior",
+  "verifiedAdditional": [
+    "In enter composer mode, Ctrl+Enter invoked thread/queue/add",
+    "Original queued message rendered Steer, Delete queued message and Queued message actions controls",
+    "Activating queued Steer while idle invoked turn/start then thread/queue/delete",
+    "Queue became empty and submitted user message persisted with clientId"
+  ],
+  "shortcutCorrection": {
+    "source": "app-primary-19fe57fd8c00.js:Ylt near line67335",
+    "enter": "CmdOrCtrl+Enter",
+    "cmdIfMultiline/cmdAlways": "CmdOrCtrl+Shift+Enter",
+    "priorAttempt": "Prior Ctrl+Shift+Enter probe selected the wrong shortcut for this desktop enter mode"
+  }
 }
