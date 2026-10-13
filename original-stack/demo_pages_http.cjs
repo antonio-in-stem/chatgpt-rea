@@ -6,16 +6,27 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const listing=method==='GET'&&(route==='/pages'||route==='/pages/catalog'||route==='/pages/archived');
  const detail=method==='GET'&&/^\/pages\/rea-page-[1-9][0-9]*$/.test(route);
  const create=method==='POST'&&route==='/pages';
+ const treeRoute=route.match(/^\/pages\/(rea-page-[1-9][0-9]*)\/(metadata|personal-move-admission)$/);
+ const tree=treeRoute&&((method==='PATCH'&&treeRoute[2]==='metadata')||(method==='POST'&&treeRoute[2]==='personal-move-admission'));
  const action=route.match(/^\/pages\/(rea-page-[1-9][0-9]*)\/(archive|restore|delete-forever|archive-operations)(?:\/([-a-zA-Z0-9_]{1,200}))?$/);
  const mutation=action&&((method==='POST'&&!action[3])||(method==='GET'&&action[2]==='archive-operations'&&action[3]));
  const library=method==='POST'&&route==='/files/library';
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!listing&&!detail&&!create&&!token&&!library&&!mutation)return null;
+ if(!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
  if(state.version!==1||!Array.isArray(state.items)||!Number.isSafeInteger(state.sequence))throw Error('Invalid demo page store');
  const persist=()=>{const temporary=file+'.pending';let owned=false;try{fs.writeFileSync(temporary,JSON.stringify(state),{flag:'wx'});owned=true;fs.renameSync(temporary,file);}finally{if(owned&&fs.existsSync(temporary))fs.unlinkSync(temporary);}};
+ const live=x=>!x.permanentlyDeleted&&!x.metadata.deleted_at;
+ const parentFor=(id,moving)=>{
+  if(id==null)return null;
+  const parent=state.items.find(x=>x.metadata.page_id===id&&live(x));if(!parent)throw Error('Unavailable parent page');
+  const seen=new Set(moving?[moving]:[]);let current=parent;
+  while(current){if(seen.has(current.metadata.page_id))throw Error('Page hierarchy cycle');seen.add(current.metadata.page_id);current=state.items.find(x=>x.metadata.page_id===current.metadata.parent?.page_id);}
+  return parent;
+ };
+ const descendants=id=>{const ids=new Set([id]);let changed=true;while(changed){changed=false;for(const x of state.items)if(!x.permanentlyDeleted&&ids.has(x.metadata.parent?.page_id)&&!ids.has(x.metadata.page_id)){ids.add(x.metadata.page_id);changed=true;}}return state.items.filter(x=>ids.has(x.metadata.page_id)&&!x.permanentlyDeleted);};
  if(mutation){
   const item=state.items.find(x=>x.metadata.page_id===action[1]);if(!item||item.permanentlyDeleted)throw Error('Unknown demo page');
   if(method==='GET'){const operation=(Object.hasOwn(item.archiveOperations||{},action[3])?item.archiveOperations[action[3]]:undefined);if(!operation)throw Error('Unknown archive operation');return operation;}
@@ -25,20 +36,34 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
    if(typeof operationId!=='string'||!/^[-a-zA-Z0-9_]{1,200}$/.test(operationId))throw Error('Invalid archive operation');
    if(Object.hasOwn(item.archiveOperations||{},operationId))return item.archiveOperations[operationId];
   }
+  const affected=descendants(item.metadata.page_id);
   if(action[2]==='delete-forever'){
    if(!item.metadata.deleted_at)throw Error('Only trashed demo pages may be deleted permanently');
-   item.permanentlyDeleted=true;
+   for(const x of affected)x.permanentlyDeleted=true;
   }else if(action[2]==='restore'){
-   item.metadata.deleted_at=null;item.metadata.access.can_write=true;
+   for(const x of affected)if(x===item||x.archivedBy===item.metadata.page_id){x.metadata.deleted_at=null;x.metadata.access.can_write=true;delete x.archivedBy;}
+   if(item.metadata.parent&&!state.items.some(x=>x.metadata.page_id===item.metadata.parent.page_id&&live(x)))item.metadata.parent=null;
   }else{
-   item.metadata.deleted_at=item.metadata.deleted_at||new Date().toISOString();item.metadata.access.can_write=false;
+   for(const x of affected)if(!x.metadata.deleted_at){x.metadata.deleted_at=new Date().toISOString();x.metadata.access.can_write=false;x.archivedBy=item.metadata.page_id;}
   }
   item.metadata.updated_at=new Date().toISOString();
-  const result=operationId?{operation_id:operationId,status:'completed',completed_pages:1}:{};
+  const result=operationId?{operation_id:operationId,status:'completed',completed_pages:affected.length}:{};
   if(operationId){item.archiveOperations??={};Object.defineProperty(item.archiveOperations,operationId,{value:result,enumerable:true,writable:true,configurable:true});}
   persist();return result;
  }
- const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;return {metadata:doc?{...item.metadata,title:doc.title??item.metadata.title,current_sequence:doc.sequence}:item.metadata,content:doc?null:item.content,document_bootstrap:null};};
+ const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;const parent=state.items.find(x=>x.metadata.page_id===item.metadata.parent?.page_id);const meta={...item.metadata,has_children:state.items.some(x=>live(x)&&x.metadata.parent?.page_id===item.metadata.page_id)};if(parent){const parentFile=path.join(path.dirname(settingsPath),parent.metadata.page_id+'-document.json');meta.parent={page_id:parent.metadata.page_id,title:fs.existsSync(parentFile)?JSON.parse(fs.readFileSync(parentFile,'utf8')).title??parent.metadata.title:parent.metadata.title};}return {metadata:doc?{...meta,title:doc.title??meta.title,current_sequence:doc.sequence}:meta,content:doc?null:item.content,document_bootstrap:null};};
+ if(tree){
+  const item=state.items.find(x=>x.metadata.page_id===treeRoute[1]&&live(x));if(!item)throw Error('Unavailable demo page');
+  const input=JSON.parse(body||'{}');if(!input||Array.isArray(input)||typeof input!=='object')throw Error('Invalid metadata patch');
+  if(Object.keys(input).some(k=>!['parent_page_id','position'].includes(k)))throw Error('Unsupported metadata field');
+  const hasParent=Object.hasOwn(input,'parent_page_id');
+  let parent;try{parent=hasParent?parentFor(input.parent_page_id,item.metadata.page_id):null;}catch(error){if(treeRoute[2]==='personal-move-admission')return {allowed:false};throw error;}
+  if(treeRoute[2]==='personal-move-admission')return {allowed:true};
+  if(Object.hasOwn(input,'position')&&!Number.isSafeInteger(input.position))throw Error('Invalid page position');
+  if(hasParent)item.metadata.parent=parent?{page_id:parent.metadata.page_id,title:read(parent).metadata.title}:null;
+  if(Object.hasOwn(input,'position'))item.metadata.position=input.position;
+  item.metadata.updated_at=new Date().toISOString();persist();return read(item);
+ }
  if(library){
   if(typeof body!=='string'||body.length>65536)throw Error('Expected library JSON');
   const input=JSON.parse(body);if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid library body');
@@ -61,7 +86,8 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(cursor&&!/^offset:[0-9]+$/.test(cursor))throw Error('Invalid demo page cursor');
   if(rawLimit!==null&&(!/^[1-9][0-9]*$/.test(rawLimit)||Number(rawLimit)>100))throw Error('Invalid demo page limit');
   const offset=cursor?Number(cursor.slice(7)):0,limit=Number(rawLimit||50);
-  const available=state.items.filter(x=>!x.permanentlyDeleted&&Boolean(x.metadata.deleted_at)===(route==='/pages/archived'));
+  const parentId=url.searchParams.get('parent_page_id');
+  const available=state.items.filter(x=>!x.permanentlyDeleted&&Boolean(x.metadata.deleted_at)===(route==='/pages/archived')).filter(x=>parentId===null||x.metadata.parent?.page_id===parentId).sort((a,b)=>parentId===null?0:a.metadata.position-b.metadata.position);
   if(!Number.isSafeInteger(offset)||offset>available.length)throw Error('Unknown demo page cursor');
   const selected=available.slice(offset,offset+limit);
   const catalog=route==='/pages/catalog';
@@ -72,14 +98,15 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(typeof body!=='string'||body.length>65536)throw Error('Expected page JSON body');
  const input=JSON.parse(body);
  if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid page body');
- if(input.destination!=='personal_file_drive'||input.parent_page_id!=null||(input.document_type!=null&&input.document_type!=='page'))throw Error('Unsupported demo page destination');
+ if((input.parent_page_id==null?input.destination!=='personal_file_drive':input.destination!=null)||(input.document_type!=null&&input.document_type!=='page'))throw Error('Unsupported demo page destination');
  if(typeof input.idempotency_key!=='string'||!/^[-a-zA-Z0-9_]{1,200}$/.test(input.idempotency_key))throw Error('Invalid page idempotency key');
  if(typeof input.title!=='string'||input.title.length>4096||!Array.isArray(input.initial_blocks)||input.initial_blocks.length!==0)throw Error('Expected empty original page draft');
- const fingerprint=JSON.stringify({title:input.title,destination:input.destination});
+ const fingerprint=JSON.stringify({title:input.title,destination:input.destination,...(input.parent_page_id==null?{}:{parent_page_id:input.parent_page_id})});
  const previous=state.items.find(x=>x.key===input.idempotency_key);
  if(previous){if(previous.fingerprint!==fingerprint)throw Error('Conflicting demo page idempotency key');return read(previous);}
+ const parent=parentFor(input.parent_page_id);
  const now=new Date().toISOString(),id='rea-page-'+(++state.sequence);
- const metadata={access:{can_delete:true,can_read:true,can_share:false,can_write:true},created_at:now,creator_account_user_id:'rea-demo-user',current_sequence:0,deleted_at:null,drive_space_id:null,drive_scope:'personal',owner_workspace_id:null,page_id:id,parent:null,position:Date.parse(now)*1024,projection_through_sequence:0,title:input.title,updated_at:now,document_type:'page',has_children:false};
+ const metadata={access:{can_delete:true,can_read:true,can_share:false,can_write:true},created_at:now,creator_account_user_id:'rea-demo-user',current_sequence:0,deleted_at:null,drive_space_id:null,drive_scope:'personal',owner_workspace_id:null,page_id:id,parent:parent?{page_id:parent.metadata.page_id,title:read(parent).metadata.title}:null,position:Date.parse(now)*1024,projection_through_sequence:0,title:input.title,updated_at:now,document_type:'page',has_children:false};
  const item={key:input.idempotency_key,fingerprint,metadata,content:{page_id:id,title:input.title,markdown:"",blocks:[],through_sequence:0}};
  state.items.unshift(item);
  persist();

@@ -71,3 +71,36 @@ test('archive, restore and permanent deletion preserve document bytes and isolat
   assert.equal(fs.readFileSync(docFile,'utf8'),document);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+test('original parent creation and move contracts preserve an acyclic recoverable tree',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-page-tree-'));
+ const settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ const create=(key,parent)=>call('POST','/pages',{idempotency_key:key,title:key,initial_blocks:[],...(parent?{parent_page_id:parent}:{destination:'personal_file_drive'})});
+ try{
+  create('parent');create('child','rea-page-1');create('grandchild','rea-page-2');create('separately-trashed','rea-page-1');
+  assert.equal(call('GET','/pages/rea-page-1').metadata.has_children,true);
+  assert.deepEqual(call('GET','/pages?parent_page_id=rea-page-1').items.map(x=>x.title).sort(),['child','separately-trashed']);
+  assert.equal(call('GET','/pages/rea-page-2').metadata.parent.page_id,'rea-page-1');
+  assert.equal(call('POST','/pages/rea-page-1/personal-move-admission',{parent_page_id:'rea-page-3'}).allowed,false);
+  assert.throws(()=>call('PATCH','/pages/rea-page-1/metadata',{parent_page_id:'rea-page-3'}),/cycle/);
+  assert.equal(call('POST','/pages/rea-page-3/personal-move-admission',{parent_page_id:'rea-page-1'}).allowed,true);
+  const moved=call('PATCH','/pages/rea-page-3/metadata',{parent_page_id:'rea-page-1',position:10});
+  assert.equal(moved.metadata.parent.page_id,'rea-page-1');assert.equal(moved.metadata.position,10);
+  assert.equal(call('GET','/pages/rea-page-2').metadata.has_children,false);
+  assert.equal(call('GET','/pages?parent_page_id=rea-page-1').items[0].page_id,'rea-page-3');
+  assert.throws(()=>call('PATCH','/pages/rea-page-2/metadata',{position:1.5}),/position/);
+  call('POST','/pages/rea-page-4/archive',{});
+  const result=call('POST','/pages/rea-page-1/archive-operations',{operation_id:'tree-delete'});
+  assert.equal(result.completed_pages,4);assert.equal(call('GET','/pages').items.length,0);
+  assert.throws(()=>create('unavailable-child','rea-page-1'),/Unavailable parent/);
+  call('POST','/pages/rea-page-1/restore',{});
+  assert.equal(call('GET','/pages').items.length,3);
+  assert.equal(call('GET','/pages/archived').items[0].page_id,'rea-page-4','independently trashed child remains trashed');
+  call('POST','/pages/rea-page-1/archive',{});
+  call('POST','/pages/rea-page-3/restore',{});
+  assert.equal(call('GET','/pages/rea-page-3').metadata.parent,null,'restoring under unavailable parent returns to root');
+  call('POST','/pages/rea-page-1/delete-forever',{});
+  assert.throws(()=>call('GET','/pages/rea-page-2'),/Unknown/);
+  assert.equal(call('GET','/pages').items[0].page_id,'rea-page-3');
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

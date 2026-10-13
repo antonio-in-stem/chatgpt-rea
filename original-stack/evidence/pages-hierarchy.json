@@ -1,0 +1,42 @@
+{
+  "scope": "Personal page hierarchy demo adapter",
+  "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+  "contracts": [
+    "346137-346141: nested create omits destination and sends parent_page_id",
+    "346018: parent metadata {page_id,title}",
+    "160620-160647: GET /pages with parent_page_id and include_has_children",
+    "406187-406218: PATCH metadata position/parent_page_id",
+    "406298-406306: POST personal-move-admission and allowed response",
+    "406431: metadata envelope expected after successful move"
+  ],
+  "demoPolicies": [
+    "Parent must be available and hierarchy acyclic",
+    "Archive records originating ancestor; restore does not revive independently trashed descendants",
+    "Restore under unavailable parent returns to personal root",
+    "Logical permanent deletion covers descendants still under that branch"
+  ],
+  "policyProvenance": "Synthetic backend choices supporting original UI contracts; not recovered OpenAI backend implementation",
+  "tests": {
+    "passed": true,
+    "python": 66,
+    "node": 19
+  },
+  "runtimeVerified": true,
+  "limitations": [
+    "Personal pages only; no space ownership changes",
+    "Move/drag/drop and subtree archive/restore currently covered by adapter tests only; original UI validation pending"
+  ],
+  "runtime": {
+    "package": "v24",
+    "asar": "2380336a7d1fa8ef54c9754efff781c353ca35658393aa52e60863b372ca0ea2",
+    "parentPageId": "rea-page-4",
+    "childPageId": "rea-page-5",
+    "flow": [
+      "Hover parent then original Add subpage",
+      "Original editable title/body input",
+      "Reload > Space > Nested original page restores body",
+      "Expand pages inside Archive lifecycle demo changes expanded=true and renders child row"
+    ],
+    "restoredText": "Created through the original Add subpage control."
+  }
+}
