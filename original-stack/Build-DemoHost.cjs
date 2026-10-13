@@ -5,6 +5,7 @@ const {createDemoIdentity}=require('./demo_identity.cjs');
 const {demoStatsigBootstrap}=require('./demo_feature_flags.cjs');
 const {demoSidebarSettings}=require('./demo_sidebar_settings.cjs');
 const {demoPluginHttp}=require('./demo_plugin_http.cjs');
+const {demoAutomationHttp}=require('./demo_automation_http.cjs');
 const {demoSkillFile}=require('./demo_skill_file.cjs');
 const {demoSkillLifecycle}=require('./demo_skill_lifecycle.cjs');
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
@@ -41,14 +42,14 @@ const replacements=[
  ['readAccountInfo(e=!1){','readAccountInfo(e=!1){return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.accountInfo)});'],
  ['readAccounts(e,t=!1){','readAccounts(e,t=!1){return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.accounts)});'],
  ['readWorkspaceSettings(e,t=!1){','readWorkspaceSettings(e,t=!1){if(e.accountId!==__reaDemoIdentity.accountInfo.accountId)throw Error(`Unknown demo account`);return Promise.resolve({status:`ready`,data:structuredClone(__reaDemoIdentity.workspaceSettings)});'],
- ['async fetchHttp(e,t,n,i,a){','async fetchHttp(e,t,n,i,a){const demoUrl=new URL(t.url,`https://chatgpt.com`);const demoPluginCatalog=demoPluginHttp(String(t.method||`GET`).toUpperCase(),demoUrl);if(demoPluginCatalog!==null)return {response:new Response(JSON.stringify(demoPluginCatalog),{status:200,headers:{"content-type":"application/json"}})};const demoSettings=demoSidebarSettings(String(t.method||`GET`).toUpperCase(),demoUrl,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`));if(demoSettings!==null)return {response:new Response(JSON.stringify(demoSettings),{status:200,headers:{"content-type":"application/json"}})};if(String(t.method).toUpperCase()===`POST`&&demoUrl.origin===`https://chatgpt.com`&&demoUrl.pathname===`/wham/statsig/bootstrap`){return {response:new Response(JSON.stringify(demoStatsigBootstrap()),{status:200,headers:{"content-type":"application/json"}})}}if((String(t.method||`GET`).toUpperCase()===`GET`)&&Object.hasOwn(__reaDemoIdentity.http,demoUrl.pathname)&&demoUrl.origin===`https://chatgpt.com`){return {response:new Response(JSON.stringify(__reaDemoIdentity.http[demoUrl.pathname]),{status:200,headers:{"content-type":"application/json"}})}}throw Error(`REA demo HTTP contract not implemented: `+demoUrl.pathname);']
+ ['async fetchHttp(e,t,n,i,a){','async fetchHttp(e,t,n,i,a){const demoUrl=new URL(t.url,`https://chatgpt.com`);const demoAutomations=demoAutomationHttp(String(t.method||`GET`).toUpperCase(),demoUrl);if(demoAutomations!==null)return {response:new Response(JSON.stringify(demoAutomations),{status:200,headers:{"content-type":"application/json"}})};const demoPluginCatalog=demoPluginHttp(String(t.method||`GET`).toUpperCase(),demoUrl);if(demoPluginCatalog!==null)return {response:new Response(JSON.stringify(demoPluginCatalog),{status:200,headers:{"content-type":"application/json"}})};const demoSettings=demoSidebarSettings(String(t.method||`GET`).toUpperCase(),demoUrl,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`));if(demoSettings!==null)return {response:new Response(JSON.stringify(demoSettings),{status:200,headers:{"content-type":"application/json"}})};if(String(t.method).toUpperCase()===`POST`&&demoUrl.origin===`https://chatgpt.com`&&demoUrl.pathname===`/wham/statsig/bootstrap`){return {response:new Response(JSON.stringify(demoStatsigBootstrap()),{status:200,headers:{"content-type":"application/json"}})}}if((String(t.method||`GET`).toUpperCase()===`GET`)&&Object.hasOwn(__reaDemoIdentity.http,demoUrl.pathname)&&demoUrl.origin===`https://chatgpt.com`){return {response:new Response(JSON.stringify(__reaDemoIdentity.http[demoUrl.pathname]),{status:200,headers:{"content-type":"application/json"}})}}throw Error(`REA demo HTTP contract not implemented: `+demoUrl.pathname);']
 ];
 let patched=original.toString('utf8');
 for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;

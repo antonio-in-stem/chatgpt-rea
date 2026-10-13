@@ -1,0 +1,78 @@
+{
+  "sources": {
+    "listing": "app-shared-737655e1fb23.js:254224",
+    "statusClassifier": "app-shared-737655e1fb23.js:253092",
+    "createPayload": "app-shared-737655e1fb23.js:253171",
+    "updatePayload": "app-shared-737655e1fb23.js:253151"
+  },
+  "runtimeObserved": [
+    "Scheduled original page shows loading error from missing GET /automations",
+    "New task opens original dialog with Repeat Daily Time Advanced Cancel Create"
+  ],
+  "listingContract": {
+    "method": "GET",
+    "path": "/automations",
+    "query": {
+      "filter": [
+        "scheduled",
+        "finished",
+        "paused"
+      ],
+      "limit": [
+        25,
+        100
+      ],
+      "cursor": "nullable"
+    },
+    "response": {
+      "items": [],
+      "cursor": null
+    }
+  },
+  "mutationContracts": {
+    "save": {
+      "path": "/automations/save",
+      "method": "POST",
+      "fields": [
+        "default_timezone",
+        "email_enabled",
+        "is_enabled",
+        "jawbone_id",
+        "model",
+        "reasoning_effort",
+        "notifications_enabled",
+        "prompt",
+        "emoji",
+        "thread_mode",
+        "schedule",
+        "timing_mode",
+        "title"
+      ]
+    },
+    "setStatus": {
+      "path": "/automations/set_status",
+      "body": [
+        "jawbone_id",
+        "is_enabled"
+      ]
+    },
+    "remove": {
+      "path": "/automations/remove",
+      "body": [
+        "automation_id"
+      ]
+    }
+  },
+  "statusClassifier": "Nonlocal, non-condition_watch and empty next_run_times -> completed; otherwise is_enabled -> active or paused",
+  "implemented": "Empty paginated GET only; Build-DemoHost integration added, runtime not rebuilt yet",
+  "pending": [
+    "Load empty state in runtime",
+    "Complete automation response object schema",
+    "Persisted demo create/edit/pause/remove",
+    "No real task execution"
+  ],
+  "validation": {
+    "httpTests": 1,
+    "passed": true
+  }
+}
