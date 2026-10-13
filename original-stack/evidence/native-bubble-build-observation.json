@@ -1,0 +1,13 @@
+{
+  "baselineExe": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\.worktrees\\native-windows\\native\\target\\debug\\native-workspace.exe",
+  "baselineSha256": "ED14CEC83A932067DE09D9FB6F9DE67D347D2EF95B14E9AB6C4D215E175ACA50",
+  "fixture": "native-bubble-fixture.json",
+  "capture": "native-bubble-before.png",
+  "fixtureValidated": "Loaded in previous native executable; conversation visibly rendered",
+  "buildTarget": "S:\\rea-native-build",
+  "buildStatus": "in progress",
+  "limitations": [
+    "Native before/after only; original viewport differs",
+    "New executable not yet built or captured"
+  ]
+}
