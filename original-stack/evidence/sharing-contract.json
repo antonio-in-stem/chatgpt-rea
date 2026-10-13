@@ -1,5 +1,5 @@
 {
-  "status": "v38 installed; original space Share invitation and role update/reload verified; revoke/cancel/page inheritance UI pending",
+  "status": "v38 original space grant, role update/reload, cancelled change, child inherited display and saved revoke verified",
   "source": "Recovered shipped frontend, bounded REA audit; consumer DTO not full upstream schema",
   "initial": {
     "routes": [
@@ -123,13 +123,17 @@
     "Original Share persists synthetic Viewer grant and shows Invitation pending",
     "Original Viewer menu contains Viewer/Commenter/Editor/Remove access",
     "Selecting Editor keeps stored role Viewer until original Save",
-    "After Save and full reload, reopen Share shows persisted Editor with Invitation pending"
+    "After Save and full reload, reopen Share shows persisted Editor with Invitation pending",
+    "Original Editor > Commenter then Cancel leaves persisted Editor unchanged",
+    "Child Share renders People in Original Space demo, Access inherited from this space, Editor",
+    "Cancel leaves outer sharing dialog open; navigating and activating child Share created two dialogs, so probe reloaded before continuing; overlapping-dialog interaction not characterized",
+    "Original Editor > Remove access stages removal with Cancel/Save; Save removes collaborator row and stored root shares is empty"
   ],
   "remaining_ui": [
-    "Cancel staged role/invitation changes",
-    "Remove access and reload",
-    "Child page inherited access display",
+    "Post-revoke full reload/reopen verification",
+    "Cancel staged new invitation",
     "Page-specific direct grant lifecycle",
-    "Copy link behavior and access mode controls"
+    "Copy link behavior and access mode controls",
+    "Overlapping sharing dialog behavior under navigation"
   ]
 }
