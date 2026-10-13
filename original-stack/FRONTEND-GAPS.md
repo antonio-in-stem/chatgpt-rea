@@ -17,7 +17,7 @@ The sections below retain investigation history and are not the current completi
 
 - Activity inbox: `mentions-inbox-contract.json` verifies two synthetic notifications in the original popover, page navigation, individual and bulk read persistence, unread empty state and reload. Deep block/comment targeting, incoming events and loading/error states remain open.
 - Account data settings: `data-preferences-contract.json` records local boolean persistence for observed `training_allowed` and `precise_location_allowed`, preserving the sidebar store. 56 Node tests pass. v53 verifies the original training switch in both directions and checked-state restoration after renderer reload. Precise location UI/permissions, other keys and real export/account operations are not covered.
-- Security panel: original `security-route-feb1afe59e86.js:742-788,994-1005` consumes repositories, scans and findings from a compatible provider. Current demo plugin catalog has no such provider. A read-only synthetic completed scan would be needed; do not run real scans.
+- Security panel: original `security-route-feb1afe59e86.js:742-788,994-1005` consumes repositories, scans and findings from a compatible provider. `security-provider-contract.json` now traces provider discovery, exact `mcpServer/tool/call` seam, read schemas and pagination guards. Current demo advertises no MCP servers; a catalog entry alone is insufficient. Provider implementation and runtime checks remain pending; do not run real scans.
 
 ## Profile / rail
 

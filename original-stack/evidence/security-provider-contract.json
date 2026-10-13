@@ -1,0 +1,115 @@
+{
+  "scope": "Static recovered frontend contract for original Security workbench; runtime provider not yet implemented",
+  "sources": [
+    "security-route-feb1afe59e86.js:742-810",
+    "security-route-feb1afe59e86.js:994-1043",
+    "security-route-feb1afe59e86.js:1112-1198",
+    "security-route-feb1afe59e86.js:1323-1427",
+    "app-initial-b8e1c8014bb4.js:70320-70367",
+    "app-shared-737655e1fb23.js:157806-157816",
+    "protocol/json/ClientRequest.json:McpServerToolCallParams"
+  ],
+  "transport": {
+    "method": "mcpServer/tool/call",
+    "params": [
+      "server=codex-security",
+      "tool",
+      "arguments",
+      "threadId",
+      "optional _meta"
+    ],
+    "result": "MCP result with structuredContent parsed by each original Zod schema; content and isError are inspected on failures",
+    "discovery": "mcpServerStatus/list data item named codex-security with tools keyed by tool name; frontend detects unsupported tools separately from unavailable provider",
+    "currentGap": "demo-fixtures.json returns data=[]; demo_plugins.py has only unrelated inert rea-demo plugin. Catalog change alone is insufficient."
+  },
+  "readTools": {
+    "list_codex_security_scans": {
+      "args": [
+        "optional targetId"
+      ],
+      "result": "{scans: ScanSummary[]}"
+    },
+    "list_codex_security_repositories": {
+      "args": [],
+      "result": "{repositories:[{targetId,targetPath,checkoutAvailable,displayName,latestScan,openFindingsCount,scanCount}]}"
+    },
+    "list_codex_security_global_findings": {
+      "args": [
+        "limit=20",
+        "offset",
+        "optional query",
+        "optional severity",
+        "optional status unless all",
+        "optional targetId"
+      ],
+      "result": "{findings: GlobalFinding[],nextOffset: positive integer|null}; original rejects non-advancing offset or empty page with next offset"
+    },
+    "get_codex_security_scan": {
+      "args": [
+        "scanId",
+        "optional occurrenceId"
+      ],
+      "result": "{scan: ScanDetail}; if findingsTruncated, renderer requests further pages"
+    },
+    "list_codex_security_findings": {
+      "args": [
+        "scanId",
+        "limit=50",
+        "offset"
+      ],
+      "result": "{findingsPage:{findings,nextOffset,offset,scanId}}; renderer checks scan identity and advancing offset"
+    }
+  },
+  "requiredFields": {
+    "ScanSummary": [
+      "findingCount",
+      "mode(diff|standard|deep)",
+      "progress",
+      "scanId(UUID)",
+      "scope",
+      "targetPath",
+      "updatedAt"
+    ],
+    "Progress": [
+      "coverage.closedRows",
+      "coverage.worklistRows",
+      "phase(preflight|threat_model|discovery|validation|attack_path|reporting)",
+      "status(running|complete|failed|canceled)"
+    ],
+    "ScanDetailAdditional": [
+      "findings",
+      "findingsTruncated",
+      "severityCounts"
+    ],
+    "Finding": [
+      "locations[].path",
+      "occurrenceId",
+      "severity.level",
+      "summary",
+      "title"
+    ],
+    "GlobalFindingAdditional": [
+      "createdAt",
+      "findingId",
+      "locationPath(nullable)",
+      "occurrenceCount(positive)",
+      "scanId(UUID)",
+      "scope",
+      "status",
+      "targetId",
+      "targetPath",
+      "updatedAt"
+    ]
+  },
+  "nextImplementation": [
+    "Add narrowly scoped synthetic provider discovery and read handlers in demo transport, without real MCP process invocation",
+    "Use fixed UUID completed scan, explicit demo repository and synthetic finding; preserve original schemas and pagination",
+    "Exercise original repository/scans/findings filters and detail navigation before claiming UI coverage",
+    "Trace remaining mutation contracts separately: triage, rename, remediation and lifecycle are not covered by read-only fixture"
+  ],
+  "limits": [
+    "Static analysis only; no runtime Security page verified in this pass",
+    "Exact discovery item schema and thread bootstrap lifecycle need inspection before implementation",
+    "Do not invoke scan startup, remediation, real repository access or tools while supplying demo data"
+  ]
+}
