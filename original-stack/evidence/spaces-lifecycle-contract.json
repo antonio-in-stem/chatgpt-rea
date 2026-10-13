@@ -1,5 +1,5 @@
 {
-  "status": "Static recovered contract; implementation pending",
+  "status": "Archive/restore and archived listing implemented/tested; package rebuild and original UI verification pending",
   "source": "app-initial-b8e1c8014bb4.js",
   "archive": {
     "method": "DELETE",
@@ -51,5 +51,14 @@
     "Restore policy for previously archived descendants",
     "Full backend schema and archived-space error status",
     "No permanent space delete contract observed in this bounded route"
-  ]
+  ],
+  "implementation": [
+    "Atomic shared-store replacement for space and member metadata",
+    "Archive marks currently live members with space provenance; restore restores only that set and previous can_write value",
+    "Previously trashed pages retain their previous state; this is an explicit demo decision, original backend policy unknown",
+    "Repeated archive/restore are idempotent",
+    "Archived listing projects retained root title/symbol; active listing excludes archived spaces",
+    "Individual page mutation blocked while parent space is archived; document bytes untouched"
+  ],
+  "tests": "29 Node tests pass; archive/restore write failures preserve store bytes, repeated calls, active/archived listing, unavailable scoped listing, preserved prior trash and canonical document bytes"
 }

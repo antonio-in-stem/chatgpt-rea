@@ -265,3 +265,31 @@ test('space pages inherit membership, paginate and filter without leaking other 
   assert.throws(()=>call('GET',route),/Unavailable/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('space archive and restore are atomic and preserve prior page trash and document bytes',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-space-trash-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const space=call('POST','/spaces/v2',{name:'Archive space'});
+  const create=key=>call('POST','/pages',{idempotency_key:key,parent_page_id:space.root_page_id,title:key,initial_blocks:[]}).metadata.page_id;
+  const child=create('child'),previouslyTrashed=create('already-trashed');
+  call('POST','/pages/'+previouslyTrashed+'/archive',{});
+  const document=path.join(dir,child+'-document.json');fs.writeFileSync(document,JSON.stringify({sequence:1,title:'Saved title',comments:'preserved'}));
+  const beforeDoc=fs.readFileSync(document),store=path.join(dir,'demo-pages.json'),beforeStore=fs.readFileSync(store);
+  fs.writeFileSync(store+'.pending','foreign');assert.throws(()=>call('DELETE','/spaces/'+space.id));assert.deepEqual(fs.readFileSync(store),beforeStore);fs.unlinkSync(store+'.pending');
+  call('DELETE','/spaces/'+space.id);call('DELETE','/spaces/'+space.id);
+  assert.equal(call('GET','/spaces/v2').items.length,0);
+  const archived=call('GET','/spaces/v2?status=archived').items;assert.equal(archived.length,1);assert.ok(archived[0].deleted_at);assert.ok(archived[0].root_page_metadata.deleted_at);
+  assert.equal(call('GET','/pages/'+child).metadata.access.can_write,false);
+  assert.throws(()=>call('GET','/spaces/'+space.id+'/pages'),/Unavailable/);
+  assert.throws(()=>call('POST','/pages/'+child+'/restore',{}),/Restore the space/);
+  assert.throws(()=>call('POST','/pages/'+space.root_page_id+'/delete-forever',{}),/Restore the space/);
+  const archivedStore=fs.readFileSync(store);fs.writeFileSync(store+'.pending','foreign');assert.throws(()=>call('POST','/spaces/'+space.id+'/restore'));assert.deepEqual(fs.readFileSync(store),archivedStore);fs.unlinkSync(store+'.pending');
+  call('POST','/spaces/'+space.id+'/restore');call('POST','/spaces/'+space.id+'/restore');
+  assert.equal(call('GET','/spaces/v2?status=archived').items.length,0);assert.equal(call('GET','/spaces/v2').items.length,1);
+  assert.equal(call('GET','/pages/'+child).metadata.deleted_at,null);assert.equal(call('GET','/pages/'+child).metadata.access.can_write,true);
+  assert.ok(call('GET','/pages/'+previouslyTrashed).metadata.deleted_at);
+  assert.deepEqual(fs.readFileSync(document),beforeDoc);
+  assert.throws(()=>call('GET','/spaces/v2?status=unknown'),/Unsupported/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

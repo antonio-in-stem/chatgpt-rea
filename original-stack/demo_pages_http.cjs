@@ -4,6 +4,8 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
+ const spaceAction=route.match(/^\/spaces\/(rea-space-[1-9][0-9]*)(\/restore)?$/);
+ const spaceMutation=spaceAction&&((method==='DELETE'&&!spaceAction[2])||(method==='POST'&&spaceAction[2]));
  const spacePages=method==='GET'&&route.match(/^\/spaces\/(rea-space-[1-9][0-9]*)\/pages$/);
  const spaces=(route==='/spaces/v2'&&['GET','POST'].includes(method))||(spaceId&&method==='GET');
  const listing=method==='GET'&&(route==='/pages'||route==='/pages/catalog'||route==='/pages/archived');
@@ -20,7 +22,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
+ if(!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
@@ -35,9 +37,32 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   return parent;
  };
  const descendants=id=>{const ids=new Set([id]);let changed=true;while(changed){changed=false;for(const x of state.items)if(!x.permanentlyDeleted&&ids.has(x.metadata.parent?.page_id)&&!ids.has(x.metadata.page_id)){ids.add(x.metadata.page_id);changed=true;}}return state.items.filter(x=>ids.has(x.metadata.page_id)&&!x.permanentlyDeleted);};
+ if(spaceMutation){
+  const space=state.spaces?.find(x=>x.id===spaceAction[1]);if(!space)throw Error('Unknown demo space');
+  const root=state.items.find(x=>x.metadata.page_id===space.root_page_id&&!x.permanentlyDeleted);if(!root)throw Error('Unavailable space root');
+  const restoring=method==='POST';
+  if(restoring?!space.deleted_at:!!space.deleted_at)return {};
+  const now=new Date().toISOString();
+  const members=state.items.filter(x=>x.metadata.drive_space_id===space.id&&!x.permanentlyDeleted);
+  if(restoring){
+   for(const item of members)if(item.archivedWithSpace===space.id){
+    item.metadata.deleted_at=null;item.metadata.access.can_write=item.spacePreviousCanWrite;
+    delete item.archivedWithSpace;delete item.spacePreviousCanWrite;
+   }
+   space.deleted_at=null;
+  }else{
+   for(const item of members)if(!item.metadata.deleted_at){
+    item.spacePreviousCanWrite=item.metadata.access.can_write;item.archivedWithSpace=space.id;
+    item.metadata.deleted_at=now;item.metadata.access.can_write=false;
+   }
+   space.deleted_at=now;
+  }
+  space.updated_at=now;persist();return {};
+ }
  if(mutation){
   const item=state.items.find(x=>x.metadata.page_id===action[1]);if(!item||item.permanentlyDeleted)throw Error('Unknown demo page');
   if(method==='GET'){const operation=(Object.hasOwn(item.archiveOperations||{},action[3])?item.archiveOperations[action[3]]:undefined);if(!operation)throw Error('Unknown archive operation');return operation;}
+  if(state.spaces?.some(x=>x.id===item.metadata.drive_space_id&&x.deleted_at))throw Error('Restore the space before changing its pages');
   let operationId;
   if(action[2]==='archive-operations'){
    const input=JSON.parse(body||'{}');operationId=input.operation_id;
@@ -75,7 +100,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  };
  if(spaces){
   state.spaces??=[];
-  const projectSpace=space=>{const root=state.items.find(x=>x.metadata.page_id===space.root_page_id&&live(x));if(!root)throw Error('Unavailable space root');const page=read(root);return {...space,name:page.metadata.title,symbol:page.metadata.symbol??null,root_page_metadata:page.metadata,root_page:page};};
+  const projectSpace=space=>{const root=state.items.find(x=>x.metadata.page_id===space.root_page_id&&!x.permanentlyDeleted);if(!root)throw Error('Unavailable space root');const page=read(root);return {...space,name:page.metadata.title,symbol:page.metadata.symbol??null,root_page_metadata:page.metadata,root_page:page};};
   if(method==='POST'){
    const input=JSON.parse(body||'{}');if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['name','make_workspace_default'].includes(k))||typeof input.name!=='string'||!input.name.trim()||input.name.trim().length>50)throw Error('Invalid space name');
    if(input.make_workspace_default!=null&&typeof input.make_workspace_default!=='boolean')throw Error('Invalid workspace default');
@@ -87,7 +112,8 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
    state.sequence++;state.spaceSequence=(state.spaceSequence??0)+1;state.items.unshift(root);state.spaces.unshift(space);persist();return projectSpace(space);
   }
   if(spaceId){const space=state.spaces.find(x=>x.id===spaceId&&!x.deleted_at);if(!space)throw Error('Unknown demo space');return projectSpace(space);}
-  const result=pageSlice(state.spaces.filter(x=>!x.deleted_at).map(projectSpace),url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||100));
+  const status=url.searchParams.get('status');if(status&&status!=='archived'&&status!=='active')throw Error('Unsupported space status');
+  const result=pageSlice(state.spaces.filter(x=>Boolean(x.deleted_at)===(status==='archived')).map(projectSpace),url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||100));
   return {items:result.items,next_cursor:result.cursor,archive_retention_days:30};
  }
  if(spacePages){
