@@ -37,4 +37,27 @@ class RichTextInputTests(unittest.TestCase):
             with self.assertRaises(ThreadError):store.handle("turn/start",{"threadId":identifier,"input":[item]})
             self.assertEqual(path.read_bytes(),before)
 
+class ImageInputTests(unittest.TestCase):
+    def test_all_image_carriers_preserve_order_and_details(self):
+        inputs=[{"type":"text","text":"Inspect","text_elements":[]},{"type":"image","url":"data:image/png;base64,AA==","detail":"low"},{"type":"image","fileId":"demo-file","detail":"original"},{"type":"localImage","path":"C:/demo/image.png","detail":"high"}]
+        _,completed,events,preview=build_turn("t",{"input":inputs})
+        self.assertEqual(completed["items"][0]["content"],inputs)
+        self.assertEqual(preview,"Inspect")
+        inputs[1]["url"]="changed"
+        self.assertEqual(completed["items"][0]["content"][1]["url"],"data:image/png;base64,AA==")
+
+    def test_image_only_survives_storage_without_file_access(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json";store=ThreadStore(path)
+            started,_=store.handle("thread/start",{});identifier=started["thread"]["id"]
+            inputs=[{"type":"localImage","path":"Z:/does-not-exist/image.png"}]
+            store.handle("turn/start",{"threadId":identifier,"input":inputs})
+            thread=ThreadStore(path).handle("thread/read",{"threadId":identifier,"includeTurns":True})[0]["thread"]
+            self.assertEqual(thread["turns"][0]["items"][0]["content"],inputs)
+            self.assertEqual(thread["name"],"Image attachment demo")
+
+    def test_invalid_carriers_are_rejected(self):
+        for item in [{"type":"image"},{"type":"image","url":"x","fileId":"y"},{"type":"image","url":False},{"type":"localImage","path":" "},{"type":"image","fileId":"x","detail":"invalid"},{"type":"audio","url":"x"}]:
+            with self.subTest(item=item),self.assertRaises(ValueError):build_turn("t",{"input":[item]})
+
 if __name__=="__main__":unittest.main()
