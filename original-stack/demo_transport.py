@@ -10,6 +10,7 @@ from websockets.exceptions import ConnectionClosed
 from demo_projects import ProjectStore, ProjectError
 from demo_config import ConfigStore, ConfigError
 import demo_threads
+import demo_plugins
 
 MAX_FRAME_BYTES = 1024 * 1024
 FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
@@ -32,6 +33,13 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
                    "paramsType": type(params).__name__}
     if "id" not in message:
         return None, observation
+    if config is not None and message["method"] in demo_plugins.METHODS:
+        try:
+            return {"id":request_id,"result":demo_plugins.PluginStore(config).handle(message["method"],params)},observation
+        except demo_plugins.PluginError as error:
+            return {"id":request_id,"error":{"code":-32602,"message":str(error)}},observation
+        except OSError:
+            return {"id":request_id,"error":{"code":-32603,"message":"Demo plugin state could not be saved"}},observation
     if threads is not None and message["method"] in threads.METHODS:
         try:
             result,event=threads.handle(message["method"],params)
