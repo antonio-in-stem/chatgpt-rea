@@ -1,0 +1,15 @@
+{
+  "profile": "demo-probe-20261013-c",
+  "observations": [
+    "Original add-project dialog opened after renderer stabilized.",
+    "Filled original Nombre del proyecto input with UI Component Lab and activated Crear proyecto.",
+    "Host created the default empty directory under Documents/ChatGPT before showing the trust dialog.",
+    "Trust dialog appeared; no trust confirmation performed, no project/create request observed."
+  ],
+  "nextRequiredContract": "config/batchWrite and config/read with persistent demo trust settings",
+  "limitations": [
+    "Pointer dispatch initially produced no visible navigation; pointer-only cause was not established.",
+    "DOM activation and original React handlers were used; no renderer patch or injected project row.",
+    "Project visible creation is still incomplete."
+  ]
+}
