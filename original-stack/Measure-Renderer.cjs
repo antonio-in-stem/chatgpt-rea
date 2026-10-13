@@ -22,7 +22,7 @@ function measureRenderer() {
     if(ids.has(e)) return ids.get(e);
     const id = nodes.length, s = getComputedStyle(e), r = e.getBoundingClientRect();
     ids.set(e,id);
-    nodes.push({id,selector:selector(e),tag:e.tagName,classes:e.getAttribute('class'),role:e.getAttribute('role'),ariaLabel:e.getAttribute('aria-label'),rect:{x:r.x,y:r.y,width:r.width,height:r.height},styles:Object.fromEntries(properties.map(p=>[p,s.getPropertyValue(p)])),variableOverrides:Object.fromEntries(Object.entries(variables(e)).filter(([k,v])=>v!==(e.parentElement?getComputedStyle(e.parentElement).getPropertyValue(k):rootVariables[k]))),scroll:{width:e.scrollWidth,height:e.scrollHeight,left:e.scrollLeft,top:e.scrollTop},focused:document.activeElement===e,hovered:e.matches(':hover')});
+    nodes.push({id,selector:selector(e),tag:e.tagName,classes:e.getAttribute('class'),role:e.getAttribute('role'),ariaLabel:e.getAttribute('aria-label'),ariaExpanded:e.getAttribute('aria-expanded'),ariaHidden:e.getAttribute('aria-hidden'),inert:e.inert,rect:{x:r.x,y:r.y,width:r.width,height:r.height},styles:Object.fromEntries(properties.map(p=>[p,s.getPropertyValue(p)])),variableOverrides:Object.fromEntries(Object.entries(variables(e)).filter(([k,v])=>v!==(e.parentElement?getComputedStyle(e.parentElement).getPropertyValue(k):rootVariables[k]))),scroll:{width:e.scrollWidth,height:e.scrollHeight,left:e.scrollLeft,top:e.scrollTop},focused:document.activeElement===e,hovered:e.matches(':hover')});
     nodes[id].parentId=e.parentElement?record(e.parentElement):null;
     nodes[id].pseudoElements=Object.fromEntries(["::before","::after"].map(p=>{const ps=getComputedStyle(e,p);return [p,{content:ps.content,...Object.fromEntries(properties.map(k=>[k,ps.getPropertyValue(k)]))}]}));
     return id;
@@ -37,6 +37,7 @@ function measureRenderer() {
     composerSend:document.querySelector('button[aria-label="Enviar"]'),
     composerPermissions:document.querySelector('button[aria-label="Cambiar permisos"]'),
     userMessage:document.querySelector('._bubble_11evq_1'),
+    userMessageToggle:document.querySelector('._bubble_11evq_1 button[aria-expanded]'),
   };
   const chains = {}, fontSamples = {};
   for(const [name,e] of Object.entries(anchors)) {
