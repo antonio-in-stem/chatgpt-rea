@@ -1,3 +1,5 @@
+import {createDisclosureIcon} from './DisclosureIcon.js';
+export {createDisclosureIcon} from './DisclosureIcon.js';
 export {createAnimatedArtwork} from './AnimatedArtwork.js';
 export {createAnimationColorReader,recolorAnimation,observeAnimationColor} from './animationColor.js';
 export {createNavigationFallbackIcons} from './NavigationFallbackIcons.js';
@@ -44,5 +46,5 @@ export function createReaUI({React, motion, AnimatePresence, MotionConfig, Conte
   const Spinner=createSpinner(React,mergeClasses);
   const Button=createButton({React,mergeClasses,Spinner});
   const MarqueeText=createMarqueeText({React,mergeClasses,motionPreference,visualScale}),SidebarRowSurface=createSidebarRow(React,mergeClasses),SidebarIndent=createSidebarIndent(React);
-  return {NavigationItem:createNavigationItem({React,mergeClasses,Link,ResponsiveIcon,AnimatedIcon,DisclosureIcon,formatMessage}),useSidebarOrder:createUseSidebarOrder(React),...createSidebarSections({React,mergeClasses,motion,AnimatePresence,MotionConfig,ContextMenu,motionPreference,visualScale}),SidebarItem:createSidebarItem({React,mergeClasses,SidebarRowSurface,SidebarIndent,MarqueeText}),MarqueeText,SidebarRowSurface,SidebarIndent,...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
+  return {NavigationItem:createNavigationItem({React,mergeClasses,Link,ResponsiveIcon,AnimatedIcon,DisclosureIcon:DisclosureIcon ?? createDisclosureIcon(React,mergeClasses),formatMessage}),useSidebarOrder:createUseSidebarOrder(React),...createSidebarSections({React,mergeClasses,motion,AnimatePresence,MotionConfig,ContextMenu,motionPreference,visualScale}),SidebarItem:createSidebarItem({React,mergeClasses,SidebarRowSurface,SidebarIndent,MarqueeText}),MarqueeText,SidebarRowSurface,SidebarIndent,...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
 }

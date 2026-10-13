@@ -249,5 +249,14 @@
       "Renderer assembly pending",
       "Real browser CSS color and visual playback verification pending"
     ]
+  },
+  "disclosureIcon": {
+    "source": "app-shared-737655e1fb23.js Udr/$/_8n/v8n/rlr/hlr",
+    "file": "src/DisclosureIcon.js",
+    "transformation": "Specialized original authored 16px icon pipeline; original SVG body, label rules, prop precedence and CSS class retained. DOM createElement helper is not exposed.",
+    "verification": "Differential execution of original preset/render pipeline for six prop scenarios.",
+    "limits": [
+      "Matched screenshot verification pending"
+    ]
   }
 }
