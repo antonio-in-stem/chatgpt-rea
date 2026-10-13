@@ -1,0 +1,45 @@
+{
+  "scope": "Original Page activity inbox with explicit local synthetic notifications",
+  "sources": [
+    "inbox-2e21c8f183ef.js:108-149",
+    "inbox-2e21c8f183ef.js:196-249",
+    "inbox-2e21c8f183ef.js:425-483",
+    "inbox-2e21c8f183ef.js:590-643"
+  ],
+  "contract": {
+    "list": "GET /pages/mentions/inbox with limit,cursor,unread_only -> items,next_cursor",
+    "read": "POST /pages/mentions/inbox/{notification_id}/read before navigation; renderer does not consume response fields",
+    "fields": [
+      "notification_id",
+      "page_id",
+      "page_title",
+      "block_id",
+      "thread_id",
+      "message_id",
+      "actor_account_user_id",
+      "actor_display_name",
+      "created_at",
+      "read_at"
+    ],
+    "unread": "Badge query uses limit1 unread_only=true and 30-second refresh",
+    "mark_all": "Original UI collects all unread pages (limit50) then performs individual read mutations with concurrency4",
+    "navigation": "After read succeeds original UI invalidates inbox/unread queries and opens page with optional block/thread/message target"
+  },
+  "demo": "Separate versioned demo-mentions.json; explicit seeder requires named live demo page and refuses replacing existing store. Cursor follows last notification identity, remaining stable when read state changes. Read mutation idempotent and atomic; no notification is sent to any person.",
+  "validation": "55 Node tests pass. Original v52 renderer shows two synthetic notifications; pointer click on newest marks only that item read and navigates to Original Space demo. Mark all as read persists the remaining read timestamp and removes unread badge. Unread only displays No unread notifications. After renderer reload and reopening Activity, both rows remain present with no unread badge.",
+  "limits": [
+    "Fixture has page-level navigation without an actual inline mention block; deep block/comment targeting remains unverified",
+    "Incoming network notifications, real collaborators, grouping/search/loading/error UI still require verification",
+    "Demo cursor format and POST empty response are local implementation choices, not claimed original server formats"
+  ],
+  "runtime": {
+    "rendererModified": false,
+    "fixturePage": "rea-page-6",
+    "notifications": 2,
+    "singleReadPersisted": true,
+    "markAllReadPersisted": true,
+    "unreadEmptyStateObserved": true,
+    "reloadReadStatePreserved": true,
+    "reloadNavigation": "Original Space and Activity controls activated after reload; coordinate navigation during initial layout transition was inconclusive."
+  }
+}
