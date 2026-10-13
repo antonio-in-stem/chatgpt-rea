@@ -23,7 +23,8 @@
     "Collapsed heading displays unread count 3",
     "Enter reopens section; Tab focuses first sidebar item",
     "Move down twice reorders design from first to last without losing aria-current=page",
-    "Movement controls disable at first/last list boundaries"
+    "Movement controls disable at first/last list boundaries",
+    "NavigationItem callback moves focus to project-search textbox"
   ],
   "build": "npm run build:example succeeded with esbuild 0.28.0",
   "runtimeVersions": {

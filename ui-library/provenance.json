@@ -169,6 +169,24 @@
         "Section ordering controller not yet extracted",
         "Original backend and Codex thread ID parsing deliberately replaced by consumer callbacks"
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "formattedSourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "components": [
+        "NavigationItem"
+      ],
+      "symbols": [
+        "VF"
+      ],
+      "transformation": "Manual semantic extraction without compiler memo slots; original class literals and prop precedence retained. Router, responsive artwork, animated artwork and disclosure glyph dependencies are explicit adapters.",
+      "status": "28 source differential cases pass for DOM, classes and prop precedence. Browser callback focuses the connected project search field.",
+      "limits": [
+        "Navigation item only; not complete rail",
+        "par animated artwork, generic rm icon adapter and router adapter not extracted here",
+        "DisclosureIcon dependency still required for disclosure variant",
+        "Matched visual comparison pending"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

@@ -13,13 +13,24 @@
     "UF/HF/Tar sections and list layout",
     "P1o section toggle with original ZNi chevron",
     "q1o item order controller with injected canonical state and ID decoding",
-    "b9r/x9r/S9r/C9r/V4/k9r pending/drop/multiselection algorithms"
+    "b9r/x9r/S9r/C9r/V4/k9r pending/drop/multiselection algorithms",
+    "VF NavigationItem destination control"
   ],
   "nextDependencies": [
     {
-      "symbol": "VF",
-      "line": 147289,
-      "purpose": "Destination navigation item"
+      "symbol": "par",
+      "purpose": "Animated navigation artwork"
+    },
+    {
+      "symbol": "rm / shared s5",
+      "purpose": "Responsive asset source icon adapter"
+    },
+    {
+      "symbol": "dle",
+      "purpose": "Navigation disclosure glyph"
+    },
+    {
+      "purpose": "Rail assembly and profile footer with real identity slots"
     }
   ],
   "limits": [
