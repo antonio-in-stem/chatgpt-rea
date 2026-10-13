@@ -88,6 +88,30 @@
         "Missing full row Y4o, scrolling label dRo, collapsible groups, drag/drop and rail assembly",
         "Matched original screenshot comparison pending"
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "formattedSourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "components": [
+        "MarqueeText",
+        "SidebarItem"
+      ],
+      "symbols": [
+        "dRo",
+        "fRo",
+        "pRo",
+        "mRo",
+        "Y4o",
+        "vZ"
+      ],
+      "transformation": "Removed compiler memo cache; preserved DOM/classes, measurements, easing samples and slot composition. Replaced app ResizeObserver provider with per-instance native ResizeObserver cleanup. App visual-scale context is factory visualScale (default 1). Reduced-motion app store becomes motionPreference on/off/system plus media subscription.",
+      "status": "Source comparisons cover timing, DOM in overflow/loop/reduced-motion modes, and sidebar row assembly. Browser observed long-label overflow and original hover animation; short labels remain static.",
+      "limits": [
+        "No full sidebar or rail assembly",
+        "ResizeObserver provider pooling and private render-phase callback guard not ported; native observer adapter used",
+        "No matched original screenshot comparison",
+        "Loop and reduced-motion DOM tested; runtime media-toggle and looping animation verification pending"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

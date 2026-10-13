@@ -7,7 +7,9 @@ This package begins the reusable library. It does not import the app host, accou
 - `Button`: shared app control with 62 color variants, 84 size variants and five explicit radius overrides. Preserves loading/disabled, native button events, focus variants, stable sizing labels and disabled-link behavior. Use `as="a"` for anchors; inject `renderLink(props)` for your router.
 - `Spinner`: original circle paths and animation-start synchronization. Rays SVG output matches execution of the original paint/optical/accessibility pipeline for this asset; screenshot and animation timing comparison remain pending.
 
-- `SidebarRowSurface`: original selectable row surface; active/highlighted/disabled, inverse tone, multiline/table variants and nested navigation-link behavior. Handles Enter/Space and preserves cancellation by consumer handlers. Full folder/thread row composition is still pending.
+- `SidebarItem`: original folder/thread row composition with label, leading icon/disclosure, trailing status, actions, indentation and injected drag listeners. Its parent owns navigation and drag state.
+- `MarqueeText`: measured overflow, original CSS masks and easing, stop-at-end/loop modes and group hover. Factory `motionPreference` accepts `on` (reduce), `off`, or `system`; `visualScale` defaults to 1 and represents application scale, not device pixel ratio. Native ResizeObserver replaces the app provider.
+- `SidebarRowSurface`: original selectable row surface; active/highlighted/disabled, inverse tone, multiline/table variants and nested navigation-link behavior. Handles Enter/Space and preserves cancellation by consumer handlers. Full sidebar groups and rail assembly are still pending.
 - `SidebarIndent`: original nesting wrappers, one per indent level.
 - `SidebarStatus`: original priority of unread count, working spinner and unread dot. Counts above 99 display `99+`.
 - `StatusPill`: approval/alternate tone and inline/container width, retaining original truncation classes.
@@ -56,7 +58,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Thirteen tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Sixteen tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 

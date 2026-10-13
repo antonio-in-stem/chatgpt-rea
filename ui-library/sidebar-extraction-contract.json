@@ -5,24 +5,13 @@
     "fYa/ERo event handling",
     "MRo indent",
     "Q1/FRo/IRo/LRo status",
-    "zRo status pill"
+    "zRo status pill",
+    "Y4o SidebarItem row assembly",
+    "dRo measured MarqueeText",
+    "fRo/pRo/mRo timing and sampled easing",
+    "vZ leading icon/disclosure slot"
   ],
   "nextDependencies": [
-    {
-      "symbol": "Y4o",
-      "line": 382572,
-      "purpose": "Folder/thread row assembly with label, icon, actions and drag handles"
-    },
-    {
-      "symbol": "dRo",
-      "line": 356384,
-      "purpose": "Overflow label scrolling and group hover animation"
-    },
-    {
-      "symbol": "vZ",
-      "line": 297447,
-      "purpose": "Leading icon/disclosure slot"
-    },
     {
       "symbol": "VF",
       "line": 147289,
@@ -30,8 +19,8 @@
     }
   ],
   "limits": [
-    "Not a full sidebar/rail component",
-    "Do not replace remaining dynamic label behavior with guessed ellipsis",
+    "Not full sidebar/rail component",
+    "Navigation, drag/drop and collapsed section controllers still pending",
     "Do not substitute settings icon for actual profile identity"
   ]
 }

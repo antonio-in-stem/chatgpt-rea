@@ -15,7 +15,10 @@
     "Clear search restores focus to project-search and clears controlled query",
     "Sidebar row click selects library via aria-current=page and clears authored unread count",
     "Tab then Enter selects working row",
-    "Sidebar row computed height 29px and radius 12.5px under Windows dark theme"
+    "Sidebar row computed height 29px and radius 12.5px under Windows dark theme",
+    "SidebarItem long label measures 188.5px overflow and 7.082s duration in example viewport",
+    "Hover activates original _marqueeTextScroll_a3okg_102 animation; observed running",
+    "Short sidebar labels have no overflow or animation styles"
   ],
   "build": "npm run build:example succeeded with esbuild 0.28.0",
   "runtimeVersions": {

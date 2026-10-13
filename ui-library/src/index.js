@@ -1,3 +1,5 @@
+import {createSidebarItem} from './SidebarItem.js';
+import {createMarqueeText} from './MarqueeText.js';
 import {createSidebarRow,createSidebarIndent} from './SidebarRow.js';
 import {createSidebarStatus} from './SidebarStatus.js';
 import {createSearchField} from './SearchField.js';
@@ -9,7 +11,7 @@ export {buttonColors,buttonSizes,buttonRadii,sizeRadii} from './buttonVariants.j
 import {classNames} from './classNames.js';
 export {classNames} from './classNames.js';
 // Consumer supplies its React and motion runtime; no ChatGPT host or service is imported.
-export function createReaUI({React, motion, mergeClasses=classNames, formatMessage, requestFrame = callback => window.requestAnimationFrame(callback)}) {
+export function createReaUI({React, motion, mergeClasses=classNames, formatMessage, motionPreference, visualScale, requestFrame = callback => window.requestAnimationFrame(callback)}) {
   if (!React?.createElement || !React?.useId || !motion?.span || typeof mergeClasses !== 'function')
     throw new TypeError('React, motion.span and mergeClasses are required');
   const h = React.createElement;
@@ -33,5 +35,6 @@ export function createReaUI({React, motion, mergeClasses=classNames, formatMessa
   }
   const Spinner=createSpinner(React,mergeClasses);
   const Button=createButton({React,mergeClasses,Spinner});
-  return {SidebarRowSurface:createSidebarRow(React,mergeClasses),SidebarIndent:createSidebarIndent(React),...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
+  const MarqueeText=createMarqueeText({React,mergeClasses,motionPreference,visualScale}),SidebarRowSurface=createSidebarRow(React,mergeClasses),SidebarIndent=createSidebarIndent(React);
+  return {SidebarItem:createSidebarItem({React,mergeClasses,SidebarRowSurface,SidebarIndent,MarqueeText}),MarqueeText,SidebarRowSurface,SidebarIndent,...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
 }
