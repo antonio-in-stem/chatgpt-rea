@@ -1,0 +1,23 @@
+{
+  "scope": "Observed original boolean data preferences, credential-free local adapter only",
+  "sources": [
+    "data-controls-settings-cebc1c0d07f6.js:920-957",
+    "data-controls-settings-cebc1c0d07f6.js:1616-1645",
+    "data-controls-settings-cebc1c0d07f6.js:1808-1829",
+    "app-shared-737655e1fb23.js:188296-188305",
+    "app-shared-737655e1fb23.js:188382-188400",
+    "app-shared-737655e1fb23.js:188801-188820"
+  ],
+  "contract": {
+    "read": "GET /settings/user -> settings with boolean training_allowed and precise_location_allowed",
+    "write": "PATCH /settings/account_user_setting?feature=<observed key>&value=true|false",
+    "originalBehavior": "Training switch observes account and policy guards, patches preference and invalidates user settings; errors produce original toast. Location preference has additional permission handling."
+  },
+  "implementation": "Atomic sidecar <sidebar-settings-file>.preferences.json, strict observed boolean keys. Existing sidebar file preserved byte-for-byte. No remote mutation or OS location permission implementation.",
+  "validation": "56 Node tests pass, including fresh serialized host function, coexistence with sidebar customization, invalid values, failed rename and foreign temporary-file preservation. Runtime remains v52 without this change; v53 build and original switch verification pending.",
+  "limitations": [
+    "No claim of real training consent or location permission changes",
+    "Runtime visual switch behavior remains unverified",
+    "Other preference keys and broader Data Controls remain incomplete"
+  ]
+}

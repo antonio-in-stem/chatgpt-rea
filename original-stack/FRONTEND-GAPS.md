@@ -16,7 +16,7 @@ The sections below retain investigation history and are not the current completi
 ## Remaining broad surfaces (current adapter audit)
 
 - Activity inbox: `mentions-inbox-contract.json` verifies two synthetic notifications in the original popover, page navigation, individual and bulk read persistence, unread empty state and reload. Deep block/comment targeting, incoming events and loading/error states remain open.
-- Account data settings: `demo_sidebar_settings.cjs` only accepts `sidebar_customization`. Original `data-controls-settings-cebc1c0d07f6.js:1633-1642` writes account preferences such as `training_allowed`. Local preference persistence remains missing; real export/account operations remain outside demo scope.
+- Account data settings: `data-preferences-contract.json` records local boolean persistence for observed `training_allowed` and `precise_location_allowed`, preserving the sidebar store. 56 Node tests pass; a new host build and original switch runtime verification remain pending. Other keys and real export/account operations are not covered.
 - Security panel: original `security-route-feb1afe59e86.js:742-788,994-1005` consumes repositories, scans and findings from a compatible provider. Current demo plugin catalog has no such provider. A read-only synthetic completed scan would be needed; do not run real scans.
 
 ## Profile / rail

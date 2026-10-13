@@ -1,4 +1,4 @@
-// Local demo persistence for the original sidebar_customization HTTP contract.
+// Local demo persistence for original sidebar and observed boolean preference contracts.
 'use strict';
 function demoSidebarSettings(method, url, file, fs) {
   if (url.origin !== 'https://chatgpt.com') return null;
@@ -17,14 +17,32 @@ function demoSidebarSettings(method, url, file, fs) {
       throw Error('Invalid demo sidebar customization');
     return {order:[...value.order],pinOverrides:{...value.pinOverrides}};
   }
-  if (read) {
-    if (!fs.existsSync(file)) return {settings:{}};
-    return {settings:{sidebar_customization:validate(JSON.parse(fs.readFileSync(file,'utf8')))}};
+  const preferenceFile = file + '.preferences.json';
+  const booleanFeatures = ['training_allowed','precise_location_allowed'];
+  function preferences() {
+    if (!fs.existsSync(preferenceFile)) return {};
+    const record = JSON.parse(fs.readFileSync(preferenceFile,'utf8'));
+    if (!record || typeof record !== 'object' || Array.isArray(record) ||
+        Object.entries(record).some(([key,value]) => !booleanFeatures.includes(key) || typeof value !== 'boolean'))
+      throw Error('Invalid demo boolean preferences');
+    return record;
   }
-  if (url.searchParams.get('feature') !== 'sidebar_customization') throw Error('Unsupported demo setting');
+  if (read) {
+    const settings = preferences();
+    if (fs.existsSync(file)) settings.sidebar_customization = validate(JSON.parse(fs.readFileSync(file,'utf8')));
+    return {settings};
+  }
+  const feature = url.searchParams.get('feature');
+  if (feature !== 'sidebar_customization' && !booleanFeatures.includes(feature)) throw Error('Unsupported demo setting');
   const serialized = url.searchParams.get('value');
   if (!serialized || serialized.length > 65536) throw Error('Invalid demo setting size');
-  const value = validate(JSON.parse(serialized));
+  let value;
+  if (feature === 'sidebar_customization') value = validate(JSON.parse(serialized));
+  else {
+    if (!['true','false'].includes(serialized)) throw Error('Invalid demo boolean preference');
+    value = {...preferences(),[feature]:serialized === 'true'};
+    file = preferenceFile;
+  }
   // A failed write must not be reported as success or alter the previous record.
   const temporary = file + '.pending';
   let created = false;
