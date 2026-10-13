@@ -198,9 +198,11 @@ test('versions paginate immutable metadata and bootstrap hashes exact envelope b
  try{
   call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'versions',title:'Page',initial_blocks:[]});
   assert.deepEqual(call('GET','/pages/rea-page-1/versions').items,[]);
+  assert.deepEqual(call('GET','/pages/rea-page-1/versions').current_editor_summary,{editor_summary_version:1,actor_summaries:[]});
   const checkpoints=[1,2].map(n=>({checkpoint_id:'demo-checkpoint-'+n,through_sequence:n,created_at:'2026-10-13T12:00:00Z',editor_summary_version:1,actor_summaries:[],envelope:JSON.stringify({format:'openai.page.yjs',schema_version:2,page_id:'rea-page-1',stream_kind:'content',through_sequence:n,yjs_state_update_base64:'AAA=',state_vector_base64:'AA=='})}));
   fs.writeFileSync(path.join(dir,'rea-page-1-document.json'),JSON.stringify({sequence:3,title:'Page',checkpoints}));
   const listing=call('GET','/pages/rea-page-1/versions?limit=1&stream_kind=content');
+  assert.equal(listing.current_editor_summary,undefined); // Head 3 is newer than checkpoint 2: unknown actor interval.
   assert.equal(listing.items[0].checkpoint_id,'demo-checkpoint-2');assert.equal(listing.items[0].envelope,undefined);assert.equal(listing.next_cursor,'offset:1');
   assert.equal(call('GET','/pages/rea-page-1/versions?limit=1&cursor=offset:1').items[0].checkpoint_id,'demo-checkpoint-1');
   const descriptor=call('GET','/pages/rea-page-1/versions/demo-checkpoint-1/checkpoint-bootstrap?stream_kind=content&prefer_lite_checkpoint=true').checkpoint;
@@ -208,6 +210,10 @@ test('versions paginate immutable metadata and bootstrap hashes exact envelope b
   assert.equal(descriptor.byte_size,Buffer.byteLength(checkpoints[0].envelope));assert.equal(descriptor.content_hash,require('node:crypto').createHash('sha256').update(checkpoints[0].envelope).digest('hex'));
   assert.throws(()=>call('GET','/pages/rea-page-1/versions/demo-checkpoint-3/checkpoint-bootstrap'),/Unknown/);
   assert.throws(()=>call('GET','/pages/rea-page-1/versions?stream_kind=scratch'),/Unsupported/);
+  fs.writeFileSync(path.join(dir,'rea-page-1-document.json'),JSON.stringify({sequence:2,title:'Page',checkpoints}));
+  assert.deepEqual(call('GET','/pages/rea-page-1/versions').current_editor_summary,{editor_summary_version:1,actor_summaries:[]});
+  fs.writeFileSync(path.join(dir,'rea-page-1-document.json'),JSON.stringify({sequence:7,title:'Legacy page'}));
+  assert.equal(call('GET','/pages/rea-page-1/versions').current_editor_summary,undefined);
   call('POST','/pages/rea-page-1/archive',{});assert.throws(()=>call('GET','/pages/rea-page-1/versions'),/Unavailable/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });

@@ -20,6 +20,9 @@
     "content-2bf9ea38a12a.js": [
       "58579-58589 views requires can_share and additional condition",
       "50599-50610 restore session write admission"
+    ],
+    "editors-40bd3af5cea6.js": [
+      "435-464 unknown vs complete-empty editor summaries"
     ]
   },
   "edits": {
@@ -63,7 +66,8 @@
       "GET checkpoint-bootstrap returns full descriptor with exact UTF-8 byte_size and SHA256, observed head and expiry",
       "Download URL uses reserved rea-demo.invalid and is not yet connected to a downloader",
       "Snapshots also capture topLevelBlockIds order and pagesMetadata symbol changes without false block attributions",
-      "Standalone demoCheckpointDownload returns exact frozen bytes only for reserved demo URL and available local page; not wired into host service"
+      "Standalone demoCheckpointDownload returns exact frozen bytes only for reserved demo URL and available local page; not wired into host service",
+      "Current editor interval corrected: head equals newest checkpoint (or pristine sequence zero) -> complete empty actor_summaries; otherwise omitted unknown summary, never hardcoded Demo. Source pending next host build."
     ],
     "source_endpoint_constraint": "app-shared-737655e1fb23.js:105114-105140 zAt requires OpenAI wss endpoint when allowLocal=false. app-initial164595 invokes it whenever pagesRealtime service exists. Restoring downloader service alone breaks local ws sync.",
     "tests": "70 Python pass, standalone local downloader test passes; previous24Node unaffected. UI integration still pending.",
@@ -85,7 +89,6 @@
       "Renamed back to Original Pages demo through title field; original Versions list shows four snapshots including restore and subsequent rename"
     ],
     "remaining": [
-      "Correct current_editor_summary semantics since last checkpoint",
       "Explicit checkpoint-to-checkpoint selector and range handles",
       "Restoring a snapshot with differing block structure and comments anchored in removed content"
     ]

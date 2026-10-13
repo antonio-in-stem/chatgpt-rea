@@ -83,7 +83,10 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   }
   const rows=checkpoints.slice().sort((a,b)=>b.through_sequence-a.through_sequence).map(({envelope,...metadata})=>metadata);
   const result=pageSlice(rows,url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||20));
-  return {items:result.items,next_cursor:result.cursor,actor_displays:[{account_user_id:'rea-demo-user',display_name:'Demo'}],current_editor_summary:{editor_summary_version:1,actor_summaries:[{actor_type:'user',account_user_id:'rea-demo-user'}]}};
+  // A checkpoint at head proves an empty subsequent interval. Legacy or later
+  // uncheckpointed updates lack interval actor records; preserve original unknown state.
+  const head=doc?.sequence??0,latest=rows[0]?.through_sequence??0;
+  return {items:result.items,next_cursor:result.cursor,actor_displays:[{account_user_id:'rea-demo-user',display_name:'Demo'}],...(head===latest?{current_editor_summary:{editor_summary_version:1,actor_summaries:[]}}:{})};
  }
  if(view){
   const item=state.items.find(x=>x.metadata.page_id===route.split('/')[2]&&live(x));if(!item)throw Error('Unavailable demo page');
