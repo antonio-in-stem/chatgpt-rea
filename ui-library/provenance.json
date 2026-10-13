@@ -265,7 +265,6 @@
     "transformation": "Compiler caches removed; original classes, branches and prop forwarding retained. Asset renderer and theme hook injected explicitly.",
     "verification": "Differential execution across five icon sources, three sizes, two theme states, plus compact asset/component cases.",
     "limits": [
-      "Theme provider remains consumer dependency",
       "Breakpoint screenshot comparison pending"
     ]
   },
@@ -276,6 +275,16 @@
     "limits": [
       "Preset validation and sprite resources external",
       "Pixel comparison pending"
+    ]
+  },
+  "themeObserver": {
+    "source": "app-shared-737655e1fb23.js hxi/gxi/_xi/vxi",
+    "file": "src/theme.js",
+    "transformation": "Same external-store contract, snapshot and MutationObserver attribute filter with injected React.",
+    "verification": "Differential theme snapshots; subscription cleanup; browser dark/light/dark update through authored toggle.",
+    "limits": [
+      "Account preference storage/system-theme controller not extracted",
+      "No settings-screen reconstruction"
     ]
   }
 }

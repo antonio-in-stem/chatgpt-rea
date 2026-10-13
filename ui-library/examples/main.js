@@ -14,9 +14,10 @@ const SidebarFlow=createSidebarFlow(React,ui);
 const SearchFlow=createSearchFlow(React,ui);
 const DecisionFlow=createDecisionFlow(React,ui);
 function App(){
- const [result,setResult]=React.useState(null);
+ const [result,setResult]=React.useState(null),dark=ui.useDarkTheme();
  return React.createElement('main',{className:'mx-auto max-w-xl p-6'},
   React.createElement('h1',{className:'mb-4 text-xl font-medium'},'Reusable decision flow'),
+  React.createElement(ui.Button,{color:'secondary',size:'dialogAction',onClick:()=>{document.documentElement.dataset.theme=dark ? 'light' : 'dark';}},dark ? 'Switch to light theme' : 'Switch to dark theme'),
   React.createElement(DecisionFlow,{onConfirm:setResult}),
   result ? React.createElement('p',{role:'status',className:'mt-4'},`Confirmed: ${result.mode}`) : null,React.createElement(ui.NavigationItem,{label:'Focus project search',icon:searchIcons.Search16,animatedIcon:'sidebar-search',fullWidth:false,onClick:()=>document.getElementById('project-search')?.focus()}),React.createElement(SearchFlow),React.createElement(SidebarFlow));
 }

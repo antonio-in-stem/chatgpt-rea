@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Thirty-six tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Thirty-seven tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -112,10 +112,16 @@ The repeatable Playwright check `scripts/check-animated-navigation.js` verifies 
 
 `createResponsiveIcons({React, AssetIcon, useDarkTheme, mergeClasses})` returns `ResponsiveIcon`, `ResponsiveIconPair` and `CompactIcon`. They preserve s5/wxi/Txi/Exi: leading pairs use original CSS classes to select compact/leading sources, inline picks 20px, secondary picks 16px, and legacy component classes retain their original defaults. The themed-artwork branch selects dark only when the supplied hook returns true and falls back to light when no dark artwork exists.
 
-`createReaUI` exposes these components and supplies ResponsiveIcon to NavigationItem unless overridden. `createReaUI` now supplies the recovered AssetIcon renderer by default. Pass `useDarkTheme` for themed artwork; a missing theme hook fails explicitly. The app theme provider remains pending. Differential tests compare branches, prop forwarding and theme selection against the recovered functions; actual breakpoint screenshots remain pending.
+`createReaUI` exposes these components and supplies ResponsiveIcon to NavigationItem unless overridden. `createReaUI` now supplies the recovered AssetIcon renderer by default. The factory also supplies the recovered root theme observer. `useDarkTheme` remains an optional override. Differential tests compare branches, prop forwarding and theme selection against the recovered functions; actual breakpoint screenshots remain pending.
 
 ### Asset rendering
 
 `createAssetIcon(React)` returns the recovered t5/rlr renderer. It accepts `asset`, `alignment`, `idPrefix`, `label` and SVG properties. Original helpers handle inline/sprite sources, optical alignment, overflow, layered paint and wide-gamut styles, local ID rewriting and accessibility. `createReaUI` exposes AssetIcon and uses it for responsive assets by default.
 
 This consumes trusted recovered preset objects; it is not an SVG sanitizer. The preset constructor/validator Z is outside this extraction, and referenced sprite resources must be supplied. Original function bodies are retained with injected React and fresh compiler-cache arrays per render, preserving output while omitting the original memo optimization. Reproduce with `scripts/extract-asset-renderer.mjs` and the recovered shared module. Tests cover two shipped presets, wrapped inline/sprite variants, optical alignment, labels, isolated clip-path IDs and capability errors. Rendered screenshot comparison remains pending.
+
+### Root theme observation
+
+`createDarkThemeHook(React)` preserves hxi/gxi/_xi/vxi: it observes only `data-theme` on the document root, reports true for dark, false for other present values, and null for missing/SSR state. `createReaUI` exposes `useDarkTheme` and supplies it to responsive artwork automatically. This reads the theme; it does not recreate account preference storage or system-theme selection.
+
+The authored example's toggle changes that attribute and demonstrates live subscription updates. Browser verification observed dark text rgb(223,223,223), light text rgb(26,28,31), and restoration to dark without reload. The example toggle is not the original settings screen; themed asset pixel comparison remains pending.

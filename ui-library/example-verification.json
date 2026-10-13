@@ -79,5 +79,22 @@
       "method": "Real Playwright keyboard Tab/Enter, hover and media emulation",
       "reproducibleCheck": "scripts/check-animated-navigation.js"
     }
+  },
+  "themeToggle": {
+    "sequence": [
+      "dark",
+      "light",
+      "dark"
+    ],
+    "bodyTextColors": [
+      "rgb(223, 223, 223)",
+      "rgb(26, 28, 31)",
+      "rgb(223, 223, 223)"
+    ],
+    "reloadRequired": false,
+    "limits": [
+      "Authored demo toggle",
+      "Original settings screen not reproduced"
+    ]
   }
 }
