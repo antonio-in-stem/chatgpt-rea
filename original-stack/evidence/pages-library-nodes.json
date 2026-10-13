@@ -17,12 +17,11 @@
     "passed": true,
     "node": 20
   },
-  "runtimeVerified": "partial",
+  "runtimeVerified": true,
   "limitations": [
-    "All home remains empty on fresh load; root cause still unresolved",
-    "Node endpoint covered by adapter tests, invocation by current All variant not established",
     "Shared folders/providers unsupported",
-    "Root listing only for nodes; directory pages excluded"
+    "Root listing only for nodes; directory pages excluded",
+    "Pagination covered by tests; runtime fixture has only five pages"
   ],
   "runtime": {
     "package": "v26",
@@ -33,5 +32,6 @@
       "No views error for page3 in new runtime log"
     ],
     "lastUsedAt": "2026-10-13T11:09:53.812Z"
-  }
+  },
+  "followup": "v27 enables original library gate; Suggested and Your items both render five pages. See library-home-gate.json for source/runtime selector evidence."
 }

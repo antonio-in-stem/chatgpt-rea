@@ -1,0 +1,76 @@
+{
+  "scope": "Original Space home library enablement",
+  "rootCause": "Suggested returns empty before HTTP when includeLibraryFiles is false",
+  "source": [
+    "app-initial:158201-158208 Myr shortcircuit",
+    "app-initial:289319-289321 PX.includeLibraryFiles = MD",
+    "app-initial:96061-96084 library availability and gate224248639",
+    "app-shared:188296 settings/user;188369 optional country flag",
+    "app-initial:288824-288831 /space defaults suggested",
+    "slate-page-a29ec9698573.js:3169-3175 Your items tab = all"
+  ],
+  "before": [
+    {
+      "tab": "suggested",
+      "includePages": true,
+      "directoryId": null,
+      "source": null,
+      "providers": [],
+      "categories": []
+    },
+    {
+      "tab": "suggested",
+      "includeLibraryFiles": false,
+      "includePages": true,
+      "directoryId": null,
+      "source": null,
+      "providers": [],
+      "categories": []
+    }
+  ],
+  "change": "Enable recovered library gate224248639 only in synthetic bootstrap",
+  "runtimeVerified": true,
+  "limitations": [
+    "Synthetic personal pages only; external providers and actual files not covered"
+  ],
+  "after": [
+    {
+      "tab": "suggested",
+      "includePages": true,
+      "directoryId": null,
+      "source": null,
+      "providers": [],
+      "categories": []
+    },
+    {
+      "tab": "suggested",
+      "includeLibraryFiles": true,
+      "includePages": true,
+      "directoryId": null,
+      "source": null,
+      "providers": [],
+      "categories": []
+    },
+    {
+      "tab": "all",
+      "deleted": false,
+      "includeLibraryFiles": true,
+      "includePages": true,
+      "includeTrashedPages": false,
+      "directoryId": null,
+      "source": null,
+      "providers": [
+        "native",
+        "native_shared"
+      ],
+      "categories": []
+    }
+  ],
+  "runtime": {
+    "package": "v27",
+    "asar": "5b74fd0e5ef265811ae2440922533df4deade81cc4309499c1cd81576a7fcb4a",
+    "suggested": "Fresh process > Space displays all five synthetic pages; Name/Source/Last activity",
+    "yourItems": "Original Your items tab displays all five synthetic pages; Name/Modified/Size",
+    "rendererFilesModified": false
+  }
+}
