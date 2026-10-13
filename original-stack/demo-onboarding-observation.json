@@ -1,0 +1,104 @@
+{
+  "stateName": "demo-probe-20261013-b",
+  "iterations": [
+    {
+      "log": "demo-probe-b-methods.jsonl",
+      "methodCounts": {
+        "account/gatewayOAuth/read": 3,
+        "account/read": 12,
+        "collaborationMode/list": 4,
+        "config/batchWrite": 3,
+        "config/read": 6,
+        "configRequirements/read": 4,
+        "experimentalFeature/enablement/set": 1,
+        "experimentalFeature/list": 3,
+        "fs/readFile": 1,
+        "getAuthStatus": 19,
+        "initialize": 1,
+        "marketplace/add": 3,
+        "mcpServerStatus/list": 12,
+        "plugin/installed": 3,
+        "plugin/list": 9,
+        "project/list": 1,
+        "remoteControl/status/read": 1,
+        "thread/list": 10,
+        "windowsSandbox/readiness": 1
+      }
+    },
+    {
+      "log": "demo-probe-b2-methods.jsonl",
+      "methodCounts": {
+        "account/gatewayOAuth/read": 1,
+        "account/read": 7,
+        "config/batchWrite": 1,
+        "config/read": 3,
+        "configRequirements/read": 2,
+        "experimentalFeature/enablement/set": 1,
+        "experimentalFeature/list": 1,
+        "externalAgentConfig/detect": 2,
+        "getAuthStatus": 10,
+        "initialize": 1,
+        "marketplace/add": 4,
+        "mcpServerStatus/list": 2,
+        "plugin/installed": 2,
+        "plugin/list": 9,
+        "project/list": 1,
+        "thread/list": 3,
+        "windowsSandbox/readiness": 1
+      }
+    },
+    {
+      "log": "demo-probe-b3-methods.jsonl",
+      "methodCounts": {
+        "account/gatewayOAuth/read": 1,
+        "account/read": 7,
+        "config/batchWrite": 1,
+        "config/read": 4,
+        "configRequirements/read": 2,
+        "experimentalFeature/enablement/set": 1,
+        "experimentalFeature/list": 1,
+        "getAuthStatus": 11,
+        "initialize": 1,
+        "marketplace/add": 4,
+        "mcpServerStatus/list": 2,
+        "model/list": 4,
+        "permissionProfile/list": 1,
+        "plugin/installed": 1,
+        "plugin/list": 11,
+        "project/list": 1,
+        "thread/list": 3,
+        "windowsSandbox/readiness": 1
+      }
+    },
+    {
+      "log": "demo-probe-b4-methods.jsonl",
+      "methodCounts": {
+        "account/gatewayOAuth/read": 1,
+        "account/read": 7,
+        "config/batchWrite": 1,
+        "config/read": 5,
+        "configRequirements/read": 2,
+        "experimentalFeature/enablement/set": 1,
+        "experimentalFeature/list": 1,
+        "getAuthStatus": 12,
+        "initialize": 1,
+        "marketplace/add": 4,
+        "mcpServerStatus/list": 2,
+        "plugin/installed": 1,
+        "plugin/list": 11,
+        "project/list": 1,
+        "thread/list": 3,
+        "windowsSandbox/readiness": 1
+      }
+    }
+  ],
+  "authFilePresentAfterProbe": false,
+  "finalVisibleState": "Original onboarding view: logo and Pensando; composer/sidebar not visible",
+  "runtimeStoppedAfterProbe": true,
+  "limitations": [
+    "No offline/network isolation claim.",
+    "No completed app startup claim.",
+    "Reconnect retains frontend query state; perform a cold start before attributing further blockers.",
+    "Mutation methods still explicitly unimplemented."
+  ]
+}

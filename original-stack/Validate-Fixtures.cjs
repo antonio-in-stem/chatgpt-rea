@@ -2,10 +2,11 @@ const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_pro
 const Ajv=require(process.argv[2]);
 const ajv=new Ajv({allErrors:true,strict:false});
 // Schemars numeric format extensions. Restrict wide integers to JS-safe values.
-for(const [format,max] of [['uint',Number.MAX_SAFE_INTEGER],['uint16',65535],['uint64',Number.MAX_SAFE_INTEGER]]){
+for(const [format,max] of [['uint',Number.MAX_SAFE_INTEGER],['uint16',65535],['uint32',4294967295],['uint64',Number.MAX_SAFE_INTEGER]]){
  ajv.addFormat(format,{type:'number',validate:value=>Number.isSafeInteger(value)&&value>=0&&value<=max});
 }
 ajv.addFormat('int64',{type:'number',validate:Number.isSafeInteger});
+ajv.addFormat('int32',{type:'number',validate:value=>Number.isInteger(value)&&value>=-2147483648&&value<=2147483647});
 const fixtureFile=JSON.parse(fs.readFileSync(path.join(__dirname,'demo-fixtures.json'),'utf8'));
 const initialize={schema:'v1/InitializeResponse.json'};
 const cases={initialize,...fixtureFile};

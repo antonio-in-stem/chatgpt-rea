@@ -88,5 +88,93 @@
       "origins": {},
       "layers": []
     }
+  },
+  "account/gatewayOAuth/read": {
+    "schema": "v2/GatewayOAuthReadResponse.json",
+    "result": {
+      "providerId": "rea-demo",
+      "providerName": "REA Demo",
+      "required": false,
+      "status": null,
+      "error": null
+    }
+  },
+  "thread/list": {
+    "schema": "v2/ThreadListResponse.json",
+    "result": {
+      "data": [],
+      "nextCursor": null,
+      "backwardsCursor": null
+    }
+  },
+  "mcpServerStatus/list": {
+    "schema": "v2/ListMcpServerStatusResponse.json",
+    "result": {
+      "data": [],
+      "nextCursor": null
+    }
+  },
+  "plugin/installed": {
+    "schema": "v2/PluginInstalledResponse.json",
+    "result": {
+      "marketplaces": [],
+      "marketplaceLoadErrors": []
+    }
+  },
+  "externalAgentConfig/detect": {
+    "schema": "v2/ExternalAgentConfigDetectResponse.json",
+    "result": {
+      "items": [],
+      "connectors": []
+    }
+  },
+  "windowsSandbox/readiness": {
+    "schema": "v2/WindowsSandboxReadinessResponse.json",
+    "result": {
+      "status": "notConfigured"
+    }
+  },
+  "model/list": {
+    "schema": "v2/ModelListResponse.json",
+    "result": {
+      "data": [
+        {
+          "id": "rea-demo",
+          "model": "rea-demo",
+          "displayName": "Demo",
+          "description": "Local frontend demonstration",
+          "upgrade": null,
+          "upgradeInfo": null,
+          "availabilityNux": null,
+          "modelSpecialty": null,
+          "hidden": false,
+          "supportedReasoningEfforts": [
+            {
+              "reasoningEffort": "medium",
+              "description": "Demo"
+            }
+          ],
+          "defaultReasoningEffort": "medium",
+          "inputModalities": [
+            "text"
+          ],
+          "supportsPersonality": false,
+          "multiAgentVersion": null,
+          "additionalSpeedTiers": [],
+          "serviceTiers": [],
+          "defaultServiceTier": null,
+          "availableAccessPrograms": null,
+          "isDefault": true
+        }
+      ],
+      "nextCursor": null
+    }
+  },
+  "permissionProfile/list": {
+    "schema": "v2/PermissionProfileListResponse.json",
+    "result": {
+      "data": [],
+      "nextCursor": null
+    }
   }
 }
