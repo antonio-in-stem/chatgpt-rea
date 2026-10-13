@@ -375,3 +375,7 @@ Preview PID46296 stopped after verifying its executable path. No new real-window
 capture this checkpoint. Remaining: visual state matrix, ANSI/cwd, hover-only
 copy controls, fades, animation, accessibility expanded state and broader shell
 fidelity. Full frontend clone remains incomplete.
+
+
+## Windows shell corners checkpoint
+Recovered source replaces guessed 16px top-only corners with 12/12/2/12px Windows application-menu corners and 4px page insets. Native post-descendant paint clips corner backgrounds. See catalog/SHELL-CORNERS.md. Build passed; 59 workspace tests passed; real own-window capture qa/native-corners-20.png inspected. Component superellipse parity remains incomplete.

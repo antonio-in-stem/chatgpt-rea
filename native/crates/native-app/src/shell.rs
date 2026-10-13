@@ -17,6 +17,32 @@ fn sidebar_visible_indices(count: usize, limit: usize, active: Option<usize>) ->
     if count-indices.len()==1 { return (0..count).collect(); }
     indices
 }
+// Recovered Windows ApplicationMenuPageSurfaceLayout: xl-base=12px,
+// except the bottom-right corner (xs-base=2px). GPUI overflow clips a
+// rectangle, so paint the corner cutouts after descendants and then the border.
+fn paint_shell_frame(bounds: Bounds<Pixels>, shell: Hsla, border: Hsla, window: &mut Window) {
+    let radii = Corners { top_left: px(12.), top_right: px(12.),
+        bottom_left: px(12.), bottom_right: px(2.) };
+    for (right, bottom, radius) in [(false,false,12.),(true,false,12.),
+        (false,true,12.),(true,true,2.)] {
+        let origin = point(if right { bounds.right() } else { bounds.left() },
+            if bottom { bounds.bottom() } else { bounds.top() });
+        let at = |x: f32, y: f32| origin + point(px(if right { -x } else { x }),
+            px(if bottom { -y } else { y }));
+        let mut path = PathBuilder::fill();
+        path.move_to(at(0.,0.));
+        path.line_to(at(radius,0.));
+        // A circular quadrant, matching the unscaled shell radius token.
+        for step in 1..=32 {
+            let angle = step as f32 * std::f32::consts::FRAC_PI_2 / 32.;
+            path.line_to(at(radius-radius*angle.sin(), radius-radius*angle.cos()));
+        }
+        path.close();
+        if let Ok(path) = path.build() { window.paint_path(path, shell); }
+    }
+    window.paint_quad(quad(bounds, radii, Hsla::transparent_black(), px(1.), border, BorderStyle::Solid));
+}
+
 impl WorkspaceApp {
     fn open_shell_menu(&mut self, dialog: Dialog, window: &mut Window, cx: &mut Context<Self>) {
         if self.dialog.is_none() {
@@ -854,12 +880,16 @@ impl Render for WorkspaceApp {
                     .on_click(cx.listener(|s,_,w,cx| s.act(Action::EditMenu,w,cx)))))
             .child(controls);
         let mut surface = div().id("workspace-surface").test_support().flex_1().min_w_0()
-            .h_full().flex().rounded_tl(px(16.)).rounded_tr(px(16.))
-            .border_1().border_color(cx.theme().colors.border).overflow_hidden();
+            .h_full().relative().flex().rounded(px(12.)).rounded_br(px(2.))
+            .border_1().border_color(Hsla::transparent_black()).overflow_hidden();
         if self.sidebar { surface = surface.child(self.sidebar_view(window, cx)); }
-        surface = surface.child(main);
+        let shell_color: Hsla = if cx.theme().mode.is_dark() { rgb(0x1a202f).into() } else { cx.theme().colors.sidebar };
+        let frame_color = cx.theme().colors.border;
+        surface = surface.child(main).child(canvas(|_, _, _| (), move |bounds, _, window, _| {
+            paint_shell_frame(bounds, shell_color, frame_color, window);
+        }).absolute().inset_0());
         root = root.child(titlebar).child(div().flex_1().min_h_0().w_full().flex()
-            .pr(px(6.)).pb(px(2.)).child(self.rail_view(cx)).child(surface));
+            .pr(px(4.)).pb(px(4.)).child(self.rail_view(cx)).child(surface));
         // Capture the drag above descendants so controls never consume the release.
         if self.sidebar_resize.is_some() {
             root = root.child(
