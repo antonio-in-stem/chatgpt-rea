@@ -1,5 +1,5 @@
 {
-  "status": "Synthetic recipient lookup and persistent POST/PATCH/DELETE implemented; demo account features and can_share connected, rebuild/UI verification pending",
+  "status": "v38 installed; original space Share invitation and role update/reload verified; revoke/cancel/page inheritance UI pending",
   "source": "Recovered shipped frontend, bounded REA audit; consumer DTO not full upstream schema",
   "initial": {
     "routes": [
@@ -116,5 +116,20 @@
     "Personal ancestor grants cause inherited_access.complete=false; no invented complete hierarchy semantics",
     "Archived/unknown targets reject lookup and mutation; unrelated target cannot mutate grant ID",
     "No network delivery, invitations remain local pending state"
+  ],
+  "runtime_observation": [
+    "Space original menu Share now available and opens original dialog with Demo Owner and Only those invited",
+    "Add people search collaborator returns fixed invalid-domain recipient; keyboard ArrowDown/Enter selects chip",
+    "Original Share persists synthetic Viewer grant and shows Invitation pending",
+    "Original Viewer menu contains Viewer/Commenter/Editor/Remove access",
+    "Selecting Editor keeps stored role Viewer until original Save",
+    "After Save and full reload, reopen Share shows persisted Editor with Invitation pending"
+  ],
+  "remaining_ui": [
+    "Cancel staged role/invitation changes",
+    "Remove access and reload",
+    "Child page inherited access display",
+    "Page-specific direct grant lifecycle",
+    "Copy link behavior and access mode controls"
   ]
 }
