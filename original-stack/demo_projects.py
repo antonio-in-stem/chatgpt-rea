@@ -9,7 +9,7 @@ class ProjectError(ValueError):
     pass
 
 class ProjectStore:
-    METHODS = {"project/list", "project/read", "project/create", "project/update", "project/delete"}
+    METHODS = {"project/list", "project/read", "project/create", "project/update", "project/delete", "project/move"}
 
     def __init__(self, path):
         self.path = Path(path)
@@ -86,7 +86,19 @@ class ProjectStore:
                 raise ProjectError("Unknown demo project")
             if method == "project/read":
                 return {"project": projects[project_id]}, None
-            if method == "project/update":
+            if method == "project/move":
+                before = params.get("beforeProjectId")
+                if before is not None and (not isinstance(before, str) or before not in projects):
+                    raise ProjectError("Unknown target project")
+                if before == project_id:
+                    return {}, None
+                ordered = sorted(projects, key=lambda key: (projects[key]["position"], key))
+                ordered.remove(project_id)
+                ordered.insert(ordered.index(before) if before is not None else len(ordered), project_id)
+                for position, key in enumerate(ordered):
+                    projects[key]["position"] = position
+                response, change = {}, "updated"
+            elif method == "project/update":
                 projects[project_id].update(self._fields(params))
                 projects[project_id]["updatedAt"] = int(time.time())
                 response, change = {"project": projects[project_id]}, "updated"

@@ -12,7 +12,7 @@ with tempfile.TemporaryDirectory() as directory:
  result,event=s.handle('project/create',{'name':'Demo','roots':[],'idempotencyKey':'validation'})
  samples.extend([['ProjectCreateResponse',result],['ProjectChangedNotification',event['params']]])
  project_id=result['project']['id']
- for method,schema,params in [('project/read','ProjectReadResponse',{'projectId':project_id}),('project/update','ProjectUpdateResponse',{'projectId':project_id,'name':'Updated'}),('project/list','ProjectListResponse',{}),('project/delete','ProjectDeleteResponse',{'projectId':project_id})]:
+ for method,schema,params in [('project/read','ProjectReadResponse',{'projectId':project_id}),('project/update','ProjectUpdateResponse',{'projectId':project_id,'name':'Updated'}),('project/list','ProjectListResponse',{}),('project/move','ProjectMoveResponse',{'projectId':project_id}),('project/delete','ProjectDeleteResponse',{'projectId':project_id})]:
   result,event=s.handle(method,params)
   samples.append([schema,result])
   if event:samples.append(['ProjectChangedNotification',event['params']])

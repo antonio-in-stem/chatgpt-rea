@@ -8,12 +8,13 @@ from pathlib import Path
 from websockets.asyncio.server import serve
 from websockets.exceptions import ConnectionClosed
 from demo_projects import ProjectStore, ProjectError
+from demo_config import ConfigStore, ConfigError
 
 MAX_FRAME_BYTES = 1024 * 1024
 FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
 
 
-def handle_message(raw, projects=None, notifications=None):
+def handle_message(raw, projects=None, notifications=None, config=None):
     """Return an optional RPC reply and a value-free method/shape observation."""
     try:
         message = json.loads(raw)
@@ -30,6 +31,11 @@ def handle_message(raw, projects=None, notifications=None):
                    "paramsType": type(params).__name__}
     if "id" not in message:
         return None, observation
+    if config is not None and message["method"] in ConfigStore.METHODS:
+        try:
+            return {"id":request_id,"result":config.handle(message["method"],params)}, observation
+        except ConfigError as error:
+            return {"id":request_id,"error":{"code":-32602,"message":str(error)}}, observation
     if projects is not None and message["method"] in ProjectStore.METHODS:
         try:
             result, notification = projects.handle(message["method"], params)
@@ -49,16 +55,17 @@ def handle_message(raw, projects=None, notifications=None):
     return {"id": request_id, "error": {"code": -32601, "message": "Demo contract not implemented"}}, observation
 
 
-async def run(port, output, project_state):
+async def run(port, output, project_state, config_state):
     output.parent.mkdir(parents=True, exist_ok=True)
     projects = ProjectStore(project_state)
+    config = ConfigStore(config_state, FIXTURES["config/read"]["result"]["config"])
     clients = set()
     async def connection(socket):
         clients.add(socket)
         try:
             async for raw in socket:
                 notifications = []
-                reply, observation = handle_message(raw, projects, notifications)
+                reply, observation = handle_message(raw, projects, notifications, config)
                 with output.open("a", encoding="utf-8") as stream:
                     stream.write(json.dumps(observation) + "\n")
                 if reply is not None:
@@ -79,5 +86,6 @@ if __name__ == "__main__":
     parser.add_argument("--port", type=int, default=0)
     parser.add_argument("--output", type=Path, default=Path(__file__).parent / "state" / "demo-methods.jsonl")
     parser.add_argument("--project-state", type=Path, default=Path(__file__).parent / "state" / "demo-projects.json")
+    parser.add_argument("--config-state", type=Path, default=Path(__file__).parent / "state" / "demo-config.json")
     args = parser.parse_args()
-    asyncio.run(run(args.port, args.output, args.project_state))
+    asyncio.run(run(args.port, args.output, args.project_state, args.config_state))

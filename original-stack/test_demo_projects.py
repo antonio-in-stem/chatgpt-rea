@@ -50,6 +50,16 @@ class ProjectTests(unittest.TestCase):
         descending,_ = self.store.handle("project/list", {"sortDirection":"desc"})
         self.assertEqual([p["name"] for p in descending["data"]], ["2","1","0"])
 
+    def test_move_reorders_persistently(self):
+        first,_=self.create("first")
+        second,_=self.create("second")
+        first_id,second_id=first["project"]["id"],second["project"]["id"]
+        reply,event=self.store.handle("project/move",{"projectId":second_id,"beforeProjectId":first_id})
+        self.assertEqual(reply,{})
+        self.assertEqual(event["params"]["changeType"],"updated")
+        read=ProjectStore(self.path).handle("project/list",{})[0]
+        self.assertEqual([p["id"] for p in read["data"]],[second_id,first_id])
+
     def test_rpc_routes_persistent_store_and_notifications(self):
         events=[]
         response,_=handle_message(json.dumps({"id":3,"method":"project/create","params":{"name":"Demo","roots":[],"idempotencyKey":"rpc"}}),self.store,events)
