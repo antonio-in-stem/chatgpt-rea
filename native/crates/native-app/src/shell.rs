@@ -615,16 +615,16 @@ impl WorkspaceApp {
                 .conversation(&self.chat_target())
                 .is_ok_and(|c| c.pinned);
             vec![
-                ("edit", "Rename", 702, Action::Rename),
+                ("menu-rename", "Rename", 702, Action::Rename),
                 (
-                    "pin",
+                    if pinned { "menu-unpin" } else { "menu-pin" },
                     if pinned { "Unpin" } else { "Pin" },
                     703,
                     Action::Pin,
                 ),
                 ("projects", "Move to project", 705, Action::AssignProject),
                 ("archive", "Archive", 704, Action::Archive),
-                ("trash", "Delete", 707, Action::DeleteChat),
+                ("menu-delete", "Delete", 707, Action::DeleteChat),
             ]
         } else {
             vec![
@@ -655,7 +655,7 @@ impl WorkspaceApp {
                                     .when(!name.is_empty(), |row| {
                                         row.child(
                                             native_ui::icon(name, 18.)
-                                                .text_color(cx.theme().colors.foreground),
+                                                .text_color(if key == 707 { cx.theme().colors.danger } else { cx.theme().colors.foreground }),
                                         )
                                     })
                                     .child(label)
@@ -670,6 +670,7 @@ impl WorkspaceApp {
                             .justify_start()
                             .rounded(px(8.))
                             .text_size(native_ui::typography::TextRole::Small.in_app(cx))
+                            .when(key == 707, |button| button.text_color(cx.theme().colors.danger))
                             .on_click(cx.listener(move |this, _, window, cx| {
                                 if !matches!(action, Action::HelpMenu) {
                                     this.dialog = None;

@@ -7,6 +7,11 @@ use gpui_kit::{prelude::*, *};
 
 pub fn icon_data(name: &str) -> &'static [u8] {
     match name {
+        "menu-rename" => include_bytes!("../assets/menu-rename.svg"),
+        "menu-pin" => include_bytes!("../assets/menu-pin.svg"),
+        "menu-unpin" => include_bytes!("../assets/menu-unpin.svg"),
+        "menu-delete" => include_bytes!("../assets/menu-delete.svg"),
+
         "rail-home" => include_bytes!("../assets/rail-home.svg"),
         "rail-home-selected" => include_bytes!("../assets/rail-home-selected.svg"),
         "rail-apps" => include_bytes!("../assets/rail-apps.svg"),

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "menu-rename",
+    "symbol": "VVo",
+    "source": "app-initial-b8e1c8014bb4.js",
+    "line": 360792,
+    "sha256": "3c38e8e9c458c773c2a570ccafcc2e527cf374318ce128f7958255850a22d824",
+    "binding": "app-initial _0 iHo icon mapping; Jas pin/unpin at400323"
+  },
+  {
+    "name": "menu-pin",
+    "symbol": "UVo",
+    "source": "app-initial-b8e1c8014bb4.js",
+    "line": 360810,
+    "sha256": "ff3567b50aa731a1d6cd64b9e388d27ecf5fa27667995ad0709265f0835931b2",
+    "binding": "app-initial _0 iHo icon mapping; Jas pin/unpin at400323"
+  },
+  {
+    "name": "menu-unpin",
+    "symbol": "YVo",
+    "source": "app-initial-b8e1c8014bb4.js",
+    "line": 360863,
+    "sha256": "142c6fad704a9b5714a44c473a9b712f2a5081fc4e63b259885cc37be30aacf2",
+    "binding": "app-initial _0 iHo icon mapping; Jas pin/unpin at400323"
+  },
+  {
+    "name": "menu-delete",
+    "symbol": "qVo",
+    "source": "app-initial-b8e1c8014bb4.js",
+    "line": 360846,
+    "sha256": "09fb36a7a8aeae04e0478252db0b5902d9305187ade49d462ce7784fd11daaae",
+    "binding": "app-initial _0 iHo icon mapping; Jas pin/unpin at400323"
+  }
+]

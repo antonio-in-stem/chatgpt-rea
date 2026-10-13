@@ -403,3 +403,7 @@ Recovered sidebar-item geometry applied to chat/project/Show more rows. Correcte
 
 ## Sidebar context target
 61 regression tests passed plus new sidebar_context_menu_targets_unopened_chat. Native executable rebuilt and packaged. Menu actions resolve explicit target, avoiding accidental mutation of the open chat. Full source context-menu inventory remains incomplete.
+
+
+## Chat menu vectors
+Extracted four SVG literals with exact source bindings and hashes (catalog/chat-menu-icons.json), added explicit unpin icon and danger tone for Delete. Native executable build passed. No new interaction changes or claim of visual runtime parity; source menu variants documented in catalog/CHAT-MENU.md.
