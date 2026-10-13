@@ -1,0 +1,22 @@
+{
+  "scope": "Credential-free demo feature bootstrap and SDK refresh, original renderer unchanged",
+  "observed_gap": "Original renderer reported failed POST to ab.chatgpt.com/v1/initialize and chatgpt.com/ces/v1/rgstr. Existing host fixture served only /wham/statsig/bootstrap. Sketch and Goal were absent after a later reload; causality not yet proven.",
+  "sources": [
+    "app-shared-737655e1fb23.js:118306-118311",
+    "app-shared-737655e1fb23.js:163239-163245,163644-163708",
+    "app-shared-737655e1fb23.js:186738-186761",
+    "app-primary-19fe57fd8c00.js:66481-66494"
+  ],
+  "contract": {
+    "bootstrap": "POST https://chatgpt.com/wham/statsig/bootstrap returns statsigPayload string",
+    "refresh": "POST https://ab.chatgpt.com/v1/initialize returns direct V1 evaluation object with has_updates, current time, same explicit demo gates/layers",
+    "events": "POST https://chatgpt.com/ces/v1/rgstr or log_event acknowledges success locally; event bodies are neither persisted nor forwarded",
+    "boundary": "Other hosts, paths and methods do not match this handler"
+  },
+  "validation": "54 Node tests pass. Original runtime after package restart showed Goal/Sketch; renderer reload retained both and Sketch opened original editor. A 20-second console/exception observation spanning reload returned no captured errors.",
+  "limits": [
+    "No real experimentation service or real account flags",
+    "No upstream telemetry is sent by this handler",
+    "Long-duration menu stability and causal attribution beyond this bounded restart/reload check remain unproven"
+  ]
+}

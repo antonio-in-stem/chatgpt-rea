@@ -13,6 +13,12 @@ The sections below retain investigation history and are not the current completi
 - Windows visual checks: `windows-capture-contract.json` distinguishes surface-capture artifacts from original CSS. Use the default view capture for transparent-window comparisons; explicit surface capture remains diagnostic only. This does not establish complete visual parity.
 - Rust and inferred component restructuring remain deferred by the owner.
 
+## Remaining broad surfaces (current adapter audit)
+
+- Activity inbox: `demo_space_http.cjs` still returns an empty `/pages/mentions/inbox`; original `inbox-2e21c8f183ef.js:237-245,459` has paged notifications and read mutations. Add a synthetic Page mention, navigation and persisted read state.
+- Account data settings: `demo_sidebar_settings.cjs` only accepts `sidebar_customization`. Original `data-controls-settings-cebc1c0d07f6.js:1633-1642` writes account preferences such as `training_allowed`. Local preference persistence remains missing; real export/account operations remain outside demo scope.
+- Security panel: original `security-route-feb1afe59e86.js:742-788,994-1005` consumes repositories, scans and findings from a compatible provider. Current demo plugin catalog has no such provider. A read-only synthetic completed scan would be needed; do not run real scans.
+
 ## Profile / rail
 
 Live original demo: profile button renders its original Settings SVG. Static source: app-initial-b8e1c8014bb4.js function iPo around 351125 reads identity from gp(); profile De is constructed only for authMethod=chatgpt (351270), and the effective profile ke selects Settings when null (351386). Current demo authMethod is null. Thus replacing the SVG would hide the missing identity integration instead of reproducing the source behavior. Next: trace the host identity contract and supply explicit synthetic demo identity through a documented isolated adapter. Merely adding email to account/read is not sufficient evidence. Remaining navigation gates require separate tracing.
