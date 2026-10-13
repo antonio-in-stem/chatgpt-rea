@@ -70,10 +70,10 @@
   "statusClassifier": "Nonlocal, non-condition_watch and empty next_run_times -> completed; otherwise is_enabled -> active or paused",
   "implemented": "Stateful GET listing and POST save/set_status/remove in isolated demo-automations.json; exclusive temp write and atomic replacement",
   "pending": [
-    "Original UI editing and reload persistence",
     "Cloud HTTP lifecycle still unverified",
     "Preview scheduling semantics remain synthetic",
-    "Run-now is blocked, not simulated"
+    "Run-now is blocked, not simulated",
+    "Other advanced task states"
   ],
   "validation": {
     "httpTests": 2,
@@ -126,12 +126,16 @@
       "Original task row shows schedule and opens demo conversation",
       "Original menu Pause persists PAUSED and renders Paused label",
       "Resume persists ACTIVE",
-      "Delete opens original confirmation; Delete scheduled task removes record and returns No scheduled tasks"
+      "Delete opens original confirmation; Delete scheduled task removes record and returns No scheduled tasks",
+      "Created second inert task, original Edit changed Name to Edited inert task and Repeat to Weekdays",
+      "Save preserved rea-local-task-2 id and updated RRULE BYDAY=MO,TU,WE,TH,FR",
+      "Page.reload then Scheduled restores Edited inert task row; Edit restores Weekdays selection"
     ],
     "schedulerCheck": "Only prior synthetic automation.toml exists and remains PAUSED; no new scheduler file created",
     "finalStore": {
-      "items": [],
-      "sequence": 1
+      "remainingDemoTask": "rea-local-task-2",
+      "status": "ACTIVE",
+      "schedulerRegistration": false
     }
   }
 }
