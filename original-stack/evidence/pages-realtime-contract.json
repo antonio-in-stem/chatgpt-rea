@@ -9,7 +9,8 @@
     "roots": "156255-156430 title Y.Text, blocksById Y.Map, topLevelBlockIds Y.Array;335100 full sync initializes roots",
     "endpointPolicy": "app-shared-737655e1fb23.js:105114 zAt: loopback only when t true and /ws; original TDr calls Kie(a,false) when Pd.pagesRealtime present",
     "browserFallback": "main host141915 pagesRealtime:s.pagesRealtime -> void0 in demo only; original renderer then skips native endpoint check and uses WebSocket",
-    "markdownRequired": "initial533248 $6c reads t.markdown.length"
+    "markdownRequired": "initial533248 $6c reads t.markdown.length",
+    "csp": "pristine webview/index.html connect-src excludes loopback; recovered-host browser-background-switches-Zzmx0u5p.js:2958 protocol handler serves index response"
   },
   "minimumProtocol": [
     "server_capabilities capabilities:[]",
@@ -24,7 +25,7 @@
     "HTTP bootstrap cannot use rootless empty Yjs update",
     "Legacy capabilities are insufficient for typed blocks, comments, collaborator cursors and semantic operations"
   ],
-  "next": "Build v19 with content.markdown fix, create fresh original page and verify websocket exchange/edit/reload. v18 source fix not yet packaged.",
+  "next": "Build/install v20 with demo_page_csp helper patch in protocol host member. It adds only actual demo endpoint /demo-pages/ to served index CSP; original JS/CSS unchanged. Then verify text edit/reload.",
   "implementation": {
     "files": [
       "demo_page_sync.py",
@@ -33,6 +34,6 @@
     ],
     "dependency": "y-py==0.6.2 installed only in original-stack/state/page-sync-deps",
     "verified": "unit test applies real Yjs title update, persists canonical full state, restores in new document, deduplicates receipts, rejects conflicts, preserves foreign pending file",
-    "runtime": "v18 installed, create POST/pages persists rea-page-1, but editor crashes before sync at $6c due missing content.markdown. Source adapter now fixed but needs rebuild. No sync success claimed."
+    "runtime": "v19 editor renders correctly, but title readonly and document contenteditable=false; CDP no Pages socket frames, runtime log confirms CSP blocked loopback."
   }
 }
