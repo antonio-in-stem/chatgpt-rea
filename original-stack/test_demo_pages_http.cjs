@@ -170,3 +170,18 @@ test('canonical document symbol projects consistently into page, catalog, nodes 
   assert.deepEqual(call('GET','/pages/rea-page-1').metadata.symbol,{kind:'none'});
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('detail attribution projection is opt-in and preserves recorded block actors',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-attribution-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'attribution',title:'Page',initial_blocks:[]});
+  assert.deepEqual(call('GET','/pages/rea-page-1?include_block_attributions=true').block_attributions,{});
+  const block_attributions={block1:{actor:{actor_type:'user',account_user_id:'rea-demo-user'},changed_at:'2026-10-13T12:00:00Z'}};
+  fs.writeFileSync(path.join(dir,'rea-page-1-document.json'),JSON.stringify({sequence:1,title:'Page',block_attributions}));
+  assert.equal(call('GET','/pages/rea-page-1').block_attributions,undefined);
+  const projected=call('GET','/pages/rea-page-1?include_block_attributions=true&include_content=false');
+  assert.deepEqual(projected.block_attributions,block_attributions);
+  assert.deepEqual(projected.actor_displays,[{account_user_id:'rea-demo-user',display_name:'Demo'}]);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

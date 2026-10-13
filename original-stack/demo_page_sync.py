@@ -1,6 +1,7 @@
 """Original legacy Pages realtime protocol, loopback demo only. No semantic capabilities."""
 import base64
 import hashlib
+from datetime import datetime, timezone
 import json
 import re
 import secrets
@@ -40,7 +41,16 @@ class PageSyncStore:
         if old:
             if old['digest']!=digest:raise ValueError('Conflicting update ID')
             return {'type':'ack','client_update_id':key,'update_id':key,'sequence':old['sequence']},None
+        before_blocks=json.loads(doc.get_map('blocksById').to_json())
         y.apply_update(doc,raw)
+        after_blocks=json.loads(doc.get_map('blocksById').to_json())
+        attributions=state.setdefault('block_attributions',{})
+        changed_at=datetime.now(timezone.utc).isoformat()
+        for block_id,block in after_blocks.items():
+            if block!=before_blocks.get(block_id):
+                attributions[block_id]={'actor':{'actor_type':'user','account_user_id':'rea-demo-user'},'changed_at':changed_at}
+        for block_id in set(attributions)-set(after_blocks):
+            del attributions[block_id]
         state['sequence']+=1
         state['update']=base64.b64encode(y.encode_state_as_update(doc)).decode()
         state['title']=json.loads(doc.get_text('title').to_json())

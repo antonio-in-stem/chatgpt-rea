@@ -49,6 +49,22 @@ class PageSyncTests(unittest.TestCase):
    store.commit('rea-page-1',{'client_update_id':'unrelated-title','update':base64.b64encode(y.encode_state_as_update(client)).decode()})
    final=y.YDoc();y.apply_update(final,base64.b64decode(PageSyncStore(folder).sync('rea-page-1')['update']))
    self.assertEqual(json.loads(final.get_map('comments').to_json()),comments)
+ def test_block_attribution_tracks_only_changed_blocks(self):
+  with tempfile.TemporaryDirectory(prefix='rea-attribution-') as directory:
+   folder=Path(directory);(folder/'demo-pages.json').write_text(json.dumps({'items':[{'metadata':{'page_id':'rea-page-1'}}]}))
+   store=PageSyncStore(folder);doc=y.YDoc()
+   def commit(key):
+    store.commit('rea-page-1',{'client_update_id':key,'update':base64.b64encode(y.encode_state_as_update(doc)).decode()})
+    return json.loads((folder/'rea-page-1-document.json').read_text())['block_attributions']
+   with doc.begin_transaction() as tx:
+    doc.get_map('blocksById').set(tx,'block-a',{'kind':'markdown','markdown':'First'})
+   first=commit('create');self.assertEqual(first['block-a']['actor']['account_user_id'],'rea-demo-user')
+   with doc.begin_transaction() as tx:doc.get_text('title').insert(tx,0,'Title only')
+   self.assertEqual(commit('title'),first)
+   with doc.begin_transaction() as tx:doc.get_map('blocksById').set(tx,'block-b',{'kind':'markdown','markdown':'Second'})
+   second=commit('new-block');self.assertEqual(second['block-a'],first['block-a']);self.assertIn('block-b',second)
+   with doc.begin_transaction() as tx:doc.get_map('blocksById').pop(tx,'block-a')
+   self.assertEqual(set(commit('delete')),{'block-b'})
  def test_archived_and_deleted_pages_reject_sync_and_commit(self):
   with tempfile.TemporaryDirectory(prefix='rea-page-sync-') as directory:
    folder=Path(directory);file=folder/'demo-pages.json';store=PageSyncStore(folder)

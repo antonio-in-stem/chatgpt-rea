@@ -110,7 +110,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(!/^ws:\/\/127\.0\.0\.1:[1-9][0-9]*$/.test(runtime.endpoint)||typeof runtime.token!=='string'||runtime.token.length<32)throw Error('Invalid demo realtime endpoint');
   return {document_type:'page',stream_kind:'content',endpoint:runtime.endpoint+'/demo-pages/'+item.metadata.page_id,token:runtime.token,granted_scope:'write',page_metadata:{page_id:item.metadata.page_id,document_type:'page',title:read(item).metadata.title,access:{can_read:true,can_write:true}}};
  }
- if(detail){const item=state.items.find(x=>x.metadata.page_id===route.slice(7)&&!x.permanentlyDeleted);if(!item)throw Error('Unknown demo page');return read(item);}
+ if(detail){const item=state.items.find(x=>x.metadata.page_id===route.slice(7)&&!x.permanentlyDeleted);if(!item)throw Error('Unknown demo page');const result=read(item);if(url.searchParams.get('include_block_attributions')==='true'){const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;result.block_attributions=doc?.block_attributions??{};result.actor_displays=[{account_user_id:'rea-demo-user',display_name:'Demo'}];}return result;}
  if(listing){
   const cursor=url.searchParams.get('cursor'),rawLimit=url.searchParams.get('limit');
   if(cursor&&!/^offset:[0-9]+$/.test(cursor))throw Error('Invalid demo page cursor');

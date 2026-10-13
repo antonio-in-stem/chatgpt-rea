@@ -1,0 +1,88 @@
+{
+  "feature": "Original Page activity",
+  "status": "Edits runtime verified in original renderer",
+  "source": {
+    "app-initial-b8e1c8014bb4.js": [
+      "162460-162471 GET detail include_block_attributions contract",
+      "159687-159707 checkpoint downloader requires pagesRealtime host service",
+      "163537-163573 checkpoint descriptor/envelope schema"
+    ],
+    "page-activity-panel-417507d2be6d.js": [
+      "306-335 group latest blocks by actor",
+      "443-680 render original section previews and reveal buttons",
+      "795-842 GET views pagination",
+      "1118-1150 tab admission"
+    ],
+    "workspace-9af313981dc3.js": [
+      "5750-5806 GET versions limit20 stream_kind content",
+      "4241-4255 restore through supplied onRestore"
+    ],
+    "content-2bf9ea38a12a.js": [
+      "58579-58589 views requires can_share and additional condition",
+      "50599-50610 restore session write admission"
+    ]
+  },
+  "edits": {
+    "route": "GET /pages/{page_id}?include_block_attributions=true&include_content=false&include_parent_metadata=false",
+    "response_fields": [
+      "metadata.page_id",
+      "actor_displays",
+      "block_attributions"
+    ],
+    "policy": "Only changed Yjs blocks get current synthetic actor/time; unrelated title/comment changes preserve attributions; deleted blocks removed; existing historical edits not invented"
+  },
+  "versions_pending": {
+    "list": "GET /pages/{page_id}/versions?limit=20&stream_kind=content&cursor=...",
+    "bootstrap": "GET /pages/{page_id}/versions/{checkpoint_id}/checkpoint-bootstrap?stream_kind=content&prefer_lite_checkpoint=true",
+    "list_item_fields": [
+      "checkpoint_id",
+      "through_sequence",
+      "created_at",
+      "editor_summary_version",
+      "actor_summaries"
+    ],
+    "list_response_fields": [
+      "items",
+      "actor_displays",
+      "current_editor_summary",
+      "next_cursor"
+    ],
+    "snapshot_envelope_fields": [
+      "format=openai.page.yjs",
+      "schema_version=2",
+      "page_id",
+      "stream_kind=content",
+      "through_sequence",
+      "yjs_state_update_base64",
+      "state_vector_base64"
+    ],
+    "dependency": "Current pagesRealtime:void0 means no host checkpoint downloader. Need downloadCheckpoint and cancelCheckpointDownload/disposable promise compatible bridge without breaking current WebSocket sync; selecting snapshots unimplemented."
+  },
+  "views_pending": {
+    "route": "GET /pages/{page_id}/views?limit=20&cursor=...",
+    "response_fields": [
+      "items: account_user_id,last_viewed_at",
+      "actor_displays",
+      "next_cursor"
+    ],
+    "admission": "Current can_share false hides Views; sharing not implemented."
+  },
+  "tests": "68 Python +23 Node passed",
+  "runtime": {
+    "asar_sha256": "c9e59bd80715d306033d760ee0584ca1aa3fa21f840a575b1d10b75bf1c615c4",
+    "exe_sha256": "f63ecade88bd840650a88c2291d173fa6482e46b60ed0d48195ca168ed2d8174",
+    "pid": 102304,
+    "adapter_pid": 84084,
+    "launcher_session": 2864
+  },
+  "verified": [
+    "Original Page document selection and replacement appended Activity attribution demo to first paragraph",
+    "Page activity renders Edits with Demo actor, exact edited paragraph preview, relative timestamp and Go to section control"
+  ],
+  "not_verified": [
+    "Go to section navigation action",
+    "Activity after reload",
+    "Versions snapshots and comparison",
+    "Views"
+  ]
+}
