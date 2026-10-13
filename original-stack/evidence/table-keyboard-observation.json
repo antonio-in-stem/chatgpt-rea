@@ -1,0 +1,46 @@
+{
+  "open": {
+    "activeElement": {
+      "tag": "BUTTON",
+      "role": null,
+      "label": "Cerrar vista previa de tabla"
+    },
+    "previewPresent": true,
+    "ariaExpanded": "true"
+  },
+  "openingMethod": "CDP mouseMoved/mousePressed/mouseReleased on original expand button",
+  "source": {
+    "exeSha256": "13d7ee588d7ae20f04f7aa25a65ae82917ada81501304ac8f5e679d0b3306601",
+    "asarSha256": "c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038"
+  },
+  "tabCycle": [
+    {
+      "tag": "DIV",
+      "role": "region",
+      "label": "Tabla desplazable",
+      "dialogLabel": "Vista previa de la tabla"
+    },
+    {
+      "tag": "BUTTON",
+      "role": null,
+      "label": "Cerrar vista previa de tabla",
+      "dialogLabel": "Vista previa de la tabla"
+    }
+  ],
+  "escape": {
+    "previewPresent": false,
+    "expandAriaExpanded": "false",
+    "activeElement": {
+      "tag": "BODY",
+      "role": null,
+      "label": null,
+      "dialogLabel": null
+    }
+  },
+  "limitations": [
+    "One small table at one viewport",
+    "Shift+Tab and overflowing tables not tested",
+    "BODY focus is observed, not an inferred product requirement",
+    "Native OS assistive-technology announcements not tested"
+  ]
+}
