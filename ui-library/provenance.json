@@ -1,0 +1,30 @@
+{
+  "components": [
+    {
+      "source": "button-4c500cf88487.js",
+      "formattedSourceSha256": "e32c3fae2acb01492a9c768ce2d5658f3a6ea5421382c96679f6e996367566ab",
+      "components": [
+        "ChoiceButton",
+        "ChoiceGroup"
+      ],
+      "transformation": "Manual semantic extraction; removed bundle initializer and React compiler memo slots; named props, original class strings and interaction timing retained",
+      "status": "Behavior contract tests pass for frame timing, controlled selection, accessibility attributes and motion parameters; browser visual comparison and standalone CSS remain pending"
+    },
+    {
+      "source": "animated-segmented-toggle-4f3460c281b7.js",
+      "formattedSourceSha256": "8a706d481785bbe29aa1b20bda3f956ea66bffafc8acf0abad4df5ce4f60fa4e",
+      "components": [
+        "SegmentedControl"
+      ],
+      "transformation": "Manual semantic extraction; removed bundle initializer and React compiler memo slots; named props, original class strings and interaction timing retained",
+      "status": "Behavior contract tests pass for frame timing, controlled selection, accessibility attributes and motion parameters; browser visual comparison and standalone CSS remain pending"
+    }
+  ],
+  "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",
+  "limitations": [
+    "Not original TypeScript",
+    "Requires original CSS/token environment for visual fidelity; portable CSS package not yet extracted",
+    "motion and mergeClasses must use compatible semantics; dependency mapping remains pending",
+    "Not a finished component library"
+  ]
+}

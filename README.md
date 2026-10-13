@@ -1,3 +1,5 @@
+> Current priority: extract a reusable component library and connected UI flows from the shipped frontend. See [ui-library](ui-library/README.md). Original styles and behavior remain the reference; Rust is deferred.
+
 # chatgpt-rea
 
 Proyecto de investigación y reconstrucción del frontend de escritorio de ChatGPT/Codex para Windows. Incluye análisis del paquete distribuido, contratos recuperados, adaptadores locales con datos demo y el trabajo previo de interfaz nativa.

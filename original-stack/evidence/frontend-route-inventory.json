@@ -1,0 +1,890 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "function": "ZIs",
+  "sourceLineStart": 444226,
+  "sourceLineEnd": 444886,
+  "scope": "Lexical path entries in original central router initializer, not a full AST or effective route graph",
+  "entries": [
+    {
+      "line": 444270,
+      "expression": "SXe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444271,
+      "expression": "lWa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444272,
+      "expression": "`/cloud-environments/new`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444273,
+      "expression": "`/refer/:linkId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444279,
+      "expression": "LWa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444286,
+      "expression": "og",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444287,
+      "expression": "wr",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444289,
+      "expression": "ove",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444295,
+      "expression": "`/explore`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444298,
+      "expression": "YA.scheduled.path",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444303,
+      "expression": "yWa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444310,
+      "expression": "`/workspace/deactivated`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444314,
+      "expression": "`/`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444316,
+      "expression": "`/projects`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444321,
+      "expression": "`/work`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444324,
+      "expression": "DRe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444325,
+      "expression": "tWa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444327,
+      "expression": "`/verify_age`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444331,
+      "expression": "`/verify_guardian`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444335,
+      "expression": "`/mission-control`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444339,
+      "expression": "`${$Ua}/:entityId?`",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444343,
+      "expression": "`/products/:entityShareId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444347,
+      "expression": "`/shopping`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444352,
+      "expression": "`/cme`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444355,
+      "expression": "ZUa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444358,
+      "expression": "fue",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444362,
+      "expression": "jre",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444366,
+      "expression": "Goe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444370,
+      "expression": "YUa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444373,
+      "expression": "ORt",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444374,
+      "expression": "Eoe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444375,
+      "expression": "ur",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444376,
+      "expression": "`/extension/panel/new`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444377,
+      "expression": "`/first-run`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444390,
+      "expression": "NKe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444392,
+      "expression": "`/plugins/:pluginId/app/:toolName`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444395,
+      "expression": "mTe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444399,
+      "expression": "kGe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444416,
+      "expression": "eVe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444423,
+      "expression": "`/branch/:conversationId/:messageId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444427,
+      "expression": "Be",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444431,
+      "expression": "MFe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444437,
+      "expression": "Zke",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444438,
+      "expression": "nYe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444439,
+      "expression": "jze",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444441,
+      "expression": "YAe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444443,
+      "expression": "aNe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444448,
+      "expression": "e",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444455,
+      "expression": "ER.home.path",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444456,
+      "expression": "`/space/sites/*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444457,
+      "expression": "ER.directory.path",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444458,
+      "expression": "ER.files.path",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444459,
+      "expression": "ER.filesDirectory.path",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444461,
+      "expression": "`/space/file/:libraryFileId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444464,
+      "expression": "`/space/browser/:url`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444465,
+      "expression": "ER.personal.path",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444466,
+      "expression": "`/space/:pageId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444467,
+      "expression": "`/spaces/new`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444468,
+      "expression": "`/spaces/:spaceId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444472,
+      "expression": "KUa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444480,
+      "expression": "`:profileId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444483,
+      "expression": "`dashboard`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444484,
+      "expression": "`chats`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444485,
+      "expression": "`chats/:conversationId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444486,
+      "expression": "`insights`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444487,
+      "expression": "`products`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444488,
+      "expression": "`edit/:section`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444489,
+      "expression": "`verification/:flowId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444495,
+      "expression": "Wln",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444504,
+      "expression": "kne",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444512,
+      "expression": "`accounts`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444513,
+      "expression": "`chats`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444514,
+      "expression": "`transactions`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444518,
+      "expression": "`/ledger/plaid/web/oauth_redirect`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444521,
+      "expression": "`/connector/oauth_callback`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444524,
+      "expression": "`/chatgpt_health_oauth_redirect`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444536,
+      "expression": "`/library/*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444537,
+      "expression": "`/library/share/*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444539,
+      "expression": "`/library/file/:libraryFileId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444545,
+      "expression": "exe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444552,
+      "expression": "`new-thread`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444554,
+      "expression": "`thread/:conversationId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444558,
+      "expression": "`remote/:taskId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444566,
+      "expression": "Lzt()",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444575,
+      "expression": "`/inbox`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444584,
+      "expression": "`/internal/demo-tools`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444588,
+      "expression": "`/security/*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444590,
+      "expression": "wxe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444595,
+      "expression": "AOi",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444596,
+      "expression": "s",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444597,
+      "expression": "jTe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444606,
+      "expression": "`/skills`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444610,
+      "expression": "`${Gle}/:pluginId`",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444612,
+      "expression": "UMe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444615,
+      "expression": "Vce",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444622,
+      "expression": "`/plugins`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444626,
+      "expression": "HJe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444638,
+      "expression": "`/pull-requests`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444645,
+      "expression": "Aee",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444654,
+      "expression": "`/sites`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444665,
+      "expression": "Sn",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444667,
+      "expression": "`/sites/:projectId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444672,
+      "expression": "bbe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444674,
+      "expression": "Tue",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444680,
+      "expression": "rse",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444687,
+      "expression": "$ae",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444688,
+      "expression": "a_e",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444689,
+      "expression": "Z1e",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444694,
+      "expression": "`/remote/:taskId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444696,
+      "expression": "`/codex-mobile`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444697,
+      "expression": "`/remote-connections`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444701,
+      "expression": "`/profile`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444702,
+      "expression": "`/u/:username`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444713,
+      "expression": "`/settings/profile`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444720,
+      "expression": "`/settings`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444731,
+      "expression": "cwe",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444742,
+      "expression": "$Za",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444744,
+      "expression": "`computer-use/messages`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444748,
+      "expression": "`browser-use/extensions`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444752,
+      "expression": "`browser-use/downloads`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444756,
+      "expression": "`browser-use/history`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444760,
+      "expression": "`browser-use/contact-info`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444764,
+      "expression": "`browser-use/passwords`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444768,
+      "expression": "`browser-use/site-settings/*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444772,
+      "expression": "`connections/:connectionsTab/:connectionsAction`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444776,
+      "expression": "`connections/:connectionsTab`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444780,
+      "expression": "`cloud-environments/*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444784,
+      "expression": "`code-review/repositories/:repositoryId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444788,
+      "expression": "DWa",
+      "kind": "unresolved-expression",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444794,
+      "expression": "`teams/:teamId`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444798,
+      "expression": "`teams/:teamId/join`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444818,
+      "expression": "`open-source-licenses`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444820,
+      "expression": "`*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444835,
+      "expression": "`/trusted-contact/nominee`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444839,
+      "expression": "`/trusted-contact/decline`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444843,
+      "expression": "`/trusted-contact/remove`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444849,
+      "expression": "`/spotlight`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444851,
+      "expression": "`/avatar-overlay`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444868,
+      "expression": "`/login`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444869,
+      "expression": "`/welcome`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444870,
+      "expression": "`/select-workspace`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444871,
+      "expression": "`/diff`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444872,
+      "expression": "`/plan-summary`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444874,
+      "expression": "`/o`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    },
+    {
+      "line": 444875,
+      "expression": "`/o/*`",
+      "kind": "literal",
+      "status": "not-individually-audited"
+    }
+  ],
+  "counts": {
+    "pathEntries": 145,
+    "literalEntries": 85,
+    "unresolvedExpressions": 60
+  },
+  "limitations": [
+    "Nested relative paths have not been composed with parents",
+    "Constants, arrays, index routes and conditional availability need further resolution",
+    "Presence of a route does not establish Windows availability or runtime coverage",
+    "Feature completeness cannot be computed from path counts"
+  ]
+}
