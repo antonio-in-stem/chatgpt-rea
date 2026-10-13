@@ -111,3 +111,7 @@ app-initial356765 assigns sidebar-item to sidebar rows. Shared CSS15802 sets rad
 
 
 Sidebar selection: app-initial356765–356782 uses bg-primary-ghost-hover for selected/open rows, same as hover. Shared CSS5724 resolves this to app-color-background-button-secondary-hover, whose color-mix definition at5303 is white8% dark / foreground5% light. Native selected chat rows now use that alpha token rather than secondary white5%. Native hover already uses the corresponding theme hover token. Exact selected+pressed and focus-outline behavior still needs comparison.
+
+
+## Section header controls
+Source chain: g2 app-initial378570 -> UF147929 -> P1o378287. UF title container min-height30, text-base14 in Electron, font-medium500, text-tertiary; P1o is a button that toggles collapsed and shows a trailing right chevron while collapsed. Native Pinned/Chats/Projects headings now use these type tokens and independently hide their contents while preserving active chat and project expansion state. Existing59 tests passed; new pointer-dispatch section toggle test passed. Pending: durable collapse preferences, expanded chevron on hover/focus, native aria-expanded, drag/reorder, section hover menus and exact spacing/sticky behavior.

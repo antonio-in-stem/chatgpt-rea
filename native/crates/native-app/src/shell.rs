@@ -382,16 +382,20 @@ impl WorkspaceApp {
                     .child(self.shell_icon("sidebar", "Close sidebar", 700, Action::Sidebar, cx)),
             );
         let mut recents = div().w_full().flex().flex_col().gap(px(2.));
-        let muted = cx.theme().colors.muted_foreground;
-        let caption_size = native_ui::typography::TextRole::Caption.in_app(cx);
-        let section = |label: &'static str| {
-            div()
-                .mt(px(16.))
-                .mb(px(4.))
-                .px(px(8.))
-                .text_size(caption_size)
-                .text_color(muted)
-                .child(label)
+        let section = |label: &'static str, cx: &mut Context<Self>| {
+            let collapsed = self.collapsed_sidebar_sections.contains(label);
+            Button::new(SharedString::from(format!("sidebar-section-{label}"))).ghost()
+                .w_full().h(px(30.)).mt(px(16.)).px(px(8.)).justify_start()
+                .text_size(native_ui::typography::TextRole::Body.in_app(cx))
+                .font_weight(FontWeight::MEDIUM)
+                .text_color(native_ui::tokens::tertiary_text(cx.theme().mode.is_dark()))
+                .accessibility_label(format!("{} {label}", if collapsed { "Expand" } else { "Collapse" }))
+                .child(div().flex().items_center().gap(px(4.)).child(label)
+                    .when(collapsed, |row| row.child(native_ui::icon("chevron-right",12.))))
+                .on_click(cx.listener(move |s,_,_,cx| {
+                    if !s.collapsed_sidebar_sections.remove(label) { s.collapsed_sidebar_sections.insert(label); }
+                    cx.notify();
+                }))
         };
         let mut chats = self
             .workspace
@@ -403,7 +407,9 @@ impl WorkspaceApp {
         let all_chats = chats.iter().enumerate().collect::<Vec<_>>();
         for pinned in [true, false] {
             let rows = all_chats.iter().filter(|(_, c)| c.pinned == pinned && (pinned || c.project_id.is_none())).collect::<Vec<_>>();
-            if !rows.is_empty() { recents = recents.child(section(if pinned { "Pinned" } else { "Chats" })); }
+            let label = if pinned { "Pinned" } else { "Chats" };
+            if !rows.is_empty() { recents = recents.child(section(label, cx)); }
+            if self.collapsed_sidebar_sections.contains(label) { continue; }
             let visible=sidebar_visible_indices(rows.len(),if pinned { usize::MAX } else { self.recent_limit },rows.iter().position(|(_,chat)|chat.id==self.active));
             for (i, chat) in visible.iter().map(|index|rows[*index]) {
                 recents = recents.child(self.nav(chat.title.clone(), 100 + *i,
@@ -413,8 +419,8 @@ impl WorkspaceApp {
                 recents = recents.child(self.nav("Show more", 901, Action::ShowMoreChats, false, cx));
             }
         }
-        if !self.workspace.projects.is_empty() { recents = recents.child(section("Projects")); }
-        for (index, project) in self.workspace.projects.iter().enumerate() {
+        if !self.workspace.projects.is_empty() { recents = recents.child(section("Projects", cx)); }
+        for (index, project) in self.workspace.projects.iter().enumerate().filter(|_| !self.collapsed_sidebar_sections.contains("Projects")) {
             let collapsed = self.collapsed_sidebar_projects.contains(&project.id);
             let id = project.id.clone();
             recents = recents.child(Button::new(("sidebar-project", index)).ghost()

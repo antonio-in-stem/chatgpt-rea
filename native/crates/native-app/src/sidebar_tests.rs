@@ -253,3 +253,24 @@ fn sidebar_reveals_active_chat_without_expanding_every_group(cx: &mut TestAppCon
         assert!(window.try_find(("sidebar-project-more",0usize)).is_none());
     }).unwrap();
 }
+
+#[gpui_kit::test]
+fn sidebar_section_toggle_hides_only_its_content(cx: &mut TestAppContext) {
+    let storage=Storage::new();
+    let (handle,app)=open(cx,&storage,1280.);
+    cx.update_window(handle,|_,window,cx| {
+        window.render_frame(cx);
+        let active=app.read(cx).active.clone();
+        let count=app.read(cx).workspace.conversations.len();
+        assert!(window.try_find(("sidebar-project",0usize)).is_some());
+        window.click("sidebar-section-Projects",cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("sidebar-project",0usize)).is_none());
+        assert!(window.try_find("sidebar-section-Pinned").is_some());
+        assert_eq!(app.read(cx).active,active);
+        assert_eq!(app.read(cx).workspace.conversations.len(),count);
+        window.click("sidebar-section-Projects",cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("sidebar-project",0usize)).is_some());
+    }).unwrap();
+}
