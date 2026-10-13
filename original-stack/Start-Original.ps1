@@ -13,12 +13,7 @@ if($PassThru -and $WaitForExit){throw 'PassThru and WaitForExit are mutually exc
 $runtime=Join-Path $PSScriptRoot 'pristine'
 $inventoryPath=Join-Path $PSScriptRoot 'runtime-inventory.json'
 if(-not(Test-Path -LiteralPath $inventoryPath)){throw 'Run Complete-Runtime.ps1 first'}
-$inventory=Get-Content -LiteralPath $inventoryPath -Raw | ConvertFrom-Json
-foreach($relative in @('ChatGPT.exe','resources\app.asar')){
- $record=$inventory.files | Where-Object path -eq $relative
- $actual=(Get-FileHash -LiteralPath (Join-Path $runtime $relative) -Algorithm SHA256).Hash.ToLowerInvariant()
- if($record.sha256 -ne $actual){throw "Pristine input changed: $relative"}
-}
+$verifiedRuntime=& (Join-Path $PSScriptRoot 'Verify-Runtime.ps1') -RuntimeRoot $runtime -InventoryPath $inventoryPath
 $state=Join-Path $PSScriptRoot 'state'
 if($StateName){$state=Join-Path $state $StateName}
 if($DemoTransportUrl){
@@ -60,6 +55,8 @@ if($InspectRuntime){
 }
 if($DryRun){
  [pscustomobject]@{
+  verifiedFiles=$verifiedRuntime.verifiedFiles
+  inventorySha256=$verifiedRuntime.inventorySha256
   executable=$start.FileName
   arguments=@($start.ArgumentList)
   productEnvironmentKeys=@($start.Environment.Keys | Where-Object {$_ -match '^(CODEX_|CHATGPT_|OWL_|ELECTRON_|OPENAI_|NODE_)'} | Sort-Object)
