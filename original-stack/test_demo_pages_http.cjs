@@ -368,3 +368,38 @@ test('synthetic sharing persists role changes and inherited space access atomica
   call('DELETE','/spaces/'+space.id);assert.throws(()=>search('demo'),/Unavailable/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('directories persist hierarchy, breadcrumbs and merged node pagination without page leakage',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-directories-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const root=call('GET','/files/library/directories/path').items[0];assert.equal(root.is_root,true);
+  const parent=call('POST','/files/library/directories',{name:' Parent ',parent_directory_id:root.id});
+  const child=call('POST','/files/library/directories',{name:'Child',parent_directory_id:parent.id});
+  assert.equal(parent.name,'Parent');assert.equal(parent.kind,'directory');
+  assert.deepEqual(call('GET','/files/library/directories/path?directory_id='+child.id).items.map(d=>d.id),[root.id,parent.id,child.id]);
+  call('POST','/pages',{idempotency_key:'directory-page',title:'Page',initial_blocks:[],destination:'personal_file_drive'});
+  const first=call('GET','/files/library/nodes?include_pages=true&limit=1');assert.equal(first.items[0].id,parent.id);assert.equal(first.cursor,'offset:1');
+  assert.equal(call('GET','/files/library/nodes?include_pages=true&limit=1&cursor=offset:1').items[0].library_artifact_type,'page');
+  assert.deepEqual(call('GET','/files/library/nodes?include_pages=true&parent_directory_id='+parent.id).items.map(d=>d.id),[child.id]);
+  assert.equal(call('GET','/files/library/nodes?include_pages=true&categories=pages').items.length,1);
+  assert.equal(call('GET','/files/library/directories/'+parent.id).folder_count,1);
+  call('PATCH','/files/library/directories/'+child.id,{name:'Renamed',parent_directory_id:null});
+  assert.equal(call('GET','/files/library/directories/'+child.id).name,'Renamed');assert.equal(call('GET','/files/library/directories/'+parent.id).folder_count,0);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+test('directory rejected mutations and failed writes preserve previous store',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-directory-errors-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const a=call('POST','/files/library/directories',{name:'A'}),b=call('POST','/files/library/directories',{name:'B',parent_directory_id:a.id});
+  const file=path.join(dir,'demo-pages.json'),before=fs.readFileSync(file,'utf8');
+  assert.throws(()=>call('PATCH','/files/library/directories/'+a.id,{parent_directory_id:b.id}),/cycle/);
+  assert.throws(()=>call('POST','/files/library/directories',{name:'A'}),/conflict/);
+  assert.throws(()=>call('POST','/files/library/directories',{name:'.hidden'}),/name/);
+  assert.throws(()=>call('POST','/files/library/directories',{name:'Bad',parent_directory_id:'rea-directory-99'}),/Unknown/);
+  assert.equal(fs.readFileSync(file,'utf8'),before);
+  fs.writeFileSync(file+'.pending','foreign');assert.throws(()=>call('PATCH','/files/library/directories/'+a.id,{name:'Changed'}));
+  assert.equal(fs.readFileSync(file,'utf8'),before);assert.equal(fs.readFileSync(file+'.pending','utf8'),'foreign');
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

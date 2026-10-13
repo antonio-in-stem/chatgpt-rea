@@ -1,5 +1,5 @@
 {
-  "scope": "Original Space library folder flow, recovered contract; implementation pending",
+  "scope": "Original Space folder contracts with initial persistent demo implementation",
   "sources": {
     "create": "library-create-dialog-e0c3919fc0ce.js:48-102,187-249",
     "validation": "library-name-validation-5559e2ce17f6.js:2-10",
@@ -53,14 +53,27 @@
     "Invalidates account/user library query cache"
   ],
   "next": [
-    "Recover full directory node/access DTO and browse filters before storage implementation",
-    "Implement distinct persistent directory state and merge into library nodes before pagination",
-    "Original create/rename/nested navigation/reload verification",
-    "Recover archive/restore and move-cycle behavior; separate demo policy from original backend facts"
+    "Build/install and verify original create, reload, nested navigation and rename",
+    "Trace original delete/restore and permission menu requirements",
+    "Verify active filters including shared/favorites/sources"
   ],
   "limitations": [
-    "No successful create or persisted folder claimed",
-    "Folder icon asset is not folder implementation",
-    "Current library adapter returns pages only and excludes parent directories"
-  ]
+    "Not built or installed in active v40 yet",
+    "Full directory access DTO remains consumer-inferred",
+    "No UI success, reload or delete lifecycle claim"
+  ],
+  "implementation": [
+    "Directories stored separately from page items in same atomic demo state file",
+    "POST create, GET detail/path, PATCH rename/reparent",
+    "Breadcrumbs include synthetic root and ordered ancestors",
+    "Library nodes merge directories and pages before pagination; folder children do not leak root pages",
+    "Category filtering excludes directories from page-only views",
+    "Cycles, unavailable parents and same-parent duplicate names rejected before persistence"
+  ],
+  "demo_policies": [
+    "255-character name bound and exact case-sensitive duplicate detection are demo choices; original backend behavior not established",
+    "Conflicts currently surface generic adapter error; original HTTP409-specific messaging not yet wired",
+    "Root is synthetic My files; no folder archive/delete support yet"
+  ],
+  "validation": "42 Node tests pass including nested paths, restart reads, rename/move, counts, merge pagination, category boundaries, cycles and atomic write failure"
 }

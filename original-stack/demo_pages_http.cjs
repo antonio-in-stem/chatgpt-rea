@@ -3,6 +3,8 @@
 function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
+ const directoryId=route.match(/^\/files\/library\/directories\/(rea-directory-[1-9][0-9]*)$/)?.[1];
+ const directory=(route==='/files/library/directories'&&method==='POST')||(route==='/files/library/directories/path'&&method==='GET')||(directoryId&&['GET','PATCH'].includes(method));
  const sharing=route.match(/^\/(?:pages\/(rea-page-[1-9][0-9]*)|spaces\/v2\/(rea-space-[1-9][0-9]*))\/shares(?:\/(rea-share-[1-9][0-9]*))?$/);
  const recipientSearch=method==='POST'&&route==='/pages/sharing/recipients';
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
@@ -24,12 +26,36 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!recipientSearch&&!sharing&&!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
+ if(!directory&&!recipientSearch&&!sharing&&!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
  if(state.version!==1||!Array.isArray(state.items)||!Number.isSafeInteger(state.sequence))throw Error('Invalid demo page store');
  const persist=()=>{const temporary=file+'.pending';let owned=false;try{fs.writeFileSync(temporary,JSON.stringify(state),{flag:'wx'});owned=true;fs.renameSync(temporary,file);}finally{if(owned&&fs.existsSync(temporary))fs.unlinkSync(temporary);}};
+ const directoryRoot={id:'rea-directory-root',name:'My files',kind:'directory',is_root:true,parent_directory_id:null,access_kind:'owned'};
+ const directoryParent=value=>value==null||value===directoryRoot.id?null:value;
+ const directories=state.directories??[];
+ const directoryRead=item=>({...item,kind:'directory',is_root:false,access_kind:'owned',is_shared:false,item_count:directories.filter(d=>d.parent_directory_id===item.id).length,folder_count:directories.filter(d=>d.parent_directory_id===item.id).length});
+ const findDirectory=id=>{const item=directories.find(d=>d.id===id);if(!item)throw Error('Unknown demo directory');return item;};
+ const validateDirectoryParent=(id,moving)=>{const seen=new Set(moving?[moving]:[]);while(id!=null){if(seen.has(id))throw Error('Directory hierarchy cycle');seen.add(id);id=findDirectory(id).parent_directory_id;}};
+ if(directory){
+  if(route.endsWith('/path')){let id=directoryParent(url.searchParams.get('directory_id')),items=[];validateDirectoryParent(id);while(id!=null){const item=findDirectory(id);items.unshift(directoryRead(item));id=item.parent_directory_id;}return {items:[directoryRoot,...items]};}
+  if(method==='GET')return directoryRead(findDirectory(directoryId));
+  if(typeof body!=='string'||body.length>65536)throw Error('Expected directory JSON');
+  const input=JSON.parse(body);if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).some(k=>!['name','parent_directory_id'].includes(k)))throw Error('Invalid directory body');
+  const previous=directoryId?findDirectory(directoryId):null;
+  const name=Object.hasOwn(input,'name')?input.name:previous?.name;
+  if(typeof name!=='string'||!name.trim()||name.trim().startsWith('.')||name.length>255)throw Error('Invalid directory name');
+  const parent=directoryParent(Object.hasOwn(input,'parent_directory_id')?input.parent_directory_id:previous?.parent_directory_id);
+  if(parent!=null&&typeof parent!=='string')throw Error('Invalid directory parent');
+  validateDirectoryParent(parent,directoryId);
+  if(directories.some(d=>d.id!==directoryId&&d.parent_directory_id===parent&&d.name===name.trim()))throw Error('Demo directory name conflict');
+  const now=new Date().toISOString();
+  if(previous){previous.name=name.trim();previous.parent_directory_id=parent;previous.updated_at=now;persist();return directoryRead(previous);}
+  const sequence=(state.directorySequence??0)+1;
+  const item={id:'rea-directory-'+sequence,name:name.trim(),parent_directory_id:parent,created_at:now,updated_at:now};
+  state.directorySequence=sequence;state.directories=[...directories,item];persist();return directoryRead(item);
+ }
  const live=x=>!x.permanentlyDeleted&&!x.metadata.deleted_at;
  const parentFor=(id,moving)=>{
   if(id==null)return null;
@@ -202,10 +228,12 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   const query=url.searchParams;
   const parent=query.get('parent_directory_id');
   const categories=query.getAll('categories').flatMap(x=>x.split(','));
-  if(query.get('include_pages')!=='true'||parent||(categories.length&&!categories.includes('pages')))return {items:[],cursor:null};
-  const needle=(query.get('q')||'').toLowerCase();
-  const items=state.items.filter(live).map(x=>read(x).metadata).filter(x=>x.title.toLowerCase().includes(needle));
-  return pageSlice(items.map(x=>({kind:'file',id:x.page_id,file_id:x.page_id,name:x.title,parent_directory_id:null,library_artifact_type:'page',access_kind:'owned',updated_at:x.updated_at,record_creation_time:x.created_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}})),query.get('cursor'),Number(query.get('limit')||50));
+  const needle=(query.get('q')||'').toLowerCase(),normalizedParent=directoryParent(parent);
+  if(parent?.startsWith('library:')||parent?.startsWith('external-'))return {items:[],cursor:null};
+  if(normalizedParent!=null)validateDirectoryParent(normalizedParent);
+  const folders=categories.length?[]:directories.filter(d=>d.parent_directory_id===normalizedParent&&d.name.toLowerCase().includes(needle)).map(directoryRead);
+  const items=query.get('include_pages')==='true'&&normalizedParent===null&&(!categories.length||categories.includes('pages'))?state.items.filter(live).map(x=>read(x).metadata).filter(x=>x.title.toLowerCase().includes(needle)).map(x=>({kind:'file',id:x.page_id,file_id:x.page_id,name:x.title,parent_directory_id:null,library_artifact_type:'page',access_kind:'owned',updated_at:x.updated_at,record_creation_time:x.created_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}})):[];
+  return pageSlice([...folders,...items],query.get('cursor'),Number(query.get('limit')||50));
  }
  if(tree){
   const item=state.items.find(x=>x.metadata.page_id===treeRoute[1]&&live(x));if(!item)throw Error('Unavailable demo page');
