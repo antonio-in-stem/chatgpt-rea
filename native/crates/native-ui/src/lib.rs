@@ -16,6 +16,7 @@ pub fn icon_data(name: &str) -> &'static [u8] {
         "wordmark" => include_bytes!("../assets/chatgpt-wordmark.svg"),
         "arrow-left" => include_bytes!("../assets/arrow_left-40991fb9b16f.svg"),
         "arrow-right" => include_bytes!("../assets/arrow_right-7532e350d6ae.svg"),
+        "terminal" => include_bytes!("../assets/terminal-46e2c288a804.svg"),
         "plus" => include_bytes!("../assets/composer_plus-451d93cbdc23.svg"),
         "mic" => include_bytes!("../assets/composer_mic-1c2dfc365b22.svg"),
         "voice" => include_bytes!("../assets/voice_5_bars_soundwave-36e8087185c0.svg"),

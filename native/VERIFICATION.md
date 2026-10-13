@@ -314,3 +314,18 @@ Settings is now rendered after its separator and opens native settings; the real
 menu test covers End/Enter plus existing select/delete/undo behavior and passed.
 Build/package passed; SHA256 ad303ae066ba62208186ff5d874dbb9d883fdea60035e846458b4a2df0d708af.
 No new preview process. File/View/Help and exact visual parity remain incomplete.
+
+
+## Activity canvas checkpoint — 2026-10-13 UTC
+ 58 workspace tests pass; 11 core tests pass. Dedicated window test
+checks expansion, persistence, switching chats and stopped-turn visibility.
+The first real Windows launch revealed main-thread stack overflow in expanded
+rich layout. MSVC binary now reserves 8 MiB instead of its 1 MiB default (reserve,
+not upfront commit). Real launch/capture then succeeded. This is runtime evidence
+for this fixture, not proof against arbitrarily deep future content.
+
+Final inspected capture: qa/native-activity-18-final.png, PID 76660. Initial
+successful capture exposed centered disclosure text; final capture verifies left
+alignment. Build/package SHA256:
+1feb5f44f97394ae4ceec5d73d2191eaad7b5710bb9c32efed9d0d12852fc8f3.
+The full requested frontend clone is still incomplete.

@@ -49,6 +49,26 @@ pub struct ChatMessage {
     pub role: MessageRole,
     pub content: String,
     pub parent_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub activity: Option<TurnActivity>,
+}
+/// Saved frontend demo activity; command strings are display data, never executed.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all="snake_case")]
+pub enum ActivityStatus { Working, Worked, Stopped, Paused, Unknown, Loading }
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(tag="kind",rename_all="snake_case")]
+pub enum ActivityEntry {
+    Commentary { text: String },
+    Command { command: String, output: String, exit_code: i32 },
+}
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct TurnActivity {
+    pub status: ActivityStatus,
+    pub elapsed_ms: u64,
+    #[serde(default)]
+    pub expanded: bool,
+    pub entries: Vec<ActivityEntry>,
 }
 /// Local catalog fixture, not live provider availability.
 #[derive(Debug,Default,Clone,Copy,Serialize,Deserialize,PartialEq,Eq)]
@@ -314,6 +334,7 @@ impl Workspace {
             role,
             content,
             parent_id: c.messages.last().map(|m| m.id.clone()),
+            activity: None,
         });
         Ok(id)
     }

@@ -15,6 +15,9 @@ pub fn workspace() -> Workspace {
     w.append_message(&c, MessageRole::User, "Help me design a focused workspace.")
         .unwrap();
     w.append_message(&c,MessageRole::Assistant,"## Make room for your ideas\n\nA good workspace starts with **clear priorities** and useful tools close at hand.\n\n1. Keep the sidebar quiet.\n2. Let conversations and documents share the same space.\n3. Make every action easy to undo.\n\n```rust\nfn main() {\n    println!(\"Build something thoughtful.\");\n}\n```").unwrap();
+    if let Some(message)=w.conversation_mut(&c).unwrap().messages.last_mut() {
+        message.activity=Some(activity(native_core::ActivityStatus::Worked));
+    }
     let c = w.create_conversation();
     w.rename_conversation(&c, "Weekend reading list").unwrap();
     w.append_message(&c, MessageRole::User, "Organize my reading notes.")
@@ -50,5 +53,17 @@ mod tests {
         let response = super::response("hello");
         assert!(response.contains("1. Write down"));
         assert!(response.contains("hello"));
+    }
+}
+
+pub fn activity(status: native_core::ActivityStatus) -> native_core::TurnActivity {
+    use native_core::{ActivityEntry, ActivityStatus, TurnActivity};
+    TurnActivity {
+        status, elapsed_ms: if status==ActivityStatus::Worked { 3190 } else { 0 }, expanded:false,
+        entries:vec![
+            ActivityEntry::Commentary { text:"I'll inspect the layout and check the component states.".into() },
+            ActivityEntry::Command { command:"cargo check --workspace".into(),
+                output:"Demo output — no command was executed.\nFinished checking the example workspace.".into(),exit_code:0 },
+        ],
     }
 }

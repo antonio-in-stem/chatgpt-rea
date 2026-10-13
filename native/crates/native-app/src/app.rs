@@ -36,6 +36,7 @@ enum Action {
     NavigateHistory(bool),
     EditMenu,
     EditCommand(usize),
+    ToggleActivity(String),
     Chat(String),
     New,
     Send,
@@ -459,6 +460,13 @@ impl WorkspaceApp {
             .update(cx, |input, cx| input.focus(window, cx));
     }
     fn stop(&mut self) {
+        if self.streaming {
+            if let Ok(chat)=self.workspace.conversation_mut(&self.active) {
+                if let Some(activity)=chat.messages.last_mut().and_then(|m|m.activity.as_mut()) {
+                    activity.status=native_core::ActivityStatus::Stopped;
+                }
+            }
+        }
         self.generation = self.generation.wrapping_add(1);
         self.stream = None;
         self.streaming = false;
@@ -506,6 +514,11 @@ impl WorkspaceApp {
                 MessageRole::Assistant,
                 crate::fixtures::response(&prompt),
             );
+            if self.workspace.settings.codex_surface {
+                if let Ok(chat)=self.workspace.conversation_mut(&self.active) {
+                    if let Some(m)=chat.messages.last_mut() { m.activity=Some(crate::fixtures::activity(native_core::ActivityStatus::Worked)); }
+                }
+            }
             self.transcript.scroll_to_bottom();
             self.persist();
             cx.notify();
@@ -518,6 +531,11 @@ impl WorkspaceApp {
         else {
             return;
         };
+        if self.workspace.settings.codex_surface {
+            if let Ok(chat)=self.workspace.conversation_mut(&conversation) {
+                if let Some(m)=chat.messages.last_mut() { m.activity=Some(crate::fixtures::activity(native_core::ActivityStatus::Working)); }
+            }
+        }
         self.generation += 1;
         let token = self.generation;
         self.streaming = true;
@@ -544,6 +562,7 @@ impl WorkspaceApp {
                         if let Ok(chat) = app.workspace.conversation_mut(&conversation) {
                             if let Some(m) = chat.messages.iter_mut().find(|m| m.id == message) {
                                 m.content = content;
+                                if let Some(activity)=m.activity.as_mut() { activity.elapsed_ms+=40; }
                             }
                         }
                         if app.route == Route::Chat && app.active == conversation && follow_bottom {
@@ -560,6 +579,9 @@ impl WorkspaceApp {
             let _ = this.update(cx, |app, cx| {
                 if app.generation == token {
                     app.streaming = false;
+                    if let Ok(chat)=app.workspace.conversation_mut(&conversation) {
+                        if let Some(activity)=chat.messages.last_mut().and_then(|m|m.activity.as_mut()) { activity.status=native_core::ActivityStatus::Worked; }
+                    }
                     app.persist();
                     cx.notify();
                 }
@@ -646,6 +668,14 @@ impl WorkspaceApp {
                 }
             }
             Action::EditCommand(index) => self.run_edit_command(index,window,cx),
+            Action::ToggleActivity(id) => {
+                if let Ok(chat)=self.workspace.conversation_mut(&self.active) {
+                    if let Some(activity)=chat.messages.iter_mut().find(|m|m.id==id).and_then(|m|m.activity.as_mut()) {
+                        if activity.status==native_core::ActivityStatus::Worked { activity.expanded=!activity.expanded; }
+                    }
+                }
+                self.persist();
+            }
             Action::Route(route) => {
                 self.route = route;
                 self.dialog = None;
@@ -1167,3 +1197,5 @@ include!("permissions_demo.rs");
 include!("navigation_history.rs");
 
 include!("edit_menu.rs");
+
+include!("turn_activity.rs");

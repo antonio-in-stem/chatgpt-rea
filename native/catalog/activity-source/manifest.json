@@ -1,0 +1,32 @@
+[
+  {
+    "file": "agent-activity-item-3c3ce36a628c.js",
+    "sha256": "12ffd7a53dcb44ed307332eb77f041ad73f7554bfc9b45820a578de02adf5615",
+    "astEquivalent": true
+  },
+  {
+    "file": "collapsed-turn-disclosure-6c80f2bfc0d8.js",
+    "sha256": "417d40c4f96c947e489d67769d3861112e076f33bd5c488fcba661bc0c867689",
+    "astEquivalent": true
+  },
+  {
+    "file": "execution-e02e1de98e60.js",
+    "sha256": "ff2d1fcac8e1362d4262c324d4f083efdb09f259e02ee9452200801ce1a28b4b",
+    "astEquivalent": true
+  },
+  {
+    "file": "local-conversation-turn-dd4feee2fc9e.js",
+    "sha256": "1c608e3804ab0a063cea095aef433ad397c1a1487c315678e5e93c224656bbf9",
+    "astEquivalent": true
+  },
+  {
+    "file": "sites-end-resource-11d1a7be5e09.js",
+    "sha256": "cad94c411a9e47bee328dbbdc136c15ca09d2cfbda230329bd6500d79ada8417",
+    "astEquivalent": true
+  },
+  {
+    "file": "split-items-into-render-groups-d45e0db37b65.js",
+    "sha256": "054c1d868c6e58755986d814ebc5f8c572369d4c8e519e1e33608317fe024455",
+    "astEquivalent": true
+  }
+]

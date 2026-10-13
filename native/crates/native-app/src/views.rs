@@ -102,6 +102,9 @@ impl WorkspaceApp {
             .on_hover(move |hovered, _, cx| {
                 hover_target.update(cx, |toolbar, cx| toolbar.hover(*hovered, cx))
             })
+            .when(self.workspace.settings.codex_surface && !user, |row| {
+                if let Some(activity)=&message.activity { row.child(self.turn_activity_view(&message.id,activity,cx)) } else { row }
+            })
             .child(bubble)
             .child(toolbar)
             .into_any_element()

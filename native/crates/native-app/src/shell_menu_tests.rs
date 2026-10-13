@@ -340,3 +340,35 @@ fn windows_edit_menu_targets_previous_editor_and_escape_restores_focus(cx: &mut 
     }).unwrap();
     let _=std::fs::remove_dir_all(path);
 }
+
+#[gpui_kit::test]
+fn codex_activity_disclosure_persists_and_stopped_turn_stays_expanded(cx:&mut TestAppContext) {
+    let (window,app,path)=fixture(cx);
+    cx.update_window(window,|_,window,cx| {
+        let id=app.read(cx).workspace.conversations.iter().find(|c|c.messages.iter().any(|m|m.activity.is_some())).unwrap().id.clone();
+        app.update(cx,|s,cx| { s.act(Action::Chat(id),window,cx);s.act(Action::Surface(true),window,cx); });
+        let message=app.read(cx).workspace.conversation(&app.read(cx).active).unwrap().messages.last().unwrap().id.clone();
+        window.render_frame(cx);
+        window.click(gpui_kit::SharedString::from(format!("activity-toggle-{message}")),cx);
+        assert!(app.read(cx).workspace.conversation(&app.read(cx).active).unwrap().messages.last().unwrap().activity.as_ref().unwrap().expanded);
+        window.render_frame(cx);
+        assert!(window.find(gpui_kit::SharedString::from(format!("activity-details-{message}"))).bounds().size.height>px(20.));
+        let saved=native_core::Workspace::load(&path.join("workspace.json")).unwrap();
+        assert!(saved.conversation(&app.read(cx).active).unwrap().messages.last().unwrap().activity.as_ref().unwrap().expanded);
+        app.update(cx,|s,cx| {
+            let active=s.active.clone();
+            s.act(Action::New,window,cx);
+            s.act(Action::Chat(active),window,cx);
+        });
+        assert!(app.read(cx).workspace.conversation(&app.read(cx).active).unwrap().messages.last().unwrap().activity.as_ref().unwrap().expanded);
+        app.update(cx,|s,cx| {
+            let chat=s.workspace.conversation_mut(&s.active).unwrap();
+            let activity=chat.messages.last_mut().unwrap().activity.as_mut().unwrap();
+            activity.status=native_core::ActivityStatus::Stopped; activity.expanded=false;
+            s.act(Action::ToggleActivity(message.clone()),window,cx);
+        });
+        window.render_frame(cx);
+        assert!(window.find(gpui_kit::SharedString::from(format!("activity-details-{message}"))).bounds().size.height>px(20.));
+    }).unwrap();
+    let _=std::fs::remove_dir_all(path);
+}
