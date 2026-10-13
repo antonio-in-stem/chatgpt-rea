@@ -84,3 +84,6 @@ Preview PID46296 stopped after verifying its executable path. No new real-window
 capture this checkpoint. Remaining: visual state matrix, ANSI/cwd, hover-only
 copy controls, fades, animation, accessibility expanded state and broader shell
 fidelity. Full frontend clone remains incomplete.
+
+
+Typography follow-up: command/output rows now consume the native theme mono family and code size, so the existing code font preference reaches these rows. Their source fixed 20px leading remains unchanged. ANSI and tail-follow remain incomplete.

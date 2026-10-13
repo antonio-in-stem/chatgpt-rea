@@ -852,6 +852,8 @@ impl Render for WorkspaceApp {
             .size_full()
             .bg(if cx.theme().mode.is_dark() { rgb(0x1a202f).into() } else { cx.theme().colors.sidebar })
             .text_color(cx.theme().colors.foreground)
+            // app-shared: Electron --font-ui-weight: 430; explicit child weights win.
+            .font_weight(FontWeight(430.))
             .flex().flex_col()
             .on_action(
                 cx.listener(|this, _: &NewChat, window, cx| this.act(Action::New, window, cx)),
