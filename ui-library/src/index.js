@@ -1,3 +1,8 @@
+import {createBadge} from './Badge.js';
+export {badgeVariants} from './Badge.js';
+import {createViewerSurfaces} from './ViewerSurfaces.js';
+import {createSwitches} from './Switch.js';
+import {createShortcutBadge} from './ShortcutBadge.js';
 export {createLazyComponentFactory} from './lazyComponent.js';
 import {createDarkThemeHook} from './theme.js';
 export {createDarkThemeHook} from './theme.js';
@@ -56,5 +61,5 @@ export function createReaUI({React, motion, AnimatePresence, MotionConfig, Conte
   const Spinner=createSpinner(React,mergeClasses);
   const Button=createButton({React,mergeClasses,Spinner});
   const MarqueeText=createMarqueeText({React,mergeClasses,motionPreference,visualScale}),SidebarRowSurface=createSidebarRow(React,mergeClasses),SidebarIndent=createSidebarIndent(React);
-  return {useDarkTheme:resolvedUseDarkTheme,AssetIcon:ResolvedAssetIcon,...responsive,NavigationItem:createNavigationItem({React,mergeClasses,Link,ResponsiveIcon:ResponsiveIcon ?? responsive.ResponsiveIcon,AnimatedIcon,DisclosureIcon:DisclosureIcon ?? createDisclosureIcon(React,mergeClasses),formatMessage}),useSidebarOrder:createUseSidebarOrder(React),...createSidebarSections({React,mergeClasses,motion,AnimatePresence,MotionConfig,ContextMenu,motionPreference,visualScale}),SidebarItem:createSidebarItem({React,mergeClasses,SidebarRowSurface,SidebarIndent,MarqueeText}),MarqueeText,SidebarRowSurface,SidebarIndent,...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
+  return {Badge:createBadge(React,mergeClasses),...createViewerSurfaces(React,mergeClasses),...createSwitches(React,mergeClasses),ShortcutBadge:createShortcutBadge(React,mergeClasses),useDarkTheme:resolvedUseDarkTheme,AssetIcon:ResolvedAssetIcon,...responsive,NavigationItem:createNavigationItem({React,mergeClasses,Link,ResponsiveIcon:ResponsiveIcon ?? responsive.ResponsiveIcon,AnimatedIcon,DisclosureIcon:DisclosureIcon ?? createDisclosureIcon(React,mergeClasses),formatMessage}),useSidebarOrder:createUseSidebarOrder(React),...createSidebarSections({React,mergeClasses,motion,AnimatePresence,MotionConfig,ContextMenu,motionPreference,visualScale}),SidebarItem:createSidebarItem({React,mergeClasses,SidebarRowSurface,SidebarIndent,MarqueeText}),MarqueeText,SidebarRowSurface,SidebarIndent,...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
 }

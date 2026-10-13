@@ -293,5 +293,19 @@
     "limits": [
       "Real failing network chunks not exercised; failures simulated in contract tests"
     ]
+  },
+  "visualPrimitives": {
+    "components": {
+      "Switch/SwitchTrack": "app-shared uji/dji/pji/mji",
+      "ShortcutBadge": "app-shared dxi",
+      "Badge": "app-initial iKi/sKi",
+      "ViewerCapsule/ViewerControlGroup/ViewerDivider": "app-shared TRi/ERi/DRi/s9"
+    },
+    "transformation": "Compiler caches removed; original classes, prop boundaries, DOM and native event semantics retained.",
+    "verification": "All 15 badges, four shortcut variants, switch sizes/tones/states and viewer groups compared against recovered functions. Browser click/Space theme change and confirmation badge observed.",
+    "limits": [
+      "Original matched screenshots pending",
+      "Viewer containers do not yet include action controls or viewer content"
+    ]
   }
 }

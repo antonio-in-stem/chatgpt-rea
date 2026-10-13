@@ -96,5 +96,30 @@
       "Authored demo toggle",
       "Original settings screen not reproduced"
     ]
+  },
+  "switchBadgeFlow": {
+    "themeSequence": [
+      "dark",
+      "light",
+      "dark"
+    ],
+    "inputMethods": [
+      "click",
+      "Space"
+    ],
+    "trackPixels": {
+      "width": 32,
+      "height": 20
+    },
+    "confirmation": "Confirmed: guided",
+    "badgeVariant": "success",
+    "shortcutLabels": [
+      "Tab",
+      "Enter"
+    ],
+    "limits": [
+      "Authored connected example",
+      "No matched original screenshot comparison"
+    ]
   }
 }

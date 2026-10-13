@@ -17,8 +17,8 @@ function App(){
  const [result,setResult]=React.useState(null),dark=ui.useDarkTheme();
  return React.createElement('main',{className:'mx-auto max-w-xl p-6'},
   React.createElement('h1',{className:'mb-4 text-xl font-medium'},'Reusable decision flow'),
-  React.createElement(ui.Button,{color:'secondary',size:'dialogAction',onClick:()=>{document.documentElement.dataset.theme=dark ? 'light' : 'dark';}},dark ? 'Switch to light theme' : 'Switch to dark theme'),
+  React.createElement('div',{className:'flex items-center gap-2 mb-4'},React.createElement('label',{htmlFor:'dark-theme'},'Dark theme'),React.createElement(ui.Switch,{id:'dark-theme',ariaLabel:'Dark theme',checked:dark===true,onChange:value=>{document.documentElement.dataset.theme=value ? 'dark' : 'light';}})),
   React.createElement(DecisionFlow,{onConfirm:setResult}),
-  result ? React.createElement('p',{role:'status',className:'mt-4'},`Confirmed: ${result.mode}`) : null,React.createElement(ui.NavigationItem,{label:'Focus project search',icon:searchIcons.Search16,animatedIcon:'sidebar-search',fullWidth:false,onClick:()=>document.getElementById('project-search')?.focus()}),React.createElement(SearchFlow),React.createElement(SidebarFlow));
+  result ? React.createElement('p',{role:'status',className:'mt-4'},React.createElement(ui.Badge,{variant:'success'},`Confirmed: ${result.mode}`)) : null,React.createElement(ui.NavigationItem,{label:'Focus project search',icon:searchIcons.Search16,animatedIcon:'sidebar-search',fullWidth:false,onClick:()=>document.getElementById('project-search')?.focus()}),React.createElement('p',{className:'text-secondary text-sm'},'Use ',React.createElement(ui.ShortcutBadge,{keysLabel:'Tab'}),' to move between controls and ',React.createElement(ui.ShortcutBadge,{keysLabel:'Enter'}),' to activate.'),React.createElement(SearchFlow),React.createElement(SidebarFlow));
 }
 createRoot(document.getElementById('root')).render(React.createElement(App));

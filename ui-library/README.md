@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Thirty-eight tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Forty-two tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -131,3 +131,12 @@ The authored example's toggle changes that attribute and demonstrates live subsc
 `createLazyComponentFactory({React, reportLoadError?, schedule?})` produces the recovered `oxi` loader. Each component shares its in-flight request, clears a rejected request for retry, retries once after 200ms, supports `fallback`, `errorFallback`, `propagateLoadError` and `suspendToParent`, and exposes `prefetch()`. Prefetch is deduplicated and allows newly mounted instances to use the loaded component immediately. The original behavior is preserved even when prefetch fails: its promise stays cached while a later lazy mount can retry the cleared load.
 
 AnimatedArtwork uses this loader. Differential tests compare success/retry/failure/propagation/prefetch branches with the shipped function. The keyboard and reduced-motion browser regression also passes after integration. Errors during component rendering are not converted into load failures by this loader, matching the source boundary.
+
+### Switches, badges and viewer surfaces
+
+- `Switch` / `SwitchTrack`: recovered uji/dji, controlled checked state, normal/small sizes and accent/neutral tones. Click handlers run before onChange; preventDefault and disabled state suppress the change. Original focus, RTL and transition classes are retained.
+- `ShortcutBadge`: recovered dxi key labels with default, button, tooltip and tooltipInline variants. It displays a key combination; it does not register shortcuts.
+- `Badge`: all 15 original iKi/sKi variants, including unread, outlinePill, identity, neutral, success, warning, danger and internal. The unread variant keeps its text-cap-trim child. Like the source, Badge does not forward arbitrary props.
+- `ViewerCapsule`, `ViewerControlGroup`, `ViewerDivider`: recovered TRi/ERi/DRi toolbar containers with default/input capsules and default/joined/zoom groups. They use the original viewer CSS module, already present in the baseline. Viewer actions and content are separate components and remain pending.
+
+The authored example uses Switch to change root theme, ShortcutBadge to describe native keyboard navigation, and Badge to show the connected confirmation result. Browser checks confirmed click/Space updates, 32×20px default switch track and the success badge after review/confirm. These checks do not claim a replica of the settings screen or complete viewer toolbar.
