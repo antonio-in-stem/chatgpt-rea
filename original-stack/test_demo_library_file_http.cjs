@@ -49,3 +49,12 @@ test('file lifecycle preserves bytes, distinguishes trash and permanent removal,
  query.set('soft_delete','false');call('DELETE',route+'?'+query);assert.equal(pages('POST','/files/library',{trashed_only:true}).items.length,0);assert.throws(()=>call('POST',route+'/restore'),/Unavailable/);
  assert.deepEqual(fs.readFileSync(path.join(root,row.file_id+'.bin')),bytes);
 }));
+
+test('empty file trash is atomic, idempotent and preserves live files and page trash',()=>fixture(async({root,call,pages})=>{
+ const bytes=Buffer.from('demo');let ids=[];
+ for(let n=0;n<2;n++){const file=await call('POST','/files',create(bytes)).json();call('PUT',file.upload_url,bytes);const events=(await call('POST','/files/process_upload_stream',finish(file)).text()).trim().split('\n').map(JSON.parse);ids.push(events[1].extra.metadata_object_id);}
+ const catalog=path.join(root,'demo-pages.json'),state=JSON.parse(fs.readFileSync(catalog));state.libraryFiles[0].deleted_at=new Date().toISOString();state.items.push({metadata:{page_id:'rea-page-test',deleted_at:'2026-01-01T00:00:00Z'}});fs.writeFileSync(catalog,JSON.stringify(state));
+ const before=fs.readFileSync(catalog);fs.writeFileSync(catalog+'.pending','foreign');assert.throws(()=>call('DELETE','/files/library/trash'));assert.deepEqual(fs.readFileSync(catalog),before);fs.unlinkSync(catalog+'.pending');
+ assert.deepEqual(await call('DELETE','/files/library/trash').json(),{deleted_count:1,failed_count:0});assert.deepEqual(await call('DELETE','/files/library/trash').json(),{deleted_count:0,failed_count:0});
+ assert.throws(()=>call('POST','/files/library/files/'+ids[0]+'/restore'),/Unavailable/);assert.equal((await call('GET','/files/library/files/'+ids[1]).json()).id,ids[1]);assert.deepEqual(JSON.parse(fs.readFileSync(catalog)).items,state.items);
+}));

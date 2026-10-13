@@ -7,7 +7,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const directoryId=route.match(/^\/files\/library\/directories\/(rea-directory-[1-9][0-9]*)$/)?.[1];
  const directory=(route==='/files/library/directories'&&method==='POST')||(route==='/files/library/directories/path'&&method==='GET')||(directoryId&&['GET','PATCH','DELETE'].includes(method));
  const sharing=route.match(/^\/(?:pages\/(rea-page-[1-9][0-9]*)|spaces\/v2\/(rea-space-[1-9][0-9]*))\/shares(?:\/(rea-share-[1-9][0-9]*))?$/);
- const directorySharing=/^\/files\/library\/directories\/rea-directory-[1-9][0-9]*\/(sharing-state|shares|effective-access)(?:\/rea-directory-share-[1-9][0-9]*)?$/.test(route)||(method==='POST'&&route==='/sharing/recipients/resolve');
+ const directorySharing=/^\/files\/library\/(?:directories\/rea-directory-[1-9][0-9]*|files\/libfile-rea-[1-9][0-9]*)\/(sharing-state|shares|effective-access)(?:\/rea-(?:directory|file)-share-[1-9][0-9]*)?$/.test(route)||(method==='POST'&&route==='/sharing/recipients/resolve');
  const recipientSearch=method==='POST'&&route==='/pages/sharing/recipients';
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
  const spaceAction=route.match(/^\/spaces\/(rea-space-[1-9][0-9]*)(\/restore)?$/);

@@ -1,0 +1,37 @@
+{
+  "scope": "Read-only REA audit, PNG/PDF runtime verification pending",
+  "png": {
+    "sources": [
+      "library-file-preview-kind-4b1f33be05cd.js:36-39",
+      "library-cloud-file-preview-7341c33dad87.js:3295-3313",
+      "navigate-with-file-preview-1937b7d83c05.js:47-81",
+      "app-initial-b8e1c8014bb4.js:87315-87333,87586-87601,87697-87709"
+    ],
+    "metadata": "MIME image/png, category image, extension png, actual size",
+    "flow": "Internal content_url -> content_redirect with headers -> host httpFetch bytes -> local blob/image URL"
+  },
+  "pdf": {
+    "sources": [
+      "library-file-preview-kind-4b1f33be05cd.js:40-43",
+      "library-cloud-file-preview-7341c33dad87.js:1025-1054,1822-1863,1980-2023",
+      "app-initial-b8e1c8014bb4.js:492120-492127",
+      "document-40c5b3043b70.js:39-54,120-162"
+    ],
+    "metadata": "MIME application/pdf, category pdf, extension pdf, actual size",
+    "flow": "Host bytes -> Uint8Array -> local data URL -> bundled PDF.js getDocument({data,worker})",
+    "assets": [
+      "pdf-204008cb1978.js",
+      "pdf.worker.min-46513d3652c6.mjs"
+    ]
+  },
+  "thumbnails": {
+    "source": "app-initial-b8e1c8014bb4.js:87340-87363",
+    "route": "GET /files/library/files/{id}/thumbnail -> {thumbnail_url}",
+    "limitation": "PNG can reuse image content; PDF bytes cannot serve as an image thumbnail"
+  },
+  "limits": [
+    "Preview branches use 40 MiB limit",
+    "No PNG/PDF UI claim yet",
+    "Current helper category defaults to document for non-images; pdf category needs mapping before filtered browse tests"
+  ]
+}

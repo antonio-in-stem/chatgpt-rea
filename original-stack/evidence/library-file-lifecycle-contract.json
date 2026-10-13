@@ -6,7 +6,8 @@
     "delete": "app-initial:492983-493001",
     "batch_delete": "app-initial:493054-493098,493129-493139",
     "restore": "app-initial:493003-493014",
-    "listing": "app-initial:158600-158705,289222-289235"
+    "listing": "app-initial:158600-158705,289222-289235",
+    "empty_trash": "library-empty-trash-5df4e34bc059.js:210-273,288-314"
   },
   "contracts": {
     "rename": "PATCH /files/library/files/{id} {file_name}; full classic Libraryfile DTO",
@@ -14,10 +15,11 @@
     "delete": "DELETE /files/library/files/{id} query file_id,parent_directory_id,file_name,soft_delete; {success:true}",
     "batch_delete": "POST /files/library/files/delete-batch {files:[{library_file_id,file_id,parent_directory_id,file_name}]}; {files:[{library_file_id,success}]}",
     "restore": "POST /files/library/files/{id}/restore; response body ignored",
-    "listing": "POST /files/library with trashed_only, q, categories, allowlist_ids, include_uploaded_files and pagination; items in classic file_name/directory_id/trashed_at shape"
+    "listing": "POST /files/library with trashed_only, q, categories, allowlist_ids, include_uploaded_files and pagination; items in classic file_name/directory_id/trashed_at shape",
+    "empty_trash": "DELETE /files/library/trash -> {deleted_count,failed_count}; original UI separately enumerates pages/archived and deletes pages"
   },
   "implementation": "Local demo supports rename, move, soft delete, restore, permanent metadata removal and batch soft delete. Original renderer files unchanged.",
-  "validation": "48 Node tests pass. Original UI rename, nested move, Delete Cancel/confirm, persisted Trash after renderer reload, Restore confirmation and reopened content verified.",
+  "validation": "50 Node tests pass. Original UI rename, move, trash, restore, individual permanent deletion and Empty trash Cancel/confirm/reload verified. Batch selection remains test-only.",
   "demo_policies": [
     "Deleted metadata retains local file bytes; permanent removal prevents future access but does not reclaim bytes",
     "Restore rejects a missing original directory; upstream policy remains unknown",
@@ -32,14 +34,16 @@
     "Confirm Delete rendered empty source folder; original Trash > Files listed file and deletion time",
     "Full renderer reload preserved the Trash entry",
     "Original Restore confirmation returned file to its original nested folder",
-    "Reopened original viewer displayed all TXT content; stored bytes retained SHA256 bc6f56fced276607d0ca1ff946bc51bec10f37233774e263ef7095ba46005946"
+    "Reopened original viewer displayed all TXT content; stored bytes retained SHA256 bc6f56fced276607d0ca1ff946bc51bec10f37233774e263ef7095ba46005946",
+    "Separate synthetic copy: original Permanently delete > Delete forever removed its Trash entry",
+    "Another synthetic copy: original Empty trash opened Delete forever confirmation; Cancel preserved entry",
+    "Empty trash confirmation removed only trashed synthetic file; active Library file and page records preserved",
+    "Full renderer reload kept original Trash is empty state"
   ],
   "pending": [
-    "Empty-trash endpoint",
-    "File sharing",
     "Non-text previews",
     "Ranking and complete browse DTO",
-    "Original UI permanent deletion and multi-selection batch verification",
-    "30-day automatic expiration advertised by original UI is not implemented in demo"
+    "30-day automatic expiration advertised by original UI is not implemented in demo",
+    "Original UI multi-selection batch verification"
   ]
 }

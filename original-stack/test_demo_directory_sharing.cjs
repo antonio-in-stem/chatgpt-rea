@@ -25,3 +25,15 @@ test('folder invitations reject unknown recipients, stale updates and preserve w
  assert.throws(()=>call('GET','/files/library/directories/rea-directory-999/shares'),/Unknown/);assert.deepEqual(fs.readFileSync(file),current);
  fs.writeFileSync(file+'.pending','foreign');assert.throws(()=>call('DELETE',base+'/shares/'+grant.share_id));assert.deepEqual(fs.readFileSync(file),current);
 }));
+
+test('file sharing keeps resource roles and invitations isolated from parent folders',()=>fixture((call,file)=>{
+ const parent=call('POST','/files/library/directories',{name:'Parent'}),state=JSON.parse(fs.readFileSync(file));state.libraryFiles=[{id:'libfile-rea-1',file_id:'file-rea-upload-1',name:'demo.txt',parent_directory_id:parent.id}];fs.writeFileSync(file,JSON.stringify(state));
+ const base='/files/library/files/libfile-rea-1',folderBase='/files/library/directories/'+parent.id,recipient={recipient_type:'email',email:'collaborator@example.invalid'};
+ const sharing=call('GET',base+'/sharing-state');assert.equal(sharing.resource.resource_type,'library_file');assert.equal(sharing.viewer.role_id,'role-library-file-editor');assert.equal(call('GET',base+'/effective-access').complete,true);
+ assert.throws(()=>call('POST',base+'/shares',{recipient,role_id:'role-library-folder-editor'}),/role/);
+ const grant=call('POST',base+'/shares',{recipient,role_id:'role-library-file-viewer'});assert.match(grant.share_id,/^rea-file-share-/);assert.deepEqual(call('GET',folderBase+'/shares').shares,[]);
+ const changed=call('POST',base+'/shares',{recipient,role_id:'role-library-file-editor',expected_invitation_id:grant.share_id});assert.equal(call('GET',base+'/shares').shares[0].role_id,'role-library-file-editor');
+ call('POST',folderBase+'/shares',{recipient,role_id:'role-library-folder-viewer'});assert.equal(call('GET',base+'/effective-access').complete,false);
+ call('DELETE',base+'/shares/'+changed.share_id);assert.deepEqual(call('GET',base+'/shares').shares,[]);assert.equal(call('GET',folderBase+'/shares').shares.length,1);
+ const unavailable=JSON.parse(fs.readFileSync(file));unavailable.libraryFiles[0].deleted_at='2026-01-01T00:00:00Z';fs.writeFileSync(file,JSON.stringify(unavailable));assert.throws(()=>call('GET',base+'/sharing-state'),/Unknown/);
+}));

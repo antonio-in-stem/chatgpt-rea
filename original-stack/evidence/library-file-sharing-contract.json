@@ -1,0 +1,44 @@
+{
+  "scope": "Original Library file sharing dialog, synthetic pending email invitations only",
+  "sources": {
+    "resource": "api-32252bf200bf.js:15-39; model-2247c0efb7ec.js:7-33,117-130",
+    "entry": "app-initial-b8e1c8014bb4.js:493320-493370",
+    "reads": "api-32252bf200bf.js:128-198; prefetch-d152c1f14d2c.js:33-50; dialog-8a8d8e01dffd.js:3496-3623",
+    "invite": "api-32252bf200bf.js:201-227",
+    "revoke": "api-32252bf200bf.js:229-267",
+    "link": "share-link-34e12b811e3a.js:63-85"
+  },
+  "contract": {
+    "base": "/files/library/files/{library_file_id}",
+    "resource_type": "library_file",
+    "roles": [
+      "role-library-file-viewer",
+      "role-library-file-commenter",
+      "role-library-file-editor"
+    ],
+    "reads": [
+      "GET /sharing-state",
+      "GET /shares",
+      "GET /effective-access"
+    ],
+    "invite": "POST /shares {recipient:{recipient_type:email,email},role_id,expected_invitation_id?}",
+    "revoke": "DELETE /shares/{share_id}",
+    "recipient_resolution": "POST /sharing/recipients/resolve {email} -> {eligible}"
+  },
+  "implementation": "Reuses original folder-sharing adapter with distinct file IDs, roles and invitation sequence. Same original renderer dialog, unchanged.",
+  "validation": "50 Node tests pass. Original file menu and viewer Share dialogs verified: owner, pending Viewer invitation, Editor Save, renderer reload persistence and Remove access Save.",
+  "ui_observations": [
+    "Before adapter: original Share dialog opened from TXT viewer with Could not load sharing permissions and Retry/Copy link/Done controls",
+    "Original file menu Share displayed owner and Add emails after adapter was connected",
+    "Synthetic email selection and Invite showed pending Viewer in original roster",
+    "Original role menu Editor then Save persisted file-specific editor role",
+    "Full renderer reload; viewer Share still showed Editor",
+    "Remove access then Save returned roster to owner only"
+  ],
+  "limitations": [
+    "Only fixed synthetic email can be invited; no delivery or accepted real principal",
+    "Ancestor pending invitations make effective-access incomplete rather than invent inherited collaborators",
+    "Workspace links, accepted-principal access changes and requests not implemented",
+    "Copy link uses original UI format; it does not create a public service"
+  ]
+}

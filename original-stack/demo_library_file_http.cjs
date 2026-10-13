@@ -6,7 +6,8 @@ function demoLibraryFileHttp(method,url,body,settingsPath,fs,path,onProgress,sig
  const create=url.origin==='https://chatgpt.com'&&url.pathname==='/files'&&method==='POST';
  const finish=url.origin==='https://chatgpt.com'&&url.pathname==='/files/process_upload_stream'&&method==='POST';
  const batch=url.origin==='https://chatgpt.com'&&url.pathname==='/files/library/files/delete-batch'&&method==='POST';
- if(!upload&&!create&&!finish&&!metadata&&!rawDownload&&!batch)return null;
+ const emptyTrash=url.origin==='https://chatgpt.com'&&url.pathname==='/files/library/trash'&&method==='DELETE';
+ if(!upload&&!create&&!finish&&!metadata&&!rawDownload&&!batch&&!emptyTrash)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  signal?.throwIfAborted();
  const root=path.dirname(settingsPath),catalog=path.join(root,'demo-pages.json');
@@ -20,6 +21,11 @@ function demoLibraryFileHttp(method,url,body,settingsPath,fs,path,onProgress,sig
  const validateName=name=>{if(typeof name!=='string'||!name.trim()||name.startsWith('.')||name.length>255)throw Error('Invalid Library file name');return name;};
  const dto=file=>({...file,file_name:file.name,directory_id:file.parent_directory_id,trashed_at:file.deleted_at??null});
  const parentExists=id=>id==null||state.directories?.some(d=>d.id===id);
+ if(emptyTrash){
+  const files=(state.libraryFiles??[]).filter(f=>!f.permanentlyDeleted&&f.deleted_at);
+  const now=new Date().toISOString();for(const file of files){file.permanentlyDeleted=true;file.updated_at=now;}if(files.length)persist();
+  return json({deleted_count:files.length,failed_count:0});
+ }
  if(batch){
   const input=parse();if(!Array.isArray(input.files)||!input.files.length||input.files.length>25)throw Error('Invalid Library delete batch');
   const files=input.files.map(row=>{const file=findFile(row.library_file_id);if(row.file_id!==file.file_id||row.file_name!==file.name||row.parent_directory_id!==file.parent_directory_id)throw Error('Stale file deletion');return file;});
