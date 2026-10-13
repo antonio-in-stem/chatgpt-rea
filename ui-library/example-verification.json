@@ -62,9 +62,22 @@
     "pointerLeaveSvgCount": 1,
     "observedPaint": "rgb(223,223,223)",
     "limits": [
-      "Synthetic pointer events used",
       "Original app screenshot comparison pending",
-      "Other animations and keyboard playback not browser-verified"
-    ]
+      "Other animations not browser-verified",
+      "Initial timing/geometry sampling used synthetic pointer events; keyboard/media test uses Playwright interactions"
+    ],
+    "keyboardAndReducedMotion": {
+      "focusVisible": true,
+      "keyboardAnimated": true,
+      "enterFocusedSearch": true,
+      "reducedMotion": {
+        "media": true,
+        "svgCount": 1,
+        "animatedGroups": 0
+      },
+      "restoredAnimation": true,
+      "method": "Real Playwright keyboard Tab/Enter, hover and media emulation",
+      "reproducibleCheck": "scripts/check-animated-navigation.js"
+    }
   }
 }
