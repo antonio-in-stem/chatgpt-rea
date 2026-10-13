@@ -125,6 +125,36 @@ class ThreadTests(unittest.TestCase):
             self.assertEqual(store.handle("thread/goal/get",{"threadId":fork["thread"]["id"]})[0],{"goal":None})
             with self.assertRaises(ThreadError):store.handle("thread/goal/get",{"threadId":"missing"})
 
+    def test_goal_lifecycle_persists_without_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            result,event=store.handle("thread/goal/set",{"threadId":THREAD["id"],"objective":"Inspect original goal controls","tokenBudget":500})
+            self.assertEqual(event["method"],"thread/goal/updated")
+            self.assertEqual(result["goal"]["tokensUsed"],0)
+            store=ThreadStore(path)
+            paused,_=store.handle("thread/goal/set",{"threadId":THREAD["id"],"status":"paused"})
+            self.assertEqual(paused["goal"]["objective"],result["goal"]["objective"])
+            self.assertEqual(paused["goal"]["tokenBudget"],500)
+            with self.assertRaises(ThreadError):store.handle("thread/goal/set",{"threadId":THREAD["id"],"tokenBudget":-1})
+            self.assertEqual(ThreadStore(path).handle("thread/goal/get",{"threadId":THREAD["id"]})[0]["goal"]["status"],"paused")
+            response,event=store.handle("thread/goal/clear",{"threadId":THREAD["id"]})
+            self.assertTrue(response["cleared"])
+            self.assertEqual(event["method"],"thread/goal/cleared")
+            self.assertIsNone(ThreadStore(path).handle("thread/goal/get",{"threadId":THREAD["id"]})[0]["goal"])
+            self.assertFalse(store.handle("thread/goal/clear",{"threadId":THREAD["id"]})[0]["cleared"])
+
+    def test_goal_pause_preserves_elapsed_time(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=ThreadStore(Path(directory)/"threads.json")
+            with patch("demo_threads.time.time",return_value=100):store.handle("thread/goal/set",{"threadId":THREAD["id"],"objective":"Timer demo"})
+            with patch("demo_threads.time.time",return_value=145):
+                paused,_=store.handle("thread/goal/set",{"threadId":THREAD["id"],"status":"paused"})
+            self.assertEqual(paused["goal"]["timeUsedSeconds"],45)
+            with patch("demo_threads.time.time",return_value=200):
+                resumed,_=store.handle("thread/goal/set",{"threadId":THREAD["id"],"status":"active"})
+            self.assertEqual(resumed["goal"]["timeUsedSeconds"],45)
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

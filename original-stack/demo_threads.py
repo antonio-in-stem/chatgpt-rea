@@ -70,7 +70,7 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork"}
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear"}
     METHODS = METHODS | MUTATIONS
 
     def __init__(self, path):
@@ -117,6 +117,7 @@ class ThreadStore:
         if not isinstance(thread_id,str) or thread_id not in self.data["threads"]:
             raise ThreadError("Unknown demo thread")
         entry=self.data["threads"][thread_id]
+        if method == "thread/goal/get":return {"goal":copy.deepcopy(entry.get("goal"))},None
         if method not in self.MUTATIONS:
             response=handle(method,params,entry["thread"],entry["archived"])
             if method == "thread/resume":response.update(copy.deepcopy(entry.get("settings",{})))
@@ -124,6 +125,35 @@ class ThreadStore:
         data=copy.deepcopy(self.data)
         entry=data["threads"][thread_id]
         thread=entry["thread"]
+        if method in ("thread/goal/set","thread/goal/clear"):
+            if params.get("origin") not in (None,"user","automatic"):raise ThreadError("Invalid goal origin")
+            goal=entry.get("goal")
+            if method == "thread/goal/clear":
+                response={"cleared":goal is not None}
+                entry["goal"]=None
+                event={"method":"thread/goal/cleared","params":{"threadId":thread_id}} if goal is not None else None
+            else:
+                objective=params.get("objective")
+                if objective is not None and (not isinstance(objective,str) or not objective.strip()):raise ThreadError("Nonempty goal objective required")
+                if goal is None and objective is None:raise ThreadError("An objective is required to create a goal")
+                status=params.get("status")
+                if status is not None and status not in ("active","paused","blocked","usageLimited","budgetLimited","complete"):raise ThreadError("Invalid goal status")
+                budget=params.get("tokenBudget")
+                if budget is not None and (type(budget) is not int or not 0 < budget <= 9007199254740991):raise ThreadError("Positive demo token budget required")
+                now=int(time.time())
+                if goal is None:
+                    goal={"threadId":thread_id,"objective":objective,"status":"active","tokenBudget":None,"tokensUsed":0,"timeUsedSeconds":0,"createdAt":now,"updatedAt":now}
+                if goal["status"] == "active":goal["timeUsedSeconds"]+=max(0,now-goal["updatedAt"])
+                if objective is not None:goal["objective"]=objective
+                if status is not None:goal["status"]=status
+                if "tokenBudget" in params:goal["tokenBudget"]=budget
+                goal["updatedAt"]=now
+                entry["goal"]=goal
+                response={"goal":copy.deepcopy(goal)}
+                event={"method":"thread/goal/updated","params":{"threadId":thread_id,"turnId":None,"goal":copy.deepcopy(goal)}}
+            # Demo presentation state only; never schedule an automatic continuation.
+            self._commit(data)
+            return response,event
         if method == "thread/fork":
             for key in ("path","experimentalPredictionMode","ephemeral","baseInstructions","developerInstructions","permissions","sandbox","approvalPolicy","approvalsReviewer"):
                 if params.get(key):raise ThreadError("Unsupported demo fork option: "+key)
