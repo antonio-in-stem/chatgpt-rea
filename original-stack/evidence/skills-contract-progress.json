@@ -35,8 +35,8 @@
     ]
   },
   "pending": [
-    "Recommended catalog visibility and original reinstall flow",
-    "Other catalog states"
+    "Other catalog/error states",
+    "Custom skill authoring is a demo conversation only"
   ],
   "contentContract": {
     "consumer": "app-initial-b8e1c8014bb4.js:Iil:544281",
@@ -98,14 +98,24 @@
     "observed": [
       "Original Uninstall persists installed=false",
       "skills/list refresh removes skill and original page shows No skills found",
-      "Original Add opens conversation with Skill Creator chip and help me create a skill prompt"
+      "Original Add opens conversation with Skill Creator chip and help me create a skill prompt",
+      "Search skills rea reveals synthetic recommendation and Install skill",
+      "Original Install skill persists installed=true, success toast and Refresh to use new skill(s)",
+      "Original refresh then clear search restores installed listing",
+      "Page.reload then Plugins > Skills restores installed Rea UI Demo card"
     ],
     "pending": [
-      "Recommended catalog visibility and original reinstall flow"
+      "Other catalog/error states",
+      "Custom skill authoring is a demo conversation only"
     ],
     "tests": {
       "python": 64,
       "hostLifecycle": 1
     }
+  },
+  "recommendationVisibility": {
+    "source": "plugins-page-selectors-5f4887a542c6.js:I:107; skills-page-612292bde761.js:228-234",
+    "finding": "Empty query filters recommendations to predefined normalized names; nonempty query searches full catalog. Synthetic rea-ui-demo appears via search.",
+    "rendererChangeRequired": false
   }
 }
