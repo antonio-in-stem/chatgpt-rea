@@ -75,3 +75,13 @@ The equal-viewport original capture was at the bottom of a column-reverse scroll
 The newly measured ancestor children identify a 52 px date/time separator before the first user message, plus the original 32 px content top inset. At the top: scroller y=96, separator y=128 and bubble y=180. The original timestamp-separator module confirms normal py-4 (16+16) and leading-5 (20); compact variants use py-2, and nonfinite timestamps render nothing. Native chat_view currently has 24 px transcript padding and no timestamp separator, and places its composer outside the message scroller. These are structural differences still to port, not pixel offsets to guess.
 
 Evidence: thread-scroll-top-observation.json and original-thread-scroll-top.png. Demo-Controls scroll-thread sends a bounded wheel event to the demo scroller; Measure-Renderer now captures user-message ancestor child geometry. Native layout was deliberately not adjusted from the invalid earlier comparison.
+
+
+## Timestamp selection model port
+
+The pending native-core timestamp model now has direct differential verification against recovered production JavaScript. Generate-TimestampOracle.cjs hash-pins timestamps-85bd12c0e1b2.js, extracts only its pure t/n selection functions and their original o/s constants, and runs them in a Node VM with explicit time inputs. Its deterministic 384 cases contain 1,511 groups, 227 missing-history groups and 148 positive separator results across user/assistant/system roles. Rust agrees with every expected result. Six focused unit tests additionally cover strict one-hour/ten-minute boundaries, adjacency breaks, missing timestamps, first-match group selection and legacy persistence. This finite corpus is evidence of selection equivalence on those inputs, not a universal proof.
+
+ChatMessage now retains optional sent_at_ms; newly appended messages receive the current time, while old workspaces keep None without fabricated dates. This change does not render separators yet. Group construction from production turn data, localized date/time formatting, timezone behavior, the 52 px separator view and conversation scroll/composer structure remain pending. The original runtime remains the visual baseline.
+
+Validation: native-core has 18 passing unit tests plus the 384-case differential integration test. The generated fixture covers finite integer milliseconds only; JavaScript nonfinite/fractional timestamps are outside the Rust model contract. No updated native executable or screenshot is claimed for this model-only change.
+`cargo check -p native-workspace --locked --offline` also passed; the existing unused Theme/Fixture action warning remains.

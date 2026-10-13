@@ -1,4 +1,5 @@
 //! Local domain state. No network requests or provider credentials belong here.
+pub mod timestamps;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashSet,
@@ -45,6 +46,9 @@ pub enum MessageRole {
 }
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ChatMessage {
+    /// Absent in older saved workspaces; never synthesize historical dates.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sent_at_ms: Option<i64>,
     pub id: String,
     pub role: MessageRole,
     pub content: String,
@@ -340,6 +344,7 @@ impl Workspace {
         let c = self.conversation_mut(conversation)?;
         let id = id();
         c.messages.push(ChatMessage {
+            sent_at_ms: timestamp_ms().and_then(|value| i64::try_from(value).ok()),
             id: id.clone(),
             role,
             content,
