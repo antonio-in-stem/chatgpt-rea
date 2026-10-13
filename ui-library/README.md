@@ -7,6 +7,7 @@ This package begins the reusable library. It does not import the app host, accou
 - `Button`: shared app control with 62 color variants, 84 size variants and five explicit radius overrides. Preserves loading/disabled, native button events, focus variants, stable sizing labels and disabled-link behavior. Use `as="a"` for anchors; inject `renderLink(props)` for your router.
 - `Spinner`: original circle paths and animation-start synchronization. Rays SVG output matches execution of the original paint/optical/accessibility pipeline for this asset; screenshot and animation timing comparison remain pending.
 
+- `SidebarSection`, `SidebarSectionToggle`, `SidebarList`, `SidebarSections`: original section/list layout, collapsible heading, grouped/rail spacing and hover/focus actions. Collapsible sections require `AnimatePresence` and `MotionConfig` alongside `motion`. A `menuRef` requires an injected original-compatible `ContextMenu`; the menu implementation is still pending.
 - `SidebarItem`: original folder/thread row composition with label, leading icon/disclosure, trailing status, actions, indentation and injected drag listeners. Its parent owns navigation and drag state.
 - `MarqueeText`: measured overflow, original CSS masks and easing, stop-at-end/loop modes and group hover. Factory `motionPreference` accepts `on` (reduce), `off`, or `system`; `visualScale` defaults to 1 and represents application scale, not device pixel ratio. Native ResizeObserver replaces the app provider.
 - `SidebarRowSurface`: original selectable row surface; active/highlighted/disabled, inverse tone, multiline/table variants and nested navigation-link behavior. Handles Enter/Space and preserves cancellation by consumer handlers. Full sidebar groups and rail assembly are still pending.
@@ -58,8 +59,10 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Sixteen tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Nineteen tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
 `examples/SidebarFlow.js` exercises active selection, unread clearing and a working indicator, including Tab/Enter navigation. It is an authored composition of row surfaces; it does not claim to reproduce the full sidebar layout. In the Windows dark CSS scenario, row surfaces resolve to 29px height and 12.5px radius. These are observed example metrics, not yet matched against the original at the same viewport.
+
+The sidebar example now closes/reopens Projects, moves the unread indicator into the collapsed heading, and restores keyboard access on expansion. Section exit uses original height/opacity targets and 300ms easing; its wrapper becomes inert and aria-hidden while collapsed. Reduced motion sets duration to zero.

@@ -9,7 +9,9 @@
     "Y4o SidebarItem row assembly",
     "dRo measured MarqueeText",
     "fRo/pRo/mRo timing and sampled easing",
-    "vZ leading icon/disclosure slot"
+    "vZ leading icon/disclosure slot",
+    "UF/HF/Tar sections and list layout",
+    "P1o section toggle with original ZNi chevron"
   ],
   "nextDependencies": [
     {
@@ -20,7 +22,8 @@
   ],
   "limits": [
     "Not full sidebar/rail component",
-    "Navigation, drag/drop and collapsed section controllers still pending",
+    "Section ordering and drag/drop controllers still pending",
+    "ContextMenu implementation still pending",
     "Do not substitute settings icon for actual profile identity"
   ]
 }

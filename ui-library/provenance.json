@@ -112,6 +112,36 @@
         "No matched original screenshot comparison",
         "Loop and reduced-motion DOM tested; runtime media-toggle and looping animation verification pending"
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "formattedSourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "components": [
+        "SidebarSection",
+        "SidebarSectionToggle",
+        "SidebarList",
+        "SidebarSections"
+      ],
+      "symbols": [
+        "UF",
+        "HF",
+        "Tar",
+        "P1o"
+      ],
+      "dependencies": [
+        "Shared ZNi disclosure SVG",
+        "Shared uCi duration/ease",
+        "motion.div, AnimatePresence, MotionConfig",
+        "Optional ContextMenu adapter for menuRef"
+      ],
+      "transformation": "Preserved classes, prop precedence, inert/aria-hidden, enter/exit targets, scale conversion and menu callback contract; supplied animation components and reduced-motion preference replace app imports/store.",
+      "status": "Differential tests pass for expanded/collapsed/plain/grouped, header actions, disabled toggle and menu callbacks. Browser collapse, count indicator, Enter reopen and Tab to first item verified.",
+      "limits": [
+        "Original ContextMenu renderer not yet extracted; no fallback replacement supplied",
+        "Animation parameters match source but exact bundled Motion version remains unresolved",
+        "Full sidebar ordering/drag and rail shell pending",
+        "No same-state pixel comparison"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

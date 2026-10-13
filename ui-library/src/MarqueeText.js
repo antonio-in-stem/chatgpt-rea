@@ -1,3 +1,4 @@
+import {createMotionPreference} from './motionPreference.js';
 import {marqueeAnimation} from './marqueeTiming.js';
 const css={viewport:'_viewport_a3okg_1',clipViewport:'_clipViewport_a3okg_20',track:'_track_a3okg_28',content:'_content_a3okg_35',overflowingViewport:'_overflowingViewport_a3okg_40',animate:'_animate_a3okg_66',scrolling:'_scrolling_a3okg_66',animateOnGroupHover:'_animateOnGroupHover_a3okg_67',stopAtEnd:'_stopAtEnd_a3okg_73'};
 // dRo measurement; dimensions are normalized by the app's visual scale, not devicePixelRatio.
@@ -22,11 +23,9 @@ export function measureMarquee(element,scrollMode,scale=1) {
 }
 export function createMarqueeText({React,mergeClasses,motionPreference='system',visualScale=1}){
  const h=React.createElement;
- const media=typeof window!=='undefined' && typeof window.matchMedia==='function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
- const subscribe=callback=>{media?.addEventListener('change',callback);return ()=>media?.removeEventListener('change',callback);};
- const snapshot=()=>motionPreference==='on' || (motionPreference==='system' && (media?.matches ?? false));
+ const useReducedMotion=createMotionPreference(React,motionPreference);
  return function MarqueeText({id,className,animate=false,animateOnGroupHover=false,scrollMode='stop-at-end',children,style,...props}) {
-  const reduced=React.useSyncExternalStore(subscribe,snapshot,()=>false),viewport=React.useRef(null),track=React.useRef(null),content=React.useRef(null);
+  const reduced=useReducedMotion(),viewport=React.useRef(null),track=React.useRef(null),content=React.useRef(null);
   const [metrics,setMetrics]=React.useState(null);
   const measure=React.useCallback(element=>{if(!element)return;const next=measureMarquee(element,scrollMode,visualScale);if(next===undefined)return;setMetrics(previous=>next===null ? null : previous?.contentWidth===next.contentWidth && previous.scrollDistance===next.scrollDistance && previous.speedPxPerSecond===next.speedPxPerSecond ? previous : next);},[scrollMode]);
   React.useLayoutEffect(()=>{

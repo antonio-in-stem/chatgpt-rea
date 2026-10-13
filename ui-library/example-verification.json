@@ -18,7 +18,10 @@
     "Sidebar row computed height 29px and radius 12.5px under Windows dark theme",
     "SidebarItem long label measures 188.5px overflow and 7.082s duration in example viewport",
     "Hover activates original _marqueeTextScroll_a3okg_102 animation; observed running",
-    "Short sidebar labels have no overflow or animation styles"
+    "Short sidebar labels have no overflow or animation styles",
+    "Projects section collapses; rows leave accessibility tree and wrapper remains inert/aria-hidden with no children after exit",
+    "Collapsed heading displays unread count 3",
+    "Enter reopens section; Tab focuses first sidebar item"
   ],
   "build": "npm run build:example succeeded with esbuild 0.28.0",
   "runtimeVersions": {
