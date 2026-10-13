@@ -1,0 +1,28 @@
+{
+  "status": "Original v36 UI verified; no renderer or adapter changes needed",
+  "rename": {
+    "source": "page-rename-dialog-8bd8fd5bbcf9.js:105-149,174-188",
+    "contract": "Rename updates root Yjs title, flushes and waits for canonical document with zero pending updates before saved projection",
+    "observed": [
+      "Sidebar menu Rename opens original Space name input",
+      "Save Renamed Space demo closes dialog and updates sidebar",
+      "Reload and reopen space retains new title in sidebar, library heading and root row",
+      "Second edit Cancelled demo name then Cancel leaves canonical root title Renamed Space demo and sequence 1 unchanged"
+    ]
+  },
+  "pins": {
+    "observed": [
+      "Original Pin moves space from Spaces to Pinned",
+      "Reload then Space retains Pinned entry",
+      "Original Unpin returns entry to Spaces and removes Pinned section"
+    ],
+    "limits": [
+      "Unpin state observed immediately; separate post-Unpin reload not yet checked",
+      "Full underlying pin contract not independently traced in this pass"
+    ]
+  },
+  "limitations": [
+    "Rename error/recovery and concurrent edits not exercised",
+    "No full frontend completion claimed"
+  ]
+}
