@@ -46,5 +46,13 @@
     "tests": "73 Python tests pass, including ordering, unavailable projection, replay and failed atomic write",
     "runtime": "Not installed in running adapter yet; old documents need explicit backfill or new commit",
     "remaining": "Invoke original CZ/sZ serializer for HTTP response and verify matching sequence before returning"
+  },
+  "http_bridge": {
+    "implementation": "demo_page_export.cjs called by asynchronous original-host fetchHttp seam",
+    "serializer": "Exactly one app://-/index.html webContents in demo process; invokes shipped CZ/sZ exports via executeJavaScript, no renderer files changed",
+    "consistency": "Projection sequence must match canonical and metadata; canonical file bytes rechecked after serialization and page liveness rechecked",
+    "content_contract": "id/kind/markdown/metadata blocks match original applyPageRead at app-initial:341860-341884",
+    "tests": "37 Node tests pass; 73 Python tests previously passed for projection",
+    "runtime": "Build/install and native save verification pending; active v38 unchanged"
   }
 }
