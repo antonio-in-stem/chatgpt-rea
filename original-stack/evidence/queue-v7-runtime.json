@@ -21,12 +21,21 @@
     "In enter composer mode, Ctrl+Enter invoked thread/queue/add",
     "Original queued message rendered Steer, Delete queued message and Queued message actions controls",
     "Activating queued Steer while idle invoked turn/start then thread/queue/delete",
-    "Queue became empty and submitted user message persisted with clientId"
+    "Queue became empty and submitted user message persisted with clientId",
+    "Stop emits turn/interrupt; pending queued submission remains and original Resume controls appear",
+    "Original queued message menu exposes Edit message, Open in side chat and Turn on/off queueing",
+    "Turn on queueing persists desktop.followUpQueueMode=queue through config/batchWrite",
+    "Edit message removes pending item into original composer; edited content sends through normal turn/start"
   ],
   "shortcutCorrection": {
     "source": "app-primary-19fe57fd8c00.js:Ylt near line67335",
     "enter": "CmdOrCtrl+Enter",
     "cmdIfMultiline/cmdAlways": "CmdOrCtrl+Shift+Enter",
     "priorAttempt": "Prior Ctrl+Shift+Enter probe selected the wrong shortcut for this desktop enter mode"
+  },
+  "resumeInvestigation": {
+    "observed": "Textual queue Resume activation did not produce queue/start in this scenario",
+    "sourceFinding": "Original isConversationStreaming uses streamRoles.has(threadId), not persisted turn status; source candidate only, runtime cause unproven",
+    "next": "Trace stream ownership release and hasPendingTurnStart before changing fixture"
   }
 }

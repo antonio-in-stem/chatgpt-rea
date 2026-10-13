@@ -35,7 +35,7 @@ const fs=require('node:fs'),path=require('node:path');
   else if(operation==='fill'&&label&&value!==undefined)expression=`(()=>{const matches=[...document.querySelectorAll('input')].filter(e=>e.getAttribute('aria-label')===${JSON.stringify(label)}||e.getAttribute('placeholder')===${JSON.stringify(label)});if(matches.length!==1)throw Error('Expected one input');const input=matches[0];Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,${JSON.stringify(value)});input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));return {filled:${JSON.stringify(label)}}})()`;
   else throw Error('Supported operations: inspect, inspect-focus, inspect-images, scroll-thread, scroll-code, click, hover, activate, activate-text, fill, insert-focused, search-key, dialog-key, row-action, describe');
   const result=await send('Runtime.evaluate',{returnByValue:true,expression});
-  if(result.exceptionDetails)throw Error(result.exceptionDetails.text);
+  if(result.exceptionDetails)throw Error(result.exceptionDetails.exception?.description||result.exceptionDetails.text);
   if(operation==='scroll-code'){
    const {x,y}=result.result.value;await send('Input.dispatchMouseEvent',{type:'mouseWheel',x,y,deltaX:Number(label),deltaY:0});console.log(JSON.stringify({operation,deltaX:Number(label),before:result.result.value}));
   }else if(operation==='scroll-thread'){

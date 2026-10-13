@@ -60,3 +60,5 @@ Las pruebas que evalúan consumidores recuperados requieren los artefactos local
 El adaptador usa datos sintéticos y no ejecuta herramientas de usuario. El bloqueo de HTTP del host no equivale a aislamiento de red de todo el proceso. No copiar credenciales o perfiles personales para habilitar pantallas.
 
 Última prioridad confirmada: seguir recuperando todo el frontend original; también se difiere la reorganización en módulos reconstruidos. Paquete demo actual v7 en `S:/rea-profile-package-v7`, SHA256 `ab1d81b1555941f165bcd7d86ad17a93ee17f75ed918d44e097a63ecff6817b2`.
+
+Actualización de cola: verificados Stop (conserva pendiente y muestra Resume), menú original, Turn on queueing (persiste desktop.followUpQueueMode=queue) y Edit message (retira a composer, permite modificar/enviar). Resume textual aún no emite queue/start en el escenario observado. No inferir estado de streaming del frontend a partir del status persistido: el manager usa streamRoles. Investigación de liberación de ownership pendiente.
