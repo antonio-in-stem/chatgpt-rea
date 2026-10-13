@@ -1,5 +1,5 @@
 {
-  "status": "v35 original archive confirmed; restore UI blocked by missing demo bootstrap gate, flag added source-only, rebuild pending",
+  "status": "v36 original archive and restore cycle verified, including reload and unchanged canonical document bytes",
   "source": "app-initial-b8e1c8014bb4.js",
   "archive": {
     "method": "DELETE",
@@ -65,11 +65,21 @@
     "Original sidebar action requires hover on row before pointer-click; then Delete enabled without permission changes",
     "Original Delete confirmation says space moves to Trash and can be restored",
     "Confirming Delete archives space and removes sidebar entry and member recents",
-    "Trash Files/Pages visible but Spaces absent in v35; original library-page filters Spaces with imported NU selector"
+    "Trash Files/Pages visible but Spaces absent in v35; original library-page filters Spaces with imported NU selector",
+    "v36 Trash > Spaces displays archived synthetic space and enabled Restore Space",
+    "Original Restore Space returns sidebar entry and empty Spaces trash list",
+    "Space and member metadata restored writable; canonical child document SHA-256 unchanged before/after restoration",
+    "Reload, reopen space, reopen child: title Space child demo and body Created from the original space library. preserved"
   ],
   "restore_gate": {
     "source": "library-page-54c00b8ed493.js:92,316-329,2924-2939; app-shared-737655e1fb23.js:237647,237753,306518",
     "selector": "E3r = Pages enabled && gate 2245491494",
-    "change": "Demo Statsig bootstrap now enables original gate; source tested, package rebuild pending"
-  }
+    "change": "Demo Statsig bootstrap enables original gate; original Spaces tab runtime verified in v36"
+  },
+  "limitations": [
+    "Prior independently archived descendant policy remains an explicit demo choice, not verified original backend behavior",
+    "No automatic retention purge scheduler implemented",
+    "No permanent space delete contract recovered",
+    "Sharing and invitations still pending"
+  ]
 }
