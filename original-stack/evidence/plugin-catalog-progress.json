@@ -1,0 +1,37 @@
+{
+  "schemaValidation": {
+    "responses": 8,
+    "schemas": 5,
+    "tool": "Validate-Plugins.cjs"
+  },
+  "runtimePid": 48648,
+  "adapterPid": 100316,
+  "observed": [
+    "Original Plugins page opened",
+    "Public and Personal tabs rendered",
+    "No installed plugins is consistent with initial demo state",
+    "Personal tab fails at missing HTTP /ps/plugins/list"
+  ],
+  "nextContract": {
+    "source": "plugins-query-7732c01b28d6.js:59-76",
+    "method": "GET",
+    "path": "/ps/plugins/list",
+    "query": {
+      "scope": "USER",
+      "limit": 50,
+      "pageToken": "optional"
+    },
+    "responseShape": {
+      "plugins": "array",
+      "pagination": {
+        "next_page_token": "string or null"
+      }
+    }
+  },
+  "pending": [
+    "Personal HTTP plugin item schema",
+    "Local plugin discoverability in current page",
+    "Install/uninstall/toggle UI",
+    "New skills/list handler loaded after adapter restart"
+  ]
+}

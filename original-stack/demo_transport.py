@@ -70,6 +70,13 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
     if message["method"] == "windowsSandbox/readiness":
         if demo_sandbox_state not in ("ready","notConfigured","updateRequired"):raise ValueError("Invalid demo sandbox state")
         return {"id":request_id,"result":{"status":demo_sandbox_state}},observation
+    if message["method"] == "skills/list":
+        options={} if params is None else params
+        cwds=options.get("cwds",[]) if isinstance(options,dict) else None
+        if not isinstance(cwds,list) or any(not isinstance(cwd,str) or not cwd for cwd in cwds):
+            return {"id":request_id,"error":{"code":-32602,"message":"Expected working-directory strings"}},observation
+        roots=cwds or [demo_threads.THREAD["cwd"]]
+        return {"id":request_id,"result":{"data":[{"cwd":cwd,"skills":[],"errors":[]} for cwd in roots]}},observation
     if message["method"] == "hooks/list":
         options={} if params is None else params
         cwds=options.get("cwds",[]) if isinstance(options,dict) else None

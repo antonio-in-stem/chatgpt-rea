@@ -8,6 +8,12 @@ from demo_plugins import PluginStore, PluginError, PLUGIN_ID, MARKETPLACE
 from demo_transport import handle_message
 
 class PluginTests(unittest.TestCase):
+    def test_skill_refresh_after_inert_install_is_empty_and_scoped(self):
+        reply,_=handle_message(json.dumps({'id':1,'method':'skills/list','params':{'cwds':['C:/demo/one','C:/demo/two'],'forceReload':True}}))
+        self.assertEqual(reply['result']['data'],[{'cwd':p,'skills':[],'errors':[]} for p in ['C:/demo/one','C:/demo/two']])
+        reply,_=handle_message(json.dumps({'id':2,'method':'skills/list','params':{'cwds':'invalid'}}))
+        self.assertEqual(reply['error']['code'],-32602)
+
     def test_install_toggle_reload_uninstall(self):
         with tempfile.TemporaryDirectory() as directory:
             config=ConfigStore(Path(directory)/'config.json',{})
