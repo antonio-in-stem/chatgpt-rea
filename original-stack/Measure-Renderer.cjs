@@ -37,6 +37,11 @@ function measureRenderer() {
     composerSend:document.querySelector('button[aria-label="Enviar"]'),
     composerPermissions:document.querySelector('button[aria-label="Cambiar permisos"]'),
     userMessage:document.querySelector('._bubble_11evq_1'),
+    tableInline:document.querySelector('[data-markdown-table] table'),
+    tableExpand:document.querySelector('[aria-label="Expandir tabla"]'),
+    tablePreviewClose:document.querySelector('[aria-label="Cerrar vista previa de tabla"]'),
+    tablePreview:document.querySelector('[aria-label="Cerrar vista previa de tabla"]')?.closest('[role="dialog"]'),
+    tablePreviewGrid:document.querySelector('[aria-label="Cerrar vista previa de tabla"]')?.closest('[role="dialog"]')?.querySelector('table'),
     userMessageToggle:document.querySelector('._bubble_11evq_1 button[aria-expanded]'),
   };
   // Capture actual visible portal menus and each interactive row, including nested submenus.
@@ -61,7 +66,7 @@ function measureRenderer() {
     }
     for(let n=e;n;n=n.parentElement)chains[name].push(record(n));
   }
-  return {viewport:{width:innerWidth,height:innerHeight,devicePixelRatio,visualViewportScale:visualViewport?.scale},document:{url:location.href,visibility:document.visibilityState,focused:document.hasFocus(),fontsStatus:document.fonts.status},anchors:chains,fontSamples,rootVariables,nodes};
+  return {viewport:{width:innerWidth,height:innerHeight,devicePixelRatio,visualViewportScale:visualViewport?.scale},document:{url:location.href,visibility:document.visibilityState,focused:document.hasFocus(),fontsStatus:document.fonts.status,activeElement:{tag:document.activeElement?.tagName,role:document.activeElement?.getAttribute('role'),label:document.activeElement?.getAttribute('aria-label')}},anchors:chains,fontSamples,rootVariables,nodes};
 }
 
 (async()=>{

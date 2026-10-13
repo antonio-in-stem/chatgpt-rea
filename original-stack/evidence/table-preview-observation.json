@@ -1,0 +1,28 @@
+{
+  "viewport": {
+    "width": 1090,
+    "height": 760,
+    "devicePixelRatio": 1,
+    "visualViewportScale": 1
+  },
+  "focusAfterClose": {
+    "tag": "BODY",
+    "role": null,
+    "label": null
+  },
+  "previewPresent": false,
+  "expandAfterClose": "false",
+  "source": {
+    "path": "C:\\Users\\PC\\Repositories\\chatgpt-rea\\recovered-frontend\\readable\\assets\\app-initial-b8e1c8014bb4.js",
+    "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+    "function": "gnl",
+    "fragmentSha256": "10d47675bcde4d688595a60767d9f4fb292a2c3f64053769d4991214c436fac5"
+  },
+  "limitations": [
+    "Simple demo table only",
+    "Overflow keyboard behavior not runtime verified",
+    "Copy formats not runtime verified",
+    "Escape/backdrop close not tested",
+    "No native port implemented in this change"
+  ]
+}
