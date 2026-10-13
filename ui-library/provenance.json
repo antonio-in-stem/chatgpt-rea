@@ -18,6 +18,32 @@
       ],
       "transformation": "Manual semantic extraction; removed bundle initializer and React compiler memo slots; named props, original class strings and interaction timing retained",
       "status": "Behavior contract tests pass for frame timing, controlled selection, accessibility attributes and motion parameters; browser visual comparison and standalone CSS remain pending"
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "formattedSourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "components": [
+        "Button",
+        "Spinner"
+      ],
+      "symbols": [
+        "r5",
+        "Jbi",
+        "Vbi",
+        "Pbi",
+        "jbi",
+        "kbi",
+        "Zbi",
+        "Qbi",
+        "$bi"
+      ],
+      "transformation": "Literal variant tables and class expression; semantic extraction of props, loading, sizing labels and disabled anchor handlers. Default spinner paths retained. Rays SVG body retained, generic asset optical wrapper not yet extracted. Router adapter supplied through renderLink.",
+      "status": "Six package tests pass, including differential execution against shipped Jbi. Independent browser flow passes using shared Button; pixel comparison pending.",
+      "variants": {
+        "colors": 62,
+        "sizes": 84,
+        "radiusOverrides": 5
+      }
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

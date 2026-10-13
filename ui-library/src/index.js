@@ -1,3 +1,6 @@
+import {createButton} from './Button.js';
+import {createSpinner} from './Spinner.js';
+export {buttonColors,buttonSizes,buttonRadii,sizeRadii} from './buttonVariants.js';
 import {classNames} from './classNames.js';
 export {classNames} from './classNames.js';
 // Consumer supplies its React and motion runtime; no ChatGPT host or service is imported.
@@ -23,5 +26,7 @@ export function createReaUI({React, motion, mergeClasses=classNames, requestFram
           selected ? h(motion.span,{layoutId:animateSelection ? layoutId : undefined,className:compact ? 'absolute inset-0 -z-10 rounded-lg bg-surface shadow-sm' : 'absolute inset-0 -z-10 rounded-xl bg-white shadow-sm',transition:{type:'spring',duration:0.28,bounce:0}}) : null,option.label);
       }));
   }
-  return {ChoiceButton,ChoiceGroup,SegmentedControl};
+  const Spinner=createSpinner(React,mergeClasses);
+  const Button=createButton({React,mergeClasses,Spinner});
+  return {Button,Spinner,ChoiceButton,ChoiceGroup,SegmentedControl};
 }

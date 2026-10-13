@@ -5,7 +5,10 @@
     "Guided initially aria-pressed=true",
     "Click Direct changes controlled selection",
     "Review displays Review: direct and Back/Confirm controls",
-    "Confirm displays status Confirmed: direct"
+    "Confirm displays status Confirmed: direct",
+    "Shared Button now used for Review, Back and Confirm",
+    "Back preserves Direct selection; Review and Confirm still complete",
+    "Review computed background rgb(223,223,223), foreground rgb(24,24,24), radius 9999px, height 36px in Windows dark theme"
   ],
   "build": "npm run build:example succeeded with esbuild 0.28.0",
   "runtimeVersions": {
@@ -16,7 +19,7 @@
   "limits": [
     "Motion exact original version unresolved",
     "Screenshot/style and animation comparison not yet performed",
-    "Only first connected example and three extracted components; not complete library"
+    "Only first connected example and five extracted components; not complete library"
   ],
   "console": "Only observed error was missing favicon; added data favicon to avoid request. No app exception observed.",
   "themeFinding": {

@@ -4,6 +4,9 @@ This package begins the reusable library. It does not import the app host, accou
 
 ## Available components
 
+- `Button`: shared app control with 62 color variants, 84 size variants and five explicit radius overrides. Preserves loading/disabled, native button events, focus variants, stable sizing labels and disabled-link behavior. Use `as="a"` for anchors; inject `renderLink(props)` for your router.
+- `Spinner`: original circle paths and animation-start synchronization. Rays geometry is retained, but its generic asset optical wrapper is not yet extracted; this variant is not visually certified.
+
 - `ChoiceButton`: native button props; full-width pill classes; optional action runs after two animation frames, as in the recovered source. Disabled behavior remains native. The callback does not receive a click event.
 - `ChoiceGroup`: one/two-column choice layout; an odd last choice spans two columns.
 - `SegmentedControl`: controlled `selectedId`, `options: {id,label,ariaLabel?}[]`, `onSelect(id)`, group accessibility, pressed buttons, default/compact variants and shared-layout spring (0.28 seconds, zero bounce). It does not invent radio-group arrow-key behavior.
@@ -12,7 +15,7 @@ This package begins the reusable library. It does not import the app host, accou
 
 ## Current limitations
 
-Original utility classes are retained verbatim. Import `@rea/ui/styles.css` for the byte-identical original CSS baseline and its local font dependencies (65 files, about 2.8 MB). This baseline includes global resets and app-specific selectors; it is not yet a minimal isolated theme. Browser visual comparison and root/theme configuration remain pending. No generic replacement theme is supplied. Rust remains deferred.
+Original utility classes are retained verbatim. Import `@rea/ui/styles.css` for the byte-identical original CSS baseline and its local font dependencies (65 files, about 2.8 MB). This baseline includes global resets and app-specific selectors; it is not yet a minimal isolated theme. Root/theme requirements are documented below; matched original visual comparison remains pending. No generic replacement theme is supplied. Rust remains deferred.
 
 ## Next extraction order
 
@@ -36,3 +39,15 @@ React/ReactDOM 19.2.7 match the version string observed in the shipped renderer.
 The original CSS switches themes through `data-theme="dark"` or `data-theme="light"` on the root. A `dark` class alone does not initialize the Lightning CSS theme variables. The Windows example also sets `data-codex-os="win32"` and `data-codex-window-type="electron"`, matching the reference environment. These attributes describe the style scenario, not an actual Electron host connection.
 
 The standalone browser check recovered the segmented control colors after adding those attributes. The source `ChoiceButton` references `interactive-button`, `interactive-button-secondary` and `interactive-outline-secondary`, which have no definition located in the recovered CSS baseline. Its behavior is extracted, but its visual dependency closure remains incomplete. Do not treat this as a polished production button yet or add guessed styles to fill the gap.
+
+## Shared button example
+
+```js
+const {Button, SegmentedControl} = createReaUI({React, motion});
+React.createElement(Button, {
+  color: 'primary', size: 'dialogAction', loading: saving,
+  sizingLabels: ['Save', 'Saving'], onClick: save
+}, saving ? 'Saving' : 'Save');
+```
+
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Six tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
