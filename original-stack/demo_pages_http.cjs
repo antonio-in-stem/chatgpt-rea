@@ -3,6 +3,7 @@
 function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
+ const sharing=method==='GET'&&route.match(/^\/(?:pages\/(rea-page-[1-9][0-9]*)|spaces\/v2\/(rea-space-[1-9][0-9]*))\/shares$/);
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
  const spaceAction=route.match(/^\/spaces\/(rea-space-[1-9][0-9]*)(\/restore)?$/);
  const spaceMutation=spaceAction&&((method==='DELETE'&&!spaceAction[2])||(method==='POST'&&spaceAction[2]));
@@ -22,7 +23,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
+ if(!sharing&&!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
@@ -98,6 +99,13 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(!Number.isInteger(limit)||limit<1||limit>100)throw Error('Invalid demo library limit');
   return {items:items.slice(offset,offset+limit),cursor:offset+limit<items.length?'offset:'+(offset+limit):null};
  };
+ if(sharing){
+  const space=sharing[2]?state.spaces?.find(x=>x.id===sharing[2]&&!x.deleted_at):null;
+  const item=state.items.find(x=>x.metadata.page_id===(sharing[1]??space?.root_page_id)&&live(x));
+  if(!item)throw Error('Unavailable sharing target');
+  const result=pageSlice([],url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||100));
+  return {shares:result.items,next_cursor:result.cursor,owner:{principal_id:'rea-demo-user'},owner_display_name:'Demo',caller_permissions:['library_folder.write','library_folder.read','library_file.comment'],allowed_roles:['role-library-folder-viewer','role-library-folder-commenter','role-library-folder-editor'],workspace_id:null,...(url.searchParams.get('include_inherited_access')==='true'?{inherited_access:{complete:true,sources:[]}}:{})};
+ }
  if(spaces){
   state.spaces??=[];
   const projectSpace=space=>{const root=state.items.find(x=>x.metadata.page_id===space.root_page_id&&!x.permanentlyDeleted);if(!root)throw Error('Unavailable space root');const page=read(root);return {...space,name:page.metadata.title,symbol:page.metadata.symbol??null,root_page_metadata:page.metadata,root_page:page};};

@@ -324,3 +324,21 @@ test('catalog orders by the returned last-used value before pagination',()=>{
   assert.equal(call('GET','/pages/catalog?limit=1').items[0].id,'rea-page-2');
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('original sharing read contract resolves page and space roots without external principals',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-sharing-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const space=call('POST','/spaces/v2',{name:'Sharing fixture'});
+  const route='/spaces/v2/'+space.id+'/shares';
+  const sharing=call('GET',route+'?limit=100&include_inherited_access=true');
+  assert.deepEqual(sharing.shares,[]);assert.equal(sharing.next_cursor,null);
+  assert.equal(sharing.owner.principal_id,'rea-demo-user');assert.equal(sharing.owner_display_name,'Demo');
+  assert.ok(sharing.caller_permissions.includes('library_folder.write'));assert.equal(sharing.allowed_roles.length,3);
+  assert.deepEqual(sharing.inherited_access,{complete:true,sources:[]});assert.equal(sharing.workspace_id,null);
+  assert.equal(call('GET','/pages/'+space.root_page_id+'/shares').inherited_access,undefined);
+  assert.throws(()=>call('GET',route+'?cursor=offset:1'),/cursor/);
+  assert.throws(()=>call('GET','/pages/rea-page-999/shares'),/Unavailable/);
+  call('DELETE','/spaces/'+space.id);assert.throws(()=>call('GET',route),/Unavailable/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

@@ -1,0 +1,109 @@
+{
+  "status": "Initial empty-roster GET implemented/tested source-only; mutations, recipient search, account features and can_share enablement pending",
+  "source": "Recovered shipped frontend, bounded REA audit; consumer DTO not full upstream schema",
+  "initial": {
+    "routes": [
+      "GET /pages/{page_id}/shares",
+      "GET /spaces/v2/{space_id}/shares"
+    ],
+    "query": {
+      "limit": 100,
+      "cursor": "optional",
+      "include_inherited_access": "first page true when requested"
+    },
+    "source": "app-initial-b8e1c8014bb4.js:414508-414548",
+    "fields": [
+      "shares",
+      "next_cursor",
+      "owner.principal_id",
+      "owner_display_name",
+      "caller_permissions",
+      "allowed_roles",
+      "workspace_id",
+      "inherited_access.complete/sources"
+    ]
+  },
+  "capabilities": {
+    "source": "app-initial:288037-288075",
+    "account_features": [
+      "library_shared_content_available",
+      "library_sharing_management_available"
+    ],
+    "optional_workspace_feature": "library_workspace_link_sharing_available; not required for personal demo",
+    "document_access": "can_share currently false; enable only alongside implemented local mutations"
+  },
+  "recipients": {
+    "route": "POST /pages/sharing/recipients",
+    "body": {
+      "page_id OR space_id": "selected target",
+      "query": "nonempty string",
+      "limit": 10
+    },
+    "response": {
+      "items": [
+        {
+          "type": "user",
+          "id": "rea-demo-collaborator",
+          "display_name": "Demo collaborator",
+          "detail": "collaborator@example.invalid"
+        }
+      ],
+      "unavailable_types": []
+    },
+    "source": "sharing-dialog-140e897982a2.js:1201-1254,1508-1523,2363-2365"
+  },
+  "mutations": {
+    "routes": [
+      "POST /pages/{page_id}/shares",
+      "POST /spaces/v2/{space_id}/shares",
+      "PATCH same/{share_id}",
+      "DELETE same/{share_id}"
+    ],
+    "create_body": {
+      "recipient": {
+        "recipient_type": "principal",
+        "principal_type": "user",
+        "principal_id": "rea-demo-collaborator"
+      },
+      "role_id": "role-library-folder-viewer"
+    },
+    "roles": [
+      "role-library-folder-viewer",
+      "role-library-folder-commenter",
+      "role-library-folder-editor"
+    ],
+    "patch_body": "role_id only",
+    "delete_body": null,
+    "response": "Direct persisted grant for POST/PATCH supported; DELETE empty/null supported. No async submissions needed for this branch.",
+    "source": "app-initial:414193-414310",
+    "grant": {
+      "share_id": "rea-share-N",
+      "recipient": {
+        "recipient_type": "principal",
+        "principal_type": "user",
+        "principal_id": "rea-demo-collaborator"
+      },
+      "role_id": "role-library-folder-viewer",
+      "status": "pending",
+      "inviter": {
+        "principal_id": "rea-demo-user"
+      },
+      "recipient_display_name": "Demo collaborator",
+      "recipient_email": "collaborator@example.invalid",
+      "recipient_avatar_url": null
+    }
+  },
+  "invariants": [
+    "Owner grant cannot be changed/removed",
+    "Staged changes persist only on Save; Cancel discards drafts",
+    "GET roster must reflect mutation response for original reconciliation",
+    "Fixed synthetic collaborator only, no delivery or external permissions",
+    "Inherited_access empty sources only valid while no inherited grants exist; propagation must be addressed when sharing hierarchy"
+  ],
+  "unknowns": [
+    "Full upstream schema/error DTOs",
+    "Inherited grants propagation and async submissions",
+    "No public-link policy endpoint in bounded dialog path; Copy Link does not grant public access"
+  ],
+  "tests": "14 page HTTP tests pass including initial share target resolution, owner, roles, optional inherited fields, invalid cursor and archived rejection"
+}
