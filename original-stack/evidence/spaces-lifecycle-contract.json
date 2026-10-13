@@ -1,5 +1,5 @@
 {
-  "status": "Archive/restore and archived listing implemented/tested; package rebuild and original UI verification pending",
+  "status": "v35 original archive confirmed; restore UI blocked by missing demo bootstrap gate, flag added source-only, rebuild pending",
   "source": "app-initial-b8e1c8014bb4.js",
   "archive": {
     "method": "DELETE",
@@ -60,5 +60,16 @@
     "Archived listing projects retained root title/symbol; active listing excludes archived spaces",
     "Individual page mutation blocked while parent space is archived; document bytes untouched"
   ],
-  "tests": "29 Node tests pass; archive/restore write failures preserve store bytes, repeated calls, active/archived listing, unavailable scoped listing, preserved prior trash and canonical document bytes"
+  "tests": "29 Node tests pass; archive/restore write failures preserve store bytes, repeated calls, active/archived listing, unavailable scoped listing, preserved prior trash and canonical document bytes",
+  "runtime_observation": [
+    "Original sidebar action requires hover on row before pointer-click; then Delete enabled without permission changes",
+    "Original Delete confirmation says space moves to Trash and can be restored",
+    "Confirming Delete archives space and removes sidebar entry and member recents",
+    "Trash Files/Pages visible but Spaces absent in v35; original library-page filters Spaces with imported NU selector"
+  ],
+  "restore_gate": {
+    "source": "library-page-54c00b8ed493.js:92,316-329,2924-2939; app-shared-737655e1fb23.js:237647,237753,306518",
+    "selector": "E3r = Pages enabled && gate 2245491494",
+    "change": "Demo Statsig bootstrap now enables original gate; source tested, package rebuild pending"
+  }
 }

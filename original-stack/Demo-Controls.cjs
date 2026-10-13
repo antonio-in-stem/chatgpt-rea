@@ -37,7 +37,7 @@ const fs=require('node:fs'),path=require('node:path');
   else if(operation==='inspect-page-blocks')expression=`[...document.querySelectorAll('[aria-label="Page document"] [data-page-block-row]')].map(e=>({type:e.getAttribute('data-page-block-type'),layout:e.getAttribute('data-page-block-layout'),text:e.innerText,headings:[...e.querySelectorAll('h1,h2,h3')].map(x=>x.tagName),table:e.querySelector('table')?{rows:e.querySelectorAll('tr').length,cells:[...e.querySelectorAll('td,th')].map(x=>x.innerText),columns:[...e.querySelectorAll('col')].map(x=>x.style.width)}:null}))`;
   else if(operation==='inspect-editors')expression=`[...document.querySelectorAll('input,textarea,[contenteditable]')].filter(e=>e.getBoundingClientRect().width>0).map(e=>({tag:e.tagName,role:e.getAttribute('role'),label:e.getAttribute('aria-label'),placeholder:e.getAttribute('placeholder')||e.getAttribute('data-placeholder'),editable:e.contentEditable,text:e.innerText?.slice(0,200),html:e.outerHTML.slice(0,1000)}))`;
   else if(operation==='activate-tab'&&label)expression=`(()=>{const items=[...document.querySelectorAll('[role="tab"]')].filter(e=>e.innerText.trim()===${JSON.stringify(label)}&&e.getBoundingClientRect().width>0);if(items.length!==1||items[0].disabled||items[0].getAttribute('aria-disabled')==='true')throw Error('Expected one enabled tab');items[0].click();return {activated:${JSON.stringify(label)}}})()`;
-  else if(operation==='activate-text-row'&&label)expression=`(()=>{const rows=[...document.querySelectorAll('[role="button"]')].filter(e=>e.innerText.trim()===${JSON.stringify(label)}&&e.getBoundingClientRect().width>0);if(rows.length!==1||rows[0].getAttribute('aria-disabled')==='true')throw Error('Expected one enabled text row');rows[0].click();return {activated:${JSON.stringify(label)}}})()`;
+  else if(['activate-text-row','hover-text-row'].includes(operation)&&label)expression=`(()=>{const rows=[...document.querySelectorAll('[role="button"]')].filter(e=>e.innerText.trim()===${JSON.stringify(label)}&&e.getBoundingClientRect().width>0);if(rows.length!==1||rows[0].getAttribute('aria-disabled')==='true')throw Error('Expected one enabled text row');if(${JSON.stringify(operation)}==='hover-text-row'){const r=rows[0].getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}}rows[0].click();return {activated:${JSON.stringify(label)}}})()`;
   else if(operation==='activate-row'&&label)expression=`(()=>{const rows=[...document.querySelectorAll('[role="button"][aria-label]')].filter(e=>e.getAttribute('aria-label')===${JSON.stringify(label)}&&e.getBoundingClientRect().width>0);if(rows.length!==1||rows[0].getAttribute('aria-disabled')==='true')throw Error('Expected one enabled labelled row');rows[0].click();return {activated:${JSON.stringify(label)}}})()`;
   else if(operation==='inspect-content')expression='document.body.innerText.slice(-14000)';
   else if(operation==='reload-demo')expression='true';
@@ -86,7 +86,7 @@ const fs=require('node:fs'),path=require('node:path');
    console.log(JSON.stringify({operation,shortcut:'Ctrl+Enter'}));
   }else if(operation==='insert-focused'){
    await send('Input.insertText',{text:label});console.log(JSON.stringify({inserted:true}));
-  }else if(operation==='click'||operation==='hover'||operation==='comment-action'){
+  }else if(operation==='click'||operation==='hover'||operation==='hover-text-row'||operation==='comment-action'){
    const {x,y}=result.result.value;
    await send('Input.dispatchMouseEvent',{type:'mouseMoved',x,y});
    if(operation==='click'||operation==='comment-action'){
