@@ -1,0 +1,22 @@
+[
+  {
+    "tag": "DIV",
+    "role": "menuitemradio",
+    "checked": "false",
+    "expanded": null,
+    "label": null,
+    "placeholder": null,
+    "text": "Por proyecto",
+    "disabled": false
+  },
+  {
+    "tag": "DIV",
+    "role": "menuitemradio",
+    "checked": "true",
+    "expanded": null,
+    "label": null,
+    "placeholder": null,
+    "text": "En una sola lista",
+    "disabled": false
+  }
+]
