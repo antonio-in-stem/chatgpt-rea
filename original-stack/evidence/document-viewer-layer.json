@@ -1,0 +1,47 @@
+{
+  "layer": "2813816346",
+  "parameters": {
+    "enabled": true,
+    "thumbnail_previews_enabled": true
+  },
+  "source": "sites-end-resource-11d1a7be5e09.js",
+  "sourceLocations": {
+    "read": 16807,
+    "supportedPartition": 16813,
+    "enabledProp": 17006,
+    "defaultPath": 17040
+  },
+  "packageSha256": "792e74064d2d1131d62d1ed83ad86960542efa2d6c80d6dffd6e045aeec559f3",
+  "rendererModified": false,
+  "validation": "Original V1 SDK lookup test passes",
+  "runtimeVerification": {
+    "runtimePid": 99552,
+    "adapterPid": 25060,
+    "probe": {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "lineNumber": 1698,
+      "columnNumber": 165712,
+      "observed": {
+        "openInSidePanel": true,
+        "isAttachmentPreview": true,
+        "hostId": "local",
+        "hasScope": true,
+        "path": "C:/Users/PC/Repositories/chatgpt-rea/.worktrees/native-windows/original-stack/state/demo-profile-host-v1/rea-demo-note.csv"
+      },
+      "method": "Breakpoint at original file-open entry; read-only expression; resumed unchanged"
+    },
+    "observedOriginalUi": [
+      "rea-demo-note.csv side panel",
+      "Rea Demo Note",
+      "Request edits",
+      "100%",
+      "A1",
+      "CSV import"
+    ],
+    "limitations": [
+      "Grid cell contents not yet verified",
+      "Editing and save pending",
+      "Other document formats pending"
+    ]
+  }
+}

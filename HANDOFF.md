@@ -76,3 +76,11 @@ VERIFICADO tras correccion: runtime46520/adapter5932, launcher48862 activo. Hist
 Archivos texto: drop-demo-file en Demo-Controls usa arrastre Chromium de rea-demo-note.txt sintetico en state demo; chip/quitar/enviar/persistir/recargar verificados. Apertura del chip aun pendiente. evidence/text-attachment-runtime.json. Disco C llego a0; retirado exclusivamente antiguo state/instrumented-profile-host/app.asar v1 SHA c97af2013404d31bffb98c33c9b4eeb4cc4f4e34b621c8443bdceafeaecdb33e (571239159bytes), tras verificar activo v7 en S. No se borro pristine ni extraccion.
 
 Apertura archivos: txt comun usa servicio externo Pd.openIn.open, no panel. CSV demo enviado; Probe-FileOpen confirma entrada JG openInSidePanel=false/isAttachmentPreview=false, hostlocal, scopepresente. Gate isUploadedFileViewerEnabled pendiente. Runtime98252/adapter95588, launcher87709 activo; anterior termino por ENOSPC ya resuelto. Evidence file-open-entry.json.
+
+Latest human: no Rust; preserve >=50% credits, stop if an obstacle cannot be overcome. Usage baseline2026-10-13: primary used13% (87%remaining), creditbalance61654.637173. Conservative floor balance30827.318587 and primary remaining50%; check usage between substantial batches and stop with margin. Cleanup authorized only three specified repos; removed1,030,699,778bytes of verified old Cargo deps/build/incremental/.fingerprint; retained executables and all doubtful files.
+
+Viewer: original sites-end-resource:16807 layer2813816346.enabled routes supported docs to preview prop at17006; without it17040 omits prop. Fixture now enables layer and thumbnails; package/runtime rebuild pending. No renderer changes.
+
+Demo v8 construido e instalado desde state/demo-package-v8; SHA792e74064d2d1131d62d1ed83ad86960542efa2d6c80d6dffd6e045aeec559f3. Layer visor2813816346 activado, validado SDK original. Arranque session29477 en curso.
+
+V8 verificado runtime99552/adapter25060: CSV abre panel original, JG openInSidePanel=true,isAttachmentPreview=true. Barra Rea Demo Note/Request edits/100%/A1/CSV import observada; celdas/edicion aun no verificadas. Launcher29477 vivo. Cupo ultima consulta86%remaining, balance61654.637173 sin cambios.

@@ -17,6 +17,8 @@ test('original V1 lookup recognizes all selected demo gates including explicit f
    assert.equal(lookup.getGate(name).value,value);
    assert.equal(lookup.getGate(name).rule_id,'rea-demo');
  }
+ assert.equal(lookup.getLayer('2813816346').value.enabled,true);
+ assert.equal(lookup.getLayer('2813816346').value.thumbnail_previews_enabled,true);
  assert.deepEqual(Array.from(lookup.getConfigList()),[]);
  assert(Math.abs(Date.now()-data.time)<10000);
 });

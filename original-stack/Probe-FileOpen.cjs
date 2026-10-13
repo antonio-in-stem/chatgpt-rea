@@ -19,7 +19,7 @@ const fs=require('node:fs'),path=require('node:path');
   await send('Debugger.enable');
   bp=await send('Debugger.setBreakpointByUrl',{url:'app://-/assets/app-initial-b8e1c8014bb4.js',lineNumber,columnNumber});
   if(!bp.locations.length)throw Error('Original script breakpoint unresolved');
-  const trigger=send('Runtime.evaluate',{expression:`(()=>{const b=[...document.querySelectorAll('button')].filter(e=>e.innerText.trim()==='rea-demo-note.csv'&&e.getBoundingClientRect().width>0);if(b.length!==1)throw Error('Expected one CSV chip');b[0].click();return true})()`,returnByValue:true});
+  const trigger=send('Runtime.evaluate',{expression:`(()=>{const b=[...document.querySelectorAll('button')].filter(e=>(e.innerText.trim()==='rea-demo-note.csv'||e.getAttribute('aria-label')==='rea-demo-note.csv')&&e.getBoundingClientRect().width>0);if(b.length!==1)throw Error('Expected one CSV chip');b[0].click();return true})()`,returnByValue:true});
   trigger.catch(()=>{});
   const hit=await Promise.race([paused,new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('File open entry not reached in 15 seconds')),15000)})]);
   const frame=hit.callFrames.find(f=>f.location.scriptId===bp.locations[0].scriptId);if(!frame)throw Error('Unexpected pause');
