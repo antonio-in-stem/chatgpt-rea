@@ -3,7 +3,8 @@
 function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
- const sharing=method==='GET'&&route.match(/^\/(?:pages\/(rea-page-[1-9][0-9]*)|spaces\/v2\/(rea-space-[1-9][0-9]*))\/shares$/);
+ const sharing=route.match(/^\/(?:pages\/(rea-page-[1-9][0-9]*)|spaces\/v2\/(rea-space-[1-9][0-9]*))\/shares(?:\/(rea-share-[1-9][0-9]*))?$/);
+ const recipientSearch=method==='POST'&&route==='/pages/sharing/recipients';
  const spaceId=route.match(/^\/spaces\/v2\/(rea-space-[1-9][0-9]*)$/)?.[1];
  const spaceAction=route.match(/^\/spaces\/(rea-space-[1-9][0-9]*)(\/restore)?$/);
  const spaceMutation=spaceAction&&((method==='DELETE'&&!spaceAction[2])||(method==='POST'&&spaceAction[2]));
@@ -23,7 +24,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!sharing&&!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
+ if(!recipientSearch&&!sharing&&!spaceMutation&&!spacePages&&!spaces&&!versionRoute&&!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
@@ -85,7 +86,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(operationId){item.archiveOperations??={};Object.defineProperty(item.archiveOperations,operationId,{value:result,enumerable:true,writable:true,configurable:true});}
   persist();return result;
  }
- const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;const parent=state.items.find(x=>x.metadata.page_id===item.metadata.parent?.page_id);const meta={...item.metadata,has_children:state.items.some(x=>live(x)&&x.metadata.parent?.page_id===item.metadata.page_id)};if(parent){const parentFile=path.join(path.dirname(settingsPath),parent.metadata.page_id+'-document.json');meta.parent={page_id:parent.metadata.page_id,title:fs.existsSync(parentFile)?JSON.parse(fs.readFileSync(parentFile,'utf8')).title??parent.metadata.title:parent.metadata.title};}return {metadata:doc?{...meta,title:doc.title??meta.title,updated_at:Date.parse(doc.updated_at)>Date.parse(meta.updated_at)?doc.updated_at:meta.updated_at,current_sequence:doc.sequence,projection_through_sequence:doc.sequence,symbol:doc.symbol??null}:meta,content:doc?null:item.content,document_bootstrap:null};};
+ const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;const parent=state.items.find(x=>x.metadata.page_id===item.metadata.parent?.page_id);const meta={...item.metadata,access:{...item.metadata.access,can_share:live(item)},has_children:state.items.some(x=>live(x)&&x.metadata.parent?.page_id===item.metadata.page_id)};if(parent){const parentFile=path.join(path.dirname(settingsPath),parent.metadata.page_id+'-document.json');meta.parent={page_id:parent.metadata.page_id,title:fs.existsSync(parentFile)?JSON.parse(fs.readFileSync(parentFile,'utf8')).title??parent.metadata.title:parent.metadata.title};}return {metadata:doc?{...meta,title:doc.title??meta.title,updated_at:Date.parse(doc.updated_at)>Date.parse(meta.updated_at)?doc.updated_at:meta.updated_at,current_sequence:doc.sequence,projection_through_sequence:doc.sequence,symbol:doc.symbol??null}:meta,content:doc?null:item.content,document_bootstrap:null};};
  if(pins){
   if(method==='GET')return state.items.filter(x=>live(x)&&x.pinnedAt).sort((a,b)=>a.pinnedAt.localeCompare(b.pinnedAt)).map(x=>({item:{id:x.metadata.page_id},metadata:read(x).metadata}));
   const item=state.items.find(x=>x.metadata.page_id===pinId&&!x.permanentlyDeleted);if(!item)throw Error('Unknown demo page');
@@ -99,12 +100,50 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   if(!Number.isInteger(limit)||limit<1||limit>100)throw Error('Invalid demo library limit');
   return {items:items.slice(offset,offset+limit),cursor:offset+limit<items.length?'offset:'+(offset+limit):null};
  };
+ const sharingRoles=['role-library-folder-viewer','role-library-folder-commenter','role-library-folder-editor'];
+ const sharingTarget=(pageId,spaceId)=>{
+  const space=spaceId?state.spaces?.find(x=>x.id===spaceId&&!x.deleted_at):null;
+  const item=state.items.find(x=>x.metadata.page_id===(pageId??space?.root_page_id)&&live(x));
+  if(!item)throw Error('Unavailable sharing target');return item;
+ };
+ if(recipientSearch){
+  const input=JSON.parse(body||'{}');
+  if(!input||Array.isArray(input)||Object.keys(input).some(k=>!['page_id','space_id','query','limit'].includes(k))||Boolean(input.page_id)===Boolean(input.space_id)||typeof input.query!=='string'||input.query.length>256||input.limit!==10)throw Error('Invalid recipient search');
+  sharingTarget(input.page_id,input.space_id);
+  const query=input.query.trim().toLowerCase();
+  return {items:query&&'demo collaborator collaborator@example.invalid'.includes(query)?[{type:'user',id:'rea-demo-collaborator',display_name:'Demo collaborator',detail:'collaborator@example.invalid'}]:[],unavailable_types:[]};
+ }
  if(sharing){
-  const space=sharing[2]?state.spaces?.find(x=>x.id===sharing[2]&&!x.deleted_at):null;
-  const item=state.items.find(x=>x.metadata.page_id===(sharing[1]??space?.root_page_id)&&live(x));
-  if(!item)throw Error('Unavailable sharing target');
-  const result=pageSlice([],url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||100));
-  return {shares:result.items,next_cursor:result.cursor,owner:{principal_id:'rea-demo-user'},owner_display_name:'Demo',caller_permissions:['library_folder.write','library_folder.read','library_file.comment'],allowed_roles:['role-library-folder-viewer','role-library-folder-commenter','role-library-folder-editor'],workspace_id:null,...(url.searchParams.get('include_inherited_access')==='true'?{inherited_access:{complete:true,sources:[]}}:{})};
+  const item=sharingTarget(sharing[1],sharing[2]);item.shares??=[];
+  if(method==='GET'&&!sharing[3]){
+   const result=pageSlice(item.shares,url.searchParams.get('cursor'),Number(url.searchParams.get('limit')||100));
+   const sources=[];let complete=true,current=item,seen=new Set([item.metadata.page_id]);
+   while(current.metadata.parent){
+    const parent=state.items.find(x=>x.metadata.page_id===current.metadata.parent.page_id&&live(x));
+    if(!parent||seen.has(parent.metadata.page_id)){complete=false;break;}seen.add(parent.metadata.page_id);
+    const parentSpace=state.spaces?.find(x=>x.root_page_id===parent.metadata.page_id&&!x.deleted_at);
+    if(parent.shares?.length){if(parentSpace)for(const grant of parent.shares)sources.push({source:{kind:'space',id:parentSpace.id},recipient:grant.recipient,role:grant.role_id.replace('role-library-folder-','')});else complete=false;}
+    current=parent;
+   }
+   return {shares:result.items,next_cursor:result.cursor,owner:{principal_id:'rea-demo-user'},owner_display_name:'Demo',caller_permissions:['library_folder.write','library_folder.read','library_file.comment'],allowed_roles:sharingRoles,workspace_id:null,...(url.searchParams.get('include_inherited_access')==='true'?{inherited_access:{complete,sources}}:{})};
+  }
+  if(!['POST','PATCH','DELETE'].includes(method)||(method==='POST')===Boolean(sharing[3]))throw Error('Unsupported sharing operation');
+  const input=method==='DELETE'?{}:JSON.parse(body||'{}');
+  if(!input||Array.isArray(input)||Object.keys(input).some(k=>!(method==='POST'?['recipient','role_id']:['role_id']).includes(k)))throw Error('Invalid sharing body');
+  if(method!=='DELETE'&&!sharingRoles.includes(input.role_id))throw Error('Unsupported sharing role');
+  let grant;
+  if(method==='POST'){
+   const r=input.recipient;
+   if(!r||Object.keys(r).some(k=>!['recipient_type','principal_type','principal_id'].includes(k))||r.recipient_type!=='principal'||r.principal_type!=='user'||r.principal_id!=='rea-demo-collaborator')throw Error('Only fixed synthetic collaborator supported');
+   grant=item.shares.find(x=>x.recipient.principal_id===r.principal_id);
+   if(grant){if(grant.role_id!==input.role_id)throw Error('Collaborator already shared with another role');return grant;}
+   state.shareSequence=(state.shareSequence??0)+1;
+   grant={share_id:'rea-share-'+state.shareSequence,recipient:r,role_id:input.role_id,status:'pending',inviter:{principal_id:'rea-demo-user'},recipient_display_name:'Demo collaborator',recipient_email:'collaborator@example.invalid',recipient_avatar_url:null};item.shares.push(grant);
+  }else{
+   grant=item.shares.find(x=>x.share_id===sharing[3]);if(!grant)throw Error('Unknown demo share');
+   if(method==='PATCH')grant.role_id=input.role_id;else item.shares=item.shares.filter(x=>x!==grant);
+  }
+  persist();return method==='DELETE'?{}:grant;
  }
  if(spaces){
   state.spaces??=[];
@@ -114,7 +153,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
    if(input.make_workspace_default!=null&&typeof input.make_workspace_default!=='boolean')throw Error('Invalid workspace default');
    if(input.make_workspace_default===true)throw Error('Workspace default not supported by personal demo');
    const name=input.name.trim(),now=new Date().toISOString(),id='rea-space-'+((state.spaceSequence??0)+1),pageId='rea-page-'+(state.sequence+1);
-   const metadata={page_id:pageId,title:name,document_type:'page',drive_space_id:id,owner_workspace_id:null,creator_account_user_id:'rea-demo-user',created_at:now,updated_at:now,deleted_at:null,current_sequence:0,projection_through_sequence:0,parent:null,position:Date.parse(now)*1024,has_children:false,access:{can_read:true,can_write:true,can_comment:true,can_share:false,can_delete:true}};
+   const metadata={page_id:pageId,title:name,document_type:'page',drive_space_id:id,owner_workspace_id:null,creator_account_user_id:'rea-demo-user',created_at:now,updated_at:now,deleted_at:null,current_sequence:0,projection_through_sequence:0,parent:null,position:Date.parse(now)*1024,has_children:false,access:{can_read:true,can_write:true,can_comment:true,can_share:true,can_delete:true}};
    const root={metadata,seedTitle:name,content:{page_id:pageId,title:name,markdown:'',blocks:[],through_sequence:0}};
    const space={id,name,root_page_id:pageId,backing_type:'drive',deleted_at:null,created_at:now,updated_at:now,can_edit_appearance:false,symbol:null};
    state.sequence++;state.spaceSequence=(state.spaceSequence??0)+1;state.items.unshift(root);state.spaces.unshift(space);persist();return projectSpace(space);
@@ -222,7 +261,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(previous){if(previous.fingerprint!==fingerprint)throw Error('Conflicting demo page idempotency key');return read(previous);}
  const parent=parentFor(input.parent_page_id);
  const now=new Date().toISOString(),id='rea-page-'+(++state.sequence);
- const metadata={access:{can_delete:true,can_read:true,can_share:false,can_write:true},created_at:now,creator_account_user_id:'rea-demo-user',current_sequence:0,deleted_at:null,drive_space_id:parent?.metadata.drive_space_id??null,...(parent?.metadata.drive_space_id?{}:{drive_scope:'personal'}),owner_workspace_id:null,page_id:id,parent:parent?{page_id:parent.metadata.page_id,title:read(parent).metadata.title}:null,position:Date.parse(now)*1024,projection_through_sequence:0,title:input.title,updated_at:now,document_type:'page',has_children:false};
+ const metadata={access:{can_delete:true,can_read:true,can_share:true,can_write:true},created_at:now,creator_account_user_id:'rea-demo-user',current_sequence:0,deleted_at:null,drive_space_id:parent?.metadata.drive_space_id??null,...(parent?.metadata.drive_space_id?{}:{drive_scope:'personal'}),owner_workspace_id:null,page_id:id,parent:parent?{page_id:parent.metadata.page_id,title:read(parent).metadata.title}:null,position:Date.parse(now)*1024,projection_through_sequence:0,title:input.title,updated_at:now,document_type:'page',has_children:false};
  const item={key:input.idempotency_key,fingerprint,metadata,content:{page_id:id,title:input.title,markdown:"",blocks:[],through_sequence:0}};
  state.items.unshift(item);
  persist();

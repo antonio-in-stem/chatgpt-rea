@@ -281,6 +281,7 @@ test('space archive and restore are atomic and preserve prior page trash and doc
   assert.equal(call('GET','/spaces/v2').items.length,0);
   const archived=call('GET','/spaces/v2?status=archived').items;assert.equal(archived.length,1);assert.ok(archived[0].deleted_at);assert.ok(archived[0].root_page_metadata.deleted_at);
   assert.equal(call('GET','/pages/'+child).metadata.access.can_write,false);
+  assert.equal(call('GET','/pages/'+child).metadata.access.can_share,false);
   assert.throws(()=>call('GET','/spaces/'+space.id+'/pages'),/Unavailable/);
   assert.throws(()=>call('POST','/pages/'+child+'/restore',{}),/Restore the space/);
   assert.throws(()=>call('POST','/pages/'+space.root_page_id+'/delete-forever',{}),/Restore the space/);
@@ -340,5 +341,30 @@ test('original sharing read contract resolves page and space roots without exter
   assert.throws(()=>call('GET',route+'?cursor=offset:1'),/cursor/);
   assert.throws(()=>call('GET','/pages/rea-page-999/shares'),/Unavailable/);
   call('DELETE','/spaces/'+space.id);assert.throws(()=>call('GET',route),/Unavailable/);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+
+test('synthetic sharing persists role changes and inherited space access atomically',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-share-write-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const space=call('POST','/spaces/v2',{name:'Shared demo'}),route='/spaces/v2/'+space.id+'/shares';
+  const child=call('POST','/pages',{parent_page_id:space.root_page_id,idempotency_key:'shared-child',title:'Child',initial_blocks:[]}).metadata.page_id;
+  const search=query=>call('POST','/pages/sharing/recipients',{space_id:space.id,query,limit:10});
+  assert.equal(search('collaborator').items[0].id,'rea-demo-collaborator');assert.deepEqual(search('other@example.invalid').items,[]);
+  const recipient={recipient_type:'principal',principal_type:'user',principal_id:'rea-demo-collaborator'},input={recipient,role_id:'role-library-folder-viewer'};
+  const store=path.join(dir,'demo-pages.json'),before=fs.readFileSync(store);fs.writeFileSync(store+'.pending','foreign');assert.throws(()=>call('POST',route,input));assert.deepEqual(fs.readFileSync(store),before);fs.unlinkSync(store+'.pending');
+  const grant=call('POST',route,input);assert.equal(grant.status,'pending');assert.deepEqual(call('POST',route,input),grant);
+  assert.equal(call('GET',route).shares.length,1);
+  const inherited=()=>call('GET','/pages/'+child+'/shares?include_inherited_access=true').inherited_access;
+  assert.deepEqual(inherited(),{complete:true,sources:[{source:{kind:'space',id:space.id},recipient,role:'viewer'}]});
+  const changed=call('PATCH',route+'/'+grant.share_id,{role_id:'role-library-folder-editor'});assert.equal(changed.role_id,'role-library-folder-editor');assert.equal(inherited().sources[0].role,'editor');
+  assert.throws(()=>call('POST',route,{...input,recipient:{...recipient,principal_id:'rea-demo-user'}}),/synthetic/);
+  assert.throws(()=>call('PATCH',route+'/'+grant.share_id,{role_id:'owner'}),/role/);
+  const isolated=call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'isolated',title:'Private',initial_blocks:[]}).metadata.page_id;
+  assert.throws(()=>call('PATCH','/pages/'+isolated+'/shares/'+grant.share_id,{role_id:'role-library-folder-viewer'}),/Unknown/);
+  const current=fs.readFileSync(store);fs.writeFileSync(store+'.pending','foreign');assert.throws(()=>call('DELETE',route+'/'+grant.share_id));assert.deepEqual(fs.readFileSync(store),current);fs.unlinkSync(store+'.pending');
+  call('DELETE',route+'/'+grant.share_id);assert.deepEqual(call('GET',route).shares,[]);assert.deepEqual(inherited().sources,[]);
+  call('DELETE','/spaces/'+space.id);assert.throws(()=>search('demo'),/Unavailable/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });

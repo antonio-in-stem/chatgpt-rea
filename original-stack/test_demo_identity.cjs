@@ -48,6 +48,7 @@ test('account map, host account array and workspace settings describe the same d
   assert.equal(host.accounts[0].id,id);
   assert.equal(host.accounts[0].account_user_id,demo.accountInfo().userId);
   assert.equal(map.accounts[id].can_access_with_session,true);
+  assert.deepEqual(map.accounts[id].features,['library_shared_content_available','library_sharing_management_available']);
   assert.equal(host.accounts[0].is_deactivated,false);
   assert.deepEqual(map.account_ordering,host.account_ordering);
   assert.equal(host.default_account_id,id);

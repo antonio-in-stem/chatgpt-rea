@@ -1,5 +1,5 @@
 {
-  "status": "Initial empty-roster GET implemented/tested source-only; mutations, recipient search, account features and can_share enablement pending",
+  "status": "Synthetic recipient lookup and persistent POST/PATCH/DELETE implemented; demo account features and can_share connected, rebuild/UI verification pending",
   "source": "Recovered shipped frontend, bounded REA audit; consumer DTO not full upstream schema",
   "initial": {
     "routes": [
@@ -30,7 +30,7 @@
       "library_sharing_management_available"
     ],
     "optional_workspace_feature": "library_workspace_link_sharing_available; not required for personal demo",
-    "document_access": "can_share currently false; enable only alongside implemented local mutations"
+    "document_access": "Live page metadata projects can_share true, archived pages false; synthetic mutation routes validate live target"
   },
   "recipients": {
     "route": "POST /pages/sharing/recipients",
@@ -103,7 +103,18 @@
   "unknowns": [
     "Full upstream schema/error DTOs",
     "Inherited grants propagation and async submissions",
-    "No public-link policy endpoint in bounded dialog path; Copy Link does not grant public access"
+    "No public-link policy endpoint in bounded dialog path; Copy Link does not grant public access",
+    "Personal ancestor grant source DTO not fully established; complete=false used rather than fabricated hierarchy"
   ],
-  "tests": "14 page HTTP tests pass including initial share target resolution, owner, roles, optional inherited fields, invalid cursor and archived rejection"
+  "tests": "33 Node pass including original fixtures, recipient filtering, grant persistence, role change, space inheritance, isolated target IDs, atomic write failure and archived access",
+  "implementation": [
+    "Only fixed rea-demo-collaborator accepted; search returns fixed invalid-domain email fixture",
+    "Atomic shared demo-pages store holds per-target shares and global share sequence",
+    "Direct persisted grant returned after POST/PATCH; DELETE removes roster grant atomically",
+    "Duplicate same-role creation returns same grant; conflicting role requires PATCH",
+    "Space root grants projected as inherited_access source kind space, id, recipient and role to descendants",
+    "Personal ancestor grants cause inherited_access.complete=false; no invented complete hierarchy semantics",
+    "Archived/unknown targets reject lookup and mutation; unrelated target cannot mutate grant ID",
+    "No network delivery, invitations remain local pending state"
+  ]
 }
