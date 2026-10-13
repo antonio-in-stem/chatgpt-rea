@@ -353,6 +353,27 @@ fn codex_activity_disclosure_persists_and_stopped_turn_stays_expanded(cx:&mut Te
         assert!(app.read(cx).workspace.conversation(&app.read(cx).active).unwrap().messages.last().unwrap().activity.as_ref().unwrap().expanded);
         window.render_frame(cx);
         assert!(window.find(gpui_kit::SharedString::from(format!("activity-details-{message}"))).bounds().size.height>px(20.));
+        let raw_output="<tag> **literal** `text`\n".repeat(30);
+        app.update(cx,|s,cx| {
+            let chat=s.workspace.conversation_mut(&s.active).unwrap();
+            if let native_core::ActivityEntry::Command{output,..}=&mut chat.messages.last_mut().unwrap().activity.as_mut().unwrap().entries[1] {
+                *output=raw_output.clone();
+            }
+            cx.notify();
+        });
+        window.render_frame(cx);
+        window.click(gpui_kit::SharedString::from(format!("command-toggle-{message}-1")),cx);
+        window.render_frame(cx);
+        let bounds=window.find(gpui_kit::SharedString::from(format!("command-output-{message}-1"))).bounds();
+        assert!(bounds.size.height<=px(144.));
+        window.click(gpui_kit::SharedString::from(format!("command-copy-command-{message}-1")),cx);
+        assert_eq!(cx.read_from_clipboard().and_then(|i|i.text()),Some("cargo check --workspace".into()));
+        window.render_frame(cx);
+        window.click(gpui_kit::SharedString::from(format!("command-copy-output-{message}-1")),cx);
+        assert_eq!(cx.read_from_clipboard().and_then(|i|i.text()),Some(raw_output));
+        window.render_frame(cx);
+        window.click(gpui_kit::SharedString::from(format!("command-toggle-{message}-1")),cx);
+        assert!(!app.read(cx).expanded_commands.contains(&(message.clone(),1)));
         let saved=native_core::Workspace::load(&path.join("workspace.json")).unwrap();
         assert!(saved.conversation(&app.read(cx).active).unwrap().messages.last().unwrap().activity.as_ref().unwrap().expanded);
         app.update(cx,|s,cx| {

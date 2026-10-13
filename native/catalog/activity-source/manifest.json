@@ -28,5 +28,15 @@
     "file": "split-items-into-render-groups-d45e0db37b65.js",
     "sha256": "054c1d868c6e58755986d814ebc5f8c572369d4c8e519e1e33608317fe024455",
     "astEquivalent": true
+  },
+  {
+    "file": "user-message-attachments-13a1cca23c88.js",
+    "sha256": "579d198ea9786127a8166706c823bbc9207207f1aeccd6858e2f9a4a014dfedc",
+    "astEquivalent": true
+  },
+  {
+    "file": "timeline-activity-body-954c378420fb.js",
+    "sha256": "1088d191843128310e4ef65baaf585a6cad92f84977a2f4ff1a66912de7528e0",
+    "astEquivalent": true
   }
 ]

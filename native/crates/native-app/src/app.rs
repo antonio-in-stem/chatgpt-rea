@@ -37,6 +37,7 @@ enum Action {
     EditMenu,
     EditCommand(usize),
     ToggleActivity(String),
+    ToggleCommand(String,usize),
     Chat(String),
     New,
     Send,
@@ -133,6 +134,7 @@ pub struct WorkspaceApp {
     route: Route,
     history: Vec<(Route, String)>,
     history_index: usize,
+    expanded_commands: HashSet<(String,usize)>,
     active: String,
     sidebar: bool,
     sidebar_resize: Option<(Pixels, Pixels)>,
@@ -269,6 +271,7 @@ impl WorkspaceApp {
             route: Route::Chat,
             history: Vec::new(),
             history_index: 0,
+            expanded_commands: HashSet::new(),
             active,
             sidebar: true,
             sidebar_resize: None,
@@ -668,6 +671,10 @@ impl WorkspaceApp {
                 }
             }
             Action::EditCommand(index) => self.run_edit_command(index,window,cx),
+            Action::ToggleCommand(id,index) => {
+                let key=(id,index);
+                if !self.expanded_commands.remove(&key) { self.expanded_commands.insert(key); }
+            }
             Action::ToggleActivity(id) => {
                 if let Ok(chat)=self.workspace.conversation_mut(&self.active) {
                     if let Some(activity)=chat.messages.iter_mut().find(|m|m.id==id).and_then(|m|m.activity.as_mut()) {

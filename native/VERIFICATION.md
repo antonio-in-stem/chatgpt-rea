@@ -329,3 +329,28 @@ successful capture exposed centered disclosure text; final capture verifies left
 alignment. Build/package SHA256:
 1feb5f44f97394ae4ceec5d73d2191eaad7b5710bb9c32efed9d0d12852fc8f3.
 The full requested frontend clone is still incomplete.
+
+
+## Command disclosure checkpoint — 2026-10-13 UTC
+Source sC (sites-end-resource:9380 onward) initializes commands collapsed and
+supplies disclosure to its timeline row. Body resolves to user-message-attachments
+vn/un/yn, exported as l: 8 px radius/border, command prefixed with $, raw output,
+144 px maximum output viewport, separate copy actions, right-aligned Success or
+Exit code footer. timeline-activity-body default adds top8/bottom4/gap8.
+Both additional modules are retained with original digests and AST equivalence
+in activity-source/manifest.json (now eight modules).
+
+Native commands now expand independently (session-local message ID + entry index),
+show literal output rather than fenced Markdown, bound output height to144px and
+copy command/output independently. No command execution. Footer handles success
+and nonzero exit. Current data model only has completed commands; running,
+interrupted, unknown exit, cwd, ANSI output, gradient fades, hover-only copy and
+animation are pending. Colors and font remain partly provisional. Existing note
+about generic Markdown command chrome is superseded by this checkpoint.
+
+58-test workspace suite passed; expanded focused test also passes copy byte-for-
+byte for markup-like output, output-height limit and toggling. Build/package SHA:
+538a26b796494f82adde6d7d5e4513bcff4174e8b1c84d478fdc69d7f98b340e.
+Inspected real compact-state capture qa/native-command-19.png, PID46296.
+Expanded body verified by native UI test, not a new real-window screenshot.
+Full frontend parity remains incomplete.
