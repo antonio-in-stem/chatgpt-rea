@@ -340,15 +340,15 @@ impl WorkspaceApp {
             .flex().flex_col().items_center().gap(px(8.));
         for (id, icon, label, route) in [
             (4usize, "rail-home", "Home", Route::Chat),
-            (3, "library", "Library", Route::Library),
-            (5, "scheduled", "Scheduled", Route::Tool(0)),
+            (3, "rail-library", "Library", Route::Library),
+            (5, "rail-scheduled", "Scheduled", Route::Tool(0)),
             (6, "rail-apps", "Apps", Route::Tool(1)),
             (2, "projects", "Projects", Route::Projects),
         ] {
             rail = rail.child(Button::new(("nav", id)).ghost().size(px(36.)).p_0()
                 .relative().rounded(px(0.)).tooltip(label).accessibility_label(label)
                 .when(self.route == route, |b| b.bg(cx.theme().colors.secondary))
-                .child(native_ui::icon(if icon == "rail-home" && self.route == route { "rail-home-selected" } else { icon }, 20.).text_color(if self.route == route {
+                .child(native_ui::icon(if self.route == route { match icon { "rail-home" => "rail-home-selected", "rail-library" => "rail-library-selected", "rail-scheduled" => "rail-scheduled-selected", _ => icon } } else { icon }, 20.).text_color(if self.route == route {
                     cx.theme().colors.foreground
                 } else { cx.theme().colors.muted_foreground }))
                 // control-radius-md -> radius-lg(10px), global scale then button squircle scale.
