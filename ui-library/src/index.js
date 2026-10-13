@@ -1,3 +1,4 @@
+export {createAnimatedNavigationIcon} from './AnimatedNavigationIcon.js';
 import {createNavigationItem} from './NavigationItem.js';
 import {createUseSidebarOrder} from './useSidebarOrder.js';
 export {resolveDisplayedOrder,resolveDropTarget,moveItemBefore,moveSelectionBefore,dropPlacement} from './sidebarOrder.js';
