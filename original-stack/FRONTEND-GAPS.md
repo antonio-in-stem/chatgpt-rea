@@ -10,6 +10,7 @@ The sections below retain investigation history and are not the current completi
 - Library: `library-csv-preview-contract.json` verifies original CSV grid, selection, zoom, exact download, spreadsheet filtering and reopen after process restart. Spreadsheet editing and other office formats remain open.
 - Local sharing: file/folder/page/space synthetic invitation flows have dedicated contracts. Real incoming collaborators, broader effective access and account-backed behavior remain open.
 - Sketch: `sketch-runtime-contract.json` verifies original pen gesture, undo/redo, PNG attachment, reopening and replacing an editable draft, send and renderer-reload history restoration. Text/shapes/eraser/selection/thickness and cross-process editable sketch persistence remain open.
+- Windows visual checks: `windows-capture-contract.json` distinguishes surface-capture artifacts from original CSS. Use the default view capture for transparent-window comparisons; explicit surface capture remains diagnostic only. This does not establish complete visual parity.
 - Rust and inferred component restructuring remain deferred by the owner.
 
 ## Profile / rail

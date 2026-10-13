@@ -1,7 +1,8 @@
 const fs=require('node:fs');
 const path=require('node:path');
 (async()=>{
- const stateName=process.argv[2];
+ const stateName=process.argv[2],captureMode=process.argv[3]||'view';
+ if(!['surface','view'].includes(captureMode))throw Error('Expected surface or view capture mode');
  if(stateName&&!/^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$/.test(stateName))throw Error('Invalid state name');
  const state=stateName?path.join(__dirname,'state',stateName):path.join(__dirname,'state');
  const profile=path.join(state,'profile');
@@ -19,10 +20,10 @@ const path=require('node:path');
  try{
   const result=await send('Runtime.evaluate',{returnByValue:true,expression:`(()=>{const s=getComputedStyle(document.body);return {url:location.href,documentFocused:document.hasFocus(),documentVisibility:document.visibilityState,windowType:window.codexWindowType,bridgeMethods:Object.keys(window.electronBridge||{}),bodyStyle:{fontFamily:s.fontFamily,fontSize:s.fontSize,fontWeight:s.fontWeight,backgroundColor:s.backgroundColor},loginVisible:document.body.innerText.includes('Iniciar sesiÃ³n en ChatGPT'),composerPresent:!!document.querySelector('[contenteditable="true"]'),rootDataset:{codexWindowType:document.documentElement.dataset.codexWindowType,codexOs:document.documentElement.dataset.codexOs}}})()`});
   if(result.exceptionDetails)throw Error('Renderer probe failed');
-  const report={capturedUtc:new Date().toISOString(),targetId:target.id,method:'read-only CDP Runtime.evaluate on isolated app:// renderer',result:result.result.value};
+  const report={captureMode,capturedUtc:new Date().toISOString(),targetId:target.id,method:'read-only CDP Runtime.evaluate on isolated app:// renderer',result:result.result.value};
   fs.writeFileSync(path.join(state,'renderer-bootstrap-observation.json'),JSON.stringify(report,null,2)+'\n');
-  const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});
-  fs.writeFileSync(path.join(state,'original-renderer.png'),Buffer.from(screenshot.data,'base64'));
+  const screenshot=await send('Page.captureScreenshot',{format:'png',captureBeyondViewport:false,fromSurface:captureMode==='surface'});
+  fs.writeFileSync(path.join(state,captureMode==='surface'?'original-renderer-surface.png':'original-renderer.png'),Buffer.from(screenshot.data,'base64'));
   console.log(JSON.stringify(report,null,2));
  }finally{clearTimeout(timer);ws.close();}
 })().catch(e=>{console.error(e.message);process.exitCode=1;});

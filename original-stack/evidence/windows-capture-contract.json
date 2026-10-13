@@ -1,0 +1,19 @@
+{
+  "scope": "Diagnose opaque-looking rail icons in screenshots of original transparent Windows shell",
+  "observations": [
+    "Surface capture showed white selected Home background and overly bright rail icons while current computed styles remained translucent",
+    "Forced colors and prefers-contrast more were false; original body background was transparent",
+    "Profile initially rendered loading spans; later original image loaded natural100x100 rendered24x24 without renderer edits",
+    "Selected Home before pseudo-element computed background rgba(255,255,255,0.08), inconsistent with opaque-white appearance in surface screenshot",
+    "Capturing same runtime with Page.captureScreenshot fromSurface:false displayed dark rail, normal selected Home icon/background, avatar and window controls",
+    "Document visibility remained hidden even after Page.bringToFront; visibility alone is not proof of a failed render"
+  ],
+  "inference": "The observed opaque rail anomaly belongs to the surface capture/composition path for this runtime, not evidence of changed original CSS. Exact Chromium/Windows compositor root cause remains unproven.",
+  "source": "app-shared-9a94b907ed47.css:62 (button before pseudo-element)",
+  "tool_change": "Probe-Renderer defaults to view capture (fromSurface:false), records captureMode, and writes original-renderer.png. Explicit surface mode remains available and writes original-renderer-surface.png. Original runtime/renderer unchanged.",
+  "limits": [
+    "This does not establish full visual parity against every installed-app state",
+    "Other screenshot tools and OS/GPU environments require their own validation",
+    "Profile loading timing and visibility behavior were observed but not altered"
+  ]
+}
