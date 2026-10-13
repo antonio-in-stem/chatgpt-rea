@@ -35,7 +35,7 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
     if threads is not None and message["method"] in threads.METHODS:
         try:
             result,event=threads.handle(message["method"],params)
-            if event is not None and notifications is not None:notifications.append(event)
+            if event is not None and notifications is not None:notifications.extend(event if isinstance(event,list) else [event])
             return {"id":request_id,"result":result}, observation
         except demo_threads.ThreadError as error:
             return {"id":request_id,"error":{"code":-32602,"message":str(error)}}, observation

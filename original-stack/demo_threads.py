@@ -70,7 +70,7 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start"}
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start"}
     METHODS = METHODS | MUTATIONS
 
     def __init__(self, path):
@@ -159,6 +159,18 @@ class ThreadStore:
         data=copy.deepcopy(self.data)
         entry=data["threads"][thread_id]
         thread=entry["thread"]
+        if method == "turn/start":
+            from demo_turns import build_turn
+            if entry["archived"]:raise ThreadError("Cannot send to an archived demo chat")
+            try:start,completed,events,text=build_turn(thread_id,params)
+            except ValueError as error:raise ThreadError(str(error)) from error
+            thread["turns"].append(completed)
+            thread.update(updatedAt=completed["completedAt"],recencyAt=completed["completedAt"],preview=text[:160],status={"type":"idle"})
+            if not thread.get("name"):
+                thread["name"]=text.strip().splitlines()[0][:80]
+                events.append({"method":"thread/name/updated","params":{"threadId":thread_id,"threadName":thread["name"]}})
+            self._commit(data)
+            return {"turn":start},events
         if method in ("thread/goal/set","thread/goal/clear"):
             if params.get("origin") not in (None,"user","automatic"):raise ThreadError("Invalid goal origin")
             goal=entry.get("goal")

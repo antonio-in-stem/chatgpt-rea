@@ -178,6 +178,28 @@ class ThreadTests(unittest.TestCase):
                 with self.assertRaises(ThreadError):store.handle("thread/start",invalid)
             self.assertEqual(len(ThreadStore(path).data["threads"]),3)
 
+    def test_turn_events_and_history_survive_reload(self):
+        import json
+        from demo_transport import handle_message
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            started,_=store.handle("thread/start",{})
+            identifier=started["thread"]["id"]
+            events=[]
+            reply,_=handle_message(json.dumps({"id":9,"method":"turn/start","params":{"threadId":identifier,"clientUserMessageId":"client-1","input":[{"type":"text","text":"First demo message","text_elements":[]}]}}),threads=store,notifications=events)
+            self.assertEqual(reply["result"]["turn"]["status"],"inProgress")
+            methods=[e["method"] for e in events]
+            self.assertLess(methods.index("turn/started"),methods.index("turn/completed"))
+            self.assertLess(methods.index("item/agentMessage/delta"),methods.index("turn/completed"))
+            completed=ThreadStore(path).handle("thread/read",{"threadId":identifier,"includeTurns":True})[0]["thread"]
+            self.assertEqual(completed["name"],"First demo message")
+            self.assertEqual(completed["turns"][0]["status"],"completed")
+            self.assertEqual(completed["turns"][0]["items"][0]["clientId"],"client-1")
+            store.handle("thread/archive",{"threadId":identifier})
+            with self.assertRaises(ThreadError):store.handle("turn/start",{"threadId":identifier,"input":[{"type":"text","text":"blocked"}]})
+            self.assertEqual(len(ThreadStore(path).data["threads"][identifier]["thread"]["turns"]),1)
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

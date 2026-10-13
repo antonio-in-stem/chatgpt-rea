@@ -15,6 +15,10 @@ with tempfile.TemporaryDirectory() as directory:
  store=ThreadStore(Path(directory)/'thread.json')
  started,event=store.handle('thread/start',{'historyMode':'paginated'})
  samples.extend([['ThreadStartResponse',started],['ThreadStartedNotification',event['params']]])
+ turn,events=store.handle('turn/start',{'threadId':started['thread']['id'],'input':[{'type':'text','text':'Demo message','text_elements':[]}]})
+ samples.append(['TurnStartResponse',turn])
+ names={'thread/status/changed':'ThreadStatusChangedNotification','turn/started':'TurnStartedNotification','item/started':'ItemStartedNotification','item/completed':'ItemCompletedNotification','item/agentMessage/delta':'AgentMessageDeltaNotification','turn/completed':'TurnCompletedNotification','thread/name/updated':'ThreadNameUpdatedNotification'}
+ samples.extend([[names[e['method']],e['params']] for e in events])
  for method,response_schema,event_schema,params in [('thread/name/set','ThreadSetNameResponse','ThreadNameUpdatedNotification',{'threadId':THREAD['id'],'name':'Renamed Demo'}),('thread/archive','ThreadArchiveResponse','ThreadArchivedNotification',{'threadId':THREAD['id']}),('thread/unarchive','ThreadUnarchiveResponse','ThreadUnarchivedNotification',{'threadId':THREAD['id']})]:
   result,event=store.handle(method,params)
   samples.extend([[response_schema,result],[event_schema,event['params']]])
