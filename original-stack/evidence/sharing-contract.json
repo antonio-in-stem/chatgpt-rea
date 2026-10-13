@@ -1,5 +1,5 @@
 {
-  "status": "v38 original space grant, role update/reload, cancelled change, child inherited display and saved revoke verified",
+  "status": "v38 original space and page sharing invitation, cancellation, saved roles, reload and removal verified",
   "source": "Recovered shipped frontend, bounded REA audit; consumer DTO not full upstream schema",
   "initial": {
     "routes": [
@@ -127,13 +127,19 @@
     "Original Editor > Commenter then Cancel leaves persisted Editor unchanged",
     "Child Share renders People in Original Space demo, Access inherited from this space, Editor",
     "Cancel leaves outer sharing dialog open; navigating and activating child Share created two dialogs, so probe reloaded before continuing; overlapping-dialog interaction not characterized",
-    "Original Editor > Remove access stages removal with Cancel/Save; Save removes collaborator row and stored root shares is empty"
+    "Original Editor > Remove access stages removal with Cancel/Save; Save removes collaborator row and stored root shares is empty",
+    "Full reload and reopening space Share after revoke shows Demo Owner only; collaborator remains absent",
+    "Selecting a new collaborator then Cancel removes invitation draft; no grant is persisted",
+    "Personal demo Link access dropdown contains Only those invited and People who already have access can use this link; workspace capability is absent",
+    "Original Copy link displays Link copied!; clipboard payload was not inspected",
+    "Child page direct invitation selected Commenter and original dialog Share persisted it; full reload and reopening shows Commenter with Invitation pending",
+    "Child page Commenter > Remove access > Save removes direct collaborator; space and child stored shares both empty",
+    "Page header and dialog both expose Share; verifier now scopes click-dialog to one visible dialog and retains pointer hit testing"
   ],
   "remaining_ui": [
-    "Post-revoke full reload/reopen verification",
-    "Cancel staged new invitation",
-    "Page-specific direct grant lifecycle",
-    "Copy link behavior and access mode controls",
-    "Overlapping sharing dialog behavior under navigation"
+    "Workspace link sharing branch",
+    "Copied link payload verification",
+    "Overlapping sharing dialog behavior under navigation",
+    "Personal ancestor grant source DTO"
   ]
 }
