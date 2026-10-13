@@ -1,0 +1,46 @@
+{
+  "feature": "Original Pages comments",
+  "renderer": "Original shipped JS/CSS unchanged",
+  "protocol": {
+    "capabilities": [
+      "comments_v1"
+    ],
+    "viewer": {
+      "account_user_id": "rea-demo-user",
+      "display_name": "Demo"
+    },
+    "storage": "Canonical Yjs comments map; existing commit/ack persistence"
+  },
+  "source": {
+    "app-initial-b8e1c8014bb4.js": [
+      "162629-162673 sync schema",
+      "342787-342803 comments capability and actor",
+      "343097-343102 write admission",
+      "335776-335847 comment mutations"
+    ],
+    "content-2bf9ea38a12a.js": [
+      "8410-8520 comments sidebar",
+      "20706 selection thread creation"
+    ]
+  },
+  "verified": [
+    "Select paragraph text, original Comment toolbar and highlighted anchor",
+    "Original comment composer submission",
+    "Original Reply submission",
+    "Reload demo and reopen page: both messages visible",
+    "Resolve comment: original Resolved UI and persisted state at sequence 25",
+    "Captured synthetic original Yjs update roundtrip test"
+  ],
+  "not_verified": [
+    "Reopen resolved thread UI",
+    "Edit/delete/reactions UI",
+    "Cross-block comments",
+    "Live comments",
+    "Mentions and external collaborators"
+  ],
+  "runtime": {
+    "pid": 87256,
+    "adapter_pid": 102580,
+    "asar_sha256": "585405530e4e74a270cc867dc6b3756099bb1c18f59459947290f52e67d185ac"
+  }
+}

@@ -28,7 +28,7 @@ class PageSyncStore:
         return file,state,doc
     def sync(self,page_id):
         _,state,doc=self.load(page_id)
-        return {'type':'sync_step_2','committed_sequence':state['sequence'],'session_id':'demo-'+page_id,'update':base64.b64encode(y.encode_state_as_update(doc)).decode(),'capabilities':[]}
+        return {'type':'sync_step_2','committed_sequence':state['sequence'],'session_id':'demo-'+page_id,'update':base64.b64encode(y.encode_state_as_update(doc)).decode(),'capabilities':['comments_v1'],'viewer':{'account_user_id':'rea-demo-user','display_name':'Demo'}}
     def commit(self,page_id,message):
         key=message.get('client_update_id')
         if not isinstance(key,str) or not 1<=len(key)<=128:raise ValueError('Invalid update ID')
