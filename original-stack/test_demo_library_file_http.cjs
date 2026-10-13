@@ -58,3 +58,14 @@ test('empty file trash is atomic, idempotent and preserves live files and page t
  assert.deepEqual(await call('DELETE','/files/library/trash').json(),{deleted_count:1,failed_count:0});assert.deepEqual(await call('DELETE','/files/library/trash').json(),{deleted_count:0,failed_count:0});
  assert.throws(()=>call('POST','/files/library/files/'+ids[0]+'/restore'),/Unavailable/);assert.equal((await call('GET','/files/library/files/'+ids[1]).json()).id,ids[1]);assert.deepEqual(JSON.parse(fs.readFileSync(catalog)).items,state.items);
 }));
+
+test('original PNG and PDF fixtures retain bytes and expose MIME-specific Library categories',()=>fixture(async({root,call,pages})=>{
+ const {libraryFixture}=require('./demo_library_fixtures.cjs');
+ for(const [kind,mime,category] of [['png','image/png','image'],['pdf','application/pdf','pdf']]){
+  const fixture=libraryFixture(kind),input={...create(fixture.bytes),file_name:fixture.name,mime_type:mime},reservation=await call('POST','/files',input).json();call('PUT',reservation.upload_url,fixture.bytes);
+  const events=(await call('POST','/files/process_upload_stream',{...finish(reservation),file_name:fixture.name,mime_type:mime}).text()).trim().split('\n').map(JSON.parse),id=events[1].extra.metadata_object_id;
+  assert.equal(pages('GET','/files/library/nodes?categories='+category).items[0].id,id);assert.equal(pages('POST','/files/library',{categories:[category]}).items[0].id,id);
+  const response=call('GET','/files/library/files/'+id+'/content_redirect');assert.equal(response.headers.get('content-type'),mime);assert.deepEqual(Buffer.from(await response.arrayBuffer()),fixture.bytes);
+  if(kind==='pdf'){const file=path.join(root,'demo-pages.json'),state=JSON.parse(fs.readFileSync(file));state.libraryFiles.find(f=>f.id===id).library_file_category='document';fs.writeFileSync(file,JSON.stringify(state));assert.equal((await call('GET','/files/library/files/'+id).json()).library_file_category,'pdf');assert.equal(pages('GET','/files/library/nodes?categories=pdf').items[0].id,id);assert.equal(pages('POST','/files/library',{categories:['pdfs']}).items[0].id,id);assert.equal(pages('GET','/files/library/nodes?categories=pdfs').items[0].id,id);}
+ }
+}));

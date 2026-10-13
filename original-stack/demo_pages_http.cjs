@@ -38,8 +38,9 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const directoryRoot={id:'rea-directory-root',name:'My files',kind:'directory',is_root:true,parent_directory_id:null,access_kind:'owned'};
  const directoryParent=value=>value==null||value===directoryRoot.id?null:value;
  const directories=state.directories??[];
- const libraryFiles=(state.libraryFiles??[]).filter(f=>!f.permanentlyDeleted&&!f.deleted_at);
- const fileCategoryMatches=(f,categories)=>!categories.length||categories.some(c=>c===f.library_file_category||(c==='documents'&&['document','text'].includes(f.library_file_category))||(c==='images'&&f.library_file_category==='image'));
+ const allLibraryFiles=(state.libraryFiles??[]).map(f=>f.mime_type==='application/pdf'?{...f,library_file_category:'pdf'}:f);
+ const libraryFiles=allLibraryFiles.filter(f=>!f.permanentlyDeleted&&!f.deleted_at);
+ const fileCategoryMatches=(f,categories)=>!categories.length||categories.some(c=>c===f.library_file_category||(c==='documents'&&['document','text'].includes(f.library_file_category))||(c==='images'&&f.library_file_category==='image')||(c==='pdfs'&&f.library_file_category==='pdf'));
  const directoryRead=item=>({...item,kind:'directory',is_root:false,access_kind:'owned',is_shared:false,item_count:directories.filter(d=>d.parent_directory_id===item.id).length+libraryFiles.filter(f=>f.parent_directory_id===item.id).length,folder_count:directories.filter(d=>d.parent_directory_id===item.id).length});
  const findDirectory=id=>{const item=directories.find(d=>d.id===id);if(!item)throw Error('Unknown demo directory');return item;};
  const validateDirectoryParent=(id,moving)=>{const seen=new Set(moving?[moving]:[]);while(id!=null){if(seen.has(id))throw Error('Directory hierarchy cycle');seen.add(id);id=findDirectory(id).parent_directory_id;}};
@@ -266,7 +267,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
 
   if(input.limit!=null&&(!Number.isInteger(input.limit)||input.limit<1||input.limit>100))throw Error('Invalid library limit');
   const includePages=input.include_pages===true&&(!input.categories?.length||input.categories.includes('pages'));
-  const files=input.include_uploaded_files===false?[]:(state.libraryFiles??[]).filter(f=>!f.permanentlyDeleted&&Boolean(f.deleted_at)===Boolean(input.trashed_only)&&fileCategoryMatches(f,input.categories??[])&&(!input.q||f.name.toLowerCase().includes(String(input.q).toLowerCase()))&&(!input.allowlist_ids||input.allowlist_ids.includes(f.id))).map(f=>({...f,file_name:f.name,directory_id:f.parent_directory_id,trashed_at:f.deleted_at??null}));
+  const files=input.include_uploaded_files===false?[]:allLibraryFiles.filter(f=>!f.permanentlyDeleted&&Boolean(f.deleted_at)===Boolean(input.trashed_only)&&fileCategoryMatches(f,input.categories??[])&&(!input.q||f.name.toLowerCase().includes(String(input.q).toLowerCase()))&&(!input.allowlist_ids||input.allowlist_ids.includes(f.id))).map(f=>({...f,file_name:f.name,directory_id:f.parent_directory_id,trashed_at:f.deleted_at??null}));
   const items=(includePages?state.items:[]).filter(x=>!x.permanentlyDeleted&&Boolean(x.metadata.deleted_at)===Boolean(input.trashed_only)).map(x=>read(x).metadata).filter(x=>!input.q||x.title.toLowerCase().includes(String(input.q).toLowerCase())).filter(x=>!input.allowlist_ids||input.allowlist_ids.includes(x.page_id));
   return pageSlice([...files,...items.map(x=>({id:x.page_id,file_id:x.page_id,file_name:x.title,directory_id:null,library_artifact_type:'page',updated_at:x.updated_at,record_creation_time:x.created_at,last_used_at:state.items.find(v=>v.metadata.page_id===x.page_id).lastUsedAt??x.updated_at,page_metadata:{page_id:x.page_id,document_type:'page',symbol:x.symbol??null}}))],input.cursor,input.limit||50);
  }

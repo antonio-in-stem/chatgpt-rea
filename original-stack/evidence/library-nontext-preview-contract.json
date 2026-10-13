@@ -1,5 +1,5 @@
 {
-  "scope": "Read-only REA audit, PNG/PDF runtime verification pending",
+  "scope": "Original PNG and two-page PDF viewers verified with deterministic synthetic fixtures",
   "png": {
     "sources": [
       "library-file-preview-kind-4b1f33be05cd.js:36-39",
@@ -30,8 +30,37 @@
     "limitation": "PNG can reuse image content; PDF bytes cannot serve as an image thumbnail"
   },
   "limits": [
-    "Preview branches use 40 MiB limit",
-    "No PNG/PDF UI claim yet",
-    "Current helper category defaults to document for non-images; pdf category needs mapping before filtered browse tests"
-  ]
+    "Preview branches use 40 MiB limit; oversized UI failure not verified",
+    "PDF list thumbnail is an icon, not generated preview image",
+    "Broader image/PDF editing and other document types remain unverified"
+  ],
+  "ui_observations": [
+    "Original New > Upload files accepted PNG and PDF fixtures",
+    "PNG thumbnail and original viewer both decoded 96x64 image; screenshot showed red/green/blue bands",
+    "Original PNG Download matched uploaded bytes exactly",
+    "Original PDF viewer rendered both pages and their text using bundled viewer",
+    "Original zoom menu 150% enlarged page; Zoom to fit selected successfully",
+    "Original PDF Download matched uploaded bytes exactly",
+    "After updated runtime restart: original PDFs filter showed only the uploaded PDF, excluding PNG and Pages",
+    "Opening filtered PDF after restart rendered both pages and original zoom controls"
+  ],
+  "fixtures": {
+    "png": {
+      "bytes": 176,
+      "dimensions": [
+        96,
+        64
+      ],
+      "sha256": "bad602fa778ffb7015abcfaefa50ab8be057254e9fc63bdbaaf243803de481f8"
+    },
+    "pdf": {
+      "bytes": 870,
+      "pages": 2,
+      "sha256": "f1621f7f97d79c01ca094cdbf97c8fa330f9b63b19072a58d6e31eb85fb6a9ed"
+    }
+  },
+  "implementation": "Deterministic demo picker fixtures added; PDF classification normalized in metadata, nodes and classic listing, including earlier local uploads. Renderer unchanged.",
+  "validation": "51 Node tests pass; binary MIME/content and singular/plural category projections covered. Original PNG/PDF viewers, PDF zoom and exact downloads verified. Updated runtime PDFs filter shows only the PDF; reopening after full process restart renders both pages.",
+  "filter_source": "app-initial-b8e1c8014bb4.js:158345-158375,158527-158550",
+  "filter_observation": "Original PDFs filter sends plural pdfs; category is singular pdf. Initial UI test found empty results; adapter now maps both forms and regression test uses actual plural query."
 }

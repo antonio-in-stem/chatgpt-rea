@@ -19,7 +19,7 @@ function demoLibraryFileHttp(method,url,body,settingsPath,fs,path,onProgress,sig
  const parse=()=>{if(typeof body!=='string'||body.length>65536)throw Error('Expected upload JSON');const input=JSON.parse(body);if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid upload body');return input;};
  const findFile=id=>{const file=state.libraryFiles?.find(f=>f.id===id&&!f.permanentlyDeleted);if(!file)throw Error('Unavailable demo Library file');return file;};
  const validateName=name=>{if(typeof name!=='string'||!name.trim()||name.startsWith('.')||name.length>255)throw Error('Invalid Library file name');return name;};
- const dto=file=>({...file,file_name:file.name,directory_id:file.parent_directory_id,trashed_at:file.deleted_at??null});
+ const dto=file=>({...file,library_file_category:file.mime_type==='application/pdf'?'pdf':file.library_file_category,file_name:file.name,directory_id:file.parent_directory_id,trashed_at:file.deleted_at??null});
  const parentExists=id=>id==null||state.directories?.some(d=>d.id===id);
  if(emptyTrash){
   const files=(state.libraryFiles??[]).filter(f=>!f.permanentlyDeleted&&f.deleted_at);
@@ -98,7 +98,7 @@ function demoLibraryFileHttp(method,url,body,settingsPath,fs,path,onProgress,sig
  if(file){if(file.parent_directory_id!==parent||file.permanentlyDeleted)throw Error('Upload already finalized elsewhere');}
  else{
   const now=new Date().toISOString(),extension=item.name.includes('.')?item.name.split('.').pop().toLowerCase():'';
-  file={id:'libfile-rea-'+id.slice('file-rea-upload-'.length),file_id:id,kind:'file',name:item.name,parent_directory_id:parent,mime_type:item.mime_type,file_size_bytes:item.size,file_extension:extension,file_upload_time:now,record_creation_time:now,updated_at:now,library_file_category:item.mime_type.startsWith('image/')?'image':'document',state:'ready',access_kind:'owned',thumbnail_url:null};
+  file={id:'libfile-rea-'+id.slice('file-rea-upload-'.length),file_id:id,kind:'file',name:item.name,parent_directory_id:parent,mime_type:item.mime_type,file_size_bytes:item.size,file_extension:extension,file_upload_time:now,record_creation_time:now,updated_at:now,library_file_category:item.mime_type.startsWith('image/')?'image':item.mime_type==='application/pdf'?'pdf':'document',state:'ready',access_kind:'owned',thumbnail_url:null};
   state.libraryFiles=[...(state.libraryFiles??[]),file];item.status='ready';persist();
  }
  const events=['file.processing.file_ready','file.processing.completed'].map(event=>({event,file_id:id,progress:100,extra:{metadata_object_id:file.id,library_file_name:file.name,mime_type:file.mime_type}}));

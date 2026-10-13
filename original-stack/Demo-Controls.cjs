@@ -103,8 +103,8 @@ const fs=require('node:fs'),path=require('node:path');
    }finally{await send('Input.dispatchMouseEvent',{type:'mouseReleased',...to,button:'left',buttons:0,clickCount:1});}
    console.log(JSON.stringify({operation,source:label,destination:value}));
   }else if(operation==='select-library-demo-file'){
-   const uploadPath=path.join(state,'rea-library-original.txt'),content='Original Library upload demo.\nUnicode: café.\n<script>shown as plain text</script>\n';
-   if(fs.existsSync(uploadPath)){if(fs.readFileSync(uploadPath,'utf8')!==content)throw Error('Unexpected demo fixture contents');}else fs.writeFileSync(uploadPath,content,{flag:'wx'});
+   const fixture=require('./demo_library_fixtures.cjs').libraryFixture(label||'txt'),uploadPath=path.join(state,fixture.name);
+   if(fs.existsSync(uploadPath)){if(fs.lstatSync(uploadPath).isSymbolicLink()||!fs.readFileSync(uploadPath).equals(fixture.bytes))throw Error('Unexpected demo fixture contents');}else fs.writeFileSync(uploadPath,fixture.bytes,{flag:'wx'});
    const deadline=Date.now()+5000;while(!libraryFileChooserNode&&Date.now()<deadline)await new Promise(r=>setTimeout(r,50));
    if(!Number.isInteger(libraryFileChooserNode))throw Error('Original file chooser did not open');
    await send('DOM.setFileInputFiles',{backendNodeId:libraryFileChooserNode,files:[uploadPath]});console.log(JSON.stringify({selectedDemoFile:path.basename(uploadPath)}));
