@@ -23,8 +23,8 @@
   },
   "runtimeVerified": true,
   "limitations": [
-    "Personal pages only; no space ownership changes",
-    "Move/drag/drop and independent-child restore currently covered by adapter tests only; original UI validation pending",
+    "Personal pages tested; no cross-space ownership changes",
+    "Sibling reordering and independent-child restore covered by adapter tests only",
     "Permanent subtree deletion covered by adapter tests only"
   ],
   "runtime": {
@@ -60,6 +60,23 @@
         "headings": [],
         "table": null
       }
+    },
+    "dragMove": {
+      "package": "v38",
+      "source": "app-initial-b8e1c8014bb4.js:406205-406218,406296-406306,406769-406812,406892",
+      "observations": [
+        "Recents-only row has no aria-roledescription draggable; pointer drag did not change metadata",
+        "Expand parent reveals child with aria-roledescription draggable",
+        "Dragging expanded child to Original Pages demo opens original Move page confirmation and inherited-access warning",
+        "Confirm Move persists parent rea-page-3; full reload retains destination and expanded child",
+        "Drag back then Cancel preserves parent rea-page-3",
+        "Repeat drag and confirm returns child to original parent rea-page-4",
+        "Original editable paragraph remains Created through the original Add subpage control."
+      ],
+      "limits": [
+        "No inferred backend permission-equivalence claim",
+        "Drag command success alone is not evidence of a persisted move; confirmation and stored parent checked"
+      ]
     }
   }
 }

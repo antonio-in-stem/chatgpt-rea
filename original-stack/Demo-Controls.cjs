@@ -18,6 +18,7 @@ const fs=require('node:fs'),path=require('node:path');
  try{
   let expression;
   if(operation==='inspect')expression=`[...document.querySelectorAll('button,a,[role="button"],[role="link"],[role^="menuitem"],input')].map(e=>({tag:e.tagName,role:e.getAttribute('role'),checked:e.getAttribute('aria-checked'),expanded:e.getAttribute('aria-expanded'),label:e.getAttribute('aria-label'),placeholder:e.getAttribute('placeholder'),text:(e.innerText||'').slice(0,100),type:e.type,disabled:!!e.disabled||e.getAttribute('aria-disabled')==='true'}))`;
+  else if(operation==='drag-page-row'&&label&&value)expression=`(()=>{if(document.querySelector('[role="dialog"],[role="menu"]'))throw Error('Unobscured page rows required');const point=(label,source=false)=>{const rows=[...document.querySelectorAll('[role="button"][aria-label]')].filter(e=>e.getAttribute('aria-label')===label&&e.getBoundingClientRect().width>0&&(!source||e.getAttribute('aria-roledescription')==='draggable'));if(rows.length!==1)throw Error('One page row required: '+label);const e=rows[0],r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(!e.contains(document.elementFromPoint(x,y)))throw Error('Page row obscured');return {x,y}};return {from:point(${JSON.stringify(label)},true),to:point(${JSON.stringify(value)})}})()`;
   else if(operation==='scroll-thread'&&Number.isFinite(Number(label))&&Math.abs(Number(label))<=5000)expression=`(()=>{const e=document.querySelector('.thread-scroll-container');if(!e||document.querySelector('[role="dialog"]'))throw Error('Unobscured thread scroller required');const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+Math.min(100,r.height/2),scrollTop:e.scrollTop,scrollHeight:e.scrollHeight,clientHeight:e.clientHeight}})()`;
   else if(operation==='scroll-code'&&Number.isFinite(Number(label))&&Math.abs(Number(label))<=5000)expression=`(()=>{const blocks=[...document.querySelectorAll('[class*=_CodeSurface_]')];if(blocks.length!==1||document.querySelector('[role="dialog"]'))throw Error('One unobscured code block required');const e=[...blocks[0].querySelectorAll('div')].find(e=>getComputedStyle(e).overflowX==='auto'&&e.querySelector('code'));if(!e)throw Error('Original code scroller missing');const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(!e.contains(document.elementFromPoint(x,y)))throw Error('Code scroller is obscured');return {x,y,scrollLeft:e.scrollLeft,scrollWidth:e.scrollWidth,clientWidth:e.clientWidth}})()`;
   else if(operation==='inspect-images')expression=`[...document.querySelectorAll('img')].filter(e=>e.getBoundingClientRect().width>0).map(e=>({alt:e.alt,complete:e.complete,naturalWidth:e.naturalWidth,naturalHeight:e.naturalHeight,sourceKind:e.currentSrc.split(':')[0],rect:e.getBoundingClientRect().toJSON(),transform:getComputedStyle(e).transform,parentTransform:getComputedStyle(e.parentElement).transform,objectFit:getComputedStyle(e).objectFit}))`;
@@ -84,6 +85,15 @@ const fs=require('node:fs'),path=require('node:path');
    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:2});
    await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,modifiers:2});
    console.log(JSON.stringify({operation,shortcut:'Ctrl+Enter'}));
+  }else if(operation==='drag-page-row'){
+   const {from,to}=result.result.value;
+   await send('Input.dispatchMouseEvent',{type:'mouseMoved',...from});
+   await send('Input.dispatchMouseEvent',{type:'mousePressed',...from,button:'left',buttons:1,clickCount:1});
+   try{
+    for(let i=1;i<=20;i++){await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:from.x+(to.x-from.x)*i/20,y:from.y+(to.y-from.y)*i/20,button:'left',buttons:1});await new Promise(r=>setTimeout(r,25));}
+    await new Promise(r=>setTimeout(r,700));
+   }finally{await send('Input.dispatchMouseEvent',{type:'mouseReleased',...to,button:'left',buttons:0,clickCount:1});}
+   console.log(JSON.stringify({operation,source:label,destination:value}));
   }else if(operation==='insert-focused'){
    await send('Input.insertText',{text:label});console.log(JSON.stringify({inserted:true}));
   }else if(operation==='click'||operation==='click-dialog'||operation==='hover'||operation==='hover-text-row'||operation==='comment-action'){
