@@ -131,3 +131,24 @@ test('library nodes and files lists paginate original shapes and view reports pr
   assert.throws(()=>call('POST','/pages/rea-page-1/views',{observed_sequence:0}),/Unavailable/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+test('page pins persist with original metadata and preserve document state',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-page-pins-'));
+ const settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'pin',title:'Pinned demo',initial_blocks:[]});
+  assert.deepEqual(call('GET','/pins/pages?include_metadata=true'),[]);
+  call('POST','/pins/pages/rea-page-1');
+  const first=call('GET','/pins/pages');assert.equal(first[0].item.id,'rea-page-1');assert.equal(first[0].metadata.title,'Pinned demo');
+  call('POST','/pins/pages/rea-page-1');assert.deepEqual(call('GET','/pins/pages'),first);
+  fs.writeFileSync(path.join(dir,'demo-pages.json.pending'),'foreign');
+  assert.throws(()=>call('DELETE','/pins/pages/rea-page-1'));
+  assert.equal(call('GET','/pins/pages').length,1);
+  fs.unlinkSync(path.join(dir,'demo-pages.json.pending'));
+  call('POST','/pages/rea-page-1/archive',{});assert.deepEqual(call('GET','/pins/pages'),[]);
+  assert.throws(()=>call('POST','/pins/pages/rea-page-1'),/Unavailable/);
+  call('POST','/pages/rea-page-1/restore',{});assert.equal(call('GET','/pins/pages').length,1);
+  call('DELETE','/pins/pages/rea-page-1');assert.deepEqual(call('GET','/pins/pages'),[]);
+  assert.equal(call('GET','/pages/rea-page-1').metadata.title,'Pinned demo');
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});

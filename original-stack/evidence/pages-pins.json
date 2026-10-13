@@ -1,0 +1,33 @@
+{
+  "scope": "Original personal page pin lifecycle",
+  "source": "state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js",
+  "contracts": [
+    "163738-163750 MEr POST/DELETE pins/pages/page_id no body required",
+    "163875-163885 JR GET pins/pages include_metadata and item.id array",
+    "163909-163918 pin metadata merged into original page cache"
+  ],
+  "implementation": [
+    "Demo pin metadata stored with local page",
+    "GET exposes original item.id and current page metadata",
+    "Duplicate pin idempotent",
+    "Archived/deleted pages excluded; archived pin resurfaces on restore as explicit synthetic policy"
+  ],
+  "tests": "21 Node tests passed",
+  "runtimeVerified": true,
+  "limitations": [
+    "Pin ordering across multiple pages not runtime verified",
+    "Archive/restore pin behavior covered by adapter tests only"
+  ],
+  "runtime": {
+    "package": "v28",
+    "asar": "5351de3119242b1ea63ab2cbd62743c75cc16aa2bbc71b8ef35e9515b180689e",
+    "pageId": "rea-page-3",
+    "flow": [
+      "Original File menu Pin moves page from Recents to Pinned",
+      "Reload > Space retains Pinned row and original home Pinned card",
+      "Original File menu now Unpin",
+      "Unpin removes persistent pinnedAt",
+      "Reload > Space has no Pinned section and page appears in Recents"
+    ]
+  }
+}

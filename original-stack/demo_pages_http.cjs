@@ -12,9 +12,11 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  const mutation=action&&((method==='POST'&&!action[3])||(method==='GET'&&action[2]==='archive-operations'&&action[3]));
  const library=method==='POST'&&route==='/files/library';
  const nodes=method==='GET'&&route==='/files/library/nodes';
+ const pinId=route.match(/^\/pins\/pages\/(rea-page-[1-9][0-9]*)$/)?.[1];
+ const pins=(method==='GET'&&route==='/pins/pages')||(pinId&&['POST','DELETE'].includes(method));
  const view=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/views$/.test(route);
  const token=method==='POST'&&/^\/pages\/rea-page-[1-9][0-9]*\/realtime-token$/.test(route);
- if(!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view)return null;
+ if(!listing&&!detail&&!create&&!token&&!library&&!mutation&&!tree&&!nodes&&!view&&!pins)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  const file=path.join(path.dirname(settingsPath),'demo-pages.json');
  const state=fs.existsSync(file)?JSON.parse(fs.readFileSync(file,'utf8')):{version:1,sequence:0,items:[]};
@@ -54,6 +56,12 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
   persist();return result;
  }
  const read=item=>{const docFile=path.join(path.dirname(settingsPath),item.metadata.page_id+'-document.json');const doc=fs.existsSync(docFile)?JSON.parse(fs.readFileSync(docFile,'utf8')):null;const parent=state.items.find(x=>x.metadata.page_id===item.metadata.parent?.page_id);const meta={...item.metadata,has_children:state.items.some(x=>live(x)&&x.metadata.parent?.page_id===item.metadata.page_id)};if(parent){const parentFile=path.join(path.dirname(settingsPath),parent.metadata.page_id+'-document.json');meta.parent={page_id:parent.metadata.page_id,title:fs.existsSync(parentFile)?JSON.parse(fs.readFileSync(parentFile,'utf8')).title??parent.metadata.title:parent.metadata.title};}return {metadata:doc?{...meta,title:doc.title??meta.title,current_sequence:doc.sequence}:meta,content:doc?null:item.content,document_bootstrap:null};};
+ if(pins){
+  if(method==='GET')return state.items.filter(x=>live(x)&&x.pinnedAt).sort((a,b)=>a.pinnedAt.localeCompare(b.pinnedAt)).map(x=>({item:{id:x.metadata.page_id},metadata:read(x).metadata}));
+  const item=state.items.find(x=>x.metadata.page_id===pinId&&!x.permanentlyDeleted);if(!item)throw Error('Unknown demo page');
+  if(method==='POST'){if(!live(item))throw Error('Unavailable demo page');item.pinnedAt??=new Date().toISOString();}else delete item.pinnedAt;
+  persist();return {};
+ }
  const pageSlice=(items,cursor,limit)=>{
   if(cursor!=null&&cursor!==''&&!/^offset:[0-9]+$/.test(cursor))throw Error('Invalid demo library cursor');
   const offset=cursor?Number(cursor.slice(7)):0;
