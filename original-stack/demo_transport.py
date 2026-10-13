@@ -160,7 +160,7 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
                     for notification in notifications:await publish(notification)
         except ConnectionClosed:pass
         finally:clients.discard(socket)
-    async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES) as server:
+    async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES, select_subprotocol=lambda connection, offered: next((p for p in offered if p.startswith("pages-realtime-room.rea-page-")), None)) as server:
         pages.publish_endpoint("ws://127.0.0.1:"+str(server.sockets[0].getsockname()[1]))
         print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
                           "mode": "demo-contract-adapter", "simulatedWindowsReadiness":demo_sandbox_state,"executesTools":False,"recoveredDemoTurns":recovered_turns, "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)

@@ -37,6 +37,7 @@ values.http={
  '/wham/onboarding/context':{role:null,desktop_onboarding_completed_at:'2026-10-13T00:00:00Z'}
 };
 const replacements=[
+ ['pagesRealtime:s.pagesRealtime','pagesRealtime:void 0'],
  ['"list-automations":async()=>{','"list-automations":async()=>{return demoLocalAutomations(`list`,{},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(','"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(await Promise.reject(Error(`REA demo does not execute scheduled tasks`)),'],
  ['"automation-create":e=>this.automationsService.create(e)','"automation-create":e=>demoLocalAutomations(`create`,e,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`))'],

@@ -7,7 +7,9 @@
     "updates": "162678-162724 committed_update and ack schemas;334835-335046 document_update processing",
     "bootstrap": "163158 schema;341261 SEo validation",
     "roots": "156255-156430 title Y.Text, blocksById Y.Map, topLevelBlockIds Y.Array;335100 full sync initializes roots",
-    "endpointPolicy": "app-shared-737655e1fb23.js:105114 zAt: loopback only when t true and /ws; original TDr calls Kie(a,false) when Pd.pagesRealtime present"
+    "endpointPolicy": "app-shared-737655e1fb23.js:105114 zAt: loopback only when t true and /ws; original TDr calls Kie(a,false) when Pd.pagesRealtime present",
+    "browserFallback": "main host141915 pagesRealtime:s.pagesRealtime -> void0 in demo only; original renderer then skips native endpoint check and uses WebSocket",
+    "markdownRequired": "initial533248 $6c reads t.markdown.length"
   },
   "minimumProtocol": [
     "server_capabilities capabilities:[]",
@@ -22,7 +24,7 @@
     "HTTP bootstrap cannot use rootless empty Yjs update",
     "Legacy capabilities are insufficient for typed blocks, comments, collaborator cursors and semantic operations"
   ],
-  "next": "Resolve original desktop bridge endpoint policy through a demo transport adapter before rebuilding. Current loopback URL is rejected by original renderer with desktop bridge present; do not claim sync works.",
+  "next": "Build v19 with content.markdown fix, create fresh original page and verify websocket exchange/edit/reload. v18 source fix not yet packaged.",
   "implementation": {
     "files": [
       "demo_page_sync.py",
@@ -31,6 +33,6 @@
     ],
     "dependency": "y-py==0.6.2 installed only in original-stack/state/page-sync-deps",
     "verified": "unit test applies real Yjs title update, persists canonical full state, restores in new document, deduplicates receipts, rejects conflicts, preserves foreign pending file",
-    "runtime": "NOT integrated or verified; active copy remains v17"
+    "runtime": "v18 installed, create POST/pages persists rea-page-1, but editor crashes before sync at $6c due missing content.markdown. Source adapter now fixed but needs rebuild. No sync success claimed."
   }
 }

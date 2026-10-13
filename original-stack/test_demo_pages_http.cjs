@@ -9,7 +9,7 @@ test('personal page creation is idempotent, persistent, paged and explicit about
   assert.deepEqual(call('GET','/pages'),{items:[],next_cursor:null});
   const input={destination:'personal_file_drive',idempotency_key:'local-page-test',title:'',initial_blocks:[]};
   const first=call('POST','/pages',input);
-  assert.equal(first.metadata.page_id,'rea-page-1');assert.equal(first.document_bootstrap,null);
+  assert.equal(first.metadata.page_id,'rea-page-1');assert.equal(first.document_bootstrap,null);assert.equal(first.content.markdown,'');
   assert.deepEqual(call('POST','/pages',input),first);
   assert.deepEqual(call('GET','/pages/rea-page-1'),first);
   assert.throws(()=>call('POST','/pages',{...input,title:'Conflicting'}),/Conflicting/);

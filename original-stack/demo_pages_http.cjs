@@ -43,7 +43,7 @@ function demoPagesHttp(method,url,body,settingsPath,fs,path){
  if(previous){if(previous.fingerprint!==fingerprint)throw Error('Conflicting demo page idempotency key');return read(previous);}
  const now=new Date().toISOString(),id='rea-page-'+(++state.sequence);
  const metadata={access:{can_delete:true,can_read:true,can_share:false,can_write:true},created_at:now,creator_account_user_id:'rea-demo-user',current_sequence:0,deleted_at:null,drive_space_id:null,drive_scope:'personal',owner_workspace_id:null,page_id:id,parent:null,position:Date.parse(now)*1024,projection_through_sequence:0,title:input.title,updated_at:now,document_type:'page',has_children:false};
- const item={key:input.idempotency_key,fingerprint,metadata,content:{page_id:id,title:input.title,blocks:[],through_sequence:0}};
+ const item={key:input.idempotency_key,fingerprint,metadata,content:{page_id:id,title:input.title,markdown:"",blocks:[],through_sequence:0}};
  state.items.unshift(item);
  const temporary=file+'.pending';let owned=false;
  try{fs.writeFileSync(temporary,JSON.stringify(state),{flag:'wx'});owned=true;fs.renameSync(temporary,file);}finally{if(owned&&fs.existsSync(temporary))fs.unlinkSync(temporary);}
