@@ -76,13 +76,18 @@
       "Original page remains editable over TLS with pagesRealtime enabled",
       "Two title edits create two snapshots; accidental first title prefix corrected immediately, original title restored",
       "Original Versions tab lists Current version and two timestamped Demo snapshots",
-      "Selecting oldest snapshot loads its preserved title in original read-only preview and displays Restore; current page title remains Original Pages demo"
+      "Selecting oldest snapshot loads its preserved title in original read-only preview and displays Restore; current page title remains Original Pages demo",
+      "Show changes from oldest checkpoint to Current version renders both title strings and reports 1 change",
+      "Next change advances original comparison counter to 1 of 1",
+      "Original Restore confirmation states current comments are kept; confirm returns editable original document with historical title",
+      "Canonical sequence32 ->33 restore creates third checkpoint and comments map is exactly equal before/after",
+      "Reload demo, Space, restored page: historical title persists in original editable textarea",
+      "Renamed back to Original Pages demo through title field; original Versions list shows four snapshots including restore and subsequent rename"
     ],
     "remaining": [
-      "Show changes comparison",
-      "Restore through original document mutation",
-      "Reload snapshot list",
-      "Correct current_editor_summary semantics since last checkpoint"
+      "Correct current_editor_summary semantics since last checkpoint",
+      "Explicit checkpoint-to-checkpoint selector and range handles",
+      "Restoring a snapshot with differing block structure and comments anchored in removed content"
     ]
   },
   "views_pending": {
@@ -111,5 +116,14 @@
     "Activity after reload",
     "Versions snapshots and comparison",
     "Views"
-  ]
+  ],
+  "restore_verification": {
+    "before_sequence": 32,
+    "restored_sequence": 33,
+    "comments_equal": true,
+    "snapshot_count_after_restore": 3,
+    "snapshot_count_after_rename": 4,
+    "restored_title": "Original version one saved through the editor.Original Pages demo",
+    "final_title": "Original Pages demo"
+  }
 }
