@@ -16,7 +16,9 @@ class PageSyncTests(unittest.TestCase):
    self.assertEqual(ack['sequence'],1)
    self.assertEqual(json.loads((folder/'rea-page-1-document.json').read_text())['symbol'],{'kind':'emoji','value':'\U0001f680'})
    self.assertEqual(committed['update'],message['update'])
+   committed_time=json.loads((folder/'rea-page-1-document.json').read_text())['updated_at']
    self.assertEqual(store.commit('rea-page-1',message),(ack,None))
+   self.assertEqual(json.loads((folder/'rea-page-1-document.json').read_text())['updated_at'],committed_time)
    restored=PageSyncStore(folder).sync('rea-page-1')
    client=y.YDoc();y.apply_update(client,base64.b64decode(restored['update']))
    self.assertEqual(json.loads(client.get_text('title').to_json()),'Original editor demo')
@@ -93,7 +95,7 @@ class PageSyncTests(unittest.TestCase):
    first=commit('order');self.assertEqual(len(first['checkpoints']),1);self.assertEqual(first['block_attributions'],{})
    with doc.begin_transaction() as tx:doc.get_map('pagesMetadata').set(tx,'symbol',{'kind':'icon','value':'function','color':'blue'})
    second=commit('symbol');self.assertEqual(len(second['checkpoints']),2);self.assertEqual(second['block_attributions'],{})
-   self.assertEqual(len(commit('unchanged')['checkpoints']),2)
+   unchanged=commit('unchanged');self.assertEqual(len(unchanged['checkpoints']),2);self.assertEqual(unchanged['updated_at'],second['updated_at'])
  def test_space_root_seed_is_stable_and_not_reapplied_after_edit(self):
   with tempfile.TemporaryDirectory(prefix='rea-space-root-') as directory:
    folder=Path(directory);(folder/'demo-pages.json').write_text(json.dumps({'items':[{'metadata':{'page_id':'rea-page-1'},'seedTitle':'Original Space'}]}))

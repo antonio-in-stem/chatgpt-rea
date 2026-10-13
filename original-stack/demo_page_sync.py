@@ -75,6 +75,7 @@ class PageSyncStore:
         if (before_blocks!=after_blocks or before_title!=state['title']
             or before_order!=json.loads(doc.get_array('topLevelBlockIds').to_json())
             or before_metadata!=json.loads(doc.get_map('pagesMetadata').to_json())):
+            state['updated_at']=changed_at
             # Freeze actual committed content; never reconstruct historical snapshots from current state.
             envelope={'format':'openai.page.yjs','schema_version':2,'page_id':page_id,'stream_kind':'content','through_sequence':state['sequence'],'yjs_state_update_base64':state['update'],'state_vector_base64':base64.b64encode(y.encode_state_vector(doc)).decode()}
             state.setdefault('checkpoints',[]).append({'checkpoint_id':'demo-checkpoint-'+str(state['sequence']),'through_sequence':state['sequence'],'created_at':changed_at,'editor_summary_version':1,'actor_summaries':[{'actor_type':'user','account_user_id':'rea-demo-user'}],'envelope':json.dumps(envelope,separators=(',',':'))})

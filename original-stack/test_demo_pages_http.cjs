@@ -293,3 +293,19 @@ test('space archive and restore are atomic and preserve prior page trash and doc
   assert.throws(()=>call('GET','/spaces/v2?status=unknown'),/Unsupported/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('canonical edit time projects to page and library without overriding later lifecycle time',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-page-time-')),settings=path.join(dir,'demo-sidebar-settings.json');
+ const call=(method,route,input)=>demoPagesHttp(method,new URL('https://chatgpt.com'+route),input===undefined?undefined:JSON.stringify(input),settings,fs,path);
+ try{
+  const page=call('POST','/pages',{destination:'personal_file_drive',idempotency_key:'time',title:'Page',initial_blocks:[]});
+  const file=path.join(dir,'demo-pages.json'),state=JSON.parse(fs.readFileSync(file));state.items[0].metadata.updated_at='2025-01-01T00:00:00Z';fs.writeFileSync(file,JSON.stringify(state));
+  const doc=path.join(dir,page.metadata.page_id+'-document.json');fs.writeFileSync(doc,JSON.stringify({sequence:1,title:'Edited',updated_at:'2025-01-02T00:00:00Z'}));
+  assert.equal(call('GET','/pages/'+page.metadata.page_id).metadata.updated_at,'2025-01-02T00:00:00Z');
+  assert.equal(call('POST','/files/library',{include_pages:true}).items[0].updated_at,'2025-01-02T00:00:00Z');
+  assert.equal(call('GET','/pages/catalog').items[0].updated_at,'2025-01-02T00:00:00Z');
+  state.items[0].metadata.updated_at='2025-01-03T00:00:00Z';fs.writeFileSync(file,JSON.stringify(state));
+  assert.equal(call('GET','/pages/'+page.metadata.page_id).metadata.updated_at,'2025-01-03T00:00:00Z');
+  fs.writeFileSync(doc,JSON.stringify({sequence:1,title:'Legacy'}));assert.equal(call('GET','/pages/'+page.metadata.page_id).metadata.updated_at,'2025-01-03T00:00:00Z');
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
