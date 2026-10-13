@@ -1,5 +1,6 @@
 //! Local domain state. No network requests or provider credentials belong here.
 pub mod timestamps;
+pub mod turns;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashSet,
@@ -113,6 +114,8 @@ pub struct Conversation {
     pub title: String,
     pub project_id: Option<String>,
     pub messages: Vec<ChatMessage>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub turns: Vec<turns::ConversationTurn>,
     pub draft: String,
     pub archived: bool,
     pub pinned: bool,
@@ -199,6 +202,7 @@ impl Workspace {
             title: "New chat".into(),
             project_id: None,
             messages: vec![],
+            turns: vec![],
             draft: String::new(),
             archived: false,
             pinned: false,
@@ -372,12 +376,16 @@ impl Workspace {
         branch.archived = false;
         branch.pinned = false;
         branch.messages.truncate(end + 1);
+        let mut remapped = std::collections::HashMap::new();
         let mut parent = None;
         for message in &mut branch.messages {
+            let old_id = message.id.clone();
             message.id = id();
+            remapped.insert(old_id, message.id.clone());
             message.parent_id = parent;
             parent = Some(message.id.clone());
         }
+        turns::remap_branch_turns(&mut branch, &remapped);
         let id = branch.id.clone();
         self.conversations.push(branch);
         Ok(id)
@@ -449,6 +457,7 @@ impl Workspace {
             }
         }
         for c in &self.conversations {
+            turns::validate_turns(c)?;
             if c.project_id
                 .as_ref()
                 .is_some_and(|id| !self.projects.iter().any(|p| &p.id == id))

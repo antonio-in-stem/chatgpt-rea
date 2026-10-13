@@ -94,3 +94,12 @@ Recovered local-conversation-thread-turn-entries-a91ee5eaba74.js lines 481-491 f
 Native-core now exposes LocalTimestampEntry (Excluded or Turn) and LocalTimestampTurn to reproduce this projection before selection. Generate-TimestampOracle hash-pins the original local module and runs its exact B.map expression, followed by original timestamp selection, for another 384 deterministic cases. The original N predicate is supplied as normalized eligibility: classification of voice/history rows itself is not covered. Both differential tests pass (768 total cases) alongside 18 unit tests. The extracted expression is retained in original-stack/evidence/local-timestamp-projection.recovered.js.
 
 The existing native conversation model remains a flat message list, so this new function is not yet wired to chat_view. Real turn identity and final-assistant timing must be retained before integration; grouping arbitrary adjacent messages would change the original behavior. Date formatting, separator rendering and scroll layout remain pending. No UI parity or newly packaged executable is claimed.
+
+
+## Explicit native turn identity storage
+
+Conversation now accepts optional persisted turns containing an ID, ordered message membership, turn start and final-assistant start. Older workspaces deserialize with no turns; no historical grouping or dates are fabricated. record_turn validates a candidate snapshot before replacing live state. Missing, repeated, overlapping, noncontiguous and out-of-order membership is rejected, as is an assistant timestamp without an assistant member. Empty/activity-only turns require a future representation and are not claimed supported by this storage API.
+
+Branching remaps both turn IDs and message references, removes turns outside the retained history and clears the final-assistant time for a truncated turn. Complete retained turns preserve timing. These are native storage decisions needed for independent branches, not claims of recovering the original backend persistence format. Three integration tests verify roundtrip/legacy loading, atomic rejection and full/partial branches; 18 unit tests and both 384-case timestamp differential tests also pass. The full native-workspace cargo check passes with the pre-existing unused action warning.
+
+The demo response lifecycle still needs to supply these explicit turn snapshots, and chat_view still lacks timestamp rendering. This turn changes the persistent model and branch integrity only; it does not establish visual parity or an updated packaged executable.
