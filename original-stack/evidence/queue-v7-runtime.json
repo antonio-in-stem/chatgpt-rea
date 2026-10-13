@@ -34,8 +34,8 @@
     "priorAttempt": "Prior Ctrl+Shift+Enter probe selected the wrong shortcut for this desktop enter mode"
   },
   "resumeInvestigation": {
-    "observed": "Textual queue Resume activation did not produce queue/start in this scenario",
-    "sourceFinding": "Original isConversationStreaming uses streamRoles.has(threadId), not persisted turn status; source candidate only, runtime cause unproven",
-    "next": "Trace stream ownership release and hasPendingTurnStart before changing fixture"
+    "observed": "Original resume guard returned with streaming=true and resumeState=resumed; see queue-resume-guard.json",
+    "sourceFinding": "The same Dfn manager is passed to lWn; streaming means subscription ownership. Visible conversations retain ownership after turn completion.",
+    "limitation": "Gate-enabled packaged queue resume is incompatible with this observed visible-thread subscription state. Do not invent unsubscribe or modify renderer to bypass it. Installed product gate eligibility remains unknown."
   }
 }

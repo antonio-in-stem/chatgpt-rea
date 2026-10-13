@@ -1,0 +1,12 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "lineNumber": 506,
+  "columnNumber": 131993,
+  "observed": {
+    "streaming": true,
+    "resumeState": "resumed"
+  },
+  "method": "Breakpoint at original resume guard; read-only expression; resumed unchanged",
+  "sourceSha256": "a1daa891e89a395b8db399ff6eaa365f12a86880c3d8cf891caf4ccbcb9eebf5",
+  "limitation": "Observed for the demo-enabled gate combination; not proof the installed product enables that combination."
+}
