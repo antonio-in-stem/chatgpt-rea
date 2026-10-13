@@ -1,0 +1,22 @@
+{
+  "source": "Original exports CZ and sZ, app-initial-b8e1c8014bb4.js",
+  "input": [
+    {
+      "markdown": "# Heading\n\n- [x] Complete\n- [ ] Pending\n\n| Name | Value |\n| --- | --- |\n| A | **bold** |\n\n```js\nconst value = 1;\n```",
+      "kind": "markdown"
+    },
+    {
+      "markdown": "Keep **formatting** intact.",
+      "kind": "agent_instructions"
+    }
+  ],
+  "markdown": "# Heading\n\n- [x] Complete\n- [ ] Pending\n\n| Name | Value |\n| - | - |\n| A | **bold** |\n\n```js\nconst value = 1;\n```\n\nKeep **formatting** intact.\n",
+  "nodeTypes": [
+    "heading",
+    "list",
+    "table",
+    "code_block",
+    "agent_instructions"
+  ],
+  "scope": "Runtime original block assembly and serialization; not HTTP adapter integration"
+}

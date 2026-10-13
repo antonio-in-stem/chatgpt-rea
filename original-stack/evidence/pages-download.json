@@ -21,9 +21,22 @@
   ],
   "gap": "demoPagesHttp read returns content:null for canonical Yjs documents; HTTP-based download outside an active editor not implemented",
   "remaining": [
+    "Connect canonical ordered Yjs blocks to original serializer and HTTP projection without stale content",
     "Verify actual saved UTF-8 file against rich original editor Markdown",
-    "Recover exact original Markdown serializer before supplying HTTP content projection",
-    "Verify export cancellation and failure UI states"
+    "Verify failure UI states"
   ],
-  "fidelity": "No custom export UI or approximate Markdown serializer introduced"
+  "fidelity": "No custom export UI or approximate Markdown serializer introduced",
+  "serializer": {
+    "factory": "app-initial export CZ -> iSo/aSo at 332113-332134",
+    "assembly": "export sZ -> LSo at 332765 onward",
+    "caller": "content-2bf9ea38a12a.js:54747-54750,56597",
+    "runtime": [
+      "Original serializer invoked inside credential-free demo through dynamic import",
+      "Original block assembly accepted markdown and agent_instructions",
+      "Heading/checklist/table/code/instructions serialized through original implementation",
+      "Canonical child page markdown block reproduced its editor text with trailing newline"
+    ],
+    "evidence": "original-markdown-roundtrip.json",
+    "integration": "Not yet connected to HTTP content projection; no substitute serializer introduced"
+  }
 }
