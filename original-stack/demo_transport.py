@@ -12,6 +12,7 @@ from demo_projects import ProjectStore, ProjectError
 from demo_config import ConfigStore, ConfigError
 import demo_threads
 import demo_plugins
+import demo_security
 import demo_skills
 from demo_page_sync import PageSyncStore
 
@@ -36,6 +37,11 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
                    "paramsType": type(params).__name__}
     if "id" not in message:
         return None, observation
+    if config is not None and message["method"] in demo_security.METHODS:
+        try:
+            return {"id":request_id,"result":demo_security.handle(message["method"],params)},observation
+        except demo_security.SecurityError as error:
+            return {"id":request_id,"error":{"code":-32602,"message":str(error)}},observation
     if config is not None and message["method"] in demo_skills.METHODS:
         try:
             return {"id":request_id,"result":demo_skills.SkillStore(config).handle(message["method"],params,demo_threads.THREAD["cwd"])},observation

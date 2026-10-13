@@ -111,5 +111,12 @@
     "Static analysis only; no runtime Security page verified in this pass",
     "Exact discovery item schema and thread bootstrap lifecycle need inspection before implementation",
     "Do not invoke scan startup, remediation, real repository access or tools while supplying demo data"
-  ]
+  ],
+  "implementation": {
+    "module": "demo_security.py",
+    "integration": "demo_transport.py only when explicit ConfigStore is present; existing no-config fixture remains empty",
+    "reads": "Five original read tools, one fixed UUID completed scan, one synthetic repository and finding. No scan or remediation executor.",
+    "validation": "77 Python tests pass. Checks include filter/pagination outcomes, foreign identifiers, mutation rejection, fresh-copy isolation, transport scope and required fields from recovered JSON protocol. Full JSON Schema validation was not run because jsonschema is absent.",
+    "runtime": "Existing v53 process has not loaded new Python adapter. Restart and original Security UI verification pending."
+  }
 }
