@@ -14,20 +14,23 @@ class TransportTests(unittest.IsolatedAsyncioTestCase):
         async with serve(handler,'127.0.0.1',0) as server:
             port=server.sockets[0].getsockname()[1]
             async with connect(f'ws://127.0.0.1:{port}') as socket:
-                await socket.send(json.dumps({'id':17,'method':'getAuthStatus','params':{'token':'must-not-be-retained'}}))
+                await socket.send(json.dumps({'id':17,'method':'unknown/demoMethod','params':{'token':'must-not-be-retained'}}))
                 reply=json.loads(await socket.recv())
                 self.assertEqual(reply['id'],17)
                 self.assertEqual(reply['error']['code'],-32601)
         self.assertNotIn('must-not-be-retained',json.dumps(seen))
         self.assertEqual(seen[0]['paramKeys'],['token'])
     async def test_fixture_methods_do_not_produce_credentials(self):
-        for method in ["initialize", "account/read", "configRequirements/read"]:
+        for method in ["initialize", "account/read", "configRequirements/read", "getAuthStatus"]:
             reply,_=handle_message(json.dumps({"id": "fixture", "method": method}))
             self.assertEqual(reply["id"], "fixture")
             self.assertIn("result",reply)
         reply,_=handle_message(json.dumps({"id":1,"method":"account/read"}))
         self.assertIsNone(reply["result"]["account"])
         self.assertFalse(reply["result"]["requiresOpenaiAuth"])
+
+        legacy,_=handle_message(json.dumps({"id":2,"method":"getAuthStatus","params":{"includeToken":True,"refreshToken":True}}))
+        self.assertEqual(legacy["result"], {"authMethod":None,"authToken":None,"requiresOpenaiAuth":False})
 
     async def test_notifications_and_malformed_frames(self):
         self.assertIsNone(handle_message('{"method":"initialized"}')[0])

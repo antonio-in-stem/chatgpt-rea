@@ -13,5 +13,14 @@
       "supportsIndependentSpeedModes": true,
       "requirements": null
     }
+  },
+  "getAuthStatus": {
+    "derivedSchema": "derived-contracts/GetAuthStatusResponse.json",
+    "sourceType": "protocol/typescript/GetAuthStatusResponse.ts",
+    "result": {
+      "authMethod": null,
+      "authToken": null,
+      "requiresOpenaiAuth": false
+    }
   }
 }

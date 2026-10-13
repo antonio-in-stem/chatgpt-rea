@@ -10,8 +10,8 @@ const initialize={schema:'v1/InitializeResponse.json'};
 const cases={initialize,...fixtureFile};
 for(const [method,info] of Object.entries(cases)){
  const response=JSON.parse(cp.execFileSync('python',['-c','import json,sys;from demo_transport import handle_message;print(json.dumps(handle_message(json.dumps({"id":1,"method":sys.argv[1]}))[0]))',method],{cwd:__dirname,encoding:'utf8'}));
- const schema=JSON.parse(fs.readFileSync(path.join(__dirname,'protocol/json',info.schema),'utf8'));
+ const schema=JSON.parse(fs.readFileSync(info.derivedSchema ? path.join(__dirname,info.derivedSchema) : path.join(__dirname,'protocol/json',info.schema),'utf8'));
  const validate=ajv.compile(schema);
  if(!validate(response.result))throw Error(method+': '+JSON.stringify(validate.errors));
- console.log(method+' matches '+info.schema);
+ console.log(method+' matches '+(info.derivedSchema ? info.derivedSchema+' (transcribed from '+info.sourceType+')' : info.schema));
 }

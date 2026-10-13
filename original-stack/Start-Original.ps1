@@ -1,4 +1,4 @@
-param([switch]$WaitForExit,[switch]$InspectRuntime)
+param([switch]$WaitForExit,[switch]$InspectRuntime,[switch]$DryRun)
 $ErrorActionPreference='Stop'
 $runtime=Join-Path $PSScriptRoot 'pristine'
 $inventoryPath=Join-Path $PSScriptRoot 'runtime-inventory.json'
@@ -16,16 +16,33 @@ $start.FileName=Join-Path $runtime 'ChatGPT.exe'
 $start.WorkingDirectory=$runtime
 $start.UseShellExecute=$false
 $start.WindowStyle=[Diagnostics.ProcessWindowStyle]::Hidden
+# Remove parent agent/runtime routing and credentials from the child only.
+# Separate profile directories alone do not prove native account-store isolation.
+foreach($key in @($start.Environment.Keys)){
+ if($key -match '^(CODEX_|CHATGPT_|OWL_|ELECTRON_|OPENAI_|NODE_)'){
+  $start.Environment.Remove($key) | Out-Null
+ }
+}
 # Child-only product configuration; never changes this shell or the user's environment.
 $start.Environment['CODEX_ELECTRON_USER_DATA_PATH']=Join-Path $state 'profile'
 $start.Environment['CODEX_HOME']=Join-Path $state 'codex-home'
 $start.Environment['APPDATA']=Join-Path $state 'appdata'
 $start.Environment['LOCALAPPDATA']=Join-Path $state 'localappdata'
-foreach($key in @('OPENAI_API_KEY','CODEX_ACCESS_TOKEN','NODE_OPTIONS','ELECTRON_RUN_AS_NODE')){$start.Environment.Remove($key) | Out-Null}
 $start.ArgumentList.Add('--user-data-dir='+(Join-Path $state 'profile'))
 if($InspectRuntime){
  $start.ArgumentList.Add('--remote-debugging-address=127.0.0.1')
  $start.ArgumentList.Add('--remote-debugging-port=0')
+}
+if($DryRun){
+ [pscustomobject]@{
+  executable=$start.FileName
+  arguments=@($start.ArgumentList)
+  productEnvironmentKeys=@($start.Environment.Keys | Where-Object {$_ -match '^(CODEX_|CHATGPT_|OWL_|ELECTRON_|OPENAI_|NODE_)'} | Sort-Object)
+  profile=$start.Environment['CODEX_ELECTRON_USER_DATA_PATH']
+  codexHome=$start.Environment['CODEX_HOME']
+  accountIsolationVerified=$false
+ } | ConvertTo-Json -Depth 3
+ return
 }
 $process=[Diagnostics.Process]::Start($start)
 [pscustomobject]@{pid=$process.Id;executable=$start.FileName;profile=(Join-Path $state 'profile');startedUtc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $state 'last-launch.json') -Encoding utf8
