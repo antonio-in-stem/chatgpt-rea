@@ -9,6 +9,7 @@ from websockets.asyncio.server import serve
 from websockets.exceptions import ConnectionClosed
 from demo_projects import ProjectStore, ProjectError
 from demo_config import ConfigStore, ConfigError
+import demo_threads
 
 MAX_FRAME_BYTES = 1024 * 1024
 FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
@@ -31,6 +32,11 @@ def handle_message(raw, projects=None, notifications=None, config=None):
                    "paramsType": type(params).__name__}
     if "id" not in message:
         return None, observation
+    if message["method"] in demo_threads.METHODS:
+        try:
+            return {"id":request_id,"result":demo_threads.handle(message["method"],params)}, observation
+        except demo_threads.ThreadError as error:
+            return {"id":request_id,"error":{"code":-32602,"message":str(error)}}, observation
     if config is not None and message["method"] in ConfigStore.METHODS:
         try:
             return {"id":request_id,"result":config.handle(message["method"],params)}, observation

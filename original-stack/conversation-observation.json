@@ -1,0 +1,20 @@
+{
+  "profile": "demo-probe-20261013-c",
+  "threadId": "019cc001-0000-7000-8000-000000000001",
+  "observed": [
+    "Demo title in original Recent chats",
+    "Original thread/read and thread/resume requests",
+    "Original renderer displays formatted assistant message, list, Rust syntax highlighting, table and message action controls",
+    "Demo model selected in original composer"
+  ],
+  "screenshot": "evidence/original-demo-conversation.png",
+  "rendererModified": false,
+  "executionEnabled": false,
+  "limitations": [
+    "Single static read-only transcript; no conversation mutation implemented.",
+    "Message action controls are visible but not all functionally verified.",
+    "Cold app start was required to discard earlier resume failure.",
+    "Native capture may retain an old frame; final screenshot was checked after renderer capture.",
+    "No full native port or complete UI coverage claim."
+  ]
+}

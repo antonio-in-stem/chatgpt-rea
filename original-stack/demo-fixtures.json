@@ -176,5 +176,25 @@
       "data": [],
       "nextCursor": null
     }
+  },
+  "thread/attachment/list": {
+    "schema": "v2/ThreadAttachmentListResponse.json",
+    "result": {
+      "data": [],
+      "nextCursor": null
+    }
+  },
+  "thread/queue/list": {
+    "schema": "v2/ThreadQueueListResponse.json",
+    "result": {
+      "data": [],
+      "nextCursor": null
+    }
+  },
+  "collaborationMode/list": {
+    "schema": "v2/CollaborationModeListResponse.json",
+    "result": {
+      "data": []
+    }
   }
 }

@@ -1,0 +1,70 @@
+{
+  "agentNickname": null,
+  "agentRole": null,
+  "canAcceptDirectInput": false,
+  "cliVersion": "0.162.0-alpha.17.2",
+  "createdAt": 1791856800,
+  "cwd": "C:\\Users\\PC\\Documents\\ChatGPT\\UI Component Lab",
+  "daybreakEnabled": null,
+  "environments": null,
+  "ephemeral": false,
+  "extra": null,
+  "forkedFromId": null,
+  "gitInfo": null,
+  "historyMode": "legacy",
+  "id": "019cc001-0000-7000-8000-000000000001",
+  "model": "rea-demo",
+  "modelProvider": "openai",
+  "name": "Frontend Conversation Demo",
+  "originator": "codex_desktop",
+  "parentThreadId": null,
+  "path": null,
+  "preview": "Inspect the original conversation layout",
+  "projectId": null,
+  "reasoningEffort": "medium",
+  "recencyAt": 1791856860,
+  "section": null,
+  "sectionEnteredAt": null,
+  "sessionId": "019cc001-0000-7000-8000-000000000001",
+  "source": "appServer",
+  "status": {
+    "type": "notLoaded"
+  },
+  "threadSource": null,
+  "turns": [
+    {
+      "id": "019cc001-0000-7000-8000-000000000002",
+      "rootTurnId": null,
+      "itemsView": "full",
+      "status": "completed",
+      "error": null,
+      "startedAt": 1791856800,
+      "completedAt": 1791856860,
+      "durationMs": 60000,
+      "items": [
+        {
+          "type": "userMessage",
+          "id": "demo-user-1",
+          "clientId": null,
+          "content": [
+            {
+              "type": "text",
+              "text": "Show the conversation components with formatted demo content.",
+              "text_elements": []
+            }
+          ]
+        },
+        {
+          "type": "agentMessage",
+          "id": "demo-assistant-1",
+          "text": "This is a **local demo transcript** rendered by the original frontend.\n\n- Sidebar navigation\n- Conversation spacing\n- Message actions\n\n```rust\nfn main() {\n    println!(\"Frontend demo\");\n}\n```\n\n| Component | State |\n| --- | --- |\n| Message | Complete |\n| Composer | Ready |",
+          "phase": "final_answer",
+          "memoryCitation": null,
+          "delivery": null,
+          "questions": null
+        }
+      ]
+    }
+  ],
+  "updatedAt": 1791856860
+}
