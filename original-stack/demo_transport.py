@@ -15,7 +15,7 @@ MAX_FRAME_BYTES = 1024 * 1024
 FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
 
 
-def handle_message(raw, projects=None, notifications=None, config=None, threads=None):
+def handle_message(raw, projects=None, notifications=None, config=None, threads=None, demo_sandbox_state="notConfigured"):
     """Return an optional RPC reply and a value-free method/shape observation."""
     try:
         message = json.loads(raw)
@@ -57,6 +57,9 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
             return {"id": request_id, "result": result}, observation
         except ProjectError as error:
             return {"id": request_id, "error": {"code": -32602, "message": str(error)}}, observation
+    if message["method"] == "windowsSandbox/readiness":
+        if demo_sandbox_state not in ("ready","notConfigured","updateRequired"):raise ValueError("Invalid demo sandbox state")
+        return {"id":request_id,"result":{"status":demo_sandbox_state}},observation
     if message["method"] == "hooks/list":
         options={} if params is None else params
         cwds=options.get("cwds",[]) if isinstance(options,dict) else None
@@ -76,7 +79,7 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
     return {"id": request_id, "error": {"code": -32601, "message": "Demo contract not implemented"}}, observation
 
 
-async def run(port, output, project_state, config_state, thread_state):
+async def run(port, output, project_state, config_state, thread_state, demo_sandbox_state="notConfigured"):
     output.parent.mkdir(parents=True, exist_ok=True)
     projects = ProjectStore(project_state)
     config = ConfigStore(config_state, FIXTURES["config/read"]["result"]["config"])
@@ -87,7 +90,7 @@ async def run(port, output, project_state, config_state, thread_state):
         try:
             async for raw in socket:
                 notifications = []
-                reply, observation = handle_message(raw, projects, notifications, config, threads)
+                reply, observation = handle_message(raw, projects, notifications, config, threads, demo_sandbox_state)
                 with output.open("a", encoding="utf-8") as stream:
                     stream.write(json.dumps(observation) + "\n")
                 if reply is not None:
@@ -102,7 +105,7 @@ async def run(port, output, project_state, config_state, thread_state):
             clients.discard(socket)
     async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES) as server:
         print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
-                          "mode": "demo-contract-adapter", "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
+                          "mode": "demo-contract-adapter", "simulatedWindowsReadiness":demo_sandbox_state,"executesTools":False, "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
         await asyncio.Future()
 
 if __name__ == "__main__":
@@ -112,5 +115,6 @@ if __name__ == "__main__":
     parser.add_argument("--project-state", type=Path, default=Path(__file__).parent / "state" / "demo-projects.json")
     parser.add_argument("--config-state", type=Path, default=Path(__file__).parent / "state" / "demo-config.json")
     parser.add_argument("--thread-state", type=Path, default=Path(__file__).parent / "state" / "demo-threads.json")
+    parser.add_argument("--demo-sandbox-state", choices=["ready","notConfigured","updateRequired"], default="notConfigured", help="Simulated UI state only; does not configure or provide Windows sandboxing")
     args = parser.parse_args()
-    asyncio.run(run(args.port, args.output, args.project_state, args.config_state, args.thread_state))
+    asyncio.run(run(args.port, args.output, args.project_state, args.config_state, args.thread_state, args.demo_sandbox_state))

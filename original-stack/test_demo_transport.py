@@ -39,6 +39,13 @@ class TransportTests(unittest.IsolatedAsyncioTestCase):
         reply,_=handle_message(json.dumps({"id":1,"method":"hooks/list","params":{"cwds":"invalid"}}))
         self.assertEqual(reply["error"]["code"],-32602)
 
+    async def test_explicit_demo_readiness_does_not_enable_commands(self):
+        for state in ("ready","notConfigured","updateRequired"):
+            reply,_=handle_message(json.dumps({"id":1,"method":"windowsSandbox/readiness"}),demo_sandbox_state=state)
+            self.assertEqual(reply["result"]["status"],state)
+            reply,_=handle_message(json.dumps({"id":2,"method":"command/exec","params":{"command":"demo"}}),demo_sandbox_state=state)
+            self.assertEqual(reply["error"]["code"],-32601)
+
     async def test_notifications_and_malformed_frames(self):
         self.assertIsNone(handle_message('{"method":"initialized"}')[0])
         self.assertEqual(handle_message('{broken')[0]['error']['code'],-32700)
