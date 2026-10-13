@@ -4,9 +4,11 @@ param(
  [ValidateRange(0,10)][double]$ChunkDelay=0.6,
  [switch]$InspectRuntime,
  [switch]$DemoHost,
+ [switch]$DemoPagesTls,
  [switch]$DryRun
 )
 $ErrorActionPreference='Stop'
+if($DemoPagesTls -and -not $DemoHost){throw 'TLS Pages requires demo host'}
 $state=Join-Path (Join-Path $PSScriptRoot 'state') $StateName
 $runtime=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'pristine')).Path
 $python=(Get-Command python -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
@@ -41,6 +43,7 @@ try{
  $start.RedirectStandardError=$true
  foreach($argument in @('-u',(Join-Path $PSScriptRoot 'demo_transport.py'),'--output',(Join-Path $state 'demo-methods.jsonl'),'--project-state',$stores.project,'--config-state',$stores.config,'--thread-state',$stores.thread,'--demo-sandbox-state',$WindowsScenario,'--demo-chunk-delay',$ChunkDelay.ToString([Globalization.CultureInfo]::InvariantCulture))){$start.ArgumentList.Add($argument)}
  if($DemoHost){$start.ArgumentList.Add('--demo-profile-identity')}
+ if($DemoPagesTls){$start.ArgumentList.Add('--demo-pages-tls')}
  $adapter=[Diagnostics.Process]::Start($start)
  $errors=$adapter.StandardError.ReadToEndAsync()
  $line=$adapter.StandardOutput.ReadLineAsync()
@@ -51,7 +54,7 @@ try{
  foreach($name in @('runtime-stdout.log','runtime-stderr.log')){
   $runtimeLogs+= [IO.FileStream]::new((Join-Path $state $name),[IO.FileMode]::Create,[IO.FileAccess]::Write,[IO.FileShare]::Read,4096,$true)
  }
- $app=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -DemoHost:$DemoHost -Visible -PassThru
+ $app=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -DemoHost:$DemoHost -DemoPagesTls:$DemoPagesTls -Visible -PassThru
  # Drain both pipes concurrently; never accumulate unbounded runtime logs in memory.
  $runtimeCopies+= $app.StandardOutput.BaseStream.CopyToAsync($runtimeLogs[0])
  $runtimeCopies+= $app.StandardError.BaseStream.CopyToAsync($runtimeLogs[1])

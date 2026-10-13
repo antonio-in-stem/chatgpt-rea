@@ -56,7 +56,7 @@
       "yjs_state_update_base64",
       "state_vector_base64"
     ],
-    "dependency": "Current pagesRealtime:void0 means no host checkpoint downloader. Need downloadCheckpoint and cancelCheckpointDownload/disposable promise compatible bridge without breaking current WebSocket sync; selecting snapshots unimplemented.",
+    "dependency": "Resolved in v31: original pagesRealtime service restored only for explicit TLS demo; original downloadCheckpoint host seam reads local frozen bytes. Process-only exact-host resolver and SPKI certificate trust enable original endpoint validation. No renderer JS/CSS changes.",
     "implemented_not_runtime_verified": [
       "Canonical document stores frozen full Yjs envelopes after title/block changes, sequence IDs and state vectors",
       "GET versions paginates metadata descending through_sequence",
@@ -71,7 +71,19 @@
       "electron_webrequest": "https://www.electronjs.org/docs/latest/api/web-request",
       "websocket_redirect_issue": "https://github.com/electron/electron/issues/51505",
       "conclusion": "Do not assume onBeforeRequest redirectURL works for WebSockets; no runtime proxy change attempted."
-    }
+    },
+    "runtime_verified": [
+      "Original page remains editable over TLS with pagesRealtime enabled",
+      "Two title edits create two snapshots; accidental first title prefix corrected immediately, original title restored",
+      "Original Versions tab lists Current version and two timestamped Demo snapshots",
+      "Selecting oldest snapshot loads its preserved title in original read-only preview and displays Restore; current page title remains Original Pages demo"
+    ],
+    "remaining": [
+      "Show changes comparison",
+      "Restore through original document mutation",
+      "Reload snapshot list",
+      "Correct current_editor_summary semantics since last checkpoint"
+    ]
   },
   "views_pending": {
     "route": "GET /pages/{page_id}/views?limit=20&cursor=...",
@@ -82,13 +94,13 @@
     ],
     "admission": "Current can_share false hides Views; sharing not implemented."
   },
-  "tests": "68 Python +23 Node passed",
+  "tests": "71 Python +26 Node pass; PowerShell parser validation passes",
   "runtime": {
-    "asar_sha256": "c9e59bd80715d306033d760ee0584ca1aa3fa21f840a575b1d10b75bf1c615c4",
-    "exe_sha256": "f63ecade88bd840650a88c2291d173fa6482e46b60ed0d48195ca168ed2d8174",
-    "pid": 102304,
-    "adapter_pid": 84084,
-    "launcher_session": 2864
+    "pid": 101820,
+    "adapter_pid": 106468,
+    "launcher_session": 93881,
+    "asar_sha256": "0f7f03f9ddba4306f889f362403a0dd0914ead0a72971d155186a646789bd1d0",
+    "exe_sha256": "adb21329552920f502c6e2d10224e957b83d693848a070975ee4399a4c489f2e"
   },
   "verified": [
     "Original Page document selection and replacement appended Activity attribution demo to first paragraph",

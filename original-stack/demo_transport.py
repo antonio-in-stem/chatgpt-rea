@@ -3,6 +3,7 @@ No upstream connections, credentials or filesystem tools. Synthetic identity is 
 """
 import argparse
 import asyncio
+from contextlib import AsyncExitStack
 import json
 from pathlib import Path
 from websockets.asyncio.server import serve
@@ -105,7 +106,7 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
     return {"id": request_id, "error": {"code": -32601, "message": "Demo contract not implemented"}}, observation
 
 
-async def run(port, output, project_state, config_state, thread_state, demo_sandbox_state="notConfigured", demo_chunk_delay=0.6):
+async def run(port, output, project_state, config_state, thread_state, demo_sandbox_state="notConfigured", demo_chunk_delay=0.6, demo_pages_tls=False):
     output.parent.mkdir(parents=True, exist_ok=True)
     projects = ProjectStore(project_state)
     config = ConfigStore(config_state, FIXTURES["config/read"]["result"]["config"])
@@ -143,6 +144,8 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
             if error is not None:print(json.dumps({"kind":"stream-finalization-error","errorType":type(error).__name__}),flush=True)
     async def connection(socket):
         if socket.request.path.startswith("/demo-pages/"):
+            if demo_pages_tls:
+                await socket.close(1008,"Demo Pages requires the TLS listener");return
             await pages.connection(socket)
             return
         clients.add(socket)
@@ -160,8 +163,14 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
                     for notification in notifications:await publish(notification)
         except ConnectionClosed:pass
         finally:clients.discard(socket)
-    async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES, select_subprotocol=lambda connection, offered: next((p for p in offered if p.startswith("pages-realtime-room.rea-page-")), None)) as server:
-        pages.publish_endpoint("ws://127.0.0.1:"+str(server.sockets[0].getsockname()[1]))
+    async with AsyncExitStack() as stack:
+        server = await stack.enter_async_context(serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES, select_subprotocol=lambda connection, offered: next((p for p in offered if p.startswith("pages-realtime-room.rea-page-")), None)))
+        if demo_pages_tls:
+            from demo_page_tls import pages_tls_listener
+            metadata = await stack.enter_async_context(pages_tls_listener(pages, MAX_FRAME_BYTES))
+            pages.publish_endpoint(**metadata)
+        else:
+            pages.publish_endpoint("ws://127.0.0.1:"+str(server.sockets[0].getsockname()[1]))
         print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
                           "mode": "demo-contract-adapter", "simulatedWindowsReadiness":demo_sandbox_state,"executesTools":False,"recoveredDemoTurns":recovered_turns, "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
         try:await asyncio.Future()
@@ -178,6 +187,7 @@ if __name__ == "__main__":
     parser.add_argument("--thread-state", type=Path, default=Path(__file__).parent / "state" / "demo-threads.json")
     parser.add_argument("--demo-sandbox-state", choices=["ready","notConfigured","updateRequired"], default="notConfigured", help="Simulated UI state only; does not configure or provide Windows sandboxing")
     parser.add_argument("--demo-chunk-delay", type=float, default=0.6, help="Seconds between synthetic text chunks")
+    parser.add_argument("--demo-pages-tls", action="store_true", help="Separate ephemeral loopback TLS listener for original Pages; no system DNS or trust changes")
     parser.add_argument("--demo-profile-identity", action="store_true", help="Synthetic account state for the separately instrumented demo host; no token")
     args = parser.parse_args()
     if args.demo_profile_identity:
@@ -189,4 +199,4 @@ if __name__ == "__main__":
         FIXTURES["account/read"]["result"] = demo_account
         FIXTURES["getAuthStatus"]["result"] = {"authMethod": "chatgpt", "authToken": None, "requiresOpenaiAuth": False}
     if not 0 <= args.demo_chunk_delay <= 10:parser.error("Demo delay must be between 0 and 10 seconds")
-    asyncio.run(run(args.port, args.output, args.project_state, args.config_state, args.thread_state, args.demo_sandbox_state, args.demo_chunk_delay))
+    asyncio.run(run(args.port, args.output, args.project_state, args.config_state, args.thread_state, args.demo_sandbox_state, args.demo_chunk_delay, args.demo_pages_tls))

@@ -29,6 +29,12 @@ test('personal page creation is idempotent, persistent, paged and explicit about
   assert.equal(call('GET','/pages').items.length,2);
   fs.writeFileSync(path.join(dir,'demo-pages-runtime.json'),JSON.stringify({endpoint:'ws://127.0.0.1:12345',token:'x'.repeat(32)}));
   assert.equal(call('POST','/pages/rea-page-1/realtime-token',{}).endpoint,'ws://127.0.0.1:12345/demo-pages/rea-page-1');
+  const tlsEndpoint='wss://pages-realtime.gateway.rea-demo.api.openai.com:12345/ws';
+  fs.writeFileSync(path.join(dir,'demo-pages-runtime.json'),JSON.stringify({endpoint:tlsEndpoint,token:'x'.repeat(32)}));
+  assert.equal(call('POST','/pages/rea-page-1/realtime-token',{}).endpoint,tlsEndpoint);
+  fs.writeFileSync(path.join(dir,'demo-pages-runtime.json'),JSON.stringify({endpoint:tlsEndpoint.replace('rea-demo','other'),token:'x'.repeat(32)}));
+  assert.throws(()=>call('POST','/pages/rea-page-1/realtime-token',{}),/Invalid/);
+
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 test('archive, restore and permanent deletion preserve document bytes and isolate unavailable pages',()=>{

@@ -6,6 +6,7 @@ param(
  [switch]$InspectRuntime,
  [switch]$DryRun,
  [switch]$DemoHost,
+ [switch]$DemoPagesTls,
  [ValidatePattern('^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$')][string]$StateName,
  [string]$DemoTransportUrl
 )
@@ -63,6 +64,15 @@ if($DemoTransportUrl){$start.Environment['CODEX_APP_SERVER_WS_URL']=$DemoTranspo
 $start.Environment['APPDATA']=Join-Path $state 'appdata'
 $start.Environment['LOCALAPPDATA']=Join-Path $state 'localappdata'
 $start.ArgumentList.Add('--user-data-dir='+(Join-Path $state 'profile'))
+if($DemoPagesTls){
+ if(-not $DemoHost -or -not $DemoTransportUrl){throw 'TLS Pages is demo-only'}
+ $pageRuntime=Get-Content -LiteralPath (Join-Path $state 'demo-pages-runtime.json') -Raw | ConvertFrom-Json
+ $demoHostname='pages-realtime.gateway.rea-demo.api.openai.com'
+ if($pageRuntime.tlsHostname -ne $demoHostname -or $pageRuntime.spkiSha256 -notmatch '^[A-Za-z0-9+/]{43}=$' -or $pageRuntime.endpoint -notmatch '^wss://pages-realtime\.gateway\.rea-demo\.api\.openai\.com:[1-9][0-9]*/ws$'){throw 'Invalid isolated TLS runtime'}
+ $start.ArgumentList.Add('--host-resolver-rules=MAP '+$demoHostname+' 127.0.0.1')
+ $start.ArgumentList.Add('--ignore-certificate-errors-spki-list='+$pageRuntime.spkiSha256)
+ $start.Environment['REA_DEMO_PAGES_TLS']='1'
+}else{$start.Environment.Remove('REA_DEMO_PAGES_TLS') | Out-Null}
 if($InspectRuntime){
  $start.ArgumentList.Add('--remote-debugging-address=127.0.0.1')
  $start.ArgumentList.Add('--remote-debugging-port=0')

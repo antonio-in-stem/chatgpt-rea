@@ -16,8 +16,8 @@ class PageSyncStore:
         self.directory=Path(directory)
         self.token=secrets.token_urlsafe(32)
         self.clients={}
-    def publish_endpoint(self,endpoint):
-        (self.directory/'demo-pages-runtime.json').write_text(json.dumps({'endpoint':endpoint,'token':self.token}),encoding='utf-8')
+    def publish_endpoint(self,endpoint, **metadata):
+        (self.directory/'demo-pages-runtime.json').write_text(json.dumps({**metadata,'endpoint':endpoint,'token':self.token}),encoding='utf-8')
     def load(self,page_id):
         if not re.fullmatch(r'rea-page-[1-9][0-9]*',page_id):raise ValueError('Invalid page ID')
         pages=json.loads((self.directory/'demo-pages.json').read_text(encoding='utf-8'))
@@ -75,11 +75,20 @@ class PageSyncStore:
         ack={'type':'ack','client_update_id':key,'update_id':key,'sequence':state['sequence']}
         committed={'type':'committed_update','sequence':state['sequence'],'update_id':key,'update':message['update']}
         return ack,committed
-    async def connection(self,socket):
-        url=urlparse(socket.request.path);page_id=url.path.removeprefix('/demo-pages/')
+    async def connection(self,socket,tls_pages=False):
+        url=urlparse(socket.request.path)
+        if tls_pages:
+            protocol=socket.subprotocol or ''
+            if url.path!='/ws' or not re.fullmatch(r'pages-realtime-room\.rea-page-[1-9][0-9]*',protocol):
+                await socket.close(1008,'Invalid demo page room');return
+            page_id=protocol.removeprefix('pages-realtime-room.')
+        else:
+            page_id=url.path.removeprefix('/demo-pages/')
         if parse_qs(url.query).get('token')!=[self.token]:
             await socket.close(1008,'Invalid demo token');return
-        self.load(page_id)
+        try:self.load(page_id)
+        except (ValueError,FileNotFoundError):
+            await socket.close(1008,'Unavailable demo page');return
         peers=self.clients.setdefault(page_id,set());peers.add(socket)
         try:
             await socket.send(json.dumps({'type':'server_capabilities','capabilities':[]}))

@@ -9,6 +9,7 @@ const {demoAutomationHttp}=require('./demo_automation_http.cjs');
 const {demoSpaceHttp}=require('./demo_space_http.cjs');
 const {demoPagesHttp}=require('./demo_pages_http.cjs');
 const {demoPageCsp}=require('./demo_page_csp.cjs');
+const {demoCheckpointDownload}=require('./demo_checkpoint_download.cjs');
 const {demoLocalAutomations}=require('./demo_local_automations.cjs');
 const {demoSkillFile}=require('./demo_skill_file.cjs');
 const {demoSkillLifecycle}=require('./demo_skill_lifecycle.cjs');
@@ -38,7 +39,8 @@ values.http={
  '/wham/onboarding/context':{role:null,desktop_onboarding_completed_at:'2026-10-13T00:00:00Z'}
 };
 const replacements=[
- ['pagesRealtime:s.pagesRealtime','pagesRealtime:void 0'],
+ ['pagesRealtime:s.pagesRealtime','pagesRealtime:process.env.REA_DEMO_PAGES_TLS===`1`?s.pagesRealtime:void 0'],
+ ['async downloadCheckpoint(e,t){','async downloadCheckpoint(e,t){return demoCheckpointDownload(e,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"list-automations":async()=>{','"list-automations":async()=>{return demoLocalAutomations(`list`,{},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(','"automation-run-now":async({id:e,collaborationMode:t,permissions:n})=>(await Promise.reject(Error(`REA demo does not execute scheduled tasks`)),'],
  ['"automation-create":e=>this.automationsService.create(e)','"automation-create":e=>demoLocalAutomations(`create`,e,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`))'],
@@ -60,7 +62,7 @@ for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoPagesHttp.toString()+'\n'+demoSpaceHttp.toString()+'\n'+demoLocalAutomations.toString()+'\n'+demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoCheckpointDownload.toString()+'\n'+demoPagesHttp.toString()+'\n'+demoSpaceHttp.toString()+'\n'+demoLocalAutomations.toString()+'\n'+demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;
