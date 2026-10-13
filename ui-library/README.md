@@ -30,3 +30,9 @@ Regenerate the styles with `node scripts/extract-styles.mjs <extracted-webview-a
 From `ui-library`, run `npm ci --ignore-scripts`, `npm run build:example`, then `npm run dev`. Open the loopback URL printed by the server. The example loads no original app host and needs no account or synthetic backend. It is a new composition using recovered components, not a clone of an original screen.
 
 React/ReactDOM 19.2.7 match the version string observed in the shipped renderer. Framer Motion 12.43.0 is pinned for this example; matching it to the bundled animation runtime and visual/timing comparison remain pending. Dependencies and the build output are excluded from Git; the lockfile is tracked.
+
+## Theme environment
+
+The original CSS switches themes through `data-theme="dark"` or `data-theme="light"` on the root. A `dark` class alone does not initialize the Lightning CSS theme variables. The Windows example also sets `data-codex-os="win32"` and `data-codex-window-type="electron"`, matching the reference environment. These attributes describe the style scenario, not an actual Electron host connection.
+
+The standalone browser check recovered the segmented control colors after adding those attributes. The source `ChoiceButton` references `interactive-button`, `interactive-button-secondary` and `interactive-outline-secondary`, which have no definition located in the recovered CSS baseline. Its behavior is extracted, but its visual dependency closure remains incomplete. Do not treat this as a polished production button yet or add guessed styles to fill the gap.

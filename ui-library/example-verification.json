@@ -18,5 +18,12 @@
     "Screenshot/style and animation comparison not yet performed",
     "Only first connected example and three extracted components; not complete library"
   ],
-  "console": "Only observed error was missing favicon; added data favicon to avoid request. No app exception observed."
+  "console": "Only observed error was missing favicon; added data favicon to avoid request. No app exception observed.",
+  "themeFinding": {
+    "source": "app-shared-9a94b907ed47.css formatted lines 3839-3850",
+    "cause": "dark class does not initialize data-theme variables",
+    "fix": "Root data-theme=dark, data-codex-os=win32, data-codex-window-type=electron",
+    "observed": "Standalone group background resolves to foreground at 10% opacity; selected option black on white; unselected secondary foreground; button font 13px in Windows scenario",
+    "limits": "No matched original component screenshot comparison yet; ChoiceButton interactive-* CSS definition unresolved"
+  }
 }

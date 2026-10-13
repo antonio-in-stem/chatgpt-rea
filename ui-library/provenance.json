@@ -25,7 +25,8 @@
     "Not original TypeScript",
     "Portable original CSS baseline available; minimal scoping and visual comparison pending",
     "motion runtime compatibility and root/theme configuration remain to be verified",
-    "Not a finished component library"
+    "Not a finished component library",
+    "ChoiceButton interactive-* selectors not found in recovered CSS: behavior extracted, visual dependency unresolved"
   ],
   "styleBaseline": "styles/manifest.json: three original CSS entrypoints and local URL resources, byte-identical; visual parity pending",
   "classUtility": "app-shared-737655e1fb23.js Vde/q, export vgn: source execution comparison tests"
