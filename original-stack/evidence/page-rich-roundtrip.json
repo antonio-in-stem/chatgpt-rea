@@ -1,0 +1,147 @@
+{
+  "runtimePid": 100744,
+  "package": "v21",
+  "pageId": "rea-page-3",
+  "method": "original Insert menu and CDP input, Page.reload then original Space Recents navigation; read-only DOM metrics plus decoded persisted Yjs",
+  "beforeEqualsAfter": true,
+  "restoredBlocks": [
+    {
+      "type": "paragraph",
+      "layout": "normal",
+      "text": "Text written through the original editor.",
+      "headings": [],
+      "table": null
+    },
+    {
+      "type": "code_block",
+      "layout": "normal",
+      "text": "Math\nShow source\n\ud835\udc65\n2\n+\n\ud835\udc66\n2\n=\n\ud835\udc67\n2\nx\n2\n+y\n2\n=z\n2",
+      "headings": [],
+      "table": null
+    },
+    {
+      "type": "callout",
+      "layout": "normal",
+      "text": "Original highlight demo",
+      "headings": [],
+      "table": null
+    },
+    {
+      "type": "horizontal_rule",
+      "layout": "normal",
+      "text": "",
+      "headings": [],
+      "table": null
+    },
+    {
+      "type": "code_block",
+      "layout": "normal",
+      "text": "Plain text\nconst demo = 42;",
+      "headings": [],
+      "table": null
+    },
+    {
+      "type": "table",
+      "layout": "full-width",
+      "text": "Component\n\n\t\n\n\n\n\n\t\n\n\n\n\n\n\n\n\n\n\n\t\n\n\n\n\n\t\n\n\n\n\n\n\n\n\n\n\n\t\n\n\n\n\n\t\n\n\n",
+      "headings": [],
+      "table": {
+        "rows": 3,
+        "cells": [
+          "Component",
+          "\n",
+          "\n",
+          "\n",
+          "\n",
+          "\n",
+          "\n",
+          "\n",
+          "\n"
+        ],
+        "columns": []
+      }
+    },
+    {
+      "type": "heading",
+      "layout": "normal",
+      "text": "Recovered heading",
+      "headings": [
+        "H1"
+      ],
+      "table": null
+    },
+    {
+      "type": "list",
+      "layout": "normal",
+      "text": "Verify original formatting",
+      "headings": [],
+      "table": null
+    }
+  ],
+  "canonicalSequence": 19,
+  "canonicalBlocks": {
+    "95f4d5bb-e166-4f3f-9555-95dba43f8662": {
+      "metadata": {},
+      "markdown": "# Recovered heading",
+      "kind": "markdown"
+    },
+    "58e524e4-3f81-42f3-80f4-4ba6b82e6619": {
+      "kind": "markdown",
+      "metadata": {},
+      "markdown": "```math\nx^2 + y^2 = z^2\n```"
+    },
+    "3a081dca-1c6e-40fd-b292-c2a57c35fa1f": {
+      "markdown": "Text written through the original editor.",
+      "metadata": {},
+      "kind": "markdown"
+    },
+    "98e38d91-e530-4331-85f7-5dafe756f807": {
+      "kind": "markdown",
+      "markdown": "- [x] Verify original formatting",
+      "metadata": {}
+    },
+    "a4c5cd11-0089-42f1-8fd0-b9c9faaf2e80": {
+      "markdown": "---",
+      "metadata": {},
+      "kind": "markdown"
+    },
+    "beedc94c-afe1-4a07-afd2-9dc9d2d5a08a": {
+      "kind": "markdown",
+      "markdown": "| Component | | |\n| - | - | - |\n| | | |\n| | | |",
+      "metadata": {
+        "tableWidths": [
+          [
+            245,
+            245,
+            245
+          ]
+        ],
+        "layout": "full-width"
+      }
+    },
+    "8e00f6ca-b044-4f91-a3f6-3c4e0a634ff1": {
+      "markdown": "```\nconst demo = 42;\n```",
+      "metadata": {},
+      "kind": "markdown"
+    },
+    "fdea60e5-d255-499c-a1c5-748a093b67c0": {
+      "metadata": {},
+      "markdown": "> [!CALLOUT]\n>\n> Original highlight demo",
+      "kind": "markdown"
+    }
+  },
+  "verified": [
+    "Code block insertion and text persistence",
+    "3x3 table insertion, first cell edit, full-width layout and widths in canonical metadata",
+    "Math insertion and Show equation toggle, rendered equation survives reload",
+    "Highlight callout insertion and text persistence",
+    "Divider insertion and persistence"
+  ],
+  "notVerified": [
+    "Table resize drag and adding/removing rows/columns",
+    "All languages and code toolbar actions",
+    "Math invalid input",
+    "All callout options",
+    "Other browser/scale scenarios"
+  ]
+}

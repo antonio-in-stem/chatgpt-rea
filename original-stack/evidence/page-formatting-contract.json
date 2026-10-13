@@ -1,5 +1,5 @@
 {
-  "scope": "Static original source trace; runtime verified only heading/checklist so far",
+  "scope": "Static trace plus original runtime roundtrip for heading, checklist, code, table, math, highlight and divider; individual advanced actions remain unverified",
   "sourceRoot": "original-stack/state/recovered-all/readable/assets",
   "actions": {
     "heading/list": "content-2bf9ea38a12a.js23558 -> writing-block-editor-ce8d20140432.js1213 -> initial330983 Tbo",
@@ -11,5 +11,6 @@
   },
   "persistence": "content37846 applyEditor -> initial334659/334739 -> F$332610 markdown units and metadata -> document_update338432",
   "semanticOnly": "Page Task content42298 submitSemanticEdit replace_block_markdown; initial338099/338465 supportsTypedBlocks",
-  "limits": "Static compatible raw update path is not runtime round-trip proof, especially table widths and callout serialization"
+  "limits": "Static compatible raw update path is not runtime round-trip proof, especially table widths and callout serialization",
+  "runtimeEvidence": "page-rich-roundtrip.json plus pages-realtime-contract.json"
 }
