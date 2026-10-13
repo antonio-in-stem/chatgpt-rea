@@ -1,7 +1,8 @@
 // Verify recovered text against its manifest and resolve literal module references only.
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
-const source=path.resolve('C:/Users/PC/Repositories/chatgpt-rea/extracted/webview/assets');
-const output=path.join(__dirname,'state/recovered-all');
+const host=process.argv.includes('--host');
+const source=path.resolve('C:/Users/PC/Repositories/chatgpt-rea/extracted',host?'.vite/build':'webview/assets');
+const output=path.join(__dirname,host?'state/recovered-host':'state/recovered-all');
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 const manifestPath=path.join(output,'manifest.json');
 const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
@@ -11,7 +12,7 @@ const issues=[],references=[];
 for(const name of names){
  const r=records.get(name);
  if(!r){issues.push({name,reason:'missing record'});continue;}
- if(r.error||r.astEquivalent===false)issues.push({name,reason:'recovery validation failed'});
+ if(r.error||(/\.m?js$/.test(name)&&r.astEquivalent!==true))issues.push({name,reason:'recovery validation failed'});
  const original=fs.readFileSync(path.join(source,name));
  if(hash(original)!==r.originalSha256)issues.push({name,reason:'original hash mismatch'});
  const dest=path.join(output,'readable/assets',name);
@@ -25,7 +26,7 @@ for(const name of names){
  }
 }
 for(const name of records.keys())if(!names.includes(name))issues.push({name,reason:'record outside current selection'});
-const report={capturedUtc:new Date().toISOString(),manifestSha256:hash(fs.readFileSync(manifestPath)),expected:names.length,records:records.size,issues,literalReferences:references.length,missingReferences:references.filter(r=>r.resolution==='missing'),externalOrRuntimeReferences:references.filter(r=>r.resolution==='external-or-runtime'),limitations:['Only top-level distributed JS/MJS/CSS selected','Only literal import/export specifiers recovered by Babel; computed imports and resource URLs not covered','CSS is parsed/formatted, not independently semantic-equivalence verified','No original TypeScript, source-map recovery or standalone source build claimed']};
+const report={capturedUtc:new Date().toISOString(),manifestSha256:hash(fs.readFileSync(manifestPath)),expected:names.length,records:records.size,javascriptAstVerified:manifest.files.filter(r=>/\.m?js$/.test(r.original)&&r.astEquivalent===true).length,cssFormatted:manifest.files.filter(r=>r.original.endsWith('.css')&&!r.error).length,issues,literalReferences:references.length,missingReferences:references.filter(r=>r.resolution==='missing'),externalOrRuntimeReferences:references.filter(r=>r.resolution==='external-or-runtime'),limitations:['Only top-level distributed JS/MJS/CSS in selected renderer or host directory','CommonJS require calls are not included in this import graph','Only literal import/export specifiers recovered by Babel; computed imports and resource URLs not covered','CSS is parsed/formatted, not independently semantic-equivalence verified','No original TypeScript, source-map recovery or standalone source build claimed']};
 fs.writeFileSync(path.join(output,'dependency-edges.json'),JSON.stringify(references,null,2)+'\n');
 fs.writeFileSync(path.join(output,'audit.json'),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({...report,issues:issues.length,missingReferences:report.missingReferences.length,externalOrRuntimeReferences:report.externalOrRuntimeReferences.length}));

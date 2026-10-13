@@ -1,0 +1,19 @@
+{
+  "capturedUtc": "2026-10-13T04:45:53.122Z",
+  "manifestSha256": "e4df5013d6ff6919e0a07207c0474fccbc5408d9a91a6cf7bb363f98eda79298",
+  "expected": 34,
+  "records": 34,
+  "javascriptAstVerified": 34,
+  "cssFormatted": 0,
+  "issues": [],
+  "literalReferences": 0,
+  "missingReferences": [],
+  "externalOrRuntimeReferences": [],
+  "limitations": [
+    "Only top-level distributed JS/MJS/CSS in selected renderer or host directory",
+    "CommonJS require calls are not included in this import graph",
+    "Only literal import/export specifiers recovered by Babel; computed imports and resource URLs not covered",
+    "CSS is parsed/formatted, not independently semantic-equivalence verified",
+    "No original TypeScript, source-map recovery or standalone source build claimed"
+  ]
+}
