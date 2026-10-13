@@ -303,3 +303,14 @@ for menu Select All -> Delete -> Undo and Escape. Windows build and packaging
 passed. SHA256 4b9fef9478b0116fac6497c4026d0f7d8b24ba617e7dee43143b9c0947b29ed6.
 Previous preview PID 37704 was stopped after checking its executable path.
 No new visual-parity claim; overall requested clone remains incomplete.
+
+
+### Host menu map and Windows Settings correction — 2026-10-13 UTC
+Extracted complete CZe by AST and validated formatted AST equivalence. All 35
+referenced command IDs resolve to shipped registry definitions; full expressions,
+hidden flags and gating retained in catalog/windows-menu-map.json. This corrects
+the previous checkpoint: Windows Edit appends Settings after the seven base roles.
+Settings is now rendered after its separator and opens native settings; the real
+menu test covers End/Enter plus existing select/delete/undo behavior and passed.
+Build/package passed; SHA256 ad303ae066ba62208186ff5d874dbb9d883fdea60035e846458b4a2df0d708af.
+No new preview process. File/View/Help and exact visual parity remain incomplete.

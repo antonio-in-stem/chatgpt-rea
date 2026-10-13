@@ -308,6 +308,7 @@ fn windows_edit_menu_targets_previous_editor_and_escape_restores_focus(cx: &mut 
         window.click("application-edit-menu",cx);
         assert!(app.read(cx).dialog==Some(Dialog::EditMenu));
         window.press("end",cx);
+        window.press("up",cx);
         window.press("enter",cx);
     }).unwrap();
     cx.run_until_parked();
@@ -329,6 +330,12 @@ fn windows_edit_menu_targets_previous_editor_and_escape_restores_focus(cx: &mut 
         window.render_frame(cx);
         window.click("application-edit-menu",cx);
         window.press("escape",cx);
+        assert!(app.read(cx).dialog.is_none());
+        window.render_frame(cx);
+        window.click("application-edit-menu",cx);
+        window.press("end",cx);
+        window.press("enter",cx);
+        assert!(app.read(cx).route==Route::Settings);
         assert!(app.read(cx).dialog.is_none());
     }).unwrap();
     let _=std::fs::remove_dir_all(path);
