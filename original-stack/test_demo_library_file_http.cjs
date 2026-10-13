@@ -29,3 +29,23 @@ test('upload validates sizes, destination, retries, cancellation and atomic fail
  call('POST','/files/process_upload_stream',finish(file));assert.equal(pages('GET','/files/library/nodes').items.length,1);
  assert.equal(call('POST','https://example.invalid/files',create(bytes)),null);
 }));
+
+test('file lifecycle preserves bytes, distinguishes trash and permanent removal, and rejects stale mutations',()=>fixture(async({root,call,pages})=>{
+ const bytes=Buffer.from('demo'),reservation=await call('POST','/files',create(bytes)).json();call('PUT',reservation.upload_url,bytes);const events=(await call('POST','/files/process_upload_stream',finish(reservation)).text()).trim().split('\n').map(JSON.parse),id=events[1].extra.metadata_object_id,route='/files/library/files/'+id;
+ const folder=pages('POST','/files/library/directories',{name:'Destination'}),catalog=path.join(root,'demo-pages.json');
+ const before=fs.readFileSync(catalog);fs.writeFileSync(catalog+'.pending','foreign');assert.throws(()=>call('PATCH',route,{file_name:'new.txt'}));assert.deepEqual(fs.readFileSync(catalog),before);fs.unlinkSync(catalog+'.pending');
+ const renamed=await call('PATCH',route,{file_name:'renamed.txt'}).json();assert.equal(renamed.file_name,'renamed.txt');assert.equal(renamed.file_id,reservation.file_id);assert.equal(renamed.directory_id,null);
+ assert.throws(()=>call('PATCH',route+'/move',{directory_id:'unknown'}),/directory/);call('PATCH',route+'/move',{directory_id:folder.id});
+ assert.equal(pages('GET','/files/library/nodes?parent_directory_id='+folder.id).items[0].id,id);
+ assert.equal(pages('POST','/files/library',{q:'renamed',include_uploaded_files:true}).items[0].directory_id,folder.id);
+ assert.equal(pages('POST','/files/library',{include_uploaded_files:false}).items.length,0);
+ const row={library_file_id:id,file_id:reservation.file_id,parent_directory_id:folder.id,file_name:'renamed.txt'};
+ assert.throws(()=>call('POST','/files/library/files/delete-batch',{files:[row,{...row,library_file_id:'unknown'}]}),/Unavailable/);
+ assert.equal(pages('POST','/files/library',{trashed_only:true}).items.length,0);
+ const result=await call('POST','/files/library/files/delete-batch',{files:[row]}).json();assert.equal(result.files[0].success,true);
+ assert.equal(pages('POST','/files/library',{}).items.length,0);const trash=pages('POST','/files/library',{trashed_only:true}).items;assert.equal(trash.length,1);assert.ok(trash[0].trashed_at);assert.throws(()=>call('GET',route+'/content_redirect'),/Unavailable/);
+ call('POST',route+'/restore');assert.deepEqual(Buffer.from(await call('GET',route+'/content_redirect').arrayBuffer()),bytes);
+ const query=new URLSearchParams({file_id:row.file_id,parent_directory_id:folder.id,file_name:row.file_name,soft_delete:'true'});call('DELETE',route+'?'+query);assert.equal(pages('POST','/files/library',{trashed_only:true}).items.length,1);
+ query.set('soft_delete','false');call('DELETE',route+'?'+query);assert.equal(pages('POST','/files/library',{trashed_only:true}).items.length,0);assert.throws(()=>call('POST',route+'/restore'),/Unavailable/);
+ assert.deepEqual(fs.readFileSync(path.join(root,row.file_id+'.bin')),bytes);
+}));

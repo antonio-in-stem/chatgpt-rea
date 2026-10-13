@@ -1,0 +1,45 @@
+{
+  "scope": "Original native Library file lifecycle with persistent demo backend",
+  "sources": {
+    "rename": "app-initial-b8e1c8014bb4.js:492929-492939,158707-158713",
+    "move": "app-initial:493016-493031",
+    "delete": "app-initial:492983-493001",
+    "batch_delete": "app-initial:493054-493098,493129-493139",
+    "restore": "app-initial:493003-493014",
+    "listing": "app-initial:158600-158705,289222-289235"
+  },
+  "contracts": {
+    "rename": "PATCH /files/library/files/{id} {file_name}; full classic Libraryfile DTO",
+    "move": "PATCH /files/library/files/{id}/move {directory_id}; {success:true}",
+    "delete": "DELETE /files/library/files/{id} query file_id,parent_directory_id,file_name,soft_delete; {success:true}",
+    "batch_delete": "POST /files/library/files/delete-batch {files:[{library_file_id,file_id,parent_directory_id,file_name}]}; {files:[{library_file_id,success}]}",
+    "restore": "POST /files/library/files/{id}/restore; response body ignored",
+    "listing": "POST /files/library with trashed_only, q, categories, allowlist_ids, include_uploaded_files and pagination; items in classic file_name/directory_id/trashed_at shape"
+  },
+  "implementation": "Local demo supports rename, move, soft delete, restore, permanent metadata removal and batch soft delete. Original renderer files unchanged.",
+  "validation": "48 Node tests pass. Original UI rename, nested move, Delete Cancel/confirm, persisted Trash after renderer reload, Restore confirmation and reopened content verified.",
+  "demo_policies": [
+    "Deleted metadata retains local file bytes; permanent removal prevents future access but does not reclaim bytes",
+    "Restore rejects a missing original directory; upstream policy remains unknown",
+    "Batch deletion validates all synthetic entries before an atomic commit; upstream partial failure semantics are not modeled",
+    "Names use existing demo bounds; upstream duplicate/extension policy unknown",
+    "Ranking and external/shared/source filters are not reproduced by local listing"
+  ],
+  "ui_observations": [
+    "Original Rename dialog retains extension separately; input renamed-library-demo produces renamed-library-demo.txt",
+    "Original Move dialog selected a nested destination; file disappeared from source and appeared in destination with 83 B",
+    "Original Delete confirmation advertises Trash and 30-day retention; Cancel preserved file",
+    "Confirm Delete rendered empty source folder; original Trash > Files listed file and deletion time",
+    "Full renderer reload preserved the Trash entry",
+    "Original Restore confirmation returned file to its original nested folder",
+    "Reopened original viewer displayed all TXT content; stored bytes retained SHA256 bc6f56fced276607d0ca1ff946bc51bec10f37233774e263ef7095ba46005946"
+  ],
+  "pending": [
+    "Empty-trash endpoint",
+    "File sharing",
+    "Non-text previews",
+    "Ranking and complete browse DTO",
+    "Original UI permanent deletion and multi-selection batch verification",
+    "30-day automatic expiration advertised by original UI is not implemented in demo"
+  ]
+}

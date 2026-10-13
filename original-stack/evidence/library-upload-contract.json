@@ -78,7 +78,7 @@
   "unknown": [
     "Complete Library file browse DTO and root ranking",
     "Non-text preview and alternate multipart transports",
-    "File rename, move, sharing and removal lifecycle"
+    "File sharing, non-text previews and broader ranking; native lifecycle verified separately"
   ],
   "implementation_status": "Local reservation, byte PUT, NDJSON finalization, nested listing, metadata and content/download resolution implemented; original TXT upload, viewer, reload and download verified",
   "validation": "47 Node tests pass: bytes, finalization, nested counts/filtering, metadata/content routing, repeated finalization, invalid destination, cancellation and atomic failures",

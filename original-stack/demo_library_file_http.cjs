@@ -1,11 +1,12 @@
 // Native Library upload protocol backed by the isolated demo store and local bytes.
 function demoLibraryFileHttp(method,url,body,settingsPath,fs,path,onProgress,signal){
- const metadata=url.origin==='https://chatgpt.com'&&url.pathname.match(/^\/files\/library\/files\/(libfile-rea-[1-9][0-9]*)(?:\/(node|content_url|download_url|content_redirect|download_redirect|thumbnail))?$/);
+ const metadata=url.origin==='https://chatgpt.com'&&url.pathname.match(/^\/files\/library\/files\/(libfile-rea-[1-9][0-9]*)(?:\/(node|content_url|download_url|content_redirect|download_redirect|thumbnail|move|restore))?$/);
  const rawDownload=url.origin==='https://chatgpt.com'&&url.pathname.match(/^\/files\/download\/(file-rea-upload-[1-9][0-9]*)$/);
  const upload=url.origin==='https://rea-demo-upload.invalid'&&url.pathname.match(/^\/upload\/(file-rea-upload-[1-9][0-9]*)$/);
  const create=url.origin==='https://chatgpt.com'&&url.pathname==='/files'&&method==='POST';
  const finish=url.origin==='https://chatgpt.com'&&url.pathname==='/files/process_upload_stream'&&method==='POST';
- if(!upload&&!create&&!finish&&!metadata&&!rawDownload)return null;
+ const batch=url.origin==='https://chatgpt.com'&&url.pathname==='/files/library/files/delete-batch'&&method==='POST';
+ if(!upload&&!create&&!finish&&!metadata&&!rawDownload&&!batch)return null;
  if(!settingsPath||path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo state required');
  signal?.throwIfAborted();
  const root=path.dirname(settingsPath),catalog=path.join(root,'demo-pages.json');
@@ -15,6 +16,34 @@ function demoLibraryFileHttp(method,url,body,settingsPath,fs,path,onProgress,sig
  const persist=()=>atomic(catalog,JSON.stringify(state));
  const json=value=>new Response(JSON.stringify(value),{status:200,headers:{'content-type':'application/json'}});
  const parse=()=>{if(typeof body!=='string'||body.length>65536)throw Error('Expected upload JSON');const input=JSON.parse(body);if(!input||typeof input!=='object'||Array.isArray(input))throw Error('Invalid upload body');return input;};
+ const findFile=id=>{const file=state.libraryFiles?.find(f=>f.id===id&&!f.permanentlyDeleted);if(!file)throw Error('Unavailable demo Library file');return file;};
+ const validateName=name=>{if(typeof name!=='string'||!name.trim()||name.startsWith('.')||name.length>255)throw Error('Invalid Library file name');return name;};
+ const dto=file=>({...file,file_name:file.name,directory_id:file.parent_directory_id,trashed_at:file.deleted_at??null});
+ const parentExists=id=>id==null||state.directories?.some(d=>d.id===id);
+ if(batch){
+  const input=parse();if(!Array.isArray(input.files)||!input.files.length||input.files.length>25)throw Error('Invalid Library delete batch');
+  const files=input.files.map(row=>{const file=findFile(row.library_file_id);if(row.file_id!==file.file_id||row.file_name!==file.name||row.parent_directory_id!==file.parent_directory_id)throw Error('Stale file deletion');return file;});
+  const now=new Date().toISOString();for(const file of files){file.deleted_at??=now;file.updated_at=now;}persist();return json({files:files.map(file=>({library_file_id:file.id,success:true}))});
+ }
+ if(metadata&&method!=='GET'){
+  const file=findFile(metadata[1]),part=metadata[2],now=new Date().toISOString();
+  if(part==='restore'&&method==='POST'){
+   if(!parentExists(file.parent_directory_id))throw Error('Original file directory unavailable');
+   delete file.deleted_at;file.updated_at=now;persist();return json({success:true});
+  }
+  if(method==='DELETE'&&!part){
+   const soft=url.searchParams.get('soft_delete');if(!['true','false'].includes(soft))throw Error('Explicit deletion mode required');
+   if(url.searchParams.get('file_id')!==file.file_id||url.searchParams.get('file_name')!==file.name||(url.searchParams.get('parent_directory_id')||null)!==file.parent_directory_id)throw Error('Stale file deletion');
+   if(soft==='true')file.deleted_at??=now;else file.permanentlyDeleted=true;file.updated_at=now;persist();return json({success:true});
+  }
+  if(file.deleted_at)throw Error('Unavailable demo Library file');
+  if(method==='PATCH'&&!part){const input=parse();file.name=validateName(input.file_name);file.updated_at=now;persist();return json(dto(file));}
+  if(method==='PATCH'&&part==='move'){
+   const input=parse();if(!Object.hasOwn(input,'directory_id'))throw Error('File destination required');const parent=input.directory_id==='rea-directory-root'?null:input.directory_id;
+   if(!parentExists(parent))throw Error('Unknown file directory');file.parent_directory_id=parent;file.updated_at=now;persist();return json({success:true});
+  }
+  throw Error('Unsupported file mutation');
+ }
  if(metadata||rawDownload){
   if(method!=='GET')throw Error('Unsupported file read method');
   const file=state.libraryFiles?.find(f=>metadata?f.id===metadata[1]:f.file_id===rawDownload[1]);
@@ -31,7 +60,7 @@ function demoLibraryFileHttp(method,url,body,settingsPath,fs,path,onProgress,sig
    const bytes=fs.readFileSync(bytesPath);if(bytes.length!==file.file_size_bytes)throw Error('Stored upload size mismatch');
    return new Response(bytes,{status:200,headers:{'content-type':file.mime_type,'content-length':String(bytes.length)}});
   }
-  return json({...file,file_name:file.name,directory_id:file.parent_directory_id});
+  return json(dto(file));
  }
  if(create){
   const input=parse();
