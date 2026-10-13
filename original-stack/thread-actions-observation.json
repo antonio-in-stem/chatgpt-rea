@@ -1,0 +1,20 @@
+{
+  "profile": "demo-probe-20261013-c",
+  "threadId": "019cc001-0000-7000-8000-000000000001",
+  "verifiedUIActions": [
+    "Archivar chat",
+    "Deshacer"
+  ],
+  "observations": [
+    "Original archive control removed the row and displayed Chat archivado.",
+    "Persistent demo archived flag became true.",
+    "Original Deshacer restored row and displayed Chat restaurado.",
+    "Persistent archived flag returned to false with the original turn preserved."
+  ],
+  "renameVerification": "Unit persistence and original response/notification schema checks only; UI rename not yet tested.",
+  "limitations": [
+    "Single seeded conversation, not full multi-conversation state.",
+    "No new-message send, fork or streaming implementation yet.",
+    "No renderer/style changes."
+  ]
+}

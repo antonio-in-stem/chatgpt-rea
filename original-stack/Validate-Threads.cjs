@@ -6,8 +6,15 @@ ajv.addFormat('uint32',{type:'number',validate:n=>Number.isInteger(n)&&n>=0&&n<=
 ajv.addFormat('int32',{type:'number',validate:n=>Number.isInteger(n)&&n>=-2147483648&&n<=2147483647});
 for(const [f,max] of [['uint',Number.MAX_SAFE_INTEGER],['uint16',65535],['uint64',Number.MAX_SAFE_INTEGER]])ajv.addFormat(f,{type:'number',validate:n=>Number.isSafeInteger(n)&&n>=0&&n<=max});
 const code=`import json
-from demo_threads import handle,THREAD
+from demo_threads import handle,THREAD,ThreadStore
+from pathlib import Path
+import tempfile
 samples=[['ThreadResumeResponse',handle('thread/resume',{'threadId':THREAD['id']})],['ThreadListResponse',handle('thread/list',{})],['ThreadReadResponse',handle('thread/read',{'threadId':THREAD['id'],'includeTurns':True})],['ThreadTurnsListResponse',handle('thread/turns/list',{'threadId':THREAD['id'],'itemsView':'full'})]]
+with tempfile.TemporaryDirectory() as directory:
+ store=ThreadStore(Path(directory)/'thread.json')
+ for method,response_schema,event_schema,params in [('thread/name/set','ThreadSetNameResponse','ThreadNameUpdatedNotification',{'threadId':THREAD['id'],'name':'Renamed Demo'}),('thread/archive','ThreadArchiveResponse','ThreadArchivedNotification',{'threadId':THREAD['id']}),('thread/unarchive','ThreadUnarchiveResponse','ThreadUnarchivedNotification',{'threadId':THREAD['id']})]:
+  result,event=store.handle(method,params)
+  samples.extend([[response_schema,result],[event_schema,event['params']]])
 print(json.dumps(samples))`;
 const samples=JSON.parse(cp.execFileSync('python',['-c',code],{cwd:__dirname,encoding:'utf8'}));
 for(const [name,value] of samples){

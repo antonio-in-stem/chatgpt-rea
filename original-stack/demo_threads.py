@@ -1,6 +1,7 @@
 """Source-shaped, read-only transcript for exercising the original renderer."""
 import copy
 import json
+import time
 from pathlib import Path
 
 THREAD = json.loads((Path(__file__).parent / "demo-thread.json").read_text(encoding="utf-8"))
@@ -20,15 +21,15 @@ def page(items, params, prefix):
     result = items[offset:offset+limit]
     return {"data":result,"nextCursor":prefix+str(offset+limit) if offset+limit<len(items) else None,"backwardsCursor":None}
 
-def handle(method, params):
+def handle(method, params, thread_data=None, archived=False):
     if params is None and method == "thread/list":params={}
     if not isinstance(params, dict):
         raise ThreadError("Expected object parameters")
-    thread = copy.deepcopy(THREAD)
+    thread = copy.deepcopy(THREAD if thread_data is None else thread_data)
     if method == "thread/list":
         if params.get("originators") or params.get("ancestorThreadId"):
             raise ThreadError("Unsupported demo thread filter")
-        matches = not params.get("archived")
+        matches = bool(params.get("archived")) == archived
         for key, field in [("sectionId","section"),("projectId","projectId"),("parentThreadId","parentThreadId")]:
             if key in params and params[key] != thread[field]: matches = False
         for key, field in [("modelProviders","modelProvider"),("sourceKinds","source")]:
@@ -64,3 +65,38 @@ def handle(method, params):
         if params.get("sortDirection") != "asc":turns.reverse()
         return page(turns,params,"demo-turn:")
     raise ThreadError("Unsupported demo method")
+
+
+class ThreadStore:
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive"}
+    METHODS = METHODS | MUTATIONS
+
+    def __init__(self, path):
+        self.path = Path(path)
+        self.data = json.loads(self.path.read_text(encoding="utf-8")) if self.path.exists() else {"thread":copy.deepcopy(THREAD),"archived":False}
+
+    def handle(self, method, params):
+        if method not in self.MUTATIONS:
+            return handle(method,params,self.data["thread"],self.data["archived"]), None
+        if not isinstance(params,dict) or params.get("threadId") != self.data["thread"]["id"]:
+            raise ThreadError("Unknown demo thread")
+        next_data = copy.deepcopy(self.data)
+        thread = next_data["thread"]
+        if method == "thread/name/set":
+            name = params.get("name")
+            if not isinstance(name,str) or not name.strip():raise ThreadError("Thread name must be nonempty")
+            thread["name"] = name
+            response = {}
+            event = {"method":"thread/name/updated","params":{"threadId":thread["id"],"threadName":name}}
+        else:
+            next_data["archived"] = method == "thread/archive"
+            response = {} if next_data["archived"] else {"thread":{**copy.deepcopy(thread),"turns":[]}}
+            event = {"method":"thread/archived" if next_data["archived"] else "thread/unarchived","params":{"threadId":thread["id"]}}
+        thread["updatedAt"] = int(time.time())
+        if "thread" in response:response["thread"]["updatedAt"]=thread["updatedAt"]
+        self.path.parent.mkdir(parents=True,exist_ok=True)
+        temporary = self.path.with_suffix(".tmp")
+        temporary.write_text(json.dumps(next_data,indent=2),encoding="utf-8")
+        temporary.replace(self.path)
+        self.data = next_data
+        return response,event
