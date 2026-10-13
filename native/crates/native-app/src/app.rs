@@ -145,6 +145,7 @@ pub struct WorkspaceApp {
     shell_menu_focus: Vec<FocusHandle>,
     shell_menu_index: usize,
     shell_trigger_focus: Vec<FocusHandle>,
+    section_focus: Vec<FocusHandle>,
     previous_focus: Option<FocusHandle>,
     composer: Entity<TextareaState>,
     search: Entity<InputState>,
@@ -264,7 +265,13 @@ impl WorkspaceApp {
                         .unwrap_or_default(),
                 )
         });
+        let section_focus: Vec<_> = (0..3).map(|_| cx.focus_handle()).collect();
+        for focus in &section_focus {
+            cx.on_focus_in(focus, window, |_,_,cx| cx.notify()).detach();
+            cx.on_focus_out(focus, window, |_,_,_,cx| cx.notify()).detach();
+        }
         let app = Self {
+            section_focus,
             workspace,
             path,
             load_error,

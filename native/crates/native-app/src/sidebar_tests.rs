@@ -294,5 +294,11 @@ fn saved_section_collapse_is_applied_on_open(cx: &mut TestAppContext) {
         window.click("sidebar-section-Projects",cx);
         window.render_frame(cx);
         assert!(window.try_find(("sidebar-project",0usize)).is_some());
+        window.press("enter",cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("sidebar-project",0usize)).is_none());
+        window.press("space",cx);
+        window.render_frame(cx);
+        assert!(window.try_find(("sidebar-project",0usize)).is_some());
     }).unwrap();
 }

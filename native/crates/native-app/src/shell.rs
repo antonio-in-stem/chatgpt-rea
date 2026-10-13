@@ -54,6 +54,15 @@ fn sidebar_row_corners(cx: &App) -> impl IntoElement {
     native_ui::corners::squircle_cutouts(12.5, sidebar_backdrop(cx))
 }
 impl WorkspaceApp {
+    fn toggle_sidebar_section(&mut self, label: &str, cx: &mut Context<Self>) {
+        let key=sidebar_section_key(label);
+        if !self.workspace.settings.collapsed_sidebar_sections.remove(key) {
+            self.workspace.settings.collapsed_sidebar_sections.insert(key.to_string());
+        }
+        self.persist();
+        cx.notify();
+    }
+
     fn open_shell_menu(&mut self, dialog: Dialog, window: &mut Window, cx: &mut Context<Self>) {
         if self.dialog.is_none() {
             self.previous_focus = match dialog {
@@ -387,21 +396,30 @@ impl WorkspaceApp {
         let mut recents = div().w_full().flex().flex_col().gap(px(2.));
         let section = |label: &'static str, cx: &mut Context<Self>| {
             let collapsed = self.workspace.settings.collapsed_sidebar_sections.contains(sidebar_section_key(label));
-            Button::new(SharedString::from(format!("sidebar-section-{label}"))).ghost()
-                .w_full().h(px(30.)).mt(px(16.)).px(px(8.)).justify_start()
+            let index = match label { "Pinned" => 0, "Chats" => 1, _ => 2 };
+            let focus = &self.section_focus[index];
+            div().id(SharedString::from(format!("sidebar-section-{label}"))).test_support()
+                .group(label).track_focus(focus).tab_stop(true).role(Role::Button)
+                .aria_label(label).aria_expanded(!collapsed).cursor_pointer()
+                .w_full().h(px(30.)).mt(px(16.)).px(px(8.))
+                .flex().items_center().gap(px(4.))
                 .text_size(native_ui::typography::TextRole::Body.in_app(cx))
                 .font_weight(FontWeight::MEDIUM)
                 .text_color(native_ui::tokens::tertiary_text(cx.theme().mode.is_dark()))
-                .accessibility_label(format!("{} {label}", if collapsed { "Expand" } else { "Collapse" }))
-                .child(div().flex().items_center().gap(px(4.)).child(label)
-                    .when(collapsed, |row| row.child(native_ui::icon("chevron-right",12.))))
-                .on_click(cx.listener(move |s,_,_,cx| {
-                    let key=sidebar_section_key(label);
-                    if !s.workspace.settings.collapsed_sidebar_sections.remove(key) {
-                        s.workspace.settings.collapsed_sidebar_sections.insert(key.to_string());
+                .child(label)
+                .child(div().id(SharedString::from(format!("sidebar-chevron-{label}"))).test_support()
+                    .opacity(if collapsed || focus.is_focused(window) { 1. } else { 0. })
+                    .group_hover(label, |style| style.opacity(1.))
+                    .child(native_ui::icon(if collapsed { "chevron-right" } else { "chevron-down" },12.)))
+                .on_click(cx.listener(move |s,_,window,cx| {
+                    window.focus(&s.section_focus[index], cx);
+                    s.toggle_sidebar_section(label,cx);
+                }))
+                .capture_key_down(cx.listener(move |s,event: &KeyDownEvent,_,cx| {
+                    if matches!(event.keystroke.key.as_str(), "enter" | "space") {
+                        s.toggle_sidebar_section(label,cx);
+                        cx.stop_propagation();
                     }
-                    s.persist();
-                    cx.notify();
                 }))
         };
         let mut chats = self
@@ -961,3 +979,5 @@ impl Render for WorkspaceApp {
         root
     }
 }
+
+

@@ -118,3 +118,6 @@ Source chain: g2 app-initial378570 -> UF147929 -> P1o378287. UF title container 
 
 
 Section persistence follow-up: native workspace settings now store collapsed_sidebar_sections with stable source keys pinned/chats/threads. Missing field defaults empty for earlier demo documents. Toggle uses existing guarded atomic workspace persistence; reopening derives visibility directly from loaded settings. UI tests cover pointer collapse/expand with disk roundtrip and a new window loading the saved collapsed state. Source callbacks RSe(f,pinned/chats/threads,e) at426469/426625/426673 establish keys; native storage layout is a local equivalent, not original account synchronization. Hover actions, expanded chevron visibility, aria-expanded and drag behavior remain pending.
+
+
+Section indicator follow-up: native heading is now a focusable semantic Button with aria-expanded and stable focus handles. Down chevron appears on header hover or focus; right chevron stays visible when collapsed. Enter/Space are captured before framework default actions, verified by restore-on-open UI test. 61 workspace tests passed before the capture-phase adjustment; targeted keyboard test passed afterward. Remaining differences: source reveals on whole-section hover, uses focus-visible instead of all focus, animates rotation and paints a2px outline; these details remain unported.
