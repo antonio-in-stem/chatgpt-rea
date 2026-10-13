@@ -1,3 +1,4 @@
+export {createAnimationColorReader,recolorAnimation,observeAnimationColor} from './animationColor.js';
 export {createNavigationFallbackIcons} from './NavigationFallbackIcons.js';
 export {createAnimatedNavigationIcon} from './AnimatedNavigationIcon.js';
 import {createNavigationItem} from './NavigationItem.js';

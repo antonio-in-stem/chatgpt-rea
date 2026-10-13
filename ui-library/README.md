@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Twenty-nine tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Thirty-two tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -91,3 +91,7 @@ Reproduce this extraction with `node scripts/extract-animations.mjs ../original-
 The wrapper accepts `{animation, Icon, staticIcon, className}`. It finds the enclosing button/menuitem, preserves the original idle/loading/ready visibility, and cancels timers and event listeners on cleanup. Tests execute both this extraction and the recovered `par` with identical states/events: mouse-only 300 ms delay, focus-visible gating, blur/leave, ready/completion, missing target and reduced motion. These are controlled structural/event comparisons; real browser timing and visual parity remain unverified.
 
 `createNavigationFallbackIcons(React)` also exposes those seven SVG components independently. Their 20×20 geometry, currentColor paint, and original prop precedence are preserved. `navigation-icons-manifest.json` records their symbols and source hash. This registry is the one used by animation fallback rendering; it is not a complete catalog of rail icons. Regenerate using `node scripts/extract-navigation-icons.mjs ../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js`.
+
+### Animation color helpers
+
+`createAnimationColorReader()` preserves the original canvas-based CSS color conversion and normalized RGBA output. `recolorAnimation(data, color)` copies a recovered JSON animation before remapping its fill/stroke colors, including nested shape groups and asset layers. It uses structuredClone in place of the bundled cloneDeep for the recovered JSON-only data contract. `observeAnimationColor(element, onColor, reader)` performs the initial read, watches root/element class and style mutations, deduplicates values and returns cleanup. These helpers are extracted; assembly with the animated renderer remains pending. Canvas-call tests use a controlled context, not a browser color-accuracy measurement.

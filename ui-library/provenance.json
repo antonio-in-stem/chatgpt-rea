@@ -228,5 +228,15 @@
       "Not all rail icons",
       "Matched visual comparison pending"
     ]
+  },
+  "animationColor": {
+    "source": "animated-icon-1526fd61ba39.js S/C/w; app-initial-b8e1c8014bb4.js yIc",
+    "file": "src/animationColor.js",
+    "transformation": "Canvas context scoped to reader factory; mutation observer extracted from mount effect; structuredClone substitutes cloneDeep for recovered JSON-only animation trees. React startTransition remains caller responsibility.",
+    "verification": "Color remapping agrees with original C for all 12 recovered animations; simulated canvas calls agree with yIc/S; observer boundaries/deduplication/cleanup checked.",
+    "limits": [
+      "Renderer assembly pending",
+      "Real browser CSS color and visual playback verification pending"
+    ]
   }
 }
