@@ -60,6 +60,34 @@
       "dependencies": "SearchIcons.js retains shared TAi, $er, ttr, zcr artwork and wxi leading/compact wrappers",
       "transformation": "Removed compiler memo slots; inferred descriptive names; caller owns query and receives updates. Optional formatMessage callback replaces app localization service.",
       "status": "45 differential cases and independent browser filtering/clear/select flow pass; pixel parity pending"
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "formattedSourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "components": [
+        "SidebarRowSurface",
+        "SidebarIndent",
+        "SidebarStatus",
+        "StatusPill"
+      ],
+      "symbols": [
+        "ORo",
+        "fYa",
+        "ERo",
+        "MRo",
+        "Q1",
+        "FRo",
+        "IRo",
+        "LRo",
+        "zRo"
+      ],
+      "transformation": "Semantic extraction with original class strings and event ordering. Spinner reused from shared Vbi extraction; localization injected. No app navigation/state backend imported.",
+      "status": "Differential output and event matrix tests pass. Browser click updates aria-current and clears authored unread state; Tab+Enter selects next row.",
+      "limits": [
+        "Surface only; not complete sidebar row assembly or sidebar screen",
+        "Missing full row Y4o, scrolling label dRo, collapsible groups, drag/drop and rail assembly",
+        "Matched original screenshot comparison pending"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

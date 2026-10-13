@@ -1,3 +1,5 @@
+import {createSidebarRow,createSidebarIndent} from './SidebarRow.js';
+import {createSidebarStatus} from './SidebarStatus.js';
 import {createSearchField} from './SearchField.js';
 import {createSearchIcons} from './SearchIcons.js';
 import {createMenuInput} from './MenuInput.js';
@@ -31,5 +33,5 @@ export function createReaUI({React, motion, mergeClasses=classNames, formatMessa
   }
   const Spinner=createSpinner(React,mergeClasses);
   const Button=createButton({React,mergeClasses,Spinner});
-  return {SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
+  return {SidebarRowSurface:createSidebarRow(React,mergeClasses),SidebarIndent:createSidebarIndent(React),...createSidebarStatus({React,Spinner,mergeClasses,formatMessage}),SearchField:createSearchField({React,mergeClasses,icons:createSearchIcons(React,mergeClasses),formatMessage}),Button,Spinner,MenuInput:createMenuInput(React,mergeClasses),ChoiceButton,ChoiceGroup,SegmentedControl};
 }

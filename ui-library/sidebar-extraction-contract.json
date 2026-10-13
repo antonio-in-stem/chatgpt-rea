@@ -1,0 +1,37 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "extracted": [
+    "ORo row surface",
+    "fYa/ERo event handling",
+    "MRo indent",
+    "Q1/FRo/IRo/LRo status",
+    "zRo status pill"
+  ],
+  "nextDependencies": [
+    {
+      "symbol": "Y4o",
+      "line": 382572,
+      "purpose": "Folder/thread row assembly with label, icon, actions and drag handles"
+    },
+    {
+      "symbol": "dRo",
+      "line": 356384,
+      "purpose": "Overflow label scrolling and group hover animation"
+    },
+    {
+      "symbol": "vZ",
+      "line": 297447,
+      "purpose": "Leading icon/disclosure slot"
+    },
+    {
+      "symbol": "VF",
+      "line": 147289,
+      "purpose": "Destination navigation item"
+    }
+  ],
+  "limits": [
+    "Not a full sidebar/rail component",
+    "Do not replace remaining dynamic label behavior with guessed ellipsis",
+    "Do not substitute settings icon for actual profile identity"
+  ]
+}

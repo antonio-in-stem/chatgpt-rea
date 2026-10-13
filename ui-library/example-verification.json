@@ -12,7 +12,10 @@
     "SearchField filters authored project list to Windows application",
     "Selecting result reports Opened: Windows application",
     "Unmatched query reports No results",
-    "Clear search restores focus to project-search and clears controlled query"
+    "Clear search restores focus to project-search and clears controlled query",
+    "Sidebar row click selects library via aria-current=page and clears authored unread count",
+    "Tab then Enter selects working row",
+    "Sidebar row computed height 29px and radius 12.5px under Windows dark theme"
   ],
   "build": "npm run build:example succeeded with esbuild 0.28.0",
   "runtimeVersions": {
@@ -23,7 +26,7 @@
   "limits": [
     "Motion exact original version unresolved",
     "Screenshot/style and animation comparison not yet performed",
-    "Two authored connected examples; not complete library"
+    "Three authored connected examples; not complete library"
   ],
   "console": "Only observed error was missing favicon; added data favicon to avoid request. No app exception observed.",
   "themeFinding": {
