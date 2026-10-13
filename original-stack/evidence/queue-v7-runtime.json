@@ -1,0 +1,19 @@
+{
+  "packageSha256": "ab1d81b1555941f165bcd7d86ad17a93ee17f75ed918d44e097a63ecff6817b2",
+  "runtimePid": 83892,
+  "gate": "2120612410",
+  "rendererModified": false,
+  "observed": [
+    "Original conversation loaded",
+    "Send invokes turn/start and original streaming renders",
+    "Composer exposes Steer during active response",
+    "thread/queue/list observed"
+  ],
+  "attempted": "Ctrl+Shift+Enter documented by original followUpQueueMode preference; no queue/add observed in this attempt",
+  "unverified": [
+    "Enqueue via composer",
+    "Original queued-message chip",
+    "Edit/reorder/delete/resume via UI"
+  ],
+  "nextInvestigation": "Original followUpQueueMode setting and composer shortcut dispatch/eligibility"
+}
