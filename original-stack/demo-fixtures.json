@@ -156,7 +156,8 @@
           ],
           "defaultReasoningEffort": "medium",
           "inputModalities": [
-            "text"
+            "text",
+            "image"
           ],
           "supportsPersonality": false,
           "multiAgentVersion": null,

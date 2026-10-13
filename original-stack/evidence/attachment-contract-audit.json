@@ -1,0 +1,27 @@
+{
+  "scope": "Original composer attachments, static findings; runtime end-to-end pending",
+  "rendererModified": false,
+  "sources": [
+    {
+      "asset": "app-shared-737655e1fb23.js",
+      "lines": "515229-515265",
+      "finding": "Selected model inputModalities must include image; otherwise original submission shows toast and blocks."
+    },
+    {
+      "asset": "app-primary-19fe57fd8c00.js",
+      "lines": "71557",
+      "finding": "jdt loads attachment through read-file-binary and contentsBase64."
+    },
+    {
+      "asset": "app-shared-737655e1fb23.js",
+      "lines": "147619",
+      "finding": "QV prefers localImage.path when localPath exists."
+    }
+  ],
+  "demoChange": "model/list inputModalities now includes text and image; synthetic responses only",
+  "pending": [
+    "Reload adapter and verify runtime model capability",
+    "Original native picker -> chip -> remove/send",
+    "Persisted localImage -> history -> preview"
+  ]
+}
