@@ -1,0 +1,24 @@
+{
+  "beforeDimensions": [
+    1456,
+    948
+  ],
+  "afterDimensions": [
+    1456,
+    948
+  ],
+  "region": [
+    780,
+    100,
+    1280,
+    175
+  ],
+  "changedPixels": 264,
+  "differenceBoundsWithinRegion": [
+    32,
+    17,
+    475,
+    61
+  ],
+  "limitation": "Native before/after comparison, not original renderer parity"
+}

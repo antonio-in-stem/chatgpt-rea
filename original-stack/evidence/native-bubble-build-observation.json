@@ -5,9 +5,14 @@
   "capture": "native-bubble-before.png",
   "fixtureValidated": "Loaded in previous native executable; conversation visibly rendered",
   "buildTarget": "S:\\rea-native-build",
-  "buildStatus": "in progress",
+  "buildStatus": "cargo build -p native-workspace --locked --offline passed",
   "limitations": [
     "Native before/after only; original viewport differs",
-    "New executable not yet built or captured"
-  ]
+    "264 changed pixels demonstrate an applied change, not original visual parity",
+    "Remaining layout, table, typography and color differences visible"
+  ],
+  "updatedExe": "S:\\rea-native-build\\debug\\native-workspace.exe",
+  "updatedSha256": "07D17D3DAA71B868E79F0DDCD99848031F1AEE6AFFFD75433A986B7C784CEE21",
+  "updatedCapture": "native-bubble-after.png",
+  "pixelObservation": "native-bubble-pixel-observation.json"
 }

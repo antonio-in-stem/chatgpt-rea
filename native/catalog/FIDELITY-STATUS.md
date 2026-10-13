@@ -50,3 +50,10 @@ Conversation canvas now has functional user-message navigation markers and indep
 The original renderer measurement records radius 22 px and corner-shape superellipse(1.5) for the regular user bubble (original-stack/evidence contains the measured source contract). The native user bubble previously used GPUI rounded(22), whose Windows quad shader implements circular corner distance. It now paints a filled superellipse path as its first absolute child; pixels outside the contour remain transparent instead of being covered with a guessed parent color. The existing rail/sidebar cutout helper is unchanged.
 
 The contour uses 64 line segments per quadrant and therefore remains a tessellated approximation, not verified Chromium raster equivalence. This change does not add arbitrary child clipping, backdrop blur, shadow contours or correct remaining typography/color differences. cargo check -p native-workspace --locked --offline passed (existing unused Action variants warning). No new executable or pixel comparison was produced in this change; the packaged executable still predates this source update. Visual acceptance remains pending.
+
+
+### Executable verification of bubble contour
+
+The native-workspace executable subsequently built successfully with locked offline dependencies into S:/rea-native-build (existing unused Action warning only). The prior and new binaries were opened using the same isolated LOCALAPPDATA profile and fixed transcript. Both captures are 1456x948; the user-bubble region [780,100,1280,175] differs by 264 RGB pixels. The new surface and text are visible without corner overpainting. Evidence: original-stack/evidence/native-bubble-{before,after}.png, native-bubble-fixture.json, native-bubble-build-observation.json and native-bubble-pixel-observation.json.
+
+This is an applied-change comparison, not original-renderer parity: the reference viewport differs and visible layout, table styling, color and text differences remain. The compiled app was copied into native/target/debug and repackaged into native/dist/windows with its existing unchanged native-web-host companion. The package manifest records their hashes.
