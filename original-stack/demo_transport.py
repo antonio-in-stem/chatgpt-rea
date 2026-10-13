@@ -39,6 +39,8 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
             return {"id":request_id,"result":result}, observation
         except demo_threads.ThreadError as error:
             return {"id":request_id,"error":{"code":-32602,"message":str(error)}}, observation
+        except OSError:
+            return {"id":request_id,"error":{"code":-32603,"message":"Demo state could not be saved"}}, observation
     if message["method"] in demo_threads.METHODS:
         try:
             return {"id":request_id,"result":demo_threads.handle(message["method"],params)}, observation
@@ -122,7 +124,7 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
                 reply,observation=handle_message(raw,projects,notifications,config,threads,demo_sandbox_state)
                 with output.open("a",encoding="utf-8") as stream:stream.write(json.dumps(observation)+"\n")
                 if reply is not None:await socket.send(json.dumps(reply))
-                if observation.get("method")=="turn/start" and reply is not None and "result" in reply:
+                if observation.get("method") in ("turn/start", "thread/queue/start") and reply is not None and "result" in reply:
                     task=asyncio.create_task(stream_turn(json.loads(raw)["params"]["threadId"],reply["result"]["turn"]["id"],notifications))
                     tasks.add(task)
                     task.add_done_callback(finished)

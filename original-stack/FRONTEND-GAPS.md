@@ -64,3 +64,7 @@ Original Explore exposes Projects and Pull requests. Both were pinned through or
 ## v6 sidebar persistence verified end-to-end
 
 Original Explore pin controls persisted Pull requests and Projects. After stopping demo PID52980, new process PID71012 restored both rail controls without repinning. See evidence/sidebar-persistence-runtime.json. This supersedes the earlier persistence-pending observation; unpin/reorder and full visual parity remain unverified.
+
+## Queue integrated with thread transactions
+
+All six thread/queue methods are routed through demo_thread_queue.py. Queue changes live in the thread JSON under demoQueues. Start stages a turn and removal, persists the original user input/clientId in that same commit, and only then returns events. Invalid/failed starts preserve the pending entry; disk failure returns an explicit transport error. 56 existing/unit tests passed; an additional real loopback WebSocket test confirms queue/start produces multiple delta events, queue/changed, completed turn and persistent empty queue. Renderer gate2120612410 is not enabled in the current v6 package; original UI queue controls and send-now steering remain pending.

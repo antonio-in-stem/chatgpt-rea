@@ -150,7 +150,8 @@ def handle(method, params, thread_data=None, archived=False):
 class ThreadStore:
     MUTATIONS = {"thread/section/move", "thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt", "thread/revert", "thread/rollback"}
     SECTION_METHODS = {"threadSection/list","threadSection/create","threadSection/update","threadSection/delete"}
-    METHODS = METHODS | MUTATIONS | SECTION_METHODS
+    from demo_thread_queue import METHODS as QUEUE_METHODS
+    METHODS = METHODS | MUTATIONS | SECTION_METHODS | QUEUE_METHODS
 
     def __init__(self, path, streaming=False):
         self.streaming=streaming
@@ -293,6 +294,9 @@ class ThreadStore:
         return response,{"method":"thread/started","params":{"thread":copy.deepcopy(thread)}}
 
     def handle(self, method, params):
+        if method in self.QUEUE_METHODS:
+            from demo_thread_queue import handle as handle_queue
+            return handle_queue(self, method, params)
         if params is None and method == "thread/list":params={}
         if not isinstance(params,dict):raise ThreadError("Expected object parameters")
         if method in self.SECTION_METHODS:return self._section_operation(method,params)
