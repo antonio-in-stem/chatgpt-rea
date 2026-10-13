@@ -192,3 +192,11 @@ Background streaming errors are observed explicitly, sanitized to their exceptio
 A separate Recovery UI Demo conversation was seeded with a persisted in-progress turn and partial text, then the adapter was started. Startup reported recoveredDemoTurns:1. Opening the chat in the unchanged original renderer displayed the partial response followed by its original error component containing the demo restart explanation. evidence/original-recovered-error.png records this state.
 
 A new message was typed into the original composer and sent using Enviar. It streamed and completed in the same conversation, preserving the previous failed turn. Persisted statuses are [failed, completed]; recovery-ui-observation.json and original-recovered-continued.png retain the result. This verifies recovery from seeded interrupted state, not an actual OS/process crash during this capture. No source or style modifications were required for the error component.
+
+## Original user-message editing verified
+
+thread/revert now preserves the history prefix before beforeTurnId for paginated demo conversations, rejecting missing boundaries and active turns. Its response omits turns and supplies a demo turn cursor when retained history exists. It changes only transcript JSON; no workspace file rollback occurs. thread/reverted notifications and the response validate against original schemas. Legacy thread/rollback remains unsupported.
+
+The first runtime attempt exposed missing thread/items/list hydration: a reopened paginated chat had no message controls. The adapter now returns original ThreadItemEntry shapes with turn filtering, forward/reverse paging and exclusive item anchors. Historical item timestamps are null when not retained; reverse-navigation backwardsCursor remains unimplemented.
+
+After restart, the original Editar mensaje control opened the editor. Text entered into its focused textarea and sent through its Enviar button triggered thread/revert followed by turn/start. The final store contains one completed replacement turn with Original demo text. Edited in the original UI. evidence/original-message-edited.png records the unchanged original renderer. Thirty-three tests pass, including retained-prefix rehydration, missing boundaries and item pagination/anchors.

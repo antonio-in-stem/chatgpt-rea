@@ -6,7 +6,7 @@ import uuid
 from pathlib import Path
 
 THREAD = json.loads((Path(__file__).parent / "demo-thread.json").read_text(encoding="utf-8"))
-METHODS = {"thread/list", "thread/read", "thread/turns/list", "thread/resume", "thread/goal/get"}
+METHODS = {"thread/list", "thread/read", "thread/turns/list", "thread/resume", "thread/goal/get", "thread/items/list"}
 
 class ThreadError(ValueError):
     pass
@@ -56,6 +56,20 @@ def handle(method, params, thread_data=None, archived=False):
     if method == "thread/read":
         if not params.get("includeTurns"):thread["turns"]=[]
         return {"thread":thread}
+    if method == "thread/items/list":
+        direction=params.get("sortDirection") or "asc"
+        if direction not in ("asc","desc"):raise ThreadError("Invalid item direction")
+        turn_id=params.get("turnId")
+        if turn_id is not None and not any(t["id"]==turn_id for t in thread["turns"]):raise ThreadError("Unknown item turn")
+        items=[{"turnId":t["id"],"item":copy.deepcopy(item),"startedAtMs":None,"completedAtMs":None} for t in thread["turns"] if turn_id is None or t["id"]==turn_id for item in t["items"]]
+        if direction=="desc":items.reverse()
+        cursor=params.get("cursor")
+        if isinstance(cursor,dict):
+            if not turn_id or cursor.get("type")!="item":raise ThreadError("Item anchor requires a turn")
+            matches=[i for i,row in enumerate(items) if row["item"]["id"]==cursor.get("itemId")]
+            if not matches:raise ThreadError("Unknown item anchor")
+            params={**params,"cursor":"demo-item:"+str(matches[0]+1)}
+        return page(items,params,"demo-item:")
     if method == "thread/turns/list":
         view=params.get("itemsView") or "summary"
         if view not in ("notLoaded","summary","full"):raise ThreadError("Invalid items view")
@@ -70,7 +84,7 @@ def handle(method, params, thread_data=None, archived=False):
 
 
 class ThreadStore:
-    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt"}
+    MUTATIONS = {"thread/name/set", "thread/archive", "thread/unarchive", "thread/fork", "thread/goal/set", "thread/goal/clear", "thread/start", "turn/start", "turn/interrupt", "thread/revert"}
     METHODS = METHODS | MUTATIONS
 
     def __init__(self, path, streaming=False):
@@ -205,6 +219,17 @@ class ThreadStore:
         data=copy.deepcopy(self.data)
         entry=data["threads"][thread_id]
         thread=entry["thread"]
+        if method == "thread/revert":
+            if thread["historyMode"]!="paginated":raise ThreadError("Revert requires paginated demo history")
+            if any(t["status"]=="inProgress" for t in thread["turns"]):raise ThreadError("Cannot revert an active demo turn")
+            matches=[i for i,t in enumerate(thread["turns"]) if t["id"]==params.get("beforeTurnId")]
+            if not matches:raise ThreadError("Unknown revert boundary")
+            thread["turns"]=thread["turns"][:matches[0]]
+            thread["updatedAt"]=int(time.time())
+            thread["status"]={"type":"idle"}
+            response={"thread":{**copy.deepcopy(thread),"turns":[]},"turnsBackwardsCursor":"demo-turn:0" if thread["turns"] else None,"itemsBackwardsCursor":None}
+            self._commit(data)
+            return response,{"method":"thread/reverted","params":{"threadId":thread_id}}
         if method == "turn/interrupt":
             turn=next((t for t in thread["turns"] if t["id"]==params.get("turnId")),None)
             if turn is None or turn["status"]!="inProgress":raise ThreadError("No matching active demo turn")

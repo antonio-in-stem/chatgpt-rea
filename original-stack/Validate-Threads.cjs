@@ -19,6 +19,8 @@ with tempfile.TemporaryDirectory() as directory:
  samples.append(['TurnStartResponse',turn])
  names={'thread/status/changed':'ThreadStatusChangedNotification','turn/started':'TurnStartedNotification','item/started':'ItemStartedNotification','item/completed':'ItemCompletedNotification','item/agentMessage/delta':'AgentMessageDeltaNotification','turn/completed':'TurnCompletedNotification','thread/name/updated':'ThreadNameUpdatedNotification'}
  samples.extend([[names[e['method']],e['params']] for e in events])
+ reverted,event=store.handle('thread/revert',{'threadId':started['thread']['id'],'beforeTurnId':turn['turn']['id']})
+ samples.extend([['ThreadRevertResponse',reverted],['ThreadRevertedNotification',event['params']]])
  for method,response_schema,event_schema,params in [('thread/name/set','ThreadSetNameResponse','ThreadNameUpdatedNotification',{'threadId':THREAD['id'],'name':'Renamed Demo'}),('thread/archive','ThreadArchiveResponse','ThreadArchivedNotification',{'threadId':THREAD['id']}),('thread/unarchive','ThreadUnarchiveResponse','ThreadUnarchivedNotification',{'threadId':THREAD['id']})]:
   result,event=store.handle(method,params)
   samples.extend([[response_schema,result],[event_schema,event['params']]])
@@ -35,6 +37,7 @@ with tempfile.TemporaryDirectory() as directory:
  failure=streaming.end_failed_turn(THREAD['id'],failed_start['turn']['id'],'Demo failure')
  samples.extend([[names[e['method']],e['params']] for e in failure])
  samples.extend([[names[e['method']],e['params']] for e in events])
+samples.append(['ThreadItemsListResponse',handle('thread/items/list',{'threadId':THREAD['id']})])
 samples.append(['ThreadGoalGetResponse',handle('thread/goal/get',{'threadId':THREAD['id']})])
 samples.append(['HooksListResponse',handle_message(json.dumps({'id':1,'method':'hooks/list','params':{'cwds':[THREAD['cwd']]}}))[0]['result']])
 print(json.dumps(samples))`;

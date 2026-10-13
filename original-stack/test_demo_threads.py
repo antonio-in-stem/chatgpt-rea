@@ -257,6 +257,35 @@ class ThreadTests(unittest.TestCase):
             result,_=restarted.handle("turn/start",{"threadId":THREAD["id"],"input":[{"type":"text","text":"Next turn"}]})
             self.assertEqual(result["turn"]["status"],"inProgress")
 
+    def test_revert_retains_prefix_and_rehydrates_after_restart(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            result,_=store.handle("thread/start",{"historyMode":"paginated"})
+            identifier=result["thread"]["id"]
+            turns=[]
+            for text in ("First","Second","Third"):
+                result,_=store.handle("turn/start",{"threadId":identifier,"input":[{"type":"text","text":text}]})
+                turns.append(result["turn"]["id"])
+            with self.assertRaises(ThreadError):store.handle("thread/revert",{"threadId":identifier,"beforeTurnId":"missing"})
+            result,event=store.handle("thread/revert",{"threadId":identifier,"beforeTurnId":turns[1]})
+            self.assertEqual(result["thread"]["turns"],[])
+            self.assertEqual(event["method"],"thread/reverted")
+            loaded=ThreadStore(path).handle("thread/turns/list",{"threadId":identifier,"cursor":result["turnsBackwardsCursor"],"sortDirection":"desc","itemsView":"full"})[0]
+            self.assertEqual([t["id"] for t in loaded["data"]],[turns[0]])
+            result,_=store.handle("thread/revert",{"threadId":identifier,"beforeTurnId":turns[0]})
+            self.assertIsNone(result["turnsBackwardsCursor"])
+
+    def test_item_pages_and_exclusive_anchor(self):
+        params={"threadId":THREAD["id"],"turnId":THREAD["turns"][0]["id"]}
+        first=handle("thread/items/list",{**params,"limit":1})
+        second=handle("thread/items/list",{**params,"limit":1,"cursor":first["nextCursor"]})
+        self.assertNotEqual(first["data"][0]["item"]["id"],second["data"][0]["item"]["id"])
+        anchor={"type":"item","itemId":first["data"][0]["item"]["id"]}
+        self.assertEqual(handle("thread/items/list",{**params,"cursor":anchor})["data"],second["data"])
+        self.assertEqual(handle("thread/items/list",{**params,"sortDirection":"desc"})["data"][0],second["data"][0])
+        with self.assertRaises(ThreadError):handle("thread/items/list",{"threadId":THREAD["id"],"cursor":anchor})
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)
