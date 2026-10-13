@@ -51,7 +51,7 @@ def handle(method, params, thread_data=None, archived=False):
         initial = params.get("initialTurnsPage")
         turns_page = page(thread["turns"], initial, "demo-turn:") if isinstance(initial, dict) else None
         if params.get("excludeTurns"):thread["turns"]=[]
-        thread["status"]={"type":"idle"}
+        thread["status"]={"type":"active","activeFlags":[]} if any(t["status"]=="inProgress" for t in (thread_data or THREAD)["turns"]) else {"type":"idle"}
         return {"thread":thread,"model":"rea-demo","modelProvider":"openai","serviceTier":None,"disabledPluginIds":[],"cwd":thread["cwd"],"runtimeWorkspaceRoots":[thread["cwd"]],"instructionSources":[],"approvalPolicy":"on-request","approvalsReviewer":"user","sandbox":{"type":"readOnly","networkAccess":False},"activePermissionProfile":None,"reasoningEffort":"medium","collaborationMode":None,"multiAgentMode":"explicitRequestOnly","initialTurnsPage":turns_page,"turnsBackwardsCursor":None,"itemsBackwardsCursor":None}
     if method == "thread/read":
         if not params.get("includeTurns"):thread["turns"]=[]
@@ -90,11 +90,32 @@ class ThreadStore:
         temporary.replace(self.path)
         self.data = data
 
+    def end_failed_turn(self, thread_id, turn_id, message, ended_at_ms=None):
+        data=copy.deepcopy(self.data)
+        entry=data["threads"][thread_id]
+        thread=entry["thread"]
+        turn=next(t for t in thread["turns"] if t["id"]==turn_id)
+        if turn["status"]!="inProgress":return []
+        ended=int(time.time()*1000) if ended_at_ms is None else ended_at_ms
+        turn.update(status="failed",completedAt=ended//1000,durationMs=max(0,ended-turn["startedAt"]*1000),error={"message":message,"codexErrorInfo":None,"additionalDetails":None,"misalignment":None})
+        thread["status"]={"type":"idle"}
+        self._commit(data)
+        return [{"method":"turn/completed","params":{"threadId":thread_id,"turn":copy.deepcopy(turn)}},{"method":"thread/status/changed","params":{"threadId":thread_id,"status":{"type":"idle"}}}]
+
+    def recover_active_turns(self):
+        recovered=0
+        for thread_id,entry in list(self.data["threads"].items()):
+            for turn in entry["thread"]["turns"]:
+                if turn["status"]=="inProgress":
+                    self.end_failed_turn(thread_id,turn["id"],"Demo transport restarted before this response finished.",entry.get("demoProgressAtMs",turn["startedAt"]*1000))
+                    recovered+=1
+        return recovered
+
     def apply_stream_event(self, thread_id, turn_id, event):
         data=copy.deepcopy(self.data)
         thread=data["threads"][thread_id]["thread"]
         turn=next(t for t in thread["turns"] if t["id"]==turn_id)
-        if turn["status"]=="interrupted":return False
+        if turn["status"] in ("interrupted","failed"):return False
         method,params=event["method"],event["params"]
         if method in ("item/started","item/completed"):
             params["startedAtMs" if method=="item/started" else "completedAtMs"]=int(time.time()*1000)
@@ -110,6 +131,7 @@ class ThreadStore:
             thread.update(updatedAt=now,recencyAt=now)
         elif method=="thread/status/changed":thread["status"]=copy.deepcopy(params["status"])
         else:return True
+        data["threads"][thread_id]["demoProgressAtMs"]=int(time.time()*1000)
         self._commit(data)
         return True
 
@@ -199,7 +221,9 @@ class ThreadStore:
             if any(t["status"]=="inProgress" for t in thread["turns"]):raise ThreadError("A demo turn is already active")
             thread["turns"].append(copy.deepcopy(start) if self.streaming else completed)
             thread.update(updatedAt=completed["completedAt"],recencyAt=completed["completedAt"],preview=text[:160],status={"type":"idle"})
-            if self.streaming:thread["status"]={"type":"active","activeFlags":[]}
+            if self.streaming:
+                thread["status"]={"type":"active","activeFlags":[]}
+                entry["demoProgressAtMs"]=start["startedAt"]*1000
             if not thread.get("name"):
                 thread["name"]=text.strip().splitlines()[0][:80]
                 events.append({"method":"thread/name/updated","params":{"threadId":thread_id,"threadName":thread["name"]}})

@@ -236,6 +236,27 @@ class ThreadTests(unittest.TestCase):
                 if event["method"]=="item/completed":self.assertEqual(event["params"]["completedAtMs"],115000)
                 if event["method"]=="turn/completed":self.assertEqual(event["params"]["turn"]["durationMs"],15000)
 
+    def test_recovery_preserves_partial_history_and_allows_next_turn(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path,streaming=True)
+            with patch("demo_threads.time.time",return_value=100):
+                response,events=store.handle("turn/start",{"threadId":THREAD["id"],"input":[{"type":"text","text":"Recover demo"}]})
+            turn_id=response["turn"]["id"]
+            with patch("demo_threads.time.time",return_value=103):
+                for event in events[:3]:store.apply_stream_event(THREAD["id"],turn_id,event)
+            self.assertEqual(store.handle("thread/resume",{"threadId":THREAD["id"]})[0]["thread"]["status"]["type"],"active")
+            restarted=ThreadStore(path,streaming=True)
+            with patch("demo_threads.time.time",return_value=1000):self.assertEqual(restarted.recover_active_turns(),1)
+            self.assertEqual(restarted.recover_active_turns(),0)
+            turn=restarted.data["threads"][THREAD["id"]]["thread"]["turns"][-1]
+            self.assertEqual(turn["status"],"failed")
+            self.assertEqual(turn["durationMs"],3000)
+            self.assertEqual(turn["items"][0]["content"][0]["text"],"Recover demo")
+            self.assertFalse(restarted.apply_stream_event(THREAD["id"],turn_id,events[-1]))
+            result,_=restarted.handle("turn/start",{"threadId":THREAD["id"],"input":[{"type":"text","text":"Next turn"}]})
+            self.assertEqual(result["turn"]["status"],"inProgress")
+
     def test_invalid_ids_cursors_and_limits(self):
         for method,params in [("thread/read",{"threadId":"unknown"}),("thread/list",{"cursor":"bad"}),("thread/list",{"limit":0})]:
             with self.assertRaises(ThreadError):handle(method,params)

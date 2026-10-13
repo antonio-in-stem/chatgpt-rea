@@ -84,13 +84,14 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
     projects = ProjectStore(project_state)
     config = ConfigStore(config_state, FIXTURES["config/read"]["result"]["config"])
     threads = demo_threads.ThreadStore(thread_state,streaming=True)
+    recovered_turns=threads.recover_active_turns()
     clients = set()
     tasks=set()
     async def publish(notification):
         deliveries=await asyncio.gather(*(client.send(json.dumps(notification)) for client in tuple(clients)), return_exceptions=True)
         with output.open("a",encoding="utf-8") as stream:
             stream.write(json.dumps({"kind":"notification-sent","method":notification["method"],"delivered":sum(not isinstance(result,BaseException) for result in deliveries),"failed":sum(isinstance(result,BaseException) for result in deliveries)})+"\n")
-    async def stream_turn(thread_id,turn_id,events):
+    async def deliver_turn(thread_id,turn_id,events):
         for event in events:
             pieces=[event]
             if event["method"]=="item/agentMessage/delta":
@@ -100,6 +101,19 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
                 if piece["method"]=="item/agentMessage/delta":await asyncio.sleep(demo_chunk_delay)
                 if not threads.apply_stream_event(thread_id,turn_id,piece):return
                 await publish(piece)
+    async def stream_turn(thread_id,turn_id,events):
+        try:await deliver_turn(thread_id,turn_id,events)
+        except asyncio.CancelledError:raise
+        except Exception as error:
+            with output.open("a",encoding="utf-8") as stream:
+                stream.write(json.dumps({"kind":"stream-error","errorType":type(error).__name__})+"\n")
+            for notification in threads.end_failed_turn(thread_id,turn_id,"The demo response could not finish."):
+                await publish(notification)
+    def finished(task):
+        tasks.discard(task)
+        if not task.cancelled():
+            error=task.exception()
+            if error is not None:print(json.dumps({"kind":"stream-finalization-error","errorType":type(error).__name__}),flush=True)
     async def connection(socket):
         clients.add(socket)
         try:
@@ -111,14 +125,14 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
                 if observation.get("method")=="turn/start" and reply is not None and "result" in reply:
                     task=asyncio.create_task(stream_turn(json.loads(raw)["params"]["threadId"],reply["result"]["turn"]["id"],notifications))
                     tasks.add(task)
-                    task.add_done_callback(tasks.discard)
+                    task.add_done_callback(finished)
                 else:
                     for notification in notifications:await publish(notification)
         except ConnectionClosed:pass
         finally:clients.discard(socket)
     async with serve(connection, "127.0.0.1", port, max_size=MAX_FRAME_BYTES) as server:
         print(json.dumps({"endpoint": f"ws://127.0.0.1:{server.sockets[0].getsockname()[1]}",
-                          "mode": "demo-contract-adapter", "simulatedWindowsReadiness":demo_sandbox_state,"executesTools":False, "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
+                          "mode": "demo-contract-adapter", "simulatedWindowsReadiness":demo_sandbox_state,"executesTools":False,"recoveredDemoTurns":recovered_turns, "fixtureMethods": ["initialize", *FIXTURES]}), flush=True)
         try:await asyncio.Future()
         finally:
             for task in tasks:task.cancel()
