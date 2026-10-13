@@ -1,0 +1,83 @@
+{
+  "scope": "Native Library file upload contract audit; not implemented yet",
+  "sources": {
+    "input": "slate-create-menu-df1a68fe05ff.js:1381-1400",
+    "drop": "library-uploads-28c6a7b1bd7e.js:541-566",
+    "queue": "actions-951addfde246.js:130-169,236-333",
+    "create": "app-initial-b8e1c8014bb4.js:99491-99616",
+    "bytes": "app-initial-b8e1c8014bb4.js:99974-100045",
+    "finalize": "app-initial-b8e1c8014bb4.js:99670-99735,100061-100196",
+    "events": "app-initial-b8e1c8014bb4.js:100242-100274",
+    "host_rpc": "app-shared-737655e1fb23.js:166058-166085,166328-166366"
+  },
+  "flow": [
+    "POST /files creates raw file ID and upload_url",
+    "PUT upload_url with File bytes through original httpFetch RPC",
+    "POST /files/process_upload_stream finalizes and binds directory_id",
+    "NDJSON processing events return libraryFileId via extra.metadata_object_id",
+    "Original uploader invalidates library query and renders success"
+  ],
+  "create_body_fields": [
+    "entry_surface:codex_library_upload",
+    "file_name",
+    "file_size",
+    "client_resolved_mime_type",
+    "mime_resolution_source",
+    "mime_type",
+    "reset_rate_limits:false",
+    "supports_direct_azure_multipart:true",
+    "timezone_offset_min",
+    "upload_source:codex_library_upload",
+    "use_case:my_files",
+    "store_in_library:true",
+    "library_persistence_mode:required"
+  ],
+  "create_response": {
+    "file_id": "synthetic raw file id",
+    "upload_url": "synthetic upload target",
+    "upload_headers": {}
+  },
+  "finalization_body_fields": [
+    "entry_surface:codex_library_upload",
+    "file_id",
+    "file_name",
+    "index_for_retrieval:true",
+    "library_persistence_mode:required",
+    "metadata:{store_in_library:true}",
+    "mime_type",
+    "directory_id when nested",
+    "upload_source:codex_library_upload",
+    "use_case:my_files"
+  ],
+  "event_example": {
+    "event": "file.processing.completed",
+    "file_id": "synthetic raw file id",
+    "progress": 100,
+    "extra": {
+      "metadata_object_id": "synthetic library id",
+      "library_file_name": "demo.txt",
+      "mime_type": "text/plain"
+    }
+  },
+  "important": [
+    "directory_id belongs in finalization, not POST/files",
+    "Do not POST/files/library/files for native folders: that branch is external providers only",
+    "Do not emit library_persistence_result:stored; recovered schema declares optional literal temporary only",
+    "Normal URL uses PUT; estuary and Azure multipart are alternate original branches",
+    "Original queue supports five concurrent files and rejects dot-prefixed names and files over512MiB"
+  ],
+  "preview_sources": [
+    "app-initial:87046-87057 GET/files/library/files/{library_file_id} fallback/node",
+    "app-initial:87280-87296 node-to-preview metadata",
+    "app-initial:87315-87338 content_url/download_url",
+    "app-initial:86885-86949 internal URL sanitization and redirects"
+  ],
+  "unknown": [
+    "Complete Libraryfile browse DTO",
+    "Recognized library ID prefixes",
+    "URL sanitizer accepted demo target shape",
+    "Exact host bytes request representation",
+    "Specialized TXT preview behavior"
+  ],
+  "implementation_status": "Read-only REA audit; no upload/preview success claim"
+}
