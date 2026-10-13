@@ -360,3 +360,10 @@ The full run is in progress; no all-file success is claimed yet. summary.json is
 Recover-AllAssets.cjs --host now recovers every top-level JavaScript in extracted/.vite/build into state/recovered-host/readable/assets. All 34 files completed: 10,333,165 original bytes, 15,011,343 formatted bytes, 34 positive Babel AST-equivalence results, no recovery errors or AST differences. Audit-RecoveredAssets.cjs --host independently checked coverage and source/output hashes with zero issues. Evidence copies of the summary, manifest and audit are retained as recovered-host-*.json. Identifiers remain minified and these are distributed JavaScript modules, not authored TypeScript.
 
 The host audit found zero ESM literal references because its graph does not currently extract CommonJS require calls. Zero missing references therefore does NOT establish host dependency completeness. Renderer all-assets recovery continues separately in state/recovered-all; the host result does not imply that larger job has finished. The audit now requires an explicit astEquivalent=true result for every JavaScript record, not merely absence of a negative result.
+
+
+## Host CommonJS dependency candidates
+
+The host audit now parses each original module and records direct require(string) calls with line numbers. Local Node resolution is read-only; target modules are not executed. It found 496 candidates: 348 Node builtins, 11 electron references supplied by the desktop runtime, and 137 resolved files. The resolved bare packages are better-sqlite3 and tslib. No direct computed require calls or unresolved literal candidates were found in these 34 modules. recovered-host-dependencies.json and the refreshed recovered-host-audit.json retain the results.
+
+These are syntactic candidates, not a complete runtime graph: aliased loaders, shadowed require, require.resolve, native loading and computed resource paths remain outside the analysis. Node resolver conditions can differ from the packaged desktop runtime. The earlier zero-ESM-reference result therefore remains historical, superseded for direct CommonJS calls by this wider audit.

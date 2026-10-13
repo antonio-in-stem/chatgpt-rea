@@ -1,0 +1,3611 @@
+[
+  {
+    "from": "_baseSlice-BXYPgFit.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:events",
+    "line": 32,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "string_decoder",
+    "line": 31,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream",
+    "line": 31,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream",
+    "line": 31,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tls",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "https",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "zlib",
+    "line": 26,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 24,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 24,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 24,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 24,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tls",
+    "line": 24,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 24,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "dns",
+    "line": 24,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "https",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "https",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 23,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "child_process",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "assert",
+    "line": 6,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 5,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 5,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 5,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "child_process",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs/promises",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs/promises",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:perf_hooks",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:string_decoder",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:buffer",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:os",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:net",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-C9YLnbgY.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-C9YLnbgY.js"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "application-network-startup-CfAQmSYg.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./main-BklS_2Y2.js",
+    "line": 144,
+    "resolution": "present",
+    "target": "main-BklS_2Y2.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "diagnostics_channel",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "async_hooks",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "async_hooks",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "worker_threads",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:zlib",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:worker_threads",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "diagnostics_channel",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:diagnostics_channel",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "worker_threads",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "perf_hooks",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:readline",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:timers/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "zlib",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:os",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-C9YLnbgY.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-C9YLnbgY.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./desktop-open-path-queue-BbHRJtaX.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "desktop-open-path-queue-BbHRJtaX.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./build-flavor-CYXpoCFI.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "build-flavor-CYXpoCFI.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./startup-requirements-C6B1x9gL.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "startup-requirements-C6B1x9gL.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./application-network-startup-CfAQmSYg.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "application-network-startup-CfAQmSYg.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./mcp-app-attachment-DibnvJgR.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "mcp-app-attachment-DibnvJgR.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-BJv5Mk7n.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-BJv5Mk7n.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./browser-background-switches-Zzmx0u5p.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "browser-background-switches-Zzmx0u5p.js"
+  },
+  {
+    "from": "bootstrap-487kJHw_.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./character-preview-aWZT6FxB.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "character-preview-aWZT6FxB.js"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "browser-background-switches-Zzmx0u5p.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "browser-page-preload.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "build-flavor-CYXpoCFI.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "build-flavor-CYXpoCFI.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "build-flavor-CYXpoCFI.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "build-flavor-CYXpoCFI.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "build-flavor-CYXpoCFI.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "capture-Bk2D_sBl.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "capture-Bk2D_sBl.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "capture-Bk2D_sBl.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "capture-Bk2D_sBl.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./application-network-startup-CfAQmSYg.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "application-network-startup-CfAQmSYg.js"
+  },
+  {
+    "from": "capture-Bk2D_sBl.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-BJv5Mk7n.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-BJv5Mk7n.js"
+  },
+  {
+    "from": "capture-Bk2D_sBl.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "capture-Bk2D_sBl.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "character-preview-aWZT6FxB.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "chunk-D4ZOuLf6.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./path-browserify-win32-DubphUXU.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "path-browserify-win32-DubphUXU.js"
+  },
+  {
+    "from": "chunk-D4ZOuLf6.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./_baseSlice-BXYPgFit.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "_baseSlice-BXYPgFit.js"
+  },
+  {
+    "from": "chunk-D4ZOuLf6.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "conversation-turn-mutations-szl89rld.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./mcp-app-attachment-DibnvJgR.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "mcp-app-attachment-DibnvJgR.js"
+  },
+  {
+    "from": "conversation-turn-mutations-szl89rld.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "conversation-turn-mutations-szl89rld.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "core-B-w7xKIn.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-C9YLnbgY.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-C9YLnbgY.js"
+  },
+  {
+    "from": "core-B-w7xKIn.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "core-DlTZhmo0.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-BSoROW9v.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-BSoROW9v.js"
+  },
+  {
+    "from": "desktop-open-path-queue-BbHRJtaX.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "desktop-open-path-queue-BbHRJtaX.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "desktop-open-path-queue-BbHRJtaX.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "desktop-open-path-queue-BbHRJtaX.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "desktop-open-path-queue-BbHRJtaX.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "dist-wQAv1pJP.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./bootstrap-487kJHw_.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "bootstrap-487kJHw_.js"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./startup-requirements-C6B1x9gL.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "startup-requirements-C6B1x9gL.js"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./application-network-startup-CfAQmSYg.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "application-network-startup-CfAQmSYg.js"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./desktop-open-path-queue-BbHRJtaX.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "desktop-open-path-queue-BbHRJtaX.js"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./build-flavor-CYXpoCFI.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "build-flavor-CYXpoCFI.js"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./browser-background-switches-Zzmx0u5p.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "browser-background-switches-Zzmx0u5p.js"
+  },
+  {
+    "from": "early-bootstrap.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "logger-CUwSCKgw.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "logger-CUwSCKgw.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./character-preview-aWZT6FxB.js",
+    "line": 1544,
+    "resolution": "present",
+    "target": "character-preview-aWZT6FxB.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./capture-Bk2D_sBl.js",
+    "line": 1253,
+    "resolution": "present",
+    "target": "capture-Bk2D_sBl.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 1039,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 1039,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 1039,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1039,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1039,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "zlib",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 1029,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./upload-BOGf8ZfH.js",
+    "line": 1021,
+    "resolution": "present",
+    "target": "upload-BOGf8ZfH.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "process",
+    "line": 679,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "process",
+    "line": 647,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 605,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "process",
+    "line": 601,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./service-DABseRGi.js",
+    "line": 569,
+    "resolution": "present",
+    "target": "service-DABseRGi.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./skills-8U-G2giZ.js",
+    "line": 436,
+    "resolution": "present",
+    "target": "skills-8U-G2giZ.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "better-sqlite3",
+    "line": 135,
+    "resolution": "present",
+    "target": "../../node_modules/better-sqlite3/lib/index.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./windows-file-copy-BDdE9Xtu.js",
+    "line": 32,
+    "resolution": "present",
+    "target": "windows-file-copy-BDdE9Xtu.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:inspector",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path/posix",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:assert",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:tls",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:zlib",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:http",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:worker_threads",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:readline",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:timers/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:perf_hooks",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:string_decoder",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:events",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:buffer",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "zlib",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "assert",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:os",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:net",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./bootstrap-487kJHw_.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "bootstrap-487kJHw_.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-C9YLnbgY.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-C9YLnbgY.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./desktop-open-path-queue-BbHRJtaX.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "desktop-open-path-queue-BbHRJtaX.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./build-flavor-CYXpoCFI.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "build-flavor-CYXpoCFI.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./path-browserify-win32-DubphUXU.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "path-browserify-win32-DubphUXU.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./chunk-D4ZOuLf6.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "chunk-D4ZOuLf6.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./startup-requirements-C6B1x9gL.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "startup-requirements-C6B1x9gL.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./application-network-startup-CfAQmSYg.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "application-network-startup-CfAQmSYg.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./conversation-turn-mutations-szl89rld.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "conversation-turn-mutations-szl89rld.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./_baseSlice-BXYPgFit.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "_baseSlice-BXYPgFit.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./mcp-app-attachment-DibnvJgR.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "mcp-app-attachment-DibnvJgR.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-BJv5Mk7n.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-BJv5Mk7n.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./browser-background-switches-Zzmx0u5p.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "browser-background-switches-Zzmx0u5p.js"
+  },
+  {
+    "from": "main-BklS_2Y2.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "mcp-app-attachment-DibnvJgR.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./_baseSlice-BXYPgFit.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "_baseSlice-BXYPgFit.js"
+  },
+  {
+    "from": "mcp-app-attachment-DibnvJgR.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "mcp-app-attachment-DibnvJgR.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "path-browserify-win32-DubphUXU.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./_baseSlice-BXYPgFit.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "_baseSlice-BXYPgFit.js"
+  },
+  {
+    "from": "path-browserify-win32-DubphUXU.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "preload.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "record-aeon-assistant-message-delivery-B1sd4kI0.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./conversation-turn-mutations-szl89rld.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "conversation-turn-mutations-szl89rld.js"
+  },
+  {
+    "from": "record-aeon-assistant-message-delivery-B1sd4kI0.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "sandbox-preload.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./startup-requirements-C6B1x9gL.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "startup-requirements-C6B1x9gL.js"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-BJv5Mk7n.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-BJv5Mk7n.js"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "service-DABseRGi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "skills-8U-G2giZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./main-BklS_2Y2.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "main-BklS_2Y2.js"
+  },
+  {
+    "from": "skills-8U-G2giZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./path-browserify-win32-DubphUXU.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "path-browserify-win32-DubphUXU.js"
+  },
+  {
+    "from": "skills-8U-G2giZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./chunk-D4ZOuLf6.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "chunk-D4ZOuLf6.js"
+  },
+  {
+    "from": "skills-8U-G2giZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "skills-8U-G2giZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 791,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./windows-file-copy-BDdE9Xtu.js",
+    "line": 698,
+    "resolution": "present",
+    "target": "windows-file-copy-BDdE9Xtu.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./windows-file-copy-BDdE9Xtu.js",
+    "line": 698,
+    "resolution": "present",
+    "target": "windows-file-copy-BDdE9Xtu.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./record-aeon-assistant-message-delivery-B1sd4kI0.js",
+    "line": 688,
+    "resolution": "present",
+    "target": "record-aeon-assistant-message-delivery-B1sd4kI0.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "better-sqlite3",
+    "line": 568,
+    "resolution": "present",
+    "target": "../../node_modules/better-sqlite3/lib/index.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "better-sqlite3",
+    "line": 560,
+    "resolution": "present",
+    "target": "../../node_modules/better-sqlite3/lib/index.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./dist-wQAv1pJP.js",
+    "line": 6,
+    "resolution": "present",
+    "target": "dist-wQAv1pJP.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:async_hooks",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:readline",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tslib",
+    "line": 1,
+    "resolution": "present",
+    "target": "../../node_modules/tslib/tslib.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:dns/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:timers/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:buffer",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:os",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:net",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./dist-wQAv1pJP.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "dist-wQAv1pJP.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./path-browserify-win32-DubphUXU.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "path-browserify-win32-DubphUXU.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./chunk-D4ZOuLf6.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "chunk-D4ZOuLf6.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./startup-requirements-C6B1x9gL.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "startup-requirements-C6B1x9gL.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./application-network-startup-CfAQmSYg.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "application-network-startup-CfAQmSYg.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./conversation-turn-mutations-szl89rld.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "conversation-turn-mutations-szl89rld.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./_baseSlice-BXYPgFit.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "_baseSlice-BXYPgFit.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./mcp-app-attachment-DibnvJgR.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "mcp-app-attachment-DibnvJgR.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "src-BJv5Mk7n.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "src-BSoROW9v.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BSoROW9v.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tty",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BSoROW9v.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tty",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-BSoROW9v.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-C9YLnbgY.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-C9YLnbgY.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tty",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-C9YLnbgY.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tty",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-C9YLnbgY.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-C9YLnbgY.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "src-CP7XXlpZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./core-B-w7xKIn.js",
+    "line": 52,
+    "resolution": "present",
+    "target": "core-B-w7xKIn.js"
+  },
+  {
+    "from": "src-CP7XXlpZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "src-CP7XXlpZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./path-browserify-win32-DubphUXU.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "path-browserify-win32-DubphUXU.js"
+  },
+  {
+    "from": "src-CP7XXlpZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./_baseSlice-BXYPgFit.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "_baseSlice-BXYPgFit.js"
+  },
+  {
+    "from": "src-CP7XXlpZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./mcp-app-attachment-DibnvJgR.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "mcp-app-attachment-DibnvJgR.js"
+  },
+  {
+    "from": "src-CP7XXlpZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "src-CP7XXlpZ.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:timers/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "electron",
+    "line": 1,
+    "resolution": "desktop-runtime-provided"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./desktop-open-path-queue-BbHRJtaX.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "desktop-open-path-queue-BbHRJtaX.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./path-browserify-win32-DubphUXU.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "path-browserify-win32-DubphUXU.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./application-network-startup-CfAQmSYg.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "application-network-startup-CfAQmSYg.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./mcp-app-attachment-DibnvJgR.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "mcp-app-attachment-DibnvJgR.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-CP7XXlpZ.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-CP7XXlpZ.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./zod-ClKgiFhi.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "zod-ClKgiFhi.js"
+  },
+  {
+    "from": "startup-requirements-C6B1x9gL.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:zlib",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./main-BklS_2Y2.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "main-BklS_2Y2.js"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-BJv5Mk7n.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-BJv5Mk7n.js"
+  },
+  {
+    "from": "upload-BOGf8ZfH.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "windows-file-copy-BDdE9Xtu.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "windows-file-copy-BDdE9Xtu.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "windows-file-copy-BDdE9Xtu.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "windows-file-copy-BDdE9Xtu.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "windows-file-copy-BDdE9Xtu.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./logger-CUwSCKgw.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "logger-CUwSCKgw.js"
+  },
+  {
+    "from": "windows-file-copy-BDdE9Xtu.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./application-network-startup-CfAQmSYg.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "application-network-startup-CfAQmSYg.js"
+  },
+  {
+    "from": "windows-file-copy-BDdE9Xtu.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 682,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 532,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tls",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "https",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "zlib",
+    "line": 526,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 524,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 524,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 524,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 524,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tls",
+    "line": 524,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 524,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "dns",
+    "line": 524,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "https",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "https",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "http",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "net",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "child_process",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "buffer",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "stream",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "assert",
+    "line": 523,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 522,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "os",
+    "line": 522,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 522,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "child_process",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs/promises",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs/promises",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 521,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./core-DlTZhmo0.js",
+    "line": 127,
+    "resolution": "present",
+    "target": "core-DlTZhmo0.js"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 12,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 8,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "diagnostics_channel",
+    "line": 8,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "async_hooks",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "async_hooks",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 4,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "events",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "worker_threads",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:url",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:string_decoder",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:perf_hooks",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:async_hooks",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:timers/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:buffer",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "tslib",
+    "line": 1,
+    "resolution": "present",
+    "target": "../../node_modules/tslib/tslib.js"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:dns/promises",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:tls",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:net",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:zlib",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:stream",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:https",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:http",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:readline",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:os",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:child_process",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "diagnostics_channel",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "crypto",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:events",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:diagnostics_channel",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "fs",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "worker_threads",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "module",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "path",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "perf_hooks",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "util",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "node:worker_threads",
+    "line": 1,
+    "resolution": "node-builtin"
+  },
+  {
+    "from": "worker.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./src-BSoROW9v.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "src-BSoROW9v.js"
+  },
+  {
+    "from": "zod-ClKgiFhi.js",
+    "kind": "require-literal-candidate",
+    "specifier": "./rolldown-runtime-CPUxUITh.js",
+    "line": 1,
+    "resolution": "present",
+    "target": "rolldown-runtime-CPUxUITh.js"
+  }
+]
