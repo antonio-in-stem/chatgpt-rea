@@ -84,8 +84,10 @@ impl WorkspaceApp {
                     .max_w(relative(0.7))
                     .px(px(16.))
                     .py(px(10.))
-                    .rounded(px(22.))
-                    .bg(cx.theme().colors.muted)
+                    .relative()
+                    .child(native_ui::corners::squircle_surface(
+                        22., cx.theme().colors.muted,
+                    ))
             })
             .child(TextView::markdown(
                 ("message", index),

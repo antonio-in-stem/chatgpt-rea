@@ -43,3 +43,10 @@ Project Name/Updated headers now toggle source default directions, reorder rows 
 See SHELL-REFERENCE.md. Native rail/contextual sidebar/frame are now separated; source SVGs and screenshot-calibrated shell geometry are implemented. Sidebar project groups collapse and retain navigation; full original rail/sidebar/canvas/composer behavior remains incomplete. Source default and screenshot measurements differ; do not mark this exact.
 
 Conversation canvas now has functional user-message navigation markers and independent Alt+Up/Down. Geometry/hover/click/hidden-rail keyboard tested; preview/scrub/focus/animations and other source interactions remain pending in SHELL-REFERENCE.md.
+
+
+## User-bubble surface contour correction
+
+The original renderer measurement records radius 22 px and corner-shape superellipse(1.5) for the regular user bubble (original-stack/evidence contains the measured source contract). The native user bubble previously used GPUI rounded(22), whose Windows quad shader implements circular corner distance. It now paints a filled superellipse path as its first absolute child; pixels outside the contour remain transparent instead of being covered with a guessed parent color. The existing rail/sidebar cutout helper is unchanged.
+
+The contour uses 64 line segments per quadrant and therefore remains a tessellated approximation, not verified Chromium raster equivalence. This change does not add arbitrary child clipping, backdrop blur, shadow contours or correct remaining typography/color differences. cargo check -p native-workspace --locked --offline passed (existing unused Action variants warning). No new executable or pixel comparison was produced in this change; the packaged executable still predates this source update. Visual acceptance remains pending.

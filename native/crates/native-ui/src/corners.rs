@@ -9,6 +9,40 @@ fn corner_point(radius: f32, step: usize) -> (f32, f32) {
      radius * (1. - angle.cos().max(0.).powf(power)))
 }
 
+/// Paint the actual superellipse surface as the first child of a relative
+/// container. Outside pixels stay transparent; no assumed parent color is used.
+/// Uses the same sampled contour as the existing corner helper. This is not a
+/// Chromium rasterization-equivalence guarantee and does not clip child content.
+pub fn squircle_surface(radius: f32, fill: Hsla) -> impl IntoElement {
+    canvas(|_, _, _| (), move |bounds, _, window, _| {
+        let width = f32::from(bounds.size.width);
+        let height = f32::from(bounds.size.height);
+        let radius = radius.max(0.).min(width / 2.).min(height / 2.);
+        let at = |x, y| bounds.origin + point(px(x), px(y));
+        let mut path = PathBuilder::fill();
+        path.move_to(at(radius, 0.));
+        // Top-right, bottom-right, bottom-left, top-left in winding order.
+        for step in 0..=64 {
+            let (x, y) = corner_point(radius, step);
+            path.line_to(at(width - x, y));
+        }
+        for step in (0..=64).rev() {
+            let (x, y) = corner_point(radius, step);
+            path.line_to(at(width - x, height - y));
+        }
+        for step in 0..=64 {
+            let (x, y) = corner_point(radius, step);
+            path.line_to(at(x, height - y));
+        }
+        for step in (0..=64).rev() {
+            let (x, y) = corner_point(radius, step);
+            path.line_to(at(x, y));
+        }
+        path.close();
+        if let Ok(path) = path.build() { window.paint_path(path, fill); }
+    }).absolute().inset_0()
+}
+
 /// Cover only the outside of each corner with its immediate parent's solid
 /// background. Attach last to a relative, square control; adds no hitboxes.
 pub fn squircle_cutouts(radius: f32, backdrop: Hsla) -> impl IntoElement {
