@@ -366,5 +366,15 @@
       "paths": 4
     },
     "pageErrors": []
+  },
+  "unifiedFileIcon": {
+    "fixtures": [
+      "PDF",
+      "Figma",
+      "Google document"
+    ],
+    "removeAndSubmit": true,
+    "pageErrors": [],
+    "sourceRenderer": "IOi"
   }
 }

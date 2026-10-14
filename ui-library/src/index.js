@@ -1,3 +1,4 @@
+export {createFileIcon} from './FileIcon.js';
 export {createProviderArtwork} from './ProviderArtwork.js';
 export {resolveFileIcon,describeFileArtwork,resolveFileProvider} from './fileIconSelection.js';
 export {createFileTypeGlyph,fileIconAssets,textFileIconAssets} from './FileTypeGlyph.js';

@@ -350,6 +350,16 @@
       "manifest": "provider-artwork-manifest.json",
       "transformation": "Original 35 asset initializers, light/dark Figma bodies, table, gradient detector and view functions. Explicit runtime/theme adapter.",
       "status": "All preset render tests and gradient uniqueness pass. Figma/Office live demo and Figma theme change verified. Full generic legacy file renderer pending."
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "components": [
+        "FileIcon",
+        "legacyFileArtwork"
+      ],
+      "manifest": "file-icon-manifest.json",
+      "transformation": "Original renderer, SVG wrapper, 20-entry legacy artwork family and table; adapters reuse previously extracted original components.",
+      "status": "Source identity, 160 format/size/variant cases, provider/artifact rendering and local browser attachment flow verified. Full app parity not implied."
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

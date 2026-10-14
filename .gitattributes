@@ -25,3 +25,5 @@ ui-library/src/FileTypeGlyph.js -text
 ui-library/src/fileIconSelection.js -text
 
 ui-library/src/ProviderArtwork.js -text
+
+ui-library/src/FileIcon.js -text

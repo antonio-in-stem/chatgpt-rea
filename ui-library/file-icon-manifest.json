@@ -1,0 +1,20 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "H5",
+    "_Ti",
+    "bTi",
+    "vTi",
+    "IOi",
+    "DOi",
+    "jOi",
+    "NOi"
+  ],
+  "bodySha256": "e595da1b9c62949e5af784e4195ae1110bcb7239935fc7ac3f9a7025eec5ef53",
+  "transformation": "Original IOi renderer, H5 SVG wrapper, legacy artwork initializer and lookup, additional text presets. Runtime and reused dependencies explicit; compiler cache retained.",
+  "limits": [
+    "FileIcon source branches extracted; whole-screen visual parity remains unverified",
+    "Caller supplies original metadata; demo still local fixtures"
+  ]
+}

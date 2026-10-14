@@ -8,7 +8,7 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 import * as ReactDOM from 'react-dom';
 import {motion,AnimatePresence,MotionConfig,useMotionValue,LayoutGroup,useIsPresent} from 'framer-motion';
-import {createReaUI,createProviderArtwork,createFileTypeGlyph,createAttachmentThumbnail,createResourceCards,createComposerContextAction,createTooltip,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
+import {createReaUI,createFileIcon,createAttachmentThumbnail,createResourceCards,createComposerContextAction,createTooltip,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
 import {createDecisionFlow} from './DecisionFlow.js';
 const searchIcons=createSearchIcons(React,classNames);
 const AnimatedIcon=createAnimatedNavigationIcon({React,AnimatedIcon:createAnimatedArtwork({React})});
@@ -17,8 +17,7 @@ const {ComposerLayout}=createComposerLayout({React,motion,useMotionValue,useDark
 const {Tooltip,TooltipProvider}=createTooltip({React,ReactDOM,ShortcutBadge:ui.ShortcutBadge});
 const composerActions=createComposerActions({React,motion,Spinner:ui.Spinner,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon,Tooltip,morphingEnabled:true});
 const contextActions=createComposerContextAction({React,Button:ui.Button,Tooltip,ShortcutBadge:ui.ShortcutBadge,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon});
-const {ProviderArtwork}=createProviderArtwork({React,AssetIcon:ui.AssetIcon,useDarkTheme:ui.useDarkTheme});
-const FileTypeGlyph=createFileTypeGlyph({React,AssetIcon:ui.AssetIcon});
+const {FileIcon}=createFileIcon({React,AssetIcon:ui.AssetIcon,useDarkTheme:ui.useDarkTheme});
 const resources=createResourceCards({React,AssetIcon:ui.AssetIcon});
 // Authored local image provider; does not emulate the original upload/query service.
 function useLocalThumbnailQuery({source}){
@@ -27,7 +26,7 @@ function useLocalThumbnailQuery({source}){
  return {data:result?.file===file?result.data:undefined,isError:false};
 }
 const thumbnails=createAttachmentThumbnail({React,AttachmentUploadProgress:resources.AttachmentUploadProgress,useThumbnailQuery:useLocalThumbnailQuery,useAccountId:()=> 'local'});
-const ConversationFlow=createConversationFlow(React,{...ui,...resources,...thumbnails,FileTypeGlyph,ProviderArtwork,...composerActions,...contextActions,ComposerLayout});
+const ConversationFlow=createConversationFlow(React,{...ui,...resources,...thumbnails,FileIcon,...composerActions,...contextActions,ComposerLayout});
 const ViewerFlow=createViewerFlow(React,ui);
 const SidebarFlow=createSidebarFlow(React,ui);
 const SearchFlow=createSearchFlow(React,ui);

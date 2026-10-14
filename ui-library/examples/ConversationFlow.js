@@ -1,13 +1,9 @@
-import {resolveFileIcon} from '../src/fileIconSelection.js';
 import {describeFile} from '../src/fileDescriptor.js';
 // Authored local flow connecting recovered surfaces; not an original conversation screen.
 export function createConversationFlow(React,ui){
  const h=React.createElement,C=ui.ComposerLayout;
  function LocalFileIcon({file}){
-  const selection=resolveFileIcon({fileName:file.name,mimeType:file.type});
-  return selection.kind==='brand'||selection.iconKey==='figma-document'||selection.iconKey==='ms-office-document'
-   ?h(ui.ProviderArtwork,{artwork:selection.kind==='brand'?selection.brand:selection.iconKey,size:16})
-   :h(ui.FileTypeGlyph,{iconKey:selection.iconKey});
+  return h(ui.FileIcon,{fileName:file.name,mimeType:file.type,size:16});
  }
  function LocalImageAttachment({file,onRemove}){
   const [mountedAt]=React.useState(ui.thumbnailMountedAt),source=React.useMemo(()=>({file:{accountId:'local',blob:file}}),[file]);
