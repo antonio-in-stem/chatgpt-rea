@@ -1,0 +1,45 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "records": [
+    {
+      "symbol": "FMs",
+      "sha256": "b4f0a0565e44512c8aa38a7febefc3428c8ce8776fd290284c91e02e7ea1c4a9"
+    },
+    {
+      "symbol": "MMs",
+      "sha256": "a47fcb32d31c44a76b903b1b15ffa8552d8c1389a027e043fb4907cada5f6d5b"
+    },
+    {
+      "symbol": "EMs",
+      "sha256": "07d2c1b2617e4ef8f749503ddd1b081d4bad8a8e40be2e12dd10c0cb53be23f1"
+    }
+  ],
+  "dependencies": {
+    "FMs": {
+      "WorkspaceShell": "sDs",
+      "ContentBoundary": "iDi",
+      "NavigationContext": "Lni",
+      "slots": "kG"
+    },
+    "MMs": {
+      "WorkspaceRegistration": "CDs",
+      "WorkspaceTabs": "yDs",
+      "workspace": "AMs"
+    },
+    "EMs": {
+      "TabFallback": "_Ms",
+      "TabActionContainer": "bMs",
+      "TabButton": "DDs",
+      "PlusIcon": "Jl",
+      "Tooltip": "Pn",
+      "dispatchCommand": "Mw",
+      "openNewTab": "Jfa"
+    }
+  },
+  "limits": [
+    "WorkspaceShell, content boundary, registration and panel slot implementations remain caller-supplied dependencies",
+    "Browser capability, navigation state and side effects are explicit host adapters",
+    "Composition extraction does not establish complete settings-window rendering or screenshot parity"
+  ]
+}

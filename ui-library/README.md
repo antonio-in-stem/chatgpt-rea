@@ -629,3 +629,9 @@ Validation: seven host-dropdown/artwork tests pass, including original source id
 `AccentPalette.js` preserves the distributed `BUr`, `VUr`, `HUr` and `$B` bodies, exposing normalization, serialization, theme resolution, seven accent colors, their classes and legacy color mappings. The host fixture now uses the original blue accent resolver instead of an uncolored local adapter. Theme selection remains supplied by the existing demo theme hook; host color selection is demo data.
 
 Validation: six focused palette/artwork tests pass. Browser verification confirms the remote icon changes from `rgb(2, 133, 255)` in light theme to `rgb(51, 156, 255)` in dark theme, with no page errors. The example builds; the pre-existing Lottie direct-eval warning remains. This verifies the recovered color behavior, not full-window visual parity.
+
+### Settings workspace composition
+
+`createSettingsWorkspace` preserves the distributed `FMs`, `MMs` and `EMs` functions: navigation context inheritance/override, contextual sidebar forwarding, full-bleed content, conditional `/settings` persistent workspace panels and the New tab action. New tab retains the original hidden route, fallback menu, browser command and generic tab branches. State, effects and slot implementations are named explicit factory dependencies; the manifest records their original symbols.
+
+Three focused tests verify exact recovered bodies and the navigation/panel/action branches using test slot adapters. Those adapters only observe composition; they do not establish original shell rendering. The complete `sDs` shell, content-boundary lifecycle and panel registration implementations still require integration; this module is not advertised as a finished settings window or screenshot match.

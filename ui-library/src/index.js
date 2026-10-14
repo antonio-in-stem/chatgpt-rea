@@ -163,3 +163,4 @@ export {createSettingsHostDropdown} from './SettingsHostDropdown.js';
 export {createSettingsLocalHostIcon,createSettingsRemoteHostIcon} from './SettingsHostArtwork.js';
 export {createSettingsHostSharedArtwork} from './SettingsHostSharedArtwork.js';
 export {normalizeAccent,serializeAccent,resolveAccent,accentClasses,accentOrder,accentColors,legacyAccentColors} from './AccentPalette.js';
+export {createSettingsWorkspace} from './SettingsWorkspace.js';
