@@ -25,7 +25,7 @@
     "Ecr"
   ],
   "sharedBodySha256": "ba21f93aa3041c97fd2aa04080fc0b2e7114cc53b724c52253517a079f3a6a77",
-  "transformation": "Original function bodies; compiler memo optimization removed. Runtime feature flag becomes explicit morphingEnabled. Shipped voice preset uses trusted static normalization without generic validator/freezing; no gradients in this preset. Tooltip integration is explicit.",
+  "transformation": "Original function bodies and React compiler cache retained. Runtime feature flag becomes explicit morphingEnabled. Shipped voice preset uses trusted static normalization without generic validator/freezing; no gradients in this preset. Tooltip integration is explicit.",
   "limits": [
     "Tooltip implementation not included; required for tooltip/blocked/morphing wrapper branches",
     "Matched original screenshot and animation timing comparison pending",

@@ -1,10 +1,11 @@
 // Generated original composer action and morph geometry. See composer-actions-manifest.json.
 import {classNames as ng} from './classNames.js';
 import {createMotionPreference} from './motionPreference.js';
-export function createComposerActions({React,motion,Spinner,ResponsiveIcon,AssetIcon,Tooltip,morphingEnabled=false,motionPreference}){
+export function createComposerActions({React,motion,Spinner,ResponsiveIcon,AssetIcon,Tooltip,morphingEnabled=false,motionPreference,compilerRuntime=React.__COMPILER_RUNTIME}){
+ if(!compilerRuntime?.c)throw new TypeError('React compiler runtime is required');
  const e=fn=>fn,t=e,us=()=>{},o=us;
  const runtime={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},W=()=>runtime,K=W;
- const rRt={c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},FLt=rRt,$Lt=rRt,iRt=React,eRt=React,nC=runtime,ILt=runtime,tC=runtime,Kl=motion;
+ const rRt=compilerRuntime,FLt=rRt,$Lt=rRt,iRt=React,eRt=React,nC=runtime,ILt=runtime,tC=runtime,Kl=motion;
  const ft=createMotionPreference(React,motionPreference),fs=key=>Boolean(key && morphingEnabled),ei=Spinner,rm=ResponsiveIcon;
  function missingTooltip(){throw new Error('Composer action tooltips require a recovered-compatible Tooltip adapter');}
  const Pn=Tooltip??missingTooltip;

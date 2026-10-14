@@ -224,7 +224,7 @@
         "ComposerLayout (root and 19 subcomponents)"
       ],
       "manifest": "composer-manifest.json",
-      "transformation": "Generated original function bodies with explicit React/motion/theme adapters; original context defaults and CSS mapping retained. Compiler memo optimization omitted.",
+      "transformation": "Generated original function bodies with explicit React/motion/theme adapters; original context defaults, CSS mapping and React compiler cache retained.",
       "status": "Original function identity and differential variant/focus tests; browser responsive layout at 1100/500px and local submission verified. Original screen/animation parity not verified.",
       "limitations": [
         "ProseMirror editor and original action controls not yet extracted",
@@ -242,7 +242,7 @@
         "ComposerMorphingIcon"
       ],
       "manifest": "composer-actions-manifest.json",
-      "transformation": "Original action and morph function bodies with explicit runtime dependencies. Source feature flag exposed as morphingEnabled; tooltip implementation remains an adapter.",
+      "transformation": "Original action and morph function bodies and React compiler cache retained. Source feature flag exposed as morphingEnabled; Tooltip supplied by recovered factory.",
       "status": "Differential branches and SVG/path/transition checks; browser click submission verified. Real morph animation and matched screenshot parity pending."
     },
     {

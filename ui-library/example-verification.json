@@ -300,5 +300,21 @@
       "Authored picker and filename rows",
       "Original context menu/cards and matched screenshot pending"
     ]
+  },
+  "composerMemoRegression": {
+    "pageErrors": [],
+    "consoleErrors": [],
+    "draftRetainedAcross": [
+      "single-line layout toggle",
+      "compact bubble toggle",
+      "dark/light theme toggle"
+    ],
+    "tooltip": "Send message\nEnter",
+    "submitted": "Draft retained across render changes",
+    "cleared": "",
+    "focusRestored": true,
+    "limits": [
+      "Original screenshot parity remains pending"
+    ]
   }
 }

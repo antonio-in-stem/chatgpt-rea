@@ -11,10 +11,11 @@ const body=names.map(n=>definition(initial,n)).join('\n'),sharedBody=helpers.map
 const output=`// Generated original composer action and morph geometry. See composer-actions-manifest.json.
 import {classNames as ng} from './classNames.js';
 import {createMotionPreference} from './motionPreference.js';
-export function createComposerActions({React,motion,Spinner,ResponsiveIcon,AssetIcon,Tooltip,morphingEnabled=false,motionPreference}){
+export function createComposerActions({React,motion,Spinner,ResponsiveIcon,AssetIcon,Tooltip,morphingEnabled=false,motionPreference,compilerRuntime=React.__COMPILER_RUNTIME}){
+ if(!compilerRuntime?.c)throw new TypeError('React compiler runtime is required');
  const e=fn=>fn,t=e,us=()=>{},o=us;
  const runtime={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},W=()=>runtime,K=W;
- const rRt={c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},FLt=rRt,$Lt=rRt,iRt=React,eRt=React,nC=runtime,ILt=runtime,tC=runtime,Kl=motion;
+ const rRt=compilerRuntime,FLt=rRt,$Lt=rRt,iRt=React,eRt=React,nC=runtime,ILt=runtime,tC=runtime,Kl=motion;
  const ft=createMotionPreference(React,motionPreference),fs=key=>Boolean(key && morphingEnabled),ei=Spinner,rm=ResponsiveIcon;
  function missingTooltip(){throw new Error('Composer action tooltips require a recovered-compatible Tooltip adapter');}
  const Pn=Tooltip??missingTooltip;
@@ -31,4 +32,4 @@ ${body}
 `;
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 fs.writeFileSync(path.join(root,'src/ComposerActions.js'),output);
-fs.writeFileSync(path.join(root,'composer-actions-manifest.json'),JSON.stringify({source:path.basename(process.argv[2]),sourceSha256:createHash('sha256').update(initial).digest('hex'),symbols:names,bodySha256:createHash('sha256').update(body).digest('hex'),sharedSource:path.basename(process.argv[3]),sharedSha256:createHash('sha256').update(shared).digest('hex'),sharedSymbols:helpers,sharedBodySha256:createHash('sha256').update(sharedBody).digest('hex'),transformation:'Original function bodies; compiler memo optimization removed. Runtime feature flag becomes explicit morphingEnabled. Shipped voice preset uses trusted static normalization without generic validator/freezing; no gradients in this preset. Tooltip integration is explicit.',limits:['Tooltip implementation not included; required for tooltip/blocked/morphing wrapper branches','Matched original screenshot and animation timing comparison pending','No dictation or generation backend']},null,2)+'\n');
+fs.writeFileSync(path.join(root,'composer-actions-manifest.json'),JSON.stringify({source:path.basename(process.argv[2]),sourceSha256:createHash('sha256').update(initial).digest('hex'),symbols:names,bodySha256:createHash('sha256').update(body).digest('hex'),sharedSource:path.basename(process.argv[3]),sharedSha256:createHash('sha256').update(shared).digest('hex'),sharedSymbols:helpers,sharedBodySha256:createHash('sha256').update(sharedBody).digest('hex'),transformation:'Original function bodies and React compiler cache retained. Runtime feature flag becomes explicit morphingEnabled. Shipped voice preset uses trusted static normalization without generic validator/freezing; no gradients in this preset. Tooltip integration is explicit.',limits:['Tooltip implementation not included; required for tooltip/blocked/morphing wrapper branches','Matched original screenshot and animation timing comparison pending','No dictation or generation backend']},null,2)+'\n');

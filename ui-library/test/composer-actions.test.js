@@ -8,7 +8,7 @@ import {classNames} from '../src/classNames.js';
 const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
 const initial=read('../../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js'),shared=read('../../original-stack/state/recovered-all/readable/assets/app-shared-737655e1fb23.js'),generated=read('../src/ComposerActions.js'),manifest=JSON.parse(read('../composer-actions-manifest.json'));
 const def=(s,n)=>{const start=s.indexOf('function '+n+'(');assert(start>=0,n);return s.slice(start,s.indexOf('\n}',start)+2);};
-const React={Fragment:'fragment',createElement:(type,props)=>({type,props}),useState:initial=>[initial,()=>{}],useSyncExternalStore:(subscribe,get)=>get()};
+const React={__COMPILER_RUNTIME:{c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},Fragment:'fragment',createElement:(type,props)=>({type,props}),useState:initial=>[initial,()=>{}],useSyncExternalStore:(subscribe,get)=>get()};
 const runtime={Fragment:'fragment',jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key})};
 const motion={svg:'motion.svg',path:'motion.path'},adapters={React,motion,Spinner:'Spinner',ResponsiveIcon:'ResponsiveIcon',AssetIcon:'AssetIcon',Tooltip:'Tooltip'};
 const plain=x=>JSON.parse(JSON.stringify(x));
@@ -50,4 +50,12 @@ test('missing tooltip adapter fails explicitly only when its branch is rendered'
  const ui=createComposerActions({...adapters,Tooltip:undefined});
  assert.equal(ui.ComposerPrimaryAction({}).type,'button');
  assert.throws(()=>expand(ui.ComposerPrimaryAction({tooltipContent:'Send'})),/Tooltip adapter/);
+});
+
+test('primary action retains memoized element/click handler until inputs change',()=>{
+ let slots;const compilerRuntime={c:n=>slots??=Array(n).fill(Symbol.for('react.memo_cache_sentinel'))};
+ const {ComposerPrimaryAction}=createComposerActions({...adapters,compilerRuntime}),onClick=()=>{};
+ const first=ComposerPrimaryAction({ariaLabel:'Send',onClick}),second=ComposerPrimaryAction({ariaLabel:'Send',onClick});
+ assert.equal(first,second);assert.equal(first.props.onClick,second.props.onClick);
+ const changed=ComposerPrimaryAction({ariaLabel:'Send',onClick,disabled:true});assert.notEqual(changed,first);assert.equal(changed.props.disabled,true);assert.notEqual(changed.props.onClick,first.props.onClick);
 });

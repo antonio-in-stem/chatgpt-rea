@@ -1,9 +1,9 @@
 import {classNames as ng} from './classNames.js';
 import {createMotionPreference} from './motionPreference.js';
 // Generated from shipped functions. See composer-manifest.json.
-export function createComposerLayout({React,motion,useMotionValue,useDarkTheme,MotionConfig,LayoutGroup,AnimatePresence,useIsPresent,motionPreference,visualScale=1}){
-if(!React.createContext||!motion?.div||!useMotionValue||!useDarkTheme)throw new TypeError('React, motion.div, useMotionValue and useDarkTheme are required');
-const XS=React,OLt=React,YS={c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},DLt=YS;
+export function createComposerLayout({React,motion,useMotionValue,useDarkTheme,MotionConfig,LayoutGroup,AnimatePresence,useIsPresent,motionPreference,visualScale=1,compilerRuntime=React.__COMPILER_RUNTIME}){
+if(!React.createContext||!motion?.div||!useMotionValue||!useDarkTheme||!compilerRuntime?.c)throw new TypeError('React, motion.div, useMotionValue, useDarkTheme and compiler runtime are required');
+const XS=React,OLt=React,YS=compilerRuntime,DLt=YS;
 const ZS={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},kLt=ZS;
 const Kl=motion,Lm=useMotionValue,Vd=useDarkTheme;
 const Ege=MotionConfig,BMe=LayoutGroup,Yp=AnimatePresence,EOe=useIsPresent;

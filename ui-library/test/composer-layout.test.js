@@ -8,7 +8,7 @@ import {classNames} from '../src/classNames.js';
 const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
 const source=read('../../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js'),generated=read('../src/ComposerLayout.js'),manifest=JSON.parse(read('../composer-manifest.json'));
 const definition=(text,name)=>{const start=text.indexOf('function '+name+'(');return text.slice(start,text.indexOf('\n}',start)+2);};
-const React={Fragment:'fragment',useId:()=> 'id',useState:init=>[typeof init==='function'?init():init,()=>{}],useEffect:()=>{},useEffectEvent:fn=>fn,useSyncExternalStore:(subscribe,snapshot)=>snapshot(),createContext:value=>({value}),useContext:c=>c.value,useRef:current=>({current}),useLayoutEffect:()=>{},createElement:(type,props)=>({type,props})};
+const React={__COMPILER_RUNTIME:{c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},Fragment:'fragment',useId:()=> 'id',useState:init=>[typeof init==='function'?init():init,()=>{}],useEffect:()=>{},useEffectEvent:fn=>fn,useSyncExternalStore:(subscribe,snapshot)=>snapshot(),createContext:value=>({value}),useContext:c=>c.value,useRef:current=>({current}),useLayoutEffect:()=>{},createElement:(type,props)=>({type,props})};
 const motion={div:'motion.div'},useMotionValue=value=>({value,set(){}}),useDarkTheme=()=>true;
 const adapters={MotionConfig:'MotionConfig',LayoutGroup:'LayoutGroup',AnimatePresence:'AnimatePresence',useIsPresent:()=>true};
 const ui=createComposerLayout({React,motion,useMotionValue,useDarkTheme,...adapters}),C=ui.ComposerLayout;
@@ -101,4 +101,12 @@ test('dictation exit restores editor focus only when the original focus guard al
   cursor=0;render({layout:'single-line'});effects.splice(0).forEach(fn=>fn());
   assert.deepEqual(calls,['body','inside'].includes(focusState)?['focus']:[]);
  }}finally{React.useRef=oldRef;React.useEffect=oldEffect;}
+});
+
+test('composer memo cache survives renders and invalidates on changed footer props',()=>{
+ let slots;const compilerRuntime={c:n=>slots??=Array(n).fill(Symbol.for('react.memo_cache_sentinel'))};
+ const {ComposerLayout}=createComposerLayout({React,motion,useMotionValue,useDarkTheme,...adapters,compilerRuntime});
+ const first=ComposerLayout.Footer({children:'same',layout:'multiline'}),second=ComposerLayout.Footer({children:'same',layout:'multiline'});
+ assert.equal(first,second);
+ const changed=ComposerLayout.Footer({children:'changed',layout:'single-line'});assert.notEqual(changed,first);assert.equal(changed.props['data-composer-layout'],'single-line');assert.equal(changed.props.children,'changed');
 });

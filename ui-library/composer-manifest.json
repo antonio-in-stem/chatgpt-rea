@@ -35,7 +35,7 @@
     "ISi"
   ],
   "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
-  "transformation": "Original function bodies with injected React/motion, original contexts and CSS map. Compiler cache recreated per render; memo optimization omitted.",
+  "transformation": "Original function bodies with injected React/motion, original contexts and CSS map. Original React compiler cache retained through injected/default React compiler runtime.",
   "limits": [
     "Motion providers/useIsPresent are injected; app motion preference and visual scale are caller adapters",
     "Editor is the original layout wrapper, not the ProseMirror editor implementation",
