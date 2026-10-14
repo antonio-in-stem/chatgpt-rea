@@ -12,15 +12,19 @@
     "yxn",
     "Cxn",
     "Exn",
-    "Dxn"
+    "Dxn",
+    "Axn"
   ],
-  "bodySha256": "edba2e38d96c9f0452c92121b775ae578899349ac71dafb0d3eeaefff5de4286",
+  "bodySha256": "23eff7b9dc04b3790da36401d56f2b44014ecf5b2e3f2e203b1eb699b309e087",
   "sharedSource": "app-shared-737655e1fb23.js",
   "sharedSymbols": [
     "SMi",
-    "ePi"
+    "ePi",
+    "rPi",
+    "iPi",
+    "aPi"
   ],
-  "sharedBodySha256": "a2b2ca907eebed257df87050d5c991f26c75d4f87cba9c6f9ca24c940850983f",
+  "sharedBodySha256": "5f7f6e97f9b0bf60e477cba30c4f63c6e99d953115b90b0e31c6f1cc518fc14a",
   "transformation": "Literal recovered function bodies, React compiler cache retained; original JSX interop and fixed initialization adapted. Link and CompactIcon explicit adapters. Fixed asset normalization only.",
   "limits": [
     "Preview and icon are caller slots; thumbnail generation and upload status controller are separate",

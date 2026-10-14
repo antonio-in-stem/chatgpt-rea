@@ -1,13 +1,15 @@
 // Generated original resource surfaces. See resource-cards-manifest.json.
 import {classNames as ng} from './classNames.js';
-export function createResourceCards({React,CompactIcon,Link,compilerRuntime=React.__COMPILER_RUNTIME}){
+import {createMotionPreference} from './motionPreference.js';
+export function createResourceCards({React,CompactIcon,Link,motionPreference,compilerRuntime=React.__COMPILER_RUNTIME}){
  if(!compilerRuntime?.c||!CompactIcon)throw new TypeError('Resource cards require React compiler runtime and original CompactIcon');
- const uk=compilerRuntime,gxn=uk,bxn=uk,wxn=uk,Oxn=uk;
- const dk={jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},_xn=dk,xxn=dk,fk=dk,pk=dk;
+ const uk=compilerRuntime,gxn=uk,bxn=uk,wxn=uk,Oxn=uk,jxn=uk,oPi=uk;
+ const dk={jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},_xn=dk,xxn=dk,fk=dk,pk=dk,Mxn=dk,sPi=dk;
+ const q=ng,ft=createMotionPreference(React,motionPreference),cPi=12,lPi=120,uPi=0,L7=100;
  const sk=Link??(()=>{throw new TypeError('ResourceCardAction href requires an explicit Link adapter')});
  const dxn={default:'px-[var(--resource-card-row-padding-x)] py-3',compact:'p-1.5'},fxn={default:'py-3 pe-10 ps-[var(--resource-card-row-padding-x)]',compact:'py-1.5 pe-6 ps-1.5'};
  const t=fn=>fn,o=()=>{},Q=()=>{},K=()=>dk,Z=asset=>({...asset,body:asset.body.trim(),hasGradients:false});
- let bMi,xMi,$Ni;
+ let bMi,xMi,$Ni,tPi,nPi;
 function SMi() {
   return (SMi = t(() => {
     (o(),
@@ -57,7 +59,131 @@ function ePi() {
       })));
   }))();
 }
- SMi();ePi();const Zc=xMi,IPe=$Ni,cp=CompactIcon;
+function rPi() {
+  return (rPi = t(() => {
+    ((tPi = `_fillOnMount_77ve5_1`),
+      (nPi = { fillOnMount: tPi, "progression-donut-fill": `_progression-donut-fill_77ve5_14` }));
+  }))();
+}
+function iPi(e) {
+  return !Number.isFinite(e) || e < uPi ? uPi : e > L7 ? L7 : e;
+}
+function aPi(e) {
+  let t = (0, oPi.c)(29),
+    {
+      className: n,
+      progressClassName: r,
+      animateOnMount: i,
+      animateOnMountDelayMs: a,
+      percent: o,
+      reducedMotion: s,
+      size: c,
+      strokeWidth: l,
+      transitionDurationMs: u,
+    } = e,
+    d = i !== void 0 && i,
+    f = a === void 0 ? 0 : a,
+    p = s !== void 0 && s,
+    m = c === void 0 ? cPi : c,
+    h = l === void 0 ? 2 : l,
+    g = u === void 0 ? lPi : u,
+    _ = (m - h) / 2,
+    v = iPi(o),
+    y = L7 - v,
+    b = `0 0 ${m} ${m}`,
+    x;
+  t[0] === n ? (x = t[1]) : ((x = q(`shrink-0`, n)), (t[0] = n), (t[1] = x));
+  let S = m / 2,
+    C = m / 2,
+    w;
+  t[2] !== _ || t[3] !== h || t[4] !== C || t[5] !== S
+    ? ((w = (0, sPi.jsx)(`circle`, {
+        cx: S,
+        cy: C,
+        r: _,
+        stroke: `currentColor`,
+        strokeWidth: h,
+        fill: `none`,
+        opacity: 0.16,
+      })),
+      (t[2] = _),
+      (t[3] = h),
+      (t[4] = C),
+      (t[5] = S),
+      (t[6] = w))
+    : (w = t[6]);
+  let T = m / 2,
+    E = m / 2,
+    D = v === uPi ? 0 : 1,
+    O = d && !p && nPi.fillOnMount,
+    k;
+  t[7] !== r || t[8] !== O ? ((k = q(r, O)), (t[7] = r), (t[8] = O), (t[9] = k)) : (k = t[9]);
+  let A = d && !p ? `${f}ms` : void 0,
+    j = p ? `none` : `stroke-dashoffset ${g}ms ease-out, opacity ${g}ms ease-out`,
+    M;
+  t[10] !== A || t[11] !== j
+    ? ((M = { animationDelay: A, transition: j }), (t[10] = A), (t[11] = j), (t[12] = M))
+    : (M = t[12]);
+  let N = `rotate(-90 ${m / 2} ${m / 2})`,
+    P;
+  t[13] !== y ||
+  t[14] !== _ ||
+  t[15] !== h ||
+  t[16] !== T ||
+  t[17] !== E ||
+  t[18] !== D ||
+  t[19] !== k ||
+  t[20] !== M ||
+  t[21] !== N
+    ? ((P = (0, sPi.jsx)(`circle`, {
+        cx: T,
+        cy: E,
+        r: _,
+        stroke: `currentColor`,
+        strokeWidth: h,
+        opacity: D,
+        strokeLinecap: `round`,
+        fill: `none`,
+        pathLength: L7,
+        strokeDasharray: L7,
+        strokeDashoffset: y,
+        className: k,
+        style: M,
+        transform: N,
+      })),
+      (t[13] = y),
+      (t[14] = _),
+      (t[15] = h),
+      (t[16] = T),
+      (t[17] = E),
+      (t[18] = D),
+      (t[19] = k),
+      (t[20] = M),
+      (t[21] = N),
+      (t[22] = P))
+    : (P = t[22]);
+  let F;
+  return (
+    t[23] !== m || t[24] !== w || t[25] !== P || t[26] !== b || t[27] !== x
+      ? ((F = (0, sPi.jsxs)(`svg`, {
+          "aria-hidden": `true`,
+          width: m,
+          height: m,
+          viewBox: b,
+          className: x,
+          children: [w, P],
+        })),
+        (t[23] = m),
+        (t[24] = w),
+        (t[25] = P),
+        (t[26] = b),
+        (t[27] = x),
+        (t[28] = F))
+      : (F = t[28]),
+    F
+  );
+}
+ SMi();ePi();rPi();const Zc=xMi,IPe=$Ni,cp=CompactIcon,xWe=aPi;
 function nxn(e) {
   let t = (0, uk.c)(18),
     { className: n, as: r, children: i, variant: a } = e,
@@ -773,5 +899,47 @@ function Dxn(e) {
     a
   );
 }
- return {ResourceCard:nxn,ResourceCardAction:rxn,ResourceCardIcon:ixn,ResourceCardThumbnail:axn,ResourceCardRow:oxn,AttachmentRemoveButton:mxn,AttachmentCard:yxn,AttachmentPill:Cxn,AttachmentPreviewCard:Exn,AttachmentPreviewCaption:Dxn};
+function Axn(e) {
+  let t = (0, jxn.c)(8),
+    { label: n, percentage: r } = e,
+    i = ft(),
+    a = r == null || r === 0,
+    o = a ? void 0 : r,
+    s = a && !i ? `motion-safe:animate-spin` : void 0,
+    c = a ? 25 : r,
+    l;
+  t[0] !== i || t[1] !== s || t[2] !== c
+    ? ((l = (0, Mxn.jsx)(xWe, {
+        className: s,
+        percent: c,
+        reducedMotion: i,
+        size: 24,
+        strokeWidth: 2,
+      })),
+      (t[0] = i),
+      (t[1] = s),
+      (t[2] = c),
+      (t[3] = l))
+    : (l = t[3]);
+  let u;
+  return (
+    t[4] !== n || t[5] !== o || t[6] !== l
+      ? ((u = (0, Mxn.jsx)(`span`, {
+          className: `absolute inset-0 flex items-center justify-center bg-media-background/50 text-media-foreground backdrop-blur-xs`,
+          role: `progressbar`,
+          "aria-label": n,
+          "aria-valuemin": 0,
+          "aria-valuemax": 100,
+          "aria-valuenow": o,
+          children: l,
+        })),
+        (t[4] = n),
+        (t[5] = o),
+        (t[6] = l),
+        (t[7] = u))
+      : (u = t[7]),
+    u
+  );
+}
+ return {ProgressRing:aPi,AttachmentUploadProgress:Axn,ResourceCard:nxn,ResourceCardAction:rxn,ResourceCardIcon:ixn,ResourceCardThumbnail:axn,ResourceCardRow:oxn,AttachmentRemoveButton:mxn,AttachmentCard:yxn,AttachmentPill:Cxn,AttachmentPreviewCard:Exn,AttachmentPreviewCaption:Dxn};
 }

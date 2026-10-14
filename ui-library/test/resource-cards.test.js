@@ -29,3 +29,26 @@ test('removal isolates events and preserves pill keyboard activation',()=>{
  const control=pill.props.children[2];control.props.onKeyDown(event('Escape'));assert.deepEqual(calls,[]);
  control.props.onKeyDown(event('Enter'));control.props.onKeyDown(event(' '));assert.deepEqual(calls,['prevent','stop','remove','prevent','stop','remove']);
 });
+
+
+test('progress ring clamps invalid percentages and preserves motion and geometry',()=>{
+ const ui=createResourceCards({React,CompactIcon:()=>null}),h=React.createElement;
+ for(const [percent,offset,opacity] of [[-1,100,0],[NaN,100,0],[Infinity,100,0],[0,100,0],[25,75,1],[100,0,1],[101,0,1]]){
+  const markup=renderToStaticMarkup(h(ui.ProgressRing,{percent,size:24,strokeWidth:2}));
+  assert(markup.includes('stroke-dashoffset="'+offset+'"'));assert(markup.includes('opacity="'+opacity+'"'));assert(markup.includes('r="11"'));assert(markup.includes('stroke-dashoffset 120ms ease-out'));
+ }
+ const animated=renderToStaticMarkup(h(ui.ProgressRing,{percent:60,animateOnMount:true,animateOnMountDelayMs:90}));
+ assert(animated.includes('_fillOnMount_77ve5_1'));assert(animated.includes('animation-delay:90ms'));
+ const reduced=renderToStaticMarkup(h(ui.ProgressRing,{percent:60,animateOnMount:true,reducedMotion:true}));
+ assert(!reduced.includes('_fillOnMount_77ve5_1'));assert(reduced.includes('transition:none'));
+});
+test('attachment upload overlay retains determinate and indeterminate accessibility',()=>{
+ const ui=createResourceCards({React,CompactIcon:()=>null}),h=React.createElement;
+ for(const percentage of [undefined,0,45,100]){
+  const markup=renderToStaticMarkup(h(ui.AttachmentUploadProgress,{label:'Processing preview',percentage}));
+  assert(markup.includes('role="progressbar"'));assert(markup.includes('aria-label="Processing preview"'));
+  assert.equal(markup.includes('aria-valuenow='),percentage!==undefined&&percentage!==0);
+  assert.equal(markup.includes('motion-safe:animate-spin'),percentage===undefined||percentage===0);
+  assert(markup.includes('backdrop-blur-xs'));
+ }
+});
