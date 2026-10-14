@@ -58,3 +58,5 @@ ui-library/src/LoadingSurfaces.js -text
 ui-library/src/AccountSurfaces.js -text
 
 ui-library/src/DialogSurfaces.js -text
+
+ui-library/src/Dialog.js -text

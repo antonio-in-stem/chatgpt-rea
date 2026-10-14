@@ -644,5 +644,20 @@
       "Test-only outer placement; styled XMi/tNi wrapper pending",
       "Not a screenshot parity check"
     ]
+  },
+  "styledDialog": {
+    "width": 380,
+    "radius": "25px",
+    "beforeHeight": 206,
+    "afterMeasuredHeight": 269,
+    "heightReady": true,
+    "closeReturnsFocus": true,
+    "escapeCloses": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local content example",
+      "Responsive/zoom/variant matrix not fully browser-verified",
+      "No matched installed-app screenshot"
+    ]
   }
 }

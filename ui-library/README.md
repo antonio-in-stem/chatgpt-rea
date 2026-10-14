@@ -385,3 +385,11 @@ The demo combines the original flyout/avatar/label components with recovered rad
 `createDialogSurfaces({React,Button})` exports original DialogBody, DialogHeader, DialogSection, DialogFooter and dialogBodySizeClass. Body preserves form attributes and confirmation/scroll/viewport variants; Header retains optional icon, title/subtitle sizing and tones; Footer identifies the original Button component, supplies default medium size and expands a sole button. Source debug layout classes/localStorage flag remain intact.
 
 Browser primitive harness verified initial input focus, Tab to close, Tab wrap, Escape returning focus and outside-overlay dismissal without errors. The harness uses test-only outer positioning and is not a recovered modal appearance. Seven focused layout/engine tests pass. The styled XMi/tNi controller, account-replacement dialog and full-window visual parity remain pending. These surfaces alone are not a complete styled dialog.
+
+### Complete styled dialog
+
+`createDialog({React,primitives,tooltip,AssetIcon,visualScale?,formatMessage?,IntlContext?})` now exports original Dialog (XMi), DialogContent (tNi), DialogTrigger, DialogTitle, DialogDescription, DialogOverlay, DialogClose and dialogWidthClass. Supply `createMenuEngine(...).Dialog` and the full createTooltip result. All eleven controller/helper bodies, CSS-map initializer and four close-icon initializers remain unchanged. This supersedes the earlier XMi/tNi pending status.
+
+The controller preserves size/surface/radius/position variants, explicit width and viewport/zoom calculations, portal containers, tooltip dismissal/overlay registration, close-button variants, outside-click cancellation, pointer isolation and ResizeObserver-driven height transitions/cleanup. Main demo DialogFlow now uses the recovered outer shell, with authored local text and expand/collapse state.
+
+Browser verified narrow width380px, computed radius25px, initial206px height changing to269px after content expansion, close-button focus return and Escape dismissal without console errors. Four focused source/variant/sizing/event tests pass. These measurements describe this local rendered case; installed-app screenshot equality, every responsive/zoom/modal combination and account replacement integration remain pending.

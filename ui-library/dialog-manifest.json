@@ -1,0 +1,31 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "XMi",
+    "eNi",
+    "tNi",
+    "YMi",
+    "$Mi",
+    "rNi",
+    "iNi",
+    "nNi",
+    "ZMi",
+    "QMi",
+    "qxi"
+  ],
+  "initializers": [
+    "JMi",
+    "SMi",
+    "yMi",
+    "Wcr",
+    "Kcr"
+  ],
+  "bodySha256": "c9f4826a5c140f58a842a23a59d66491b5d1e7d73b75c2addd907396385852c0",
+  "initializersSha256": "234843354c19cd334368cdda915f4ad6ce38ae07295e28b54bd9393e0bd13a83",
+  "transformation": "Original function bodies, CSS map and all close icon variants retained; React/engine/tooltip/intl/scale supplied explicitly.",
+  "limits": [
+    "Not all size/variant/zoom/nested dialog combinations browser-verified",
+    "Full-window screenshot fidelity remains unverified"
+  ]
+}
