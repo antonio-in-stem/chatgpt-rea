@@ -81,3 +81,5 @@ export function createReaUI({React, motion, AnimatePresence, MotionConfig, Conte
 }
 
 export {createLegacyButton} from './LegacyButton.js';
+
+export {createProfileControl} from './ProfileControl.js';

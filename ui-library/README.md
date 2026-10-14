@@ -266,3 +266,26 @@ AvatarFlow is an authored local photo-edit demo, not the shipped account menu. I
 `createLegacyButton({React, config})` exports `LegacyButton`, `LoadingIndicator`, and `TransitionGroup` from original shared ECe/VSe/yCe. The configuration adapter retains shipped pill/squircle/pressable defaults. Original keyed enter/exit, delayed mounting, interruption, reduced-motion branch and loading/inert semantics remain. See `legacy-button-manifest.json`. This is a different original family from the existing `Button`.
 
 The style entrypoint now includes the exact startup layer order recovered from `webview/index.html`, before the byte-identical CSS imports. Omitting it lets the reset layer override component styles, including button corners. Consumers should load this entrypoint before other Tailwind layer declarations. Browser state checks are recorded; full visual comparison remains pending.
+
+### Profile controller
+
+`createProfileControl({React, LegacyButton, Avatar, AssetIcon, ProfileMenu, useImageSource, formatMessage?, DebugControl?, DeviceControl?, motionPreference?})` exposes `ProfileControl`, `ProfileTrigger`, `ProfileLabel`, `ProfileSubtext`, `LoadingShimmer`, and `providerDisplayName`.
+
+`ProfileControl` accepts `snapshot`, `compact`, `defaultOpen`, and `hideUsage`. Its original iPo body and compiler caches are retained. The snapshot adapter replaces account/network stores:
+
+```js
+const snapshot = {
+  auth: {authMethod: 'chatgpt', accountId: 'local', userId: 'user', nameAtLogin: 'Demo User'},
+  accountQuery: {data: {structure: 'personal', name: 'Demo User'}},
+  queries: {
+    user: {data: {name: 'Demo User', picture: 'local-photo.png'}, isPending: false},
+    usage: {data: {profile_subtext: 'Local workspace'}} // optional; omit when unavailable
+  },
+  profileVisibility: {isProfileVisible: false, isProfileVisibilityLoading: false},
+  sidebarWidth: 308
+};
+```
+
+Additional optional inputs are `sessionQuery` (data accountId/userId/email), `profileQuery` (data.profile_details with display_name/profile_picture_url/username and isPending), `queries.modelProvider`, `ambientUsageEnabled`, and `navigate`. Workspace accounts use their own name/photo; the source's personal-image priority and loading branches remain intact. `useImageSource(url)` returns `{src, isError}`; local consumers can resolve local URLs directly. `ProfileMenu` receives `triggerButton`, `defaultOpen`, `hideUsage`, `hasAmbientUsageSubtext`, and `sidebarFooter` identity/width metadata. It must preserve trigger props when attaching its interaction.
+
+The original dropdown contents ZNo remain pending. Debug/process-memory and device controllers are explicit optional slots, not recovered here. Browser verification mounted the original controller/avatar/footer together: keyboard activation, 36px compact trigger with 10px radius, loading-to-photo update, and compact-to-expanded workspace identity. Its test-only menu adapter verifies trigger behavior, not original menu fidelity.

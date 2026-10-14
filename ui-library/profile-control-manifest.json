@@ -1,0 +1,30 @@
+{
+  "initial": "app-initial-b8e1c8014bb4.js",
+  "initialSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "shared": "app-shared-737655e1fb23.js",
+  "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "HNo",
+    "UNo",
+    "hNo",
+    "DNo",
+    "xRt",
+    "CRt",
+    "iC",
+    "iPo",
+    "aPo",
+    "oPo"
+  ],
+  "sharedSymbols": [
+    "u9n",
+    "f9n"
+  ],
+  "bodySha256": "0ca41b753bc31176565495cb772bfd6dbc6cf8dcf0baf9f97fc70062b565b8d5",
+  "transformation": "Original full iPo controller, trigger, text, shimmer and settings artwork bodies. Data hooks resolve explicit snapshot query results through React context. Menu/image proxy/debug/device boundaries are caller adapters, not recovered implementations.",
+  "limits": [
+    "Original ZNo menu contents pending",
+    "Debug and device controllers are explicit optional slots",
+    "Image proxy replaced by caller image-source hook",
+    "Full-window visual parity unverified"
+  ]
+}

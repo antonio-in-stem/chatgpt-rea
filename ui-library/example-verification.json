@@ -413,5 +413,26 @@
       "No matched original screenshot",
       "Reduced-motion browser case pending"
     ]
+  },
+  "profileControl": {
+    "source": "iPo/aPo with original Avatar and ProfileFooter",
+    "compact": {
+      "width": 36,
+      "height": 36,
+      "borderRadius": "10px",
+      "initials": "DU"
+    },
+    "keyboardEnterActivatedAdapter": true,
+    "workspaceLoadingAriaBusy": true,
+    "workspacePhoto": {
+      "naturalWidth": 24,
+      "hidden": false
+    },
+    "expandedLabel": "Demo Team",
+    "regression": "Missing usage query remains undefined; expanded state no longer crashes",
+    "limits": [
+      "Menu adapter is test-only; ZNo contents pending",
+      "No matched original screenshot"
+    ]
   }
 }
