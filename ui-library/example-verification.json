@@ -285,7 +285,7 @@
     "afterRemoval": [
       "sample-b.txt"
     ],
-    "submitted": "Attachment verification — sample-b.txt",
+    "submitted": "Attachment verification \u00e2\u20ac\u201d sample-b.txt",
     "attachmentsCleared": true,
     "inputFocused": true,
     "button": {
@@ -676,6 +676,24 @@
     "limits": [
       "Fake accounts and local async operation only",
       "Browser account session controller not recovered",
+      "No installed-app screenshot comparison"
+    ]
+  },
+  "keyboardShortcuts": {
+    "entry": "Profile Help > Keyboard shortcuts",
+    "autofocus": true,
+    "width": 600,
+    "radius": "25px",
+    "filteredProjectRows": 1,
+    "noMatches": true,
+    "clearRestoresRows": 4,
+    "clearReturnsInputFocus": true,
+    "escapeClosesEvenWithQuery": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local command descriptors; no global hotkey registration",
+      "Document capture dismissal runs before input Escape handler",
+      "Codex presentation only; Work settings editor pending",
       "No installed-app screenshot comparison"
     ]
   }

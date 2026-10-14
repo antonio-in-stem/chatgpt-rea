@@ -344,5 +344,33 @@ function vNi(e) {
 function yNi(e, t) {
   return !P7.isValidElement(t) || t.type !== r5 ? e : e + 1;
 }
- mNi();return {DialogBody:_Ni,DialogHeader:gNi,DialogSection:bNi,DialogFooter:vNi,dialogBodySizeClass:hNi};
+function xNi(e) {
+  let t = (0, N7.c)(9),
+    { children: n, className: r } = e,
+    i,
+    a;
+  t[0] === r
+    ? ((i = t[1]), (a = t[2]))
+    : ((i = j7()),
+      (a = q(`relative flex items-center gap-2`, i && I7, r)),
+      (t[0] = r),
+      (t[1] = i),
+      (t[2] = a));
+  let o;
+  t[3] === i
+    ? (o = t[4])
+    : ((o = i ? (0, F7.jsx)(M7, { name: `FormRow` }) : null), (t[3] = i), (t[4] = o));
+  let s;
+  return (
+    t[5] !== n || t[6] !== a || t[7] !== o
+      ? ((s = (0, F7.jsxs)(`div`, { className: a, children: [o, n] })),
+        (t[5] = n),
+        (t[6] = a),
+        (t[7] = o),
+        (t[8] = s))
+      : (s = t[8]),
+    s
+  );
+}
+ mNi();return {DialogBody:_Ni,DialogHeader:gNi,DialogSection:bNi,DialogFooter:vNi,DialogFormRow:xNi,dialogBodySizeClass:hNi};
 }

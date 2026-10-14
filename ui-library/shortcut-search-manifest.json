@@ -1,0 +1,22 @@
+{
+  "sources": [
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "symbols": [
+        "PJa"
+      ]
+    },
+    {
+      "file": "keyboard-shortcuts-search-input-bd702cb80586.js",
+      "sha256": "43d0d571e8e2058d1bd4e1697ff60c6e2b646ced4f6f7ad998beef81268e874f",
+      "symbols": [
+        "c"
+      ]
+    }
+  ],
+  "limits": [
+    "Icon dependencies reuse recovered SearchIcons",
+    "Keystroke recording is supplied by caller; wrapper only preserves capture presentation and key handling"
+  ]
+}

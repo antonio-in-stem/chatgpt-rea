@@ -62,3 +62,10 @@ ui-library/src/DialogSurfaces.js -text
 ui-library/src/Dialog.js -text
 
 ui-library/src/AccountReplacementDialog.js -text
+
+ui-library/src/SearchField.js -text
+ui-library/src/ShortcutSearchInput.js -text
+
+ui-library/src/SettingsSurfaces.js -text
+ui-library/src/ShortcutMatching.js -text
+ui-library/src/KeyboardShortcuts.js -text

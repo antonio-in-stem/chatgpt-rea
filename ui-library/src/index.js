@@ -110,3 +110,9 @@ export {createDialogSurfaces} from './DialogSurfaces.js';
 export {createDialog} from './Dialog.js';
 
 export {createAccountReplacementDialog} from './AccountReplacementDialog.js';
+
+export {createShortcutSearchInput} from './ShortcutSearchInput.js';
+
+export {createSettingsSurfaces} from './SettingsSurfaces.js';
+export {createKeyboardShortcuts} from './KeyboardShortcuts.js';
+export {shortcutMatchScore} from './ShortcutMatching.js';

@@ -1,0 +1,55 @@
+{
+  "sources": [
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "symbols": [
+        "b6s",
+        "w6s",
+        "T6s",
+        "E6s"
+      ]
+    },
+    {
+      "file": "app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "symbols": [
+        "tVi",
+        "dxi"
+      ]
+    },
+    {
+      "file": "keyboard-shortcuts-dialog-ba16436f11ce.js",
+      "sha256": "261b9c572d0fa5149ec574abd1711279d46ed01d31fd3e5c73dd671ef6c5f157",
+      "symbols": [
+        "Oe",
+        "Pe",
+        "Fe",
+        "J",
+        "Ie",
+        "Le"
+      ]
+    }
+  ],
+  "fuzzy": {
+    "start": "function k2(",
+    "endBefore": "function m4o(",
+    "sha256": "02e25d417dce395fa2bdb57f5cb25a4b6b15c5f87b916c3460e1b514550d9747"
+  },
+  "sectionOrder": [
+    "thread",
+    "navigation",
+    "panels",
+    "workspace",
+    "skills",
+    "configure",
+    "app",
+    "general"
+  ],
+  "limits": [
+    "Original Pe/Fe/J/Ie/Le/Oe and fuzzy matcher retained",
+    "je host capability/keymap command discovery is not recovered; items supplied by caller",
+    "Work-mode ChatGPT settings dialog is a different branch and remains pending",
+    "No installed-app screenshot parity claim"
+  ]
+}

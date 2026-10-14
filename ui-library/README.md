@@ -90,7 +90,7 @@ Reproduce this extraction with `node scripts/extract-animations.mjs ../original-
 
 The wrapper accepts `{animation, Icon, staticIcon, className}`. It finds the enclosing button/menuitem, preserves the original idle/loading/ready visibility, and cancels timers and event listeners on cleanup. Tests execute both this extraction and the recovered `par` with identical states/events: mouse-only 300 ms delay, focus-visible gating, blur/leave, ready/completion, missing target and reduced motion. These are controlled structural/event comparisons. Browser activation, keyboard action and reduced-motion checks are recorded below; matched visual parity remains unverified.
 
-`createNavigationFallbackIcons(React)` also exposes those seven SVG components independently. Their 20×20 geometry, currentColor paint, and original prop precedence are preserved. `navigation-icons-manifest.json` records their symbols and source hash. This registry is the one used by animation fallback rendering; it is not a complete catalog of rail icons. Regenerate using `node scripts/extract-navigation-icons.mjs ../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js`.
+`createNavigationFallbackIcons(React)` also exposes those seven SVG components independently. Their 20Ã—20 geometry, currentColor paint, and original prop precedence are preserved. `navigation-icons-manifest.json` records their symbols and source hash. This registry is the one used by animation fallback rendering; it is not a complete catalog of rail icons. Regenerate using `node scripts/extract-navigation-icons.mjs ../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js`.
 
 ### Animation color helpers
 
@@ -139,13 +139,13 @@ AnimatedArtwork uses this loader. Differential tests compare success/retry/failu
 - `Badge`: all 15 original iKi/sKi variants, including unread, outlinePill, identity, neutral, success, warning, danger and internal. The unread variant keeps its text-cap-trim child. Like the source, Badge does not forward arbitrary props.
 - `ViewerCapsule`, `ViewerControlGroup`, `ViewerDivider`: recovered TRi/ERi/DRi toolbar containers with default/input capsules and default/joined/zoom groups. They use the original viewer CSS module, already present in the baseline. Viewer actions and content are separate components and remain pending.
 
-The authored example uses Switch to change root theme, ShortcutBadge to describe native keyboard navigation, and Badge to show the connected confirmation result. Browser checks confirmed click/Space updates, 32×20px default switch track and the success badge after review/confirm. These checks do not claim a replica of the settings screen or complete viewer toolbar.
+The authored example uses Switch to change root theme, ShortcutBadge to describe native keyboard navigation, and Badge to show the connected confirmation result. Browser checks confirmed click/Space updates, 32Ã—20px default switch track and the success badge after review/confirm. These checks do not claim a replica of the settings screen or complete viewer toolbar.
 
 ### Viewer action controls
 
 `ViewerButton` preserves c9's default/primary/selected/dropdown/zoom/label/avatarGroup variants around the shared Button. `ViewerControl` preserves CRi's ghostActive/full-radius defaults. Shared button interaction and loading/disabled semantics remain available; caller prop precedence matches the recovered wrappers.
 
-`examples/ViewerFlow.js` connects these controls to an authored 50–200% text preview with reset. The range, step and preview content are demonstration choices, not recovered viewer business logic. Browser checks confirmed increment, both disabled boundaries, Enter reset to 100%, a 36px capsule and 32px inner buttons in the current example. Original viewer content, compound actions and matched screenshot fidelity remain pending.
+`examples/ViewerFlow.js` connects these controls to an authored 50â€“200% text preview with reset. The range, step and preview content are demonstration choices, not recovered viewer business logic. Browser checks confirmed increment, both disabled boundaries, Enter reset to 100%, a 36px capsule and 32px inner buttons in the current example. Original viewer content, compound actions and matched screenshot fidelity remain pending.
 
 
 ### Conversation surfaces
@@ -181,7 +181,7 @@ The connected example now uses the original adaptive footer and layout transitio
 
 The shipped send/stop SVGs, voice preset, morph geometry, transition presets and compiler cache are preserved. `ComposerMorphingIcon` accepts state send/stop/voice, isLoading and className. The runtime feature flag is an explicit `morphingEnabled` option; motion preference uses the library adapter. Tooltip-bearing branches (including the morph-enabled action wrapper) require a compatible Tooltip implementation. They fail explicitly if none is supplied; no native-title substitute is introduced. The recovered tooltip factory below now supplies that implementation.
 
-The example uses the original static send action for local submission. Browser verification observed its 28×28px button and 16px displayed icon (20×20 viewBox) in the current theme, successful click submission and restored input focus, without page errors. These measurements describe this example's token context, not a universal size or verified original-screen match. Unit checks compare disabled/blocked/tooltip branches and exact morph path/transition output, including reduced motion. Real animation timing and full screen parity remain pending.
+The example uses the original static send action for local submission. Browser verification observed its 28Ã—28px button and 16px displayed icon (20Ã—20 viewBox) in the current theme, successful click submission and restored input focus, without page errors. These measurements describe this example's token context, not a universal size or verified original-screen match. Unit checks compare disabled/blocked/tooltip branches and exact morph path/transition output, including reduced motion. Real animation timing and full screen parity remain pending.
 
 
 ### Original tooltip and positioning engine
@@ -401,3 +401,16 @@ Browser verified narrow width380px, computed radius25px, initial206px height cha
 `logoutAndContinue({currentSessionToken,session,returnHref,screenHint})` must return a promise. Failure refreshes the caller's session view, displays the original error and reenables controls. Success remains pending in original Nt because original Ft navigates away; the adapter owns success navigation or local unmount. The demo uses fake identifiers and a700ms local promise, fails once, then closes locally after retry. It does not access or modify actual accounts.
 
 Browser verified selecting the second account, disabled confirm/cancel/selection while waiting, Escape ignored while pending, original failure text, reenabling, successful retry with the same selected account and idle Cancel dismissal, without console errors. Four targeted source/data/initial-contract tests pass. The broader browser account session controller and full-app screenshot parity remain pending.
+
+
+### Keyboard shortcuts and reusable settings surfaces
+
+`createSettingsSurfaces({React})` exposes original SettingsGroup (with Header/Content/Footer), SettingsValueRow and ShortcutBadge bodies. `createDialogSurfaces` additionally exposes DialogFormRow. These retain the shipped compact row geometry, label alignment and key capsule styles.
+
+`createShortcutSearchInput({React,SearchField,formatMessage?})` exposes original shortcut search wrapper c. SearchField now retains the original PJa body including compiler memoization; existing recovered icon adapters remain dependencies. The wrapper preserves localized labels, clear button, capture-mode read-only input/remount key and caller-first key handling. Recording a shortcut is a caller responsibility.
+
+`createKeyboardShortcuts({React,dialog,layout,SettingsGroup,SettingsValueRow,ShortcutBadge,ShortcutSearchInput,formatMessage?})` exposes KeyboardShortcutsDialog, KeyboardShortcutsContent, KeyboardShortcutSectionTitle and groupKeyboardShortcuts. The six original presentation/grouping functions and complete original fuzzy matcher are retained. Pass items `{id,title,description,sectionKey,shortcutLabels}`; null means loading and an empty array means no active shortcuts. Section ordering, exclusion of personalitySettings, search by ID/title/description and no-match state are unchanged. The small dialog wrapper accepts items/onOpenChange and replaces the original host capability/keymap discovery boundary, not the presentation. This is the Codex branch; the separate Work/ChatGPT shortcut settings editor remains pending.
+
+Profile demo Help > Keyboard shortcuts now opens this screen with four explicitly local command descriptors. These labels do not imply registered global hotkeys. Browser verified autofocus, one result for project search, no-match state, clear restoring four rows/focus and Escape dismissal, with a600px dialog width and25px radius. Important observed ordering: the input's own Escape handler clears a nonempty query in isolation, but the original dialog engine captures Escape at document level first and dismisses this modal even with a query. Both source paths are preserved; no inferred clear-first modal behavior is claimed. No installed-app screenshot equality or complete frontend coverage is established.
+
+Validation after this extraction:165 tests pass; example builds; browser console has no errors.
