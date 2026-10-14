@@ -8,3 +8,5 @@ ui-library/animations/** -text
 ui-library/src/NavigationFallbackIcons.js -text
 
 ui-library/src/AssetIcon.js -text
+
+ui-library/src/ComposerLayout.js -text

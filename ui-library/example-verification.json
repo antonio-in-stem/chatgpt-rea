@@ -172,5 +172,24 @@
       "Authored composition and form; not original composer",
       "No matched original screenshot comparison"
     ]
+  },
+  "composerLayout": {
+    "pageErrors": [],
+    "message": "Message through original composer layout",
+    "input": "",
+    "focused": true,
+    "surface": {
+      "width": 528,
+      "radius": "22px",
+      "background": "rgb(40, 40, 40)",
+      "layout": "multiline",
+      "overflow": "auto"
+    },
+    "bodyCount": 1,
+    "editorLayout": "multiline",
+    "limits": [
+      "Local textarea, not recovered ProseMirror",
+      "No original matched screen comparison"
+    ]
   }
 }

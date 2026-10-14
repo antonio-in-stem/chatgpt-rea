@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Forty-seven tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Fifty-one tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -155,3 +155,12 @@ The authored example uses Switch to change root theme, ShortcutBadge to describe
 `UserMessageBubble` extracts Ft's non-editing visual subtree. Inputs are already-resolved `alignment`, `accentColor`, `compact`, `otherUser`, `temporary`, `hasText`, and rendered `children`. Its original lazy stylesheet is now included byte-for-byte. No account, telemetry or backend service is required. This is a surface, not the complete message controller: editing, copying, reactions, sender identity, attachments and markdown remain separate work.
 
 `examples/ConversationFlow.js` connects the shell and bubbles to local message submission and variant toggles. Its form and composition are authored demonstrations, not the original composer or conversation screen. Browser checks observed normal radius 22px/padding 10px 16px and compact radius 16px/padding 8px 12px; temporary mode draws the original dashed SVG outline. Enter appends a message, clears the field and keeps focus. The current CSS cascade computes corner-shape superellipse(1.5) for normal/compact and superellipse(1) for temporary; exact original-context visual comparison remains pending. Differential tests cover 64 resolved bubble variants plus shell/backdrop structure and refs.
+
+
+### Original composer layout family
+
+`createComposerLayout({React, motion, useMotionValue, useDarkTheme})` returns `ComposerLayout` plus the original environment, presentation and layout contexts. Supply React 19 and the motion runtime; the example uses framer-motion and the recovered root-theme hook. The root exposes `ModeSurface`, `AnimateLayout`, `Attachments`, `Body`, `Footer`, `FooterAction`, `FooterActions`, `FooterControls`, `FooterDivider`, `FooterExpandingControls`, `FooterInlineControls`, `FooterLabel`, `Input`, `ReplyContext` and `Editor`.
+
+The original function bodies are retained, including layout data attributes, dictation-related input layout, single-line/multiline variants, drag callbacks, background-click editor focus, footer pointer containment and radius clamping through ResizeObserver. CSS already exists in the recovered initial stylesheet. Reproduce with `scripts/extract-composer.mjs <recovered-initial> <recovered-shared>`; provenance and body hashes are in `composer-manifest.json`. Compiler memo caches are recreated per render, so the original memo optimization is not preserved.
+
+The demo now uses this family around a local textarea. `Editor` is the original layout wrapper, not ProseMirror itself; rich-text editing, AdaptiveFooter, UtilityBarSlot, layout transition providers and original action controls are still pending. The authored textarea handles Enter/Shift+Enter and composition-aware submission. Browser verification passed local submission, field clearing/focus and a 22px-radius multiline surface with no page errors. This does not establish whole-screen or animation parity with the original app.

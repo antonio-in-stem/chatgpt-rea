@@ -217,6 +217,20 @@
         "Not full Ft: copy/edit controls, reactions, sender identity, attachments, markdown and feature/account resolution are not in this component.",
         "Native corner-shape support depends on rendering engine. Matched original screenshots pending."
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "components": [
+        "ComposerLayout (root and 15 subcomponents)"
+      ],
+      "manifest": "composer-manifest.json",
+      "transformation": "Generated original function bodies with explicit React/motion/theme adapters; original context defaults and CSS mapping retained. Compiler memo optimization omitted.",
+      "status": "Function-body identity, differential variants, focus and radius observer tests. Browser local submission verified; original screen/animation parity not verified.",
+      "limitations": [
+        "ProseMirror editor not yet extracted",
+        "AdaptiveFooter, UtilityBarSlot and transition providers pending",
+        "Example composition and submission behavior authored locally"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

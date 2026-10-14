@@ -1,3 +1,4 @@
+export {createComposerLayout} from './ComposerLayout.js';
 import {createUserMessageBubble} from './UserMessageBubble.js';
 import {createConversationLayout} from './ConversationLayout.js';
 import {createViewerControls} from './ViewerControls.js';
