@@ -1,3 +1,5 @@
+> Instrucciones y estado vigentes: [METHOD.md](METHOD.md) y [CURRENT-STATUS.md](CURRENT-STATUS.md). El historial inferior puede contener prioridades y estados superados. Rust sigue diferido.
+
 # Continuidad del proyecto
 
 ## Instrucción vigente del propietario

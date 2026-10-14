@@ -1,4 +1,5 @@
-> Current priority: extract a reusable component library and connected UI flows from the shipped frontend. See [ui-library](ui-library/README.md). Original styles and behavior remain the reference; Rust is deferred.
+> Instrucciones y estado vigentes: [METHOD.md](METHOD.md) y [CURRENT-STATUS.md](CURRENT-STATUS.md). El historial inferior puede contener prioridades y estados superados. Rust sigue diferido.
+
 
 # chatgpt-rea
 

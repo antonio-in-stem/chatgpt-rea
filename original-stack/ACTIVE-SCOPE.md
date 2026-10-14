@@ -1,3 +1,5 @@
+> Current sequencing and budget: [METHOD.md](../METHOD.md), [CURRENT-STATUS.md](../CURRENT-STATUS.md). Historical entries below do not override them.
+
 # Active scope — 2026-10-13
 
 The owner explicitly paused all Rust implementation. Preserve existing native work without building, extending, or treating it as the current deliverable. Resume Rust only after a new explicit owner instruction.
