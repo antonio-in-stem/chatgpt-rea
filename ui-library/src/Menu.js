@@ -9,5 +9,5 @@ export function createMenu({React,ReactDOM,tooltip,AssetIcon,eventBridge,motion,
  const infrastructure=createMenuInfrastructure({React,Layer:engine.Portal,OverlayPortal:tooltip.OverlayPortal,compilerRuntime});
  const surfaces=createMenuSurfaces({React,primitives:engine,Tooltip:tooltip.Tooltip,AssetIcon,ScrollArea:infrastructure.ScrollArea,PortalContainerContext:infrastructure.PortalContainerContext,motion,AnimatePresence,formatMessage,visualScale,TooltipOverlayContext:tooltip.TooltipOverlayContext,compilerRuntime});
  const controller=createDropdownController({React,primitives:{Root:engine.Root,Trigger:surfaces.MenuTrigger,Content:surfaces.MenuContent,Portal:infrastructure.Portal,Layer:engine.Portal,ModalLayer:infrastructure.ModalLayer},eventBridge,TooltipOverlayContext:tooltip.TooltipOverlayContext,visualScale,compilerRuntime});
- return {...controller,...surfaces,ScrollArea:infrastructure.ScrollArea};
+ return {...controller,...surfaces,DialogPrimitives:engine.Dialog,ScrollArea:infrastructure.ScrollArea};
 }

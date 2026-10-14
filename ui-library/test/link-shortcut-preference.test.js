@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createLinkShortcutPreference} from '../src/LinkShortcutPreference.js';
+import {createSettingsSurfaces} from '../src/SettingsSurfaces.js';
+import {createAssetIcon} from '../src/AssetIcon.js';
+const h=React.createElement,read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+test('original async preference, messages and chevron retain source identity',()=>{const output=read('../src/LinkShortcutPreference.js'),manifest=JSON.parse(read('../link-shortcut-preference-manifest.json'));for(const entry of manifest.sources){const source=read('../../original-stack/state/recovered-all/readable/assets/'+entry.file);for(const name of entry.symbols){const i=source.indexOf('function '+name+'(');assert.ok(output.includes(source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1)));}}});
+test('all four options preserve order and only changed selection invokes the local store operation',async()=>{const options=[],calls=[],store={id:'local'};let trigger,group;const {LinkShortcutPreference}=createLinkShortcutPreference({React,settings:createSettingsSurfaces({React}),menu:{Dropdown:p=>{trigger=p;return h(React.Fragment,null,p.triggerButton,p.children);},MenuRadioGroup:p=>{group=p;return p.children;},MenuRadioItem:p=>{options.push(p);return h('span',null,p.value);}},Button:p=>h('button',p),AssetIcon:createAssetIcon(React),usePreferenceStore:()=>store,saveShortcut:(s,value)=>{calls.push([s,value]);return Promise.resolve();},formatMessage:m=>m.defaultMessage});renderToStaticMarkup(h(LinkShortcutPreference,{platform:'Windows',shortcut:'primary'}));assert.deepEqual(options.map(x=>x.value),['unassigned','primary','alt','primary-shift']);assert.equal(group.value,'primary');assert.equal(trigger.align,'end');options[1].onSelect();assert.equal(calls.length,0);options[2].onSelect();await Promise.resolve();assert.deepEqual(calls,[[store,'alt']]);assert.equal(trigger.triggerButton.props.disabled,false);});

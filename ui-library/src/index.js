@@ -118,3 +118,5 @@ export {createKeyboardShortcuts} from './KeyboardShortcuts.js';
 export {shortcutMatchScore} from './ShortcutMatching.js';
 
 export {createSettingsDisclosure} from './SettingsDisclosure.js';
+
+export {createLinkShortcutPreference} from './LinkShortcutPreference.js';

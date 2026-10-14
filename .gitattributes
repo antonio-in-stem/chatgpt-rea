@@ -71,3 +71,5 @@ ui-library/src/ShortcutMatching.js -text
 ui-library/src/KeyboardShortcuts.js -text
 
 ui-library/src/SettingsDisclosure.js -text
+
+ui-library/src/LinkShortcutPreference.js -text

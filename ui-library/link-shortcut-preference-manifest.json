@@ -1,0 +1,32 @@
+{
+  "sources": [
+    {
+      "file": "keyboard-shortcuts-settings-c347e431e5b9.js",
+      "sha256": "3fb6cc78dfd32c043a69b6a44e51b0ce16516e1122ad2fc076132f84e92ac891",
+      "symbols": [
+        "At",
+        "jt"
+      ]
+    },
+    {
+      "file": "app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "symbols": [
+        "n8n"
+      ]
+    }
+  ],
+  "options": [
+    "unassigned",
+    "primary",
+    "alt",
+    "primary-shift"
+  ],
+  "limits": [
+    "Preference atom/store and save operation replaced by explicit adapters",
+    "Caller must update shortcut prop after a successful save",
+    "Locale-aware formatter is caller-supplied; message descriptors remain original",
+    "No browser launch or global modifier handling included",
+    "No installed-app screenshot comparison"
+  ]
+}

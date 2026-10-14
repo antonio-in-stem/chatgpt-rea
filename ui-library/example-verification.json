@@ -737,5 +737,21 @@
       "No recording or global hotkeys",
       "No installed-app screenshot comparison"
     ]
+  },
+  "linkShortcutPreference": {
+    "optionCount": 4,
+    "disabledWhileSaving": true,
+    "failureAlert": "Could not save shortcut preference",
+    "failureRetainsOldSelection": true,
+    "reenabledAfterFailure": true,
+    "retrySaved": "Alt+Click",
+    "selectedOnReopen": true,
+    "escapeClosesOnlyMenu": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local in-memory persistence and demo localization",
+      "No system browser modifier registration",
+      "No installed-app screenshot comparison"
+    ]
   }
 }
