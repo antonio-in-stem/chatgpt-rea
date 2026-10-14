@@ -495,5 +495,17 @@
       "No matched original screenshot",
       "Indeterminate and linked disabled browser cases pending"
     ]
+  },
+  "submenus": {
+    "source": "Wji/Gji",
+    "arrowRightFocusesNested": true,
+    "arrowLeftReturnsParentFocus": true,
+    "flyoutSelection": "Flyout chosen",
+    "inlineSelection": "Inline chosen",
+    "consoleErrors": 0,
+    "limits": [
+      "Hover cancellation/RTL/zoom not browser-verified",
+      "No matched original screenshot"
+    ]
   }
 }

@@ -1,12 +1,17 @@
 // Original menu surfaces and rows; underlying interaction primitives injected explicitly.
 import {classNames as q} from './classNames.js';
-export function createMenuSurfaces({React,primitives,Tooltip:w5,AssetIcon:t5,ScrollArea:sji,TooltipOverlayContext,compilerRuntime=React.__COMPILER_RUNTIME}){
+export function createMenuSurfaces({React,primitives,Tooltip:w5,AssetIcon:t5,ScrollArea:sji,TooltipOverlayContext,PortalContainerContext,motion,AnimatePresence,formatMessage=message=>message.defaultMessage,visualScale=1,compilerRuntime=React.__COMPILER_RUNTIME}){
  for(const name of ['Trigger','Content','Item','Group'])if(!primitives?.[name])throw new TypeError('Missing menu primitive '+name);
  if(!w5||!t5||!sji||!compilerRuntime?.c)throw new TypeError('Menu surfaces require original tooltip, asset icon, scroll area and compiler runtime');
- const {Trigger:mb,Content:gb,Item:_b,Group:fNe,CheckboxItem:vb,RadioItem:bb,RadioGroup:yb,ItemIndicator:xb}=primitives;
- const t=fn=>fn,o=()=>React,Q=()=>{},Z=asset=>({...asset,body:asset.body.trim(),hasGradients:false}),m7=compilerRuntime,tji=compilerRuntime,h7=React,v5=TooltipOverlayContext??React.createContext(undefined);
- const g7={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},c7=g7,K=()=>g7,d7=g7,fji=compilerRuntime;
+ const {Trigger:mb,Content:gb,Item:_b,Group:fNe,CheckboxItem:vb,RadioItem:bb,RadioGroup:yb,ItemIndicator:xb,SubTrigger:Sb,SubContent:Cb,Portal:hb}=primitives;
+ const t=fn=>fn,o=()=>React,c=()=>compilerRuntime,Uf=()=>{},x5=()=>{},Q=()=>{},Z=asset=>({...asset,body:asset.body.trim(),hasGradients:false}),m7=compilerRuntime,tji=compilerRuntime,h7=React,v5=TooltipOverlayContext??React.createContext(undefined);
+ const g7={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},c7=g7,K=()=>g7,d7=g7,fji=compilerRuntime,LSi=compilerRuntime,RSi=React;
+ const Qji=PortalContainerContext??React.createContext(undefined),d5=()=>visualScale,HMe=primitives,Yji=200,pS=message=>formatMessage(message);
+ const missingMotion=()=>{throw new TypeError('Inline submenu requires motion and AnimatePresence');},$w=motion??{div:missingMotion},M1e=AnimatePresence??missingMotion;
+ const uCi={duration:300/1e3,ease:[0.19,1,0.22,1]};
  const _7={maxWidth:'min(var(--radix-dropdown-menu-content-available-width), calc(100vw - 16px))',maxHeight:'min(var(--radix-dropdown-menu-content-available-height), calc(100vh - 16px))'};
+ const $ji={..._7,maxHeight:'calc(100vh - 16px)'};
+ let MAi,NAi,PAi,FAi,M5,jSi,MSi,NSi,PSi,dAi,fAi,d8n,_8n;
  let IAi,LAi,RAi,zAi,BAi,VAi,HAi,UAi,WAi,GAi,KAi,qAi,JAi,YAi,XAi,ZAi,o7,gji,_ji,vji,yji,f7,eMi,v7,tMi,nMi,uAi,r7,G6n,pji,mji;
 function s7() {
   return (s7 = t(() => {
@@ -1555,7 +1560,728 @@ function K6n() {
       })));
   }))();
 }
- s7();bji();i7();K6n();
+function Wji(e) {
+  let t = (0, m7.c)(34),
+    { trigger: n, children: r, isDefaultOpen: i, onOpenChange: a } = e,
+    o = i !== void 0 && i,
+    s = n.props.disabled ?? !1,
+    [c, l] = (0, h7.useState)(!s && o),
+    u = c && !s,
+    d;
+  if (t[0] !== s || t[1] !== u || t[2] !== a || t[3] !== n) {
+    let e;
+    t[5] !== s || t[6] !== u || t[7] !== a || t[8] !== n.props
+      ? ((e = (e) => {
+          (n.props.onSelect?.(e),
+            !e.defaultPrevented &&
+              (e.preventDefault(), e.stopPropagation(), !s && (l(!u), a?.(!u))));
+        }),
+        (t[5] = s),
+        (t[6] = u),
+        (t[7] = a),
+        (t[8] = n.props),
+        (t[9] = e))
+      : (e = t[9]);
+    let r = u && `rotate-90`,
+      i;
+    t[10] === r
+      ? (i = t[11])
+      : ((i = q(`inline-flex items-center justify-center text-tertiary`, r)),
+        (t[10] = r),
+        (t[11] = i));
+    let o = n.props.rightIconClassName ?? `icon-xs`,
+      c;
+    t[12] === o ? (c = t[13]) : ((c = q(o, v7.icon)), (t[12] = o), (t[13] = c));
+    let f;
+    t[14] === c
+      ? (f = t[15])
+      : ((f = (0, g7.jsx)(fAi, { className: c })), (t[14] = c), (t[15] = f));
+    let p;
+    t[16] !== i || t[17] !== f
+      ? ((p = (0, g7.jsx)(`span`, { "aria-hidden": !0, className: i, children: f })),
+        (t[16] = i),
+        (t[17] = f),
+        (t[18] = p))
+      : (p = t[18]);
+    let m;
+    (t[19] !== e || t[20] !== p
+      ? ((m = { onSelect: e, rightIcon: p }), (t[19] = e), (t[20] = p), (t[21] = m))
+      : (m = t[21]),
+      (d = h7.cloneElement(n, m)),
+      (t[0] = s),
+      (t[1] = u),
+      (t[2] = a),
+      (t[3] = n),
+      (t[4] = d));
+  } else d = t[4];
+  let f = d,
+    p = u ? `open` : `closed`,
+    m = u ? void 0 : `pointer-events-none invisible h-0 overflow-hidden`,
+    h;
+  t[22] !== r || t[23] !== u
+    ? ((h =
+        u &&
+        (0, g7.jsx)(
+          $w.div,
+          {
+            initial: !1,
+            animate: { height: `auto`, opacity: 1 },
+            exit: { height: 0, opacity: 0 },
+            transition: uCi,
+            className: `overflow-hidden`,
+            children: r,
+          },
+          `dropdown-submenu`,
+        )),
+      (t[22] = r),
+      (t[23] = u),
+      (t[24] = h))
+    : (h = t[24]);
+  let g;
+  t[25] === h
+    ? (g = t[26])
+    : ((g = (0, g7.jsx)(M1e, { initial: !1, children: h })), (t[25] = h), (t[26] = g));
+  let _;
+  t[27] !== m || t[28] !== g
+    ? ((_ = (0, g7.jsx)(`div`, { className: m, children: g })),
+      (t[27] = m),
+      (t[28] = g),
+      (t[29] = _))
+    : (_ = t[29]);
+  let v;
+  return (
+    t[30] !== f || t[31] !== p || t[32] !== _
+      ? ((v = (0, g7.jsxs)(`div`, {
+          className: `flex flex-col`,
+          "data-state": p,
+          children: [f, _],
+        })),
+        (t[30] = f),
+        (t[31] = p),
+        (t[32] = _),
+        (t[33] = v))
+      : (v = t[33]),
+    v
+  );
+}
+function Gji(e) {
+  "use forget";
+  let t = (0, m7.c)(65),
+    {
+      ref: n,
+      "aria-current": r,
+      ariaLabel: i,
+      label: a,
+      allowWrap: o,
+      children: s,
+      LeftIcon: c,
+      leftIcon: l,
+      leftIconAsset: u,
+      leftIconClassName: d,
+      className: f,
+      disabled: p,
+      align: m,
+      alignToParentBottom: h,
+      contentClassName: g,
+      contentWidth: _,
+      contentSurface: v,
+      onSelect: y,
+      triggerContent: b,
+      rightIcon: x,
+      tooltipText: S,
+      tooltipDisabled: C,
+      tooltipTextClassName: w,
+      tooltipSide: T,
+      tooltipSideOffset: E,
+      tooltipAlign: D,
+      tooltipOpenWhen: O,
+      open: k,
+      onOpenChange: A,
+      onEscapeKeyDown: j,
+      variant: M,
+    } = e,
+    N = o !== void 0 && o,
+    P = p !== void 0 && p,
+    F = m === void 0 ? `start` : m,
+    ee = v === void 0 ? `menu` : v,
+    te = M === void 0 ? `default` : M,
+    ne = h7.useContext(Qji),
+    re = d5(),
+    I = ISi(`not all`),
+    L = (0, h7.useContext)(v5),
+    [R, ie] = (0, h7.useState)(null),
+    [ae, oe] = (0, h7.useState)(!1),
+    se = !P && (k ?? ae),
+    ce = (0, h7.useRef)(!1),
+    le = (0, h7.useRef)(null),
+    ue = (0, h7.useRef)(null),
+    de;
+  t[0] === Symbol.for(`react.memo_cache_sentinel`)
+    ? ((de = () => () => {
+        (le.current != null && (clearTimeout(le.current), (le.current = null)),
+          ue.current?.abort(),
+          (ue.current = null));
+      }),
+      (t[0] = de))
+    : (de = t[0]);
+  let fe;
+  (t[1] !== P || t[2] !== se ? ((fe = [P, se]), (t[1] = P), (t[2] = se), (t[3] = fe)) : (fe = t[3]),
+    (0, h7.useEffect)(de, fe));
+  let pe;
+  t[4] !== c || t[5] !== l || t[6] !== u || t[7] !== d
+    ? ((pe =
+        l ??
+        (u ? (0, g7.jsx)(t5, { className: q(d, v7.icon), "aria-hidden": !1, asset: u }) : null) ??
+        (c ? (0, g7.jsx)(c, { className: q(d ?? `icon-xs`, v7.icon) }) : null)),
+      (t[4] = c),
+      (t[5] = l),
+      (t[6] = u),
+      (t[7] = d),
+      (t[8] = pe))
+    : (pe = t[8]);
+  let me = pe,
+    he = OAi(_),
+    ge = q(
+      `z-50 flex min-w-[180px] select-none flex-col overflow-y-auto`,
+      ee === `bare` ? `m-0 p-0` : [`m-px`, DAi(ee)],
+    ),
+    [_e, ve] = (0, h7.useState)(0),
+    [ye, be] = (0, h7.useState)(4),
+    xe = (0, h7.useRef)(null),
+    Se = h ? -4 : _e,
+    Ce = h || te === `unstyled` ? 4 : ye,
+    we;
+  t[9] === Symbol.for(`react.memo_cache_sentinel`)
+    ? ((we = function () {
+        (le.current != null && (clearTimeout(le.current), (le.current = null)),
+          ue.current?.abort(),
+          (ue.current = null));
+      }),
+      (t[9] = we))
+    : (we = t[9]);
+  let Te = we,
+    Ee;
+  t[10] !== P || t[11] !== A
+    ? ((Ee = function (e) {
+        if (!e || (!P && le.current == null)) {
+          if ((Te(), e && ce.current)) {
+            ce.current = !1;
+            return;
+          }
+          ((ce.current = !e), oe(e), A?.(e));
+        }
+      }),
+      (t[10] = P),
+      (t[11] = A),
+      (t[12] = Ee))
+    : (Ee = t[12]);
+  let De = Ee,
+    Oe;
+  t[13] !== h || t[14] !== I || t[15] !== re
+    ? ((Oe = function (e) {
+        if (e != null) {
+          let t = getComputedStyle(e);
+          if ((ve(-parseFloat(t.paddingTop) - parseFloat(t.marginTop)), !I)) {
+            let e = xe.current,
+              t = e?.closest(`[role="menu"]`);
+            if (!h && e != null && t != null) {
+              let n = e.getBoundingClientRect(),
+                r = t.getBoundingClientRect();
+              be(4 + Math.max(n.left - r.left, r.right - n.right, 0) / re);
+            }
+            return;
+          }
+          let n = e.ownerDocument.getElementById(e.getAttribute(`aria-labelledby`) ?? ``),
+            r = n?.closest(`[role="menu"]`);
+          if (!n || !r) return;
+          let i = () => {
+            let e = n.getBoundingClientRect(),
+              i = r.getBoundingClientRect(),
+              a =
+                r.getAttribute(`data-side`) === `top` ||
+                r.getAttribute(`data-compact-menu-align`) === `end`,
+              o = {
+                trigger: n,
+                align: a ? `end` : `start`,
+                sideOffset: t.direction === `rtl` ? e.left - i.right : i.left - e.right,
+                alignOffset: a ? e.bottom - i.bottom : i.top - e.top,
+                width: Math.min(i.width, window.innerWidth - 16) / re,
+              };
+            ie((e) =>
+              e?.trigger === n &&
+              e.align === o.align &&
+              e.sideOffset === o.sideOffset &&
+              e.alignOffset === o.alignOffset &&
+              e.width === o.width
+                ? e
+                : o,
+            );
+          };
+          (i(), r.classList.add(f7.replacedContent));
+          let a = new ResizeObserver(i);
+          return (
+            a.observe(r),
+            a.observe(n),
+            r.addEventListener(`scroll`, i),
+            window.addEventListener(`resize`, i),
+            () => {
+              (r.classList.remove(f7.replacedContent),
+                a.disconnect(),
+                r.removeEventListener(`scroll`, i),
+                window.removeEventListener(`resize`, i));
+            }
+          );
+        }
+      }),
+      (t[13] = h),
+      (t[14] = I),
+      (t[15] = re),
+      (t[16] = Oe))
+    : (Oe = t[16]);
+  let ke = Oe,
+    Ae;
+  t[17] !== P || t[18] !== De || t[19] !== I || t[20] !== se
+    ? ((Ae = function (e) {
+        if (I) {
+          e.preventDefault();
+          return;
+        }
+        if (P || se || e.pointerType !== `mouse`) return;
+        if (le.current == null) {
+          let t = e.currentTarget,
+            n = new AbortController();
+          ((ue.current = n),
+            t.ownerDocument.addEventListener(
+              `keydown`,
+              () => {
+                (Te(), (ce.current = !0));
+              },
+              { capture: !0, signal: n.signal },
+            ),
+            (le.current = setTimeout(() => {
+              (Te(), t.focus({ preventScroll: !0 }), (ce.current = !1), De(!0));
+            }, Yji)));
+        }
+        let t = le.current;
+        queueMicrotask(() => {
+          e.defaultPrevented && le.current === t && (Te(), (ce.current = !0));
+        });
+      }),
+      (t[17] = P),
+      (t[18] = De),
+      (t[19] = I),
+      (t[20] = se),
+      (t[21] = Ae))
+    : (Ae = t[21]);
+  let je = Ae,
+    Me = HMe,
+    Ne;
+  t[22] === n ? (Ne = t[23]) : ((Ne = M5(n, xe)), (t[22] = n), (t[23] = Ne));
+  let Pe;
+  t[24] !== f || t[25] !== P || t[26] !== te
+    ? ((Pe = q(
+        te === "default"
+          ? [v7.itemBase, `flex w-full items-center rounded-xl text-default`]
+          : `no-drag outline-hidden`,
+        P ? `cursor-default opacity-50` : `group cursor-interaction`,
+        !P &&
+          te === "default" &&
+          `data-[highlighted]:bg-primary-ghost-hover data-[state=open]:bg-primary-ghost-hover focus-visible:bg-primary-ghost-hover`,
+        f,
+      )),
+      (t[24] = f),
+      (t[25] = P),
+      (t[26] = te),
+      (t[27] = Pe))
+    : (Pe = t[27]);
+  let Fe;
+  t[28] === I
+    ? (Fe = t[29])
+    : ((Fe = (e) => {
+        (Te(), I && e.preventDefault());
+      }),
+      (t[28] = I),
+      (t[29] = Fe));
+  let Ie;
+  t[30] === Symbol.for(`react.memo_cache_sentinel`)
+    ? ((Ie = (e) => {
+        (Te(), (ce.current = !0));
+        let t =
+          e.currentTarget.closest(`[role="menu"]`)?.getAttribute(`dir`) === `rtl`
+            ? `ArrowLeft`
+            : `ArrowRight`;
+        (e.key === t || e.key === `Enter` || e.key === ` `) &&
+          (e.key === ` ` &&
+            queueMicrotask(() => {
+              e.defaultPrevented || (ce.current = !0);
+            }),
+          (ce.current = !1));
+      }),
+      (t[30] = Ie))
+    : (Ie = t[30]);
+  let Le;
+  t[31] !== P || t[32] !== y
+    ? ((Le = (e) => {
+        (Te(),
+          (ce.current = !1),
+          !(P || y == null) && (e.preventDefault(), e.stopPropagation(), (ce.current = !0), y()));
+      }),
+      (t[31] = P),
+      (t[32] = y),
+      (t[33] = Le))
+    : (Le = t[33]);
+  let Re;
+  t[34] !== N || t[35] !== a || t[36] !== me || t[37] !== x || t[38] !== b
+    ? ((Re =
+        b ??
+        (0, g7.jsxs)(`div`, {
+          "data-menu-row-content": !0,
+          className: v7.content,
+          children: [
+            me == null ? null : (0, g7.jsx)(`span`, { className: o7.leadingIcon, children: me }),
+            (0, g7.jsx)(`span`, {
+              className: q(`min-w-0 flex-1`, N ? `whitespace-normal` : `truncate`),
+              children: a,
+            }),
+            x,
+            (0, g7.jsx)(Udr, { className: `text-tertiary`, "data-rtl-flip": `` }),
+          ],
+        })),
+      (t[34] = N),
+      (t[35] = a),
+      (t[36] = me),
+      (t[37] = x),
+      (t[38] = b),
+      (t[39] = Re))
+    : (Re = t[39]);
+  let ze;
+  t[40] !== r ||
+  t[41] !== i ||
+  t[42] !== P ||
+  t[43] !== je ||
+  t[44] !== Ne ||
+  t[45] !== Pe ||
+  t[46] !== Fe ||
+  t[47] !== Le ||
+  t[48] !== Re
+    ? ((ze = (0, g7.jsx)(Sb, {
+        ref: Ne,
+        "aria-current": r,
+        "aria-label": i,
+        className: Pe,
+        disabled: P,
+        onPointerEnter: je,
+        onPointerMove: je,
+        onPointerLeave: Fe,
+        onKeyDown: Ie,
+        onClick: Le,
+        children: Re,
+      })),
+      (t[40] = r),
+      (t[41] = i),
+      (t[42] = P),
+      (t[43] = je),
+      (t[44] = Ne),
+      (t[45] = Pe),
+      (t[46] = Fe),
+      (t[47] = Le),
+      (t[48] = Re),
+      (t[49] = ze))
+    : (ze = t[49]);
+  let Be;
+  t[50] !== ze ||
+  t[51] !== D ||
+  t[52] !== C ||
+  t[53] !== O ||
+  t[54] !== T ||
+  t[55] !== E ||
+  t[56] !== S ||
+  t[57] !== w
+    ? ((Be = (0, g7.jsx)(eMi, {
+        tooltipText: S,
+        tooltipDisabled: C,
+        tooltipTextClassName: w,
+        tooltipSide: T,
+        tooltipSideOffset: E,
+        tooltipAlign: D,
+        tooltipOpenWhen: O,
+        children: ze,
+      })),
+      (t[50] = ze),
+      (t[51] = D),
+      (t[52] = C),
+      (t[53] = O),
+      (t[54] = T),
+      (t[55] = E),
+      (t[56] = S),
+      (t[57] = w),
+      (t[58] = Be))
+    : (Be = t[58]);
+  let Ve =
+      ne !== null &&
+      (0, g7.jsx)(hb, {
+        container: ne,
+        children: (0, g7.jsxs)(Cb, {
+          ref: ke,
+          onEscapeKeyDown: j,
+          "data-overlay-owner": L?.id,
+          className: q(ge, he, h && !I && f7.parentBottomAlignedContent, g),
+          align: I ? (R?.align ?? `start`) : F,
+          "data-compact-menu-align": I ? R?.align : void 0,
+          collisionPadding: 6,
+          avoidCollisions: I || !h,
+          sideOffset: I && R ? R.sideOffset : Ce,
+          alignOffset: I && R ? R.alignOffset : Se,
+          style: {
+            ...(h ? $ji : _7),
+            ...(I && R
+              ? {
+                  width: R.width,
+                  minWidth: R.width,
+                  maxWidth: R.width,
+                  maxHeight: `calc((100dvh - 16px) / ${re})`,
+                  margin: 0,
+                }
+              : {}),
+            zoom: re === 1 ? void 0 : re,
+          },
+          children: [
+            I &&
+              (0, g7.jsx)(Cji, {
+                leftIcon: (0, g7.jsx)(Bdr, { className: `rtl:-scale-x-100` }),
+                onSelect: (e) => {
+                  (e.preventDefault(),
+                    De(!1),
+                    R?.trigger.closest(`[role="menu"]`)?.classList.remove(f7.replacedContent),
+                    R?.trigger.focus());
+                },
+                children: (0, g7.jsx)(pS, {
+                  id: `dropdown.submenu.back`,
+                  defaultMessage: `Back`,
+                  description: `Menu action at the top of a submenu in a narrow window that returns to the parent menu without selecting an action or closing the entire menu`,
+                }),
+              }),
+            (0, g7.jsx)(`div`, { children: s }),
+          ],
+        }),
+      }),
+    He;
+  return (
+    t[59] !== De || t[60] !== se || t[61] !== Me.Sub || t[62] !== Be || t[63] !== Ve
+      ? ((He = (0, g7.jsxs)(Me.Sub, { open: se, onOpenChange: De, children: [Be, Ve] })),
+        (t[59] = De),
+        (t[60] = se),
+        (t[61] = Me.Sub),
+        (t[62] = Be),
+        (t[63] = Ve),
+        (t[64] = He))
+      : (He = t[64]),
+    He
+  );
+}
+function pAi() {
+  return (pAi = t(() => {
+    (o(),
+      (dAi = K()),
+      (fAi = (e) =>
+        (0, dAi.jsx)(`svg`, {
+          width: 20,
+          height: 20,
+          viewBox: `0 0 20 20`,
+          fill: `none`,
+          xmlns: `http://www.w3.org/2000/svg`,
+          ...e,
+          children: (0, dAi.jsx)(`path`, {
+            d: `M7.52925 3.7793C7.75652 3.55203 8.10803 3.52383 8.36616 3.69434L8.47065 3.7793L14.2207 9.5293C14.4804 9.789 14.4804 10.211 14.2207 10.4707L8.47065 16.2207C8.21095 16.4804 7.78895 16.4804 7.52925 16.2207C7.26955 15.961 7.26955 15.539 7.52925 15.2793L12.8085 10L7.52925 4.7207L7.44429 4.61621C7.27378 4.35808 7.30198 4.00657 7.52925 3.7793Z`,
+            fill: `currentColor`,
+          }),
+        })));
+  }))();
+}
+function pCi() {
+  return (pCi = t(() => {
+    M5 =
+      (...e) =>
+      (t) => {
+        if (t == null) {
+          e.forEach((e) => {
+            if (typeof e == `function`) e(null);
+            else if (e) {
+              let t = e;
+              t.current = null;
+            }
+          });
+          return;
+        }
+        let n = [];
+        if (
+          (e.forEach((e) => {
+            if (typeof e == `function`) {
+              let r = e(t);
+              typeof r == `function` ? n.push(r) : n.push(() => e(null));
+            } else if (e) {
+              let r = e;
+              ((r.current = t),
+                n.push(() => {
+                  r.current = null;
+                }));
+            }
+          }),
+          n.length !== 0)
+        )
+          return () => {
+            n.forEach((e) => e());
+          };
+      };
+  }))();
+}
+function OAi(e) {
+  return e == null ? void 0 : PAi[e];
+}
+function a7() {
+  return (a7 = t(() => {
+    ((MAi = c()),
+      (NAi = o()),
+      Uf(),
+      x5(),
+      (PAi = {
+        icon: `min-w-[120px]`,
+        xs: `min-w-[160px]`,
+        sm: `min-w-[180px]`,
+        menuNarrow: `w-52`,
+        menu: `min-w-[var(--app-menu-min-width,220px)]`,
+        menuFixed: `w-[220px]`,
+        menuBounded: `min-w-[200px] max-w-[320px]`,
+        menuWide: `w-[240px]`,
+        railMenu: `w-57`,
+        sidebar: `min-w-[172px] max-w-[240px]`,
+        workspace: `min-w-[260px]`,
+        panel: `w-[280px]`,
+        panelWide: `w-[360px]`,
+        panelExtraWide: `w-[408px]`,
+      }),
+      (FAi = {
+        available: `calc(100vh - 16px)`,
+        compact: `200px`,
+        list: `250px`,
+        tall: `350px`,
+        composerPlugins: `var(--height-composer-plugins-menu, 250px)`,
+      }));
+  }))();
+}
+function ASi() {
+  return (0, jSi.useSyncExternalStore)(MSi, NSi, PSi);
+}
+function FSi() {
+  return (FSi = t(() => {
+    ((jSi = o()), (MSi = () => () => {}), (NSi = () => !0), (PSi = () => !0));
+  }))();
+}
+function ISi(e) {
+  let t = (0, LSi.c)(5),
+    n = ASi(),
+    r;
+  t[0] === e
+    ? (r = t[1])
+    : ((r = () =>
+        typeof window > `u` || typeof window.matchMedia != `function`
+          ? !1
+          : window.matchMedia(e).matches),
+      (t[0] = e),
+      (t[1] = r));
+  let [i, a] = (0, RSi.useState)(r),
+    o,
+    s;
+  return (
+    t[2] === e
+      ? ((o = t[3]), (s = t[4]))
+      : ((o = () => {
+          if (typeof window > `u` || typeof window.matchMedia != `function`) return;
+          let t = window.matchMedia(e);
+          a(t.matches);
+          let n = (e) => {
+            a(e.matches);
+          };
+          return typeof t.addEventListener == `function`
+            ? (t.addEventListener(`change`, n),
+              () => {
+                t.removeEventListener(`change`, n);
+              })
+            : (t.addListener(n),
+              () => {
+                t.removeListener(n);
+              });
+        }),
+        (s = [e]),
+        (t[2] = e),
+        (t[3] = o),
+        (t[4] = s)),
+    (0, RSi.useEffect)(o, s),
+    n && i
+  );
+}
+function f8n() {
+  return (f8n = t(() => {
+    (Q(),
+      (d8n = Z({
+        name: `chevron-left-md-light-16`,
+        canvas: {
+          width: 16,
+          height: 16,
+          viewBox: `0 0 16 16`,
+          frame: { x: 0, y: 0, width: 16, height: 16 },
+          inkBounds: { x: 5.113281, y: 3.475098, width: 4.911621, height: 9.049805 },
+          visualBounds: { x: 5.113281, y: 3.475098, width: 4.911621, height: 9.049805 },
+        },
+        paint: { kind: `monochrome` },
+        optical: {
+          shape: `non-circular`,
+          bounds: { x: 5.113281, y: 3.475098, width: 4.911621, height: 9.049805 },
+          center: { x: 7.569092, y: 8 },
+          insets: { top: 3.475098, right: 5.975098, bottom: 3.475097, left: 5.113281 },
+          anchors: {
+            frame: { x: 8, y: 8 },
+            ink: { x: 7.569092, y: 8 },
+            foreground: { x: 7.569092, y: 8 },
+          },
+        },
+        capabilities: [`icon`],
+        body: `<path d="M9.87117 11.6289C10.0762 11.8339 10.0762 12.166 9.87117 12.3711C9.66614 12.5761 9.334 12.5761 9.12898 12.3711L5.36433 8.60641C5.0296 8.27129 5.0296 7.72863 5.36433 7.39351L9.12898 3.62887C9.334 3.42384 9.66614 3.42384 9.87117 3.62887C10.0762 3.83389 10.0762 4.16603 9.87117 4.37105L6.24226 7.99996L9.87117 11.6289Z" fill="currentColor"/>`,
+      })));
+  }))();
+}
+function v8n() {
+  return (v8n = t(() => {
+    (Q(),
+      (_8n = Z({
+        name: `chevron-right-md-light-16`,
+        canvas: {
+          width: 16,
+          height: 16,
+          viewBox: `0 0 16 16`,
+          frame: { x: 0, y: 0, width: 16, height: 16 },
+          inkBounds: { x: 5.808594, y: 3.475098, width: 4.911621, height: 9.049805 },
+          visualBounds: { x: 5.808594, y: 3.475098, width: 4.911621, height: 9.049805 },
+        },
+        paint: { kind: `monochrome` },
+        optical: {
+          shape: `non-circular`,
+          bounds: { x: 5.808594, y: 3.475098, width: 4.911621, height: 9.049805 },
+          center: { x: 8.264405, y: 8 },
+          insets: { top: 3.475098, right: 5.279785, bottom: 3.475097, left: 5.808594 },
+          anchors: {
+            frame: { x: 8, y: 8 },
+            ink: { x: 8.264405, y: 8 },
+            foreground: { x: 8.264405, y: 8 },
+          },
+        },
+        capabilities: [`icon`],
+        body: `<path d="M5.96236 11.6289C5.75734 11.8339 5.75734 12.166 5.96236 12.3711C6.16739 12.5761 6.49953 12.5761 6.70455 12.3711L10.4692 8.60641C10.8039 8.27129 10.8039 7.72863 10.4692 7.39351L6.70455 3.62887C6.49952 3.42384 6.16739 3.42384 5.96236 3.62887C5.75734 3.83389 5.75734 4.16603 5.96236 4.37105L9.59127 7.99996L5.96236 11.6289Z" fill="currentColor"/>`,
+      })));
+  }))();
+}
+ s7();bji();i7();K6n();pAi();pCi();a7();FSi();f8n();v8n();
+ const Bdr=t5.fromPreset?.(d8n),Udr=t5.fromPreset?.(_8n);
  (pji = { default: `h-5 w-8`, sm: `h-4 w-7` }),
       (mji = {
         default: `h-4 w-4 data-[state=unchecked]:translate-x-[2px] data-[state=checked]:translate-x-[14px] rtl:data-[state=unchecked]:-translate-x-[2px] rtl:data-[state=checked]:-translate-x-[14px]`,
@@ -1659,5 +2385,5 @@ function K6n() {
       }),
       (tMi = { messageBase: `px-row-x text-sm` }),
       (nMi = { xs: `icon-xs`, sm: `icon-sm`, base: `icon-base`, md: `icon-md` });
- return {MenuCheckboxItem:Dji,MenuRadioItem:Aji,MenuRadioGroup:yb,MenuTrigger:xji,MenuContent:Sji,MenuItem:Cji,MenuItemIcon:Nji,MenuSeparator:Rji,MenuSectionLabel:zji,MenuMessage:Bji,MenuTitle:Kji,MenuGroup:Jji,MenuSection:qji,MenuRow:QAi,followingEnabledItems:Lji};
+ return {MenuSubmenuItem:Wji,MenuFlyoutSubmenuItem:Gji,MenuCheckboxItem:Dji,MenuRadioItem:Aji,MenuRadioGroup:yb,MenuTrigger:xji,MenuContent:Sji,MenuItem:Cji,MenuItemIcon:Nji,MenuSeparator:Rji,MenuSectionLabel:zji,MenuMessage:Bji,MenuTitle:Kji,MenuGroup:Jji,MenuSection:qji,MenuRow:QAi,followingEnabledItems:Lji};
 }

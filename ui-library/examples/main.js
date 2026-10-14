@@ -18,7 +18,7 @@ const {ComposerLayout}=createComposerLayout({React,motion,useMotionValue,useDark
 const tooltip=createTooltip({React,ReactDOM,ShortcutBadge:ui.ShortcutBadge});
 const {Tooltip,TooltipProvider}=tooltip;
 // Local window event adapter for the original menu dismissal bridge.
-const menu=createMenu({React,ReactDOM,tooltip,AssetIcon:ui.AssetIcon,eventBridge:{subscribe(name,callback){window.addEventListener(name,callback);return ()=>window.removeEventListener(name,callback);}}});
+const menu=createMenu({React,ReactDOM,motion,AnimatePresence,tooltip,AssetIcon:ui.AssetIcon,eventBridge:{subscribe(name,callback){window.addEventListener(name,callback);return ()=>window.removeEventListener(name,callback);}}});
 const composerActions=createComposerActions({React,motion,Spinner:ui.Spinner,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon,Tooltip,morphingEnabled:true});
 const contextActions=createComposerContextAction({React,Button:ui.Button,Tooltip,ShortcutBadge:ui.ShortcutBadge,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon});
 const {Avatar}=createAvatar({React,animate});

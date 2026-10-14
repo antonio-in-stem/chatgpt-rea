@@ -29,14 +29,25 @@
     "Mji",
     "dji",
     "i7",
-    "K6n"
+    "K6n",
+    "Wji",
+    "Gji",
+    "pAi",
+    "pCi",
+    "OAi",
+    "a7",
+    "ASi",
+    "FSi",
+    "ISi",
+    "f8n",
+    "v8n"
   ],
-  "bodySha256": "f037ebfac21187729dbbb354acf8edc884da62f7ef462aca122bb9d64b092975",
+  "bodySha256": "61ee094bc7754420e9009baa9e6922a51e1b2d5836eaace4eaffaead57477fed",
   "initializerSha256": "6ab93d32146b6f49ded0d1a4fcc650bc1f615af734d05ec86413cc78441e695c",
   "transformation": "Original functions and menu tooltip/style initializer retained; only terminating comma changed to semicolon in initializer slice. React/compiler and original interaction/scroll/tooltip/icon dependencies explicitly injected.",
   "limits": [
     "Requires underlying menu primitives and scroll-area extraction",
-    "Submenus/search still pending",
+    "Menu search still pending",
     "No full menu runtime or screenshot parity claim"
   ]
 }

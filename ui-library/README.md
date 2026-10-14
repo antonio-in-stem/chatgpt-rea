@@ -319,3 +319,9 @@ The local SidebarFlow now uses this menu for reordering and mark-as-read actions
 `createMenu` now also exports MenuCheckboxItem, MenuRadioGroup and MenuRadioItem from original Dji/Aji. Checkbox `indicator` supports the original checkmark/switch paths, remains open by default, and accepts `closeOnSelect`. Radio variants include default, descriptive, icon, swatch and chatgpt. The chatgpt indicator uses the original16px preset through the recovered `$` preset factory (`AssetIcon.fromPreset`); other rows retain the17px original mark.
 
 Browser verified checkbox toggle without dismissal and exclusive radio selection surviving close/reopen with the selected SVG. The sidebar demo checkbox controls status visibility. Submenus/search and profile-specific menu contents are still pending.
+
+### Submenus
+
+`createMenu` also exports original MenuSubmenuItem (inline expansion, props trigger/children/isDefaultOpen/onOpenChange) and MenuFlyoutSubmenuItem (lateral panel with label/children and original controlled-state/placement/tooltip options). Pass `motion` and `AnimatePresence` for inline transitions; missing animation dependencies fail explicitly when that path is rendered. The flyout uses the original shared portal context, media-query hook,200ms hover timer, arrows and focus engine.
+
+Browser verified ArrowRight enters the nested item, ArrowLeft returns focus to its parent, nested selection executes, and inline expansion/selection executes. Sidebar ordering actions now use the original flyout component. RTL, hover cancellation, parent-bottom alignment and zoom cases remain unverified. The recovered compact-mode query is literally `not all`; it has been preserved.
