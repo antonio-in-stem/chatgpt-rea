@@ -522,3 +522,12 @@ createSettingsLocalArtwork(React) now contains nine unchanged SVG initializers f
 createSettingsArtworkRegistry({React,sharedArtwork}) retains the original section registry and la platform selector. Windows appshots selects its distinct 16/20 artwork; cloud-environments selects its original special SVG. Unknown sections return undefined. Missing required bindings fail explicitly. The full imported artwork dependency graph and extension-specific local function remain pending: the manifest records required aliases with original module/export bindings (or pending local functions). Supplying placeholders does not establish visual parity; tests use sentinels only to verify selection semantics.
 
 Three tests confirm exact initializer/selector/registry source, render all nine SVGs against the original functions with overridden props, and verify platform/alias/unknown behavior. Example build passes with the existing Lottie warning. No full registry integration or installed-app screenshot claim is made.
+
+
+### Shared settings asset bindings
+
+createSettingsSharedArtwork(AssetIcon) resolves 75 original registry aliases backed by 65 original shared asset presets, including the Windows appshots 16/20 variants. Pass the recovered AssetIcon with fromPreset. The returned bindings can be combined with the still-required component-only bindings when constructing createSettingsArtworkRegistry; the registry deliberately continues to reject incomplete input.
+
+The generator follows original import/export aliases and preserves the asset initializer bodies. Bundle lazy initialization and preset normalization use the same explicit adapters as earlier artwork extractions. Two tests verify every initializer body and render all 75 bindings through the recovered AssetIcon; Windows asset names and paired dimensions are checked. Example build passes with the existing Lottie warning. Component-only SVG imports and extension-specific selection remain listed under pending in settings-shared-artwork-manifest.json. This does not establish complete registry integration or screenshot parity.
+
+Reproduce with `node ui-library/scripts/extract-settings-shared-artwork.mjs <readable-assets-directory>` after generating settings-artwork-manifest.json.

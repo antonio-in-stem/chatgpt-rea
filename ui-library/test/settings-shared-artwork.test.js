@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createAssetIcon} from '../src/AssetIcon.js';
+import {createSettingsSharedArtwork} from '../src/SettingsSharedArtwork.js';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8'),m=JSON.parse(read('../settings-shared-artwork-manifest.json'));
+test('all shared asset initializers retain original function bodies',()=>{const source=read('../../original-stack/state/recovered-all/readable/assets/'+m.source),out=read('../src/SettingsSharedArtwork.js');for(const r of m.initializers){const i=source.indexOf('function '+r.initializer+'(');assert.ok(out.includes(source.slice(i,source.indexOf('\n}',i)+2)),r.symbol);}});
+test('every recovered preset/component renders through original AssetIcon',()=>{const AssetIcon=createAssetIcon(React),bindings=createSettingsSharedArtwork(AssetIcon);assert.equal(Object.keys(bindings).length,75);for(const r of m.records){const Component=r.kind==='preset'?AssetIcon.fromPreset(bindings[r.alias]):bindings[r.alias];const html=renderToStaticMarkup(React.createElement(Component,{className:'icon-xs'}));assert.match(html,/<svg/,r.alias);assert.match(html,/<path|<circle|<rect|<g/,r.alias);assert.match(html,/icon-xs/,r.alias);}assert.equal(bindings.o.name,'appshot-window-windows-regular-16');assert.equal(bindings.E.name,'appshot-window-windows-regular-20');assert.equal(bindings.k.canvas.width,16);assert.equal(bindings.Ae.canvas.width,20);});
