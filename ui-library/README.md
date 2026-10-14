@@ -227,3 +227,8 @@ The example uses an authored local Blob URL provider for images, revokes URLs on
 ### File classification
 
 `describeFile({fileName, mimeType, kind?, isNote?, sourceUrl?})` and `fileExtension(name)` preserve the complete shared B5..qwi block and its tables. Results include key, label, iconKey, category and isImageLike. MIME/provider precedence, hidden/extensionless files and Windows paths follow shipped behavior. The example uses the returned label as card subtitle and isImageLike for preview selection. The original file artwork renderer remains separate work; iconKey is not a rendered SVG. Three tests cover block identity, path cases and 760 differential combinations.
+
+
+### File glyph presets
+
+`createFileTypeGlyph({React, AssetIcon: ui.AssetIcon})` exposes the recovered ROi table's 16px branded and 16/20px monochrome branches, plus text glyphs. Props: iconKey, size (16 default), variant (branded default), className and SVG props. Original preset bodies, optical metadata and color classes are preserved. Unsupported keys return null; 20px branded file artwork explicitly requires the still-pending full renderer instead of silently substituting a different glyph. `fileIconAssets` and `textFileIconAssets` are also exported. Browser verified PDF/CSV/code viewBoxes and colors; 2 new tests verify every initializer and render every key/size through real AssetIcon.

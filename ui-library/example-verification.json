@@ -343,5 +343,14 @@
     "blobUrlsRevoked": 2,
     "pageErrors": [],
     "scope": "Local authored Blob provider using recovered view; not portable document generation"
+  },
+  "fileGlyphs": {
+    "size": 16,
+    "variant": "branded",
+    "pdfColor": "rgb(250, 66, 62)",
+    "csvColor": "rgb(4, 184, 76)",
+    "codeColor": "color(srgb 0.87451 0.87451 0.87451 / 0.65)",
+    "pageErrors": [],
+    "scope": "Recovered small glyph branch; not full original-screen parity"
   }
 }

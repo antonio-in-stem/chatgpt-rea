@@ -1,0 +1,163 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "tableSha256": "c7ad6fb221f7e096421a5bc87a396bdb51dd757ad175df4a69b82a2f7d68fec0",
+  "assets": [
+    {
+      "symbol": "sDi",
+      "initializer": "cDi",
+      "bodySha256": "d8a5cd0a8c021b69b2b0366f3e5187faeea0b8c1be404e52a182b94aecff9f31"
+    },
+    {
+      "symbol": "lDi",
+      "initializer": "uDi",
+      "bodySha256": "75126201082d47b813603f1eea68f885a6c0f9b687aa2e5d28dc4cf4bedd506c"
+    },
+    {
+      "symbol": "U8n",
+      "initializer": "W8n",
+      "bodySha256": "cf6618aefe8ac39bb94289c68f20b7fdb7b546a31c95e0aeaf1e6aa1ec495f23"
+    },
+    {
+      "symbol": "G8n",
+      "initializer": "K8n",
+      "bodySha256": "4bdefb3ab1cd34ec58e5fa17476d0c2501b535c99135ba15cadee0ecf6d808a1"
+    },
+    {
+      "symbol": "cor",
+      "initializer": "lor",
+      "bodySha256": "891ef46ba79b9c7453f94a368046c24d2544fc60258db2df1e3437d6235922c9"
+    },
+    {
+      "symbol": "uor",
+      "initializer": "dor",
+      "bodySha256": "7296825ff64b69579368c51ec194eb3a866a9fb82e8464ec8e95e6b068210c6e"
+    },
+    {
+      "symbol": "ktr",
+      "initializer": "Atr",
+      "bodySha256": "f5d3bc99073876d826ac5e64835a5cbb7df4c886dee8d7ef18ff3eac7de06419"
+    },
+    {
+      "symbol": "jtr",
+      "initializer": "Mtr",
+      "bodySha256": "0634e898dca5426f1118643f891a174319aa7bf79ceeb4a4a2bd13b2faf4d8c4"
+    },
+    {
+      "symbol": "x5n",
+      "initializer": "S5n",
+      "bodySha256": "0219d6eb01338acd5afee263bc09897450f8a495dc8f29102fff1da97bba52c9"
+    },
+    {
+      "symbol": "C5n",
+      "initializer": "w5n",
+      "bodySha256": "e1c5a6c168520e49d9830450e83040483f46a4aa6e56ab6ba6cf8e643ff81713"
+    },
+    {
+      "symbol": "rDi",
+      "initializer": "iDi",
+      "bodySha256": "b4bc0cb631b7497b4f20412c6b9cd169a2e57895922171180aa3bc4d60893869"
+    },
+    {
+      "symbol": "aDi",
+      "initializer": "oDi",
+      "bodySha256": "c391dc70c4073434c4df433533306ddb59de962b4af296937220c21971187932"
+    },
+    {
+      "symbol": "p$",
+      "initializer": "m$",
+      "bodySha256": "87988a3fb67e8c48ab0ba0064984f691f06eacf36f781da6700601400c4762d3"
+    },
+    {
+      "symbol": "y9n",
+      "initializer": "b9n",
+      "bodySha256": "e10f2751d884537bb11ffd451370abe1f0bc7162d0dec2026ef48c36c8de8e0b"
+    },
+    {
+      "symbol": "qnr",
+      "initializer": "Jnr",
+      "bodySha256": "67ca69f24b826f1408570fa1d34fbd2bfa53df64e2deecc86e6dc924871cb23c"
+    },
+    {
+      "symbol": "Ynr",
+      "initializer": "Xnr",
+      "bodySha256": "6babed9147c05be984366616a630477a421aed32a7d1f4450f80ae625bd44e1a"
+    },
+    {
+      "symbol": "Crr",
+      "initializer": "wrr",
+      "bodySha256": "bc58c00639cc5efd80557f662dca5a1961f0daf970673e8c3d8eb02650926b1f"
+    },
+    {
+      "symbol": "Trr",
+      "initializer": "Err",
+      "bodySha256": "6a6d535b1c1914febdb95c133183dce8b342772c8a2d2f6cb11deda001dd620b"
+    },
+    {
+      "symbol": "ytr",
+      "initializer": "btr",
+      "bodySha256": "fc2702868f4af126fd364238daea427b0ef307274d15b9996aa070594a47ca3c"
+    },
+    {
+      "symbol": "xtr",
+      "initializer": "Str",
+      "bodySha256": "92a1ac9a9fed67a25fe560908a08629a5b8d9b00c4c280cc101724955e86de77"
+    },
+    {
+      "symbol": "Har",
+      "initializer": "Uar",
+      "bodySha256": "7c120bec4ecf974806880793716ea607076305cf40d314d68369c802b19f8c2e"
+    },
+    {
+      "symbol": "War",
+      "initializer": "Gar",
+      "bodySha256": "33e1ea09a9d331fdc573df60b4dd0c5744027ea0af997eed39022ba219d04de2"
+    },
+    {
+      "symbol": "t5n",
+      "initializer": "n5n",
+      "bodySha256": "8c4266cfbc6edcea4afd80d8d57a9f3bad6c2b2c4051a35e3b39037131c0e27d"
+    },
+    {
+      "symbol": "r5n",
+      "initializer": "i5n",
+      "bodySha256": "f4ca8f9e3cce8f5a85283d98f71d6166b63c55fb740b5314080127a8b0f9e930"
+    },
+    {
+      "symbol": "htr",
+      "initializer": "gtr",
+      "bodySha256": "5c35808e41d4ef02ed4e3d204f43a77cf8ea931f69adf709094c0889ca4bc2a4"
+    },
+    {
+      "symbol": "_tr",
+      "initializer": "vtr",
+      "bodySha256": "7a16c98bbee7219e1f2de9b125173965793c48ecd307fe093b3129c2dbdb99a5"
+    },
+    {
+      "symbol": "$Ei",
+      "initializer": "eDi",
+      "bodySha256": "935e7b59ec6e717273636fc25ba00c86be9001f3a9910956d95f355c7c571dc8"
+    },
+    {
+      "symbol": "tDi",
+      "initializer": "nDi",
+      "bodySha256": "92fc01e46816655e9414fcfc1c2d8d2b359fa44091377b7d17dcb0bd25001622"
+    },
+    {
+      "symbol": "OOi",
+      "initializer": "kOi",
+      "bodySha256": "b039bdadce6bdc430398fe867c7a0b86db2a42aff5ef16ce6680df8567451b7e"
+    },
+    {
+      "symbol": "h$",
+      "initializer": "g$",
+      "bodySha256": "ac812efb652414cd9be42f6e43884c983e6e961a1bb59481752375e0e846eaef"
+    }
+  ],
+  "transformation": "Original preset initializer bodies and ROi lookup copied. Trusted fixed assets normalized; thin adapter exposes supported source branches explicitly.",
+  "limits": [
+    "Full branded/provider artwork renderer pending",
+    "Unsupported keys render no invented fallback",
+    "Demo explicitly uses original 16px branded variant"
+  ]
+}

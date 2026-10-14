@@ -19,3 +19,5 @@ ui-library/src/ResourceCards.js -text
 ui-library/src/AttachmentThumbnail.js -text
 
 ui-library/src/fileDescriptor.js -text
+
+ui-library/src/FileTypeGlyph.js -text

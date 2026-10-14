@@ -317,6 +317,17 @@
       "manifest": "file-descriptor-manifest.json",
       "transformation": "Entire original function and table block, bundle initializer adapted",
       "status": "Source differential classification verified; icon artwork renderer pending"
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "components": [
+        "FileTypeGlyph",
+        "fileIconAssets",
+        "textFileIconAssets"
+      ],
+      "manifest": "file-icons-manifest.json",
+      "transformation": "Original preset initializer bodies and ROi lookup copied. Trusted fixed assets normalized; thin adapter exposes supported source branches explicitly.",
+      "status": "All extracted initializer bodies and real AssetIcon render paths verified; local browser PDF/CSV/code colors checked; complete branded/provider renderer pending"
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",
