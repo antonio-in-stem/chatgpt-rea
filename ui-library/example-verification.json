@@ -620,5 +620,17 @@
       "Local posts; no feed backend or release-details modal",
       "No screenshot match against installed app"
     ]
+  },
+  "browserAccountSurfaces": {
+    "panelWidth": 280,
+    "keyboardOpens": true,
+    "selectedWorkspace": "Demo workspace",
+    "checkedAfterReopen": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local radio composition; bt and Nt not recovered",
+      "Profile Yi accountSwitcher stays null in this build",
+      "No whole-window visual comparison"
+    ]
   }
 }

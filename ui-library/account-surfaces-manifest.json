@@ -1,0 +1,66 @@
+{
+  "sources": [
+    {
+      "name": "browser-account-switcher-menu-item-84f69449fe29.js",
+      "sha256": "ad57a40eb49d2e58793cf2db7a314172c6bcadd2563a0206040ac59d80a76e1e"
+    },
+    {
+      "name": "app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e"
+    },
+    {
+      "name": "workspace-type-label-fb4410cc7c2e.js",
+      "sha256": "a3d5790b0eadab803ce3227c22d253d536fec451212ca8156f68a02620ec0915"
+    },
+    {
+      "name": "workspace-avatar-fallback-c1365b15eb21.js",
+      "sha256": "7fa35aec04400128fe712ada6ba119c5380c976c117d7e26f160a43248ab0e5b"
+    }
+  ],
+  "accountSymbols": [
+    "At",
+    "jt",
+    "Mt"
+  ],
+  "sharedSymbols": [
+    "bbn",
+    "JK",
+    "qK",
+    "YK",
+    "_An"
+  ],
+  "labelSymbols": [
+    "c",
+    "l",
+    "d"
+  ],
+  "avatarSymbols": [
+    "d"
+  ],
+  "artwork": [
+    {
+      "alias": "_",
+      "asset": "_8n",
+      "function": "v8n",
+      "preset": true
+    },
+    {
+      "alias": "a",
+      "asset": "WZi",
+      "function": "GZi",
+      "preset": false
+    },
+    {
+      "alias": "o",
+      "asset": "KZi",
+      "function": "qZi",
+      "preset": false
+    }
+  ],
+  "limits": [
+    "These surfaces belong to the browser account switcher; the installed profile Yi leaves accountSwitcher null",
+    "Session storage/switching/logout controller bt/Nt not included",
+    "No account credentials or real session calls used",
+    "Full-window parity unverified"
+  ]
+}
