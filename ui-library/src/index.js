@@ -87,3 +87,5 @@ export {createProfileControl} from './ProfileControl.js';
 export {createDropdownController} from './DropdownController.js';
 
 export {createMenuSurfaces} from './MenuSurfaces.js';
+
+export {createMenuEngine} from './MenuEngine.js';

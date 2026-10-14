@@ -39,3 +39,6 @@ ui-library/src/ProfileControl.js -text
 ui-library/src/DropdownController.js -text
 
 ui-library/src/MenuSurfaces.js -text
+
+ui-library/src/MenuEngine.js -text
+ui-library/src/BundleRuntime.js -text

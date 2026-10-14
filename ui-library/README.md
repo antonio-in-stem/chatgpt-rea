@@ -301,3 +301,9 @@ This is currently a controller extraction, **not a standalone menu**. Root/Trigg
 `createMenuSurfaces({React, primitives, Tooltip, AssetIcon, ScrollArea, TooltipOverlayContext?, compilerRuntime?})` exports MenuTrigger, MenuContent, MenuItem, MenuItemIcon, MenuSeparator, MenuSectionLabel, MenuMessage, MenuTitle, MenuGroup, MenuSection and MenuRow. Original function bodies/cache remain, including destructive tones, disabled-but-focusable rows, display/label/detail variants, link suppression, subtext, shortcuts, wrapping/fade and tooltip settings.
 
 This layer requires original-compatible Trigger/Content/Item/Group interaction primitives and the original scroll-area component. Those dependencies are still being extracted. It supplies the recovered presentation to the dropdown controller; it does not replace the underlying focus, positioning or dismissal engine. Tests verify the presentation and handler boundary only. Full menu runtime, checkboxes/radios/submenus and screenshot parity remain pending.
+
+### Original menu engine
+
+`createMenuEngine({React, ReactDOM})` now exports the recovered Root, Trigger, Portal, Content, Group, Label, Item, CheckboxItem, RadioGroup, RadioItem, ItemIndicator, Separator, Arrow, Sub, SubTrigger and SubContent. It preserves the entire 190,931-character source segment from zCe through wb and the shipped bundler runtime. No replacement Radix package is installed.
+
+Real browser checks on these primitives verified ArrowDown opening, skipping a disabled item, Enter selection/closing/focus return, Escape, outside click, Home and End. These are engine checks, not visual parity checks. Integration with MenuSurfaces/DropdownController, the app overlay portal and scroll-area dependencies remain next. Modal/submenu/radio/checkbox cases still need browser validation.

@@ -434,5 +434,24 @@
       "Menu adapter is test-only; ZNo contents pending",
       "No matched original screenshot"
     ]
+  },
+  "menuEngine": {
+    "scope": "Recovered raw original engine, not full styled menu",
+    "keyboardOpen": "ArrowDown",
+    "initialFocus": "First action",
+    "nextSkipsDisabled": "Last action",
+    "selection": "Last",
+    "selectionReturnsFocus": true,
+    "escapeReturnsFocus": true,
+    "outsideClickCloses": true,
+    "homeFocus": "First action",
+    "endFocus": "Last action",
+    "consoleErrors": 0,
+    "limits": [
+      "Controller/surface integration pending",
+      "Checkbox/radio/submenu/modal pending",
+      "ArrowUp does not open closed fixture",
+      "No matched screenshot"
+    ]
   }
 }

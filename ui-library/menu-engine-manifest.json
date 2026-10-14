@@ -1,0 +1,15 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "startSymbol": "zCe",
+  "endSymbol": "wb",
+  "bodySha256": "eba0dcdf8dda45209db9a965cdf79c77770f308ce8d9ce7a3be08109a2bd69cf",
+  "bodyLength": 190931,
+  "runtimeSha256": "6186fe4d07e4a4a9ea060111ca4693787e0dc5d24e019db5cb7a32695ef398ad",
+  "transformation": "Contiguous original source segment retained unchanged. React and ReactDOM module imports adapted; original Rolldown runtime retained.",
+  "limits": [
+    "Integration with menu surfaces pending",
+    "Basic keyboard/select/Escape/outside-click browser paths verified; checkbox/radio/submenu/modal paths pending",
+    "No screenshot parity claim"
+  ]
+}
