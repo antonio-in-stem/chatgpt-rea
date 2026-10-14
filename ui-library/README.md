@@ -635,3 +635,9 @@ Validation: six focused palette/artwork tests pass. Browser verification confirm
 `createSettingsWorkspace` preserves the distributed `FMs`, `MMs` and `EMs` functions: navigation context inheritance/override, contextual sidebar forwarding, full-bleed content, conditional `/settings` persistent workspace panels and the New tab action. New tab retains the original hidden route, fallback menu, browser command and generic tab branches. State, effects and slot implementations are named explicit factory dependencies; the manifest records their original symbols.
 
 Three focused tests verify exact recovered bodies and the navigation/panel/action branches using test slot adapters. Those adapters only observe composition; they do not establish original shell rendering. The complete `sDs` shell, content-boundary lifecycle and panel registration implementations still require integration; this module is not advertised as a finished settings window or screenshot match.
+
+### Content boundary lifecycle
+
+`createContentBoundary` recovers the exact `iDi` content wrapper and shared `pCi` ref-merging initializer. It watches the content element and document root, reports window-relative insets through an explicit host adapter, forwards caller refs/props and clears recorded geometry on detach. Without ResizeObserver, the shipped fallback measures immediately. With ResizeObserver, it waits for the observer callback, matching the original.
+
+Three tests verify source hashes/body identity, resize reporting, cleanup, ref forwarding and the observer-free fallback. Motion, the stable callback hook and bounds storage remain explicit dependencies. This closes a recovered-code dependency of `SettingsWorkspace`; the complete shell and its integration remain pending. No browser or full-window parity claim is made for this component yet.

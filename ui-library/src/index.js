@@ -164,3 +164,4 @@ export {createSettingsLocalHostIcon,createSettingsRemoteHostIcon} from './Settin
 export {createSettingsHostSharedArtwork} from './SettingsHostSharedArtwork.js';
 export {normalizeAccent,serializeAccent,resolveAccent,accentClasses,accentOrder,accentColors,legacyAccentColors} from './AccentPalette.js';
 export {createSettingsWorkspace} from './SettingsWorkspace.js';
+export {createContentBoundary} from './ContentBoundary.js';

@@ -1,0 +1,22 @@
+{
+  "sources": [
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "symbol": "iDi",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "bodySha256": "84d1c4e05ed30ad915d42f5d09a64466ec263270a9e32552011a70efe435cdd4"
+    },
+    {
+      "file": "app-shared-737655e1fb23.js",
+      "symbol": "pCi",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "bodySha256": "4f511716407c8601e7acb1532271a6b47cf6b7225cb2a37e8c8f5f12a8e7b0bb"
+    }
+  ],
+  "limits": [
+    "Bounds store and reportBounds effect are explicit host adapters",
+    "Stable-callback hook and original motion runtime supplied by caller",
+    "ResizeObserver branch reports when observer fires; fallback reports immediately, as distributed",
+    "No complete app-shell integration or screenshot parity claim"
+  ]
+}
