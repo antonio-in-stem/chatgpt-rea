@@ -15,7 +15,12 @@
       "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
       "symbols": [
         "tVi",
-        "dxi"
+        "dxi",
+        "nVi",
+        "eVi",
+        "sVi",
+        "uVi",
+        "dVi"
       ]
     },
     {

@@ -696,5 +696,20 @@
       "Codex presentation only; Work settings editor pending",
       "No installed-app screenshot comparison"
     ]
+  },
+  "settingsSurfaces": {
+    "entry": "Profile Settings",
+    "localThemeChange": {
+      "before": true,
+      "after": false,
+      "rootTheme": "light"
+    },
+    "shortcutTransitionDialogCount": 1,
+    "shortcutRows": 4,
+    "consoleErrors": 0,
+    "limits": [
+      "Local preferences composition; original complete settings router pending",
+      "No installed-app screenshot comparison"
+    ]
   }
 }

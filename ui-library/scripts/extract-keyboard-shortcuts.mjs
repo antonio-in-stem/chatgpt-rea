@@ -15,15 +15,17 @@ ${fuzzy}
 j2();
 export {k2 as shortcutMatchScore};
 `);
-const groupSymbols=['b6s','w6s','T6s','E6s'],rowSymbols=['tVi','dxi'];
+const groupSymbols=['b6s','w6s','T6s','E6s'],rowSymbols=['tVi','dxi','nVi','eVi','sVi','uVi','dVi'];
 fs.writeFileSync(path.join(root,'src/SettingsSurfaces.js'),`// Original settings group and label/value row presentation.
 import {classNames as q} from './classNames.js';
 export function createSettingsSurfaces({React,compilerRuntime=React.__COMPILER_RUNTIME}){
 ${runtime}
-const ng=q,D6s=compilerRuntime,x6s=compilerRuntime,x9=compilerRuntime,fxi=compilerRuntime,I8=runtime,S6s=runtime,S9=runtime,pxi=runtime;
+const ng=q,D6s=compilerRuntime,x6s=compilerRuntime,x9=compilerRuntime,fxi=compilerRuntime,I8=runtime,S6s=runtime,S9=runtime,pxi=runtime,fVi=compilerRuntime,pVi=runtime,t=fn=>fn;
+let aVi,oVi,cVi,lVi;
 ${groupSymbols.map(n=>def(s.initial,n)).join('\n')}
 ${rowSymbols.map(n=>def(s.shared,n)).join('\n')}
-return {SettingsGroup:Object.assign(w6s,{Header:T6s,Content:E6s,Footer:b6s}),SettingsValueRow:tVi,ShortcutBadge:dxi};
+sVi();uVi();
+return {SettingsLabel:nVi,SettingsActionRow:eVi,SettingsPanel:dVi,SettingsGroup:Object.assign(w6s,{Header:T6s,Content:E6s,Footer:b6s}),SettingsValueRow:tVi,ShortcutBadge:dxi};
 }
 `);
 const symbols=['Oe','Pe','Fe','J','Ie','Le'];

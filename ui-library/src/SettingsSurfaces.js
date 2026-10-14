@@ -2,7 +2,8 @@
 import {classNames as q} from './classNames.js';
 export function createSettingsSurfaces({React,compilerRuntime=React.__COMPILER_RUNTIME}){
 const h=React.createElement,runtime={Fragment:React.Fragment,jsx:(type,props,key)=>h(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>h(type,key===undefined?props:{...props,key},...props.children)};
-const ng=q,D6s=compilerRuntime,x6s=compilerRuntime,x9=compilerRuntime,fxi=compilerRuntime,I8=runtime,S6s=runtime,S9=runtime,pxi=runtime;
+const ng=q,D6s=compilerRuntime,x6s=compilerRuntime,x9=compilerRuntime,fxi=compilerRuntime,I8=runtime,S6s=runtime,S9=runtime,pxi=runtime,fVi=compilerRuntime,pVi=runtime,t=fn=>fn;
+let aVi,oVi,cVi,lVi;
 function b6s(e) {
   let t = (0, x6s.c)(6),
     { children: n, className: r, variant: i } = e,
@@ -284,5 +285,319 @@ function dxi(e) {
     u
   );
 }
-return {SettingsGroup:Object.assign(w6s,{Header:T6s,Content:E6s,Footer:b6s}),SettingsValueRow:tVi,ShortcutBadge:dxi};
+function nVi(e) {
+  let t = (0, x9.c)(24),
+    {
+      label: n,
+      labelId: r,
+      labelSizing: i,
+      labelWeight: a,
+      description: o,
+      descriptionId: s,
+      icon: c,
+      variant: l,
+      verticalAlignment: u,
+    } = e,
+    d = i === void 0 ? `grow` : i,
+    f = a === void 0 ? `medium` : a,
+    p = u === `start` ? `items-start` : `items-center`,
+    m = d === `grow` && `flex-1`,
+    h;
+  t[0] !== p || t[1] !== m
+    ? ((h = q(`flex min-w-0 gap-3`, p, m)), (t[0] = p), (t[1] = m), (t[2] = h))
+    : (h = t[2]);
+  let g;
+  t[3] === c
+    ? (g = t[4])
+    : ((g = c == null ? null : (0, S9.jsx)(`span`, { className: `flex shrink-0`, children: c })),
+      (t[3] = c),
+      (t[4] = g));
+  let _ = l === `featured` && `text-base`,
+    v = l === `recommendation` && `text-[13px] leading-[18.571429px]`,
+    y = l !== `featured` && l !== `recommendation` && `text-sm`,
+    b = l !== `nested` && f === `medium` && `font-medium`,
+    x;
+  t[5] !== b || t[6] !== _ || t[7] !== v || t[8] !== y
+    ? ((x = q(
+        `min-w-0 break-words text-default group-data-[density=compact]/settings:leading-4.5`,
+        _,
+        v,
+        y,
+        b,
+      )),
+      (t[5] = b),
+      (t[6] = _),
+      (t[7] = v),
+      (t[8] = y),
+      (t[9] = x))
+    : (x = t[9]);
+  let S;
+  t[10] !== n || t[11] !== r || t[12] !== x
+    ? ((S = (0, S9.jsx)(`div`, { id: r, className: x, children: n })),
+      (t[10] = n),
+      (t[11] = r),
+      (t[12] = x),
+      (t[13] = S))
+    : (S = t[13]);
+  let C;
+  t[14] !== o || t[15] !== s
+    ? ((C = o
+        ? (0, S9.jsx)(`div`, {
+            id: s,
+            className: `min-w-0 text-xs leading-4 text-wrap break-words text-secondary`,
+            children: o,
+          })
+        : null),
+      (t[14] = o),
+      (t[15] = s),
+      (t[16] = C))
+    : (C = t[16]);
+  let w;
+  t[17] !== S || t[18] !== C
+    ? ((w = (0, S9.jsxs)(`div`, {
+        className: `flex min-w-0 flex-1 flex-col gap-0.5`,
+        children: [S, C],
+      })),
+      (t[17] = S),
+      (t[18] = C),
+      (t[19] = w))
+    : (w = t[19]);
+  let T;
+  return (
+    t[20] !== w || t[21] !== h || t[22] !== g
+      ? ((T = (0, S9.jsxs)(`div`, { className: h, children: [g, w] })),
+        (t[20] = w),
+        (t[21] = h),
+        (t[22] = g),
+        (t[23] = T))
+      : (T = t[23]),
+    T
+  );
+}
+function eVi(e) {
+  let t = (0, x9.c)(32),
+    {
+      ref: n,
+      actions: r,
+      ariaLabel: i,
+      className: a,
+      description: o,
+      disabled: s,
+      edgeRounding: c,
+      icon: l,
+      label: u,
+      onClick: d,
+      onFocus: f,
+      onPointerEnter: p,
+      trailing: m,
+      variant: h,
+    } = e,
+    g = c === void 0 ? `row` : c,
+    _ = h === void 0 ? `default` : h,
+    v = g === `row` && `first:rounded-t-2xl last:rounded-b-2xl`,
+    y = _ === `recommendation` && `dark:bg-primary-ghost-hover`,
+    b = !s && `hover:bg-primary-ghost-hover focus-within:bg-primary-ghost-hover`,
+    x =
+      !s &&
+      _ === `recommendation` &&
+      `dark:hover:bg-background-secondary-soft-alpha dark:focus-within:bg-background-secondary-soft-alpha`,
+    S;
+  t[0] !== v || t[1] !== y || t[2] !== b || t[3] !== x
+    ? ((S = q(`group flex w-full items-center`, v, y, b, x)),
+      (t[0] = v),
+      (t[1] = y),
+      (t[2] = b),
+      (t[3] = x),
+      (t[4] = S))
+    : (S = t[4]);
+  let C;
+  t[5] !== a || t[6] !== _
+    ? ((C = q(
+        `flex min-w-0 flex-1 cursor-interaction items-center rounded-[inherit] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring disabled:cursor-default disabled:opacity-60`,
+        _ === `empty`
+          ? `flex-col justify-center gap-4 px-6 py-10 text-center text-base text-tertiary select-none`
+          : q(`px-4 text-start`, _ === `nested` ? `min-h-10 gap-3 py-0.5` : `gap-6 py-3`),
+        a,
+      )),
+      (t[5] = a),
+      (t[6] = _),
+      (t[7] = C))
+    : (C = t[7]);
+  let w;
+  t[8] !== o || t[9] !== l || t[10] !== u || t[11] !== _
+    ? ((w =
+        _ === `empty`
+          ? (0, S9.jsxs)(S9.Fragment, { children: [l, u] })
+          : (0, S9.jsx)(nVi, {
+              label: u,
+              description: o,
+              icon: l,
+              variant: _,
+              verticalAlignment: `center`,
+            })),
+      (t[8] = o),
+      (t[9] = l),
+      (t[10] = u),
+      (t[11] = _),
+      (t[12] = w))
+    : (w = t[12]);
+  let T;
+  t[13] === m
+    ? (T = t[14])
+    : ((T =
+        m == null
+          ? null
+          : (0, S9.jsx)(`div`, { className: `flex shrink-0 items-center gap-2`, children: m })),
+      (t[13] = m),
+      (t[14] = T));
+  let E;
+  t[15] !== i ||
+  t[16] !== s ||
+  t[17] !== d ||
+  t[18] !== f ||
+  t[19] !== p ||
+  t[20] !== n ||
+  t[21] !== T ||
+  t[22] !== C ||
+  t[23] !== w
+    ? ((E = (0, S9.jsxs)(`button`, {
+        ref: n,
+        "aria-label": i,
+        className: C,
+        disabled: s,
+        onClick: d,
+        onFocus: f,
+        onPointerEnter: p,
+        type: `button`,
+        children: [w, T],
+      })),
+      (t[15] = i),
+      (t[16] = s),
+      (t[17] = d),
+      (t[18] = f),
+      (t[19] = p),
+      (t[20] = n),
+      (t[21] = T),
+      (t[22] = C),
+      (t[23] = w),
+      (t[24] = E))
+    : (E = t[24]);
+  let D;
+  t[25] !== r || t[26] !== s
+    ? ((D =
+        !s && r != null
+          ? (0, S9.jsx)(`div`, { className: `flex shrink-0 items-center gap-1 pe-4`, children: r })
+          : null),
+      (t[25] = r),
+      (t[26] = s),
+      (t[27] = D))
+    : (D = t[27]);
+  let O;
+  return (
+    t[28] !== E || t[29] !== D || t[30] !== S
+      ? ((O = (0, S9.jsxs)(`div`, { className: S, children: [E, D] })),
+        (t[28] = E),
+        (t[29] = D),
+        (t[30] = S),
+        (t[31] = O))
+      : (O = t[31]),
+    O
+  );
+}
+function sVi() {
+  return (sVi = t(() => {
+    ((aVi = `flex flex-col [&>*:not(:last-child)]:relative [&>*:not(:last-child)]:after:pointer-events-none [&>*:not(:last-child)]:after:absolute [&>*:not(:last-child)]:after:inset-x-4 [&>*:not(:last-child)]:after:bottom-0 [&>*:not(:last-child)]:after:h-px [&>*:not(:last-child)]:after:bg-border [&>*:not(:last-child)]:after:content-['']`),
+      (oVi = `flex flex-col [&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-border`));
+  }))();
+}
+function uVi() {
+  return (uVi = t(() => {
+    ((cVi = `_daybreak_vyuj8_1`), (lVi = { daybreak: cVi }));
+  }))();
+}
+function dVi(e) {
+  let t = (0, fVi.c)(22),
+    { children: n, className: r, contentOverflow: i, dividers: a, variant: o, decoration: s } = e,
+    c = i === void 0 ? `hidden` : i,
+    l = a === void 0 || a,
+    u = o === void 0 ? `default` : o,
+    d = l ? (u === `flat` ? oVi : aVi) : `flex flex-col`,
+    f = u === `recommendation` && `rounded-[20px]`,
+    p = u !== `recommendation` && u !== `flat` && `rounded-2xl`,
+    m = s === `daybreak` && lVi.daybreak,
+    h = c === `visible` ? `overflow-visible` : `overflow-hidden`,
+    g =
+      u === "default" &&
+      `border border-default group-data-[density=compact]/settings:border-0 group-data-[density=compact]/settings:ring-1 group-data-[density=compact]/settings:ring-inset group-data-[density=compact]/settings:ring-border`,
+    _ = u === `metered` && `ring-1 ring-inset ring-border-subtle`,
+    v = u === `secondary` && `bg-surface-secondary/92`,
+    y = u === `muted` && `bg-(--color-background-primary-soft-alpha)/50 dark:bg-primary-soft-alpha`,
+    b =
+      u === `form` &&
+      `border border-subtle bg-surface dark:bg-surface-secondary/92 group-data-[density=form]/settings:border-default group-data-[density=form]/settings:bg-transparent dark:group-data-[density=form]/settings:bg-transparent group-data-[density=form]/settings:[&>*:not(:last-child)]:after:inset-x-5 group-data-[density=form]/settings:[&>*:not(:last-child)]:after:h-px group-data-[density=form]/settings:[&>*:not(:last-child)]:after:bg-border-subtle`,
+    x = u === `outlined` && `border border-subtle bg-transparent`,
+    S =
+      u === `flat` &&
+      `relative bg-transparent before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-border before:content-[''] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-border after:content-['']`,
+    C = u === `input` && `border border-primary-outline bg-primary-soft`,
+    w = u === `recommendation` && `border border-default bg-secondary-soft dark:bg-transparent`,
+    T;
+  t[0] !== r ||
+  t[1] !== _ ||
+  t[2] !== v ||
+  t[3] !== y ||
+  t[4] !== b ||
+  t[5] !== x ||
+  t[6] !== S ||
+  t[7] !== C ||
+  t[8] !== w ||
+  t[9] !== d ||
+  t[10] !== f ||
+  t[11] !== p ||
+  t[12] !== m ||
+  t[13] !== h ||
+  t[14] !== g
+    ? ((T = q(d, f, p, m, h, g, _, v, y, b, x, S, C, w, r)),
+      (t[0] = r),
+      (t[1] = _),
+      (t[2] = v),
+      (t[3] = y),
+      (t[4] = b),
+      (t[5] = x),
+      (t[6] = S),
+      (t[7] = C),
+      (t[8] = w),
+      (t[9] = d),
+      (t[10] = f),
+      (t[11] = p),
+      (t[12] = m),
+      (t[13] = h),
+      (t[14] = g),
+      (t[15] = T))
+    : (T = t[15]);
+  let E;
+  t[16] === u
+    ? (E = t[17])
+    : ((E =
+        u === "default" || u === `metered`
+          ? {
+              backgroundColor: `var(--color-background-panel, var(--color-background-primary-soft-alpha))`,
+            }
+          : void 0),
+      (t[16] = u),
+      (t[17] = E));
+  let D;
+  return (
+    t[18] !== n || t[19] !== T || t[20] !== E
+      ? ((D = (0, pVi.jsx)(`div`, { className: T, style: E, children: n })),
+        (t[18] = n),
+        (t[19] = T),
+        (t[20] = E),
+        (t[21] = D))
+      : (D = t[21]),
+    D
+  );
+}
+sVi();uVi();
+return {SettingsLabel:nVi,SettingsActionRow:eVi,SettingsPanel:dVi,SettingsGroup:Object.assign(w6s,{Header:T6s,Content:E6s,Footer:b6s}),SettingsValueRow:tVi,ShortcutBadge:dxi};
 }

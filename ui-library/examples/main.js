@@ -1,3 +1,4 @@
+import {createSettingsFlow} from './SettingsFlow.js';
 import {createKeyboardShortcutsFlow} from './KeyboardShortcutsFlow.js';
 import {createAccountReplacementFlow} from './AccountReplacementFlow.js';
 import {createDialogFlow} from './DialogFlow.js';
@@ -30,7 +31,8 @@ const {Avatar}=createAvatar({React,animate});
 const {ProfileFooter}=createNavigationRail({React,SidebarList:ui.SidebarList});
 const {LegacyButton}=createLegacyButton({React});
 const KeyboardShortcutsFlow=createKeyboardShortcutsFlow(React,{ReactDOM,tooltip,AssetIcon:ui.AssetIcon,Button:ui.Button,SearchField:ui.SearchField});
-const ProfileMenuFlow=createProfileMenuFlow(React,{menu,Tooltip,Button:ui.Button,LegacyButton,Avatar,AssetIcon:ui.AssetIcon,ResponsiveIcon:ui.ResponsiveIcon,ProfileFooter,KeyboardShortcutsFlow});
+const SettingsFlow=createSettingsFlow(React,{ReactDOM,tooltip,AssetIcon:ui.AssetIcon,Button:ui.Button,Switch:ui.Switch,useDarkTheme:ui.useDarkTheme});
+const ProfileMenuFlow=createProfileMenuFlow(React,{menu,Tooltip,Button:ui.Button,LegacyButton,Avatar,AssetIcon:ui.AssetIcon,ResponsiveIcon:ui.ResponsiveIcon,ProfileFooter,KeyboardShortcutsFlow,SettingsFlow});
 const AccountReplacementFlow=createAccountReplacementFlow(React,{ReactDOM,tooltip,AssetIcon:ui.AssetIcon,Button:ui.Button,Switch:ui.Switch});
 const DialogFlow=createDialogFlow(React,{ReactDOM,tooltip,AssetIcon:ui.AssetIcon,Button:ui.Button});
 const AccountFlow=createAccountFlow(React,{menu,Avatar,AssetIcon:ui.AssetIcon});
