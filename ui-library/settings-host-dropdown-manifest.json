@@ -1,0 +1,14 @@
+{
+  "source": "settings-host-dropdown-61af9ecf0860.js",
+  "sha256": "8328654f24f534ca38489dee9691b295e08b1c3c7a5c7ca9e8292cfdb6639725",
+  "symbols": [
+    "T",
+    "E",
+    "D"
+  ],
+  "limits": [
+    "Connection discovery and host selection side effects belong to caller",
+    "Local/remote/filter artwork and menu components are explicit dependencies",
+    "No runtime connectivity or complete host settings claim"
+  ]
+}

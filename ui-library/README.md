@@ -608,3 +608,10 @@ createExternalDestinationIndicator preserves xbn, selecting the supplied browser
 The sidebar fixture now enables the original Security Settings entry and its search result. Both use the recovered external indicator and glyph, original security artwork, original collapsed tooltip behavior and original event dispatch. The external adapter records the target in local visible status only; it does not navigate or modify accounts. Its destination policy accepts the explicitly supplied external-browser target; other policies remain outside this fixture.
 
 Browser verified normal click, keyboard selection from a Security search, Escape back to navigation and collapsed click, all preserving the original security destination without page errors. The collapsed entry renders one icon, omitting its expanded trailing indicator. Teams, plugin/remote queries and full destination screens remain pending. Earlier statements that the fixture rejects security destinations are superseded by this integration.
+
+
+### Original settings host dropdown
+
+createSettingsHostDropdown exposes unchanged T/E/D as SettingsHostDropdown, HostFilterTooltip and ConnectedIndicator. It takes original dropdown/menu/tooltip/button renderers and explicit local/remote/filter/selection artwork. Props preserve connectedRemoteConnections, selectedHostId, onSelectHost, includeLocalHost, disabled, triggerVariant, localLabel/localIcon, connected marker and alignment/width overrides. The original defaults are selected-host trigger, local entry included, end alignment and menuWide content. An unresolved selected remote falls back to the local label; disabled mode returns the trigger without a menu.
+
+Four tests cover exact function identity, local-first order, selected marker, callback IDs, connection dots, local omission, disabled trigger and the filter tooltip's popup-state bridge. The example builds with its existing Lottie warning. Host discovery, artwork binding and full browser integration remain pending; no remote connection is created by these components.

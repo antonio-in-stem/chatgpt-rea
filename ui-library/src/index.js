@@ -158,3 +158,5 @@ export {createSettingsSidebar} from './SettingsSidebar.js';
 export {createSettingsSidebarIcons} from './SettingsSidebarIcons.js';
 
 export {createSecuritySettingsItem,createExternalDestinationIndicator,createSettingsExternalIcon} from './SecuritySettingsItem.js';
+
+export {createSettingsHostDropdown} from './SettingsHostDropdown.js';

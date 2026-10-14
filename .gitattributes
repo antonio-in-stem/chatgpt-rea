@@ -111,3 +111,5 @@ ui-library/src/SettingsSidebar.js -text
 ui-library/src/SettingsSidebarIcons.js -text
 
 ui-library/src/SecuritySettingsItem.js -text
+
+ui-library/src/SettingsHostDropdown.js -text
