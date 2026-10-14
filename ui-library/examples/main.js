@@ -6,14 +6,16 @@ import {createSidebarFlow} from './SidebarFlow.js';
 import {createSearchFlow} from './SearchFlow.js';
 import React from 'react';
 import {createRoot} from 'react-dom/client';
+import * as ReactDOM from 'react-dom';
 import {motion,AnimatePresence,MotionConfig,useMotionValue,LayoutGroup,useIsPresent} from 'framer-motion';
-import {createReaUI,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
+import {createReaUI,createTooltip,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
 import {createDecisionFlow} from './DecisionFlow.js';
 const searchIcons=createSearchIcons(React,classNames);
 const AnimatedIcon=createAnimatedNavigationIcon({React,AnimatedIcon:createAnimatedArtwork({React})});
 const ui=createReaUI({React,motion,AnimatePresence,MotionConfig,AnimatedIcon});
 const {ComposerLayout}=createComposerLayout({React,motion,useMotionValue,useDarkTheme:ui.useDarkTheme,MotionConfig,LayoutGroup,AnimatePresence,useIsPresent});
-const composerActions=createComposerActions({React,motion,Spinner:ui.Spinner,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon});
+const {Tooltip,TooltipProvider}=createTooltip({React,ReactDOM,ShortcutBadge:ui.ShortcutBadge});
+const composerActions=createComposerActions({React,motion,Spinner:ui.Spinner,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon,Tooltip,morphingEnabled:true});
 const ConversationFlow=createConversationFlow(React,{...ui,...composerActions,ComposerLayout});
 const ViewerFlow=createViewerFlow(React,ui);
 const SidebarFlow=createSidebarFlow(React,ui);
@@ -27,4 +29,4 @@ function App(){
   React.createElement(DecisionFlow,{onConfirm:setResult}),
   result ? React.createElement('p',{role:'status',className:'mt-4'},React.createElement(ui.Badge,{variant:'success'},`Confirmed: ${result.mode}`)) : null,React.createElement(ui.NavigationItem,{label:'Focus project search',icon:searchIcons.Search16,animatedIcon:'sidebar-search',fullWidth:false,onClick:()=>document.getElementById('project-search')?.focus()}),React.createElement('p',{className:'text-secondary text-sm'},'Use ',React.createElement(ui.ShortcutBadge,{keysLabel:'Tab'}),' to move between controls and ',React.createElement(ui.ShortcutBadge,{keysLabel:'Enter'}),' to activate.'),React.createElement(SearchFlow),React.createElement(ViewerFlow),React.createElement(ConversationFlow),React.createElement(SidebarFlow));
 }
-createRoot(document.getElementById('root')).render(React.createElement(App));
+createRoot(document.getElementById('root')).render(React.createElement(TooltipProvider,null,React.createElement(App)));

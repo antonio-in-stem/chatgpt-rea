@@ -244,6 +244,23 @@
       "manifest": "composer-actions-manifest.json",
       "transformation": "Original action and morph function bodies with explicit runtime dependencies. Source feature flag exposed as morphingEnabled; tooltip implementation remains an adapter.",
       "status": "Differential branches and SVG/path/transition checks; browser click submission verified. Real morph animation and matched screenshot parity pending."
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "components": [
+        "Tooltip",
+        "TooltipProvider",
+        "TooltipOverlayContext",
+        "dismissTooltips"
+      ],
+      "manifest": "tooltip-manifest.json",
+      "transformation": "Original controller/provider/portal/positioning functions; explicit React/ReactDOM/shortcut/scale adapters. Original compiler cache retained.",
+      "status": "Source-body identity, trigger merging, delay/cancellation and Escape tests. Browser hover/keyboard/blocked reason and submission validated without console errors.",
+      "limitations": [
+        "Advanced rich/coachmark/interactive/zoom runtime cases pending",
+        "Full original screenshot comparison pending",
+        "React compiler/internal runtime dependency retained"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

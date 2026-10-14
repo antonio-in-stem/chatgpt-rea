@@ -244,5 +244,34 @@
       "Current demo token context only",
       "Real morph animation and matched original screenshot pending"
     ]
+  },
+  "tooltipFlow": {
+    "pageErrors": [],
+    "consoleErrors": [],
+    "blocked": {
+      "text": "Write a message before sending",
+      "ariaDisabled": "true",
+      "nativeDisabled": false
+    },
+    "keyboard": {
+      "text": "Send message\nEnter",
+      "describedByMatchesTooltipId": true,
+      "geometry": {
+        "height": 30,
+        "radius": "20px",
+        "background": "rgb(24, 24, 24)"
+      }
+    },
+    "escapeDismissed": true,
+    "after": {
+      "message": "Tooltip keyboard flow",
+      "input": "",
+      "focused": true,
+      "tooltipCount": 0
+    },
+    "limits": [
+      "Advanced variants/interactive/zoom pending",
+      "No matched original screenshot comparison"
+    ]
   }
 }

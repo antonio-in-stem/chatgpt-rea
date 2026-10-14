@@ -11,3 +11,4 @@ ui-library/src/AssetIcon.js -text
 
 ui-library/src/ComposerLayout.js -text
 ui-library/src/ComposerActions.js -text
+ui-library/src/Tooltip.js -text
