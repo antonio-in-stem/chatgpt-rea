@@ -37,3 +37,5 @@ ui-library/src/LegacyButton.js -text
 ui-library/src/ProfileControl.js -text
 
 ui-library/src/DropdownController.js -text
+
+ui-library/src/MenuSurfaces.js -text

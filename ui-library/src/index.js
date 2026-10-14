@@ -85,3 +85,5 @@ export {createLegacyButton} from './LegacyButton.js';
 export {createProfileControl} from './ProfileControl.js';
 
 export {createDropdownController} from './DropdownController.js';
+
+export {createMenuSurfaces} from './MenuSurfaces.js';

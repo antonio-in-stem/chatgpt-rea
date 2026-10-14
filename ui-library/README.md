@@ -295,3 +295,9 @@ The original dropdown contents ZNo remain pending. Debug/process-memory and devi
 `createDropdownController` retains original p7, its state hook, size presets, hover safe-triangle geometry, ref cleanup and loading-content focus handling. Inputs include React, compiler runtime, visualScale, TooltipOverlayContext, an eventBridge with `subscribe`, and required menu primitives. It exposes Dropdown, useDropdownState, DropdownSuspense and dimension helpers.
 
 This is currently a controller extraction, **not a standalone menu**. Root/Trigger/Content/Portal/Layer/ModalLayer must be supplied; missing primitives throw instead of silently falling back to approximate DOM. Original lower-level primitive extraction is pending. Its tests check source identity and the controller-to-primitive contract, not real menu keyboard behavior or visual parity.
+
+### Original menu surfaces
+
+`createMenuSurfaces({React, primitives, Tooltip, AssetIcon, ScrollArea, TooltipOverlayContext?, compilerRuntime?})` exports MenuTrigger, MenuContent, MenuItem, MenuItemIcon, MenuSeparator, MenuSectionLabel, MenuMessage, MenuTitle, MenuGroup, MenuSection and MenuRow. Original function bodies/cache remain, including destructive tones, disabled-but-focusable rows, display/label/detail variants, link suppression, subtext, shortcuts, wrapping/fade and tooltip settings.
+
+This layer requires original-compatible Trigger/Content/Item/Group interaction primitives and the original scroll-area component. Those dependencies are still being extracted. It supplies the recovered presentation to the dropdown controller; it does not replace the underlying focus, positioning or dismissal engine. Tests verify the presentation and handler boundary only. Full menu runtime, checkboxes/radios/submenus and screenshot parity remain pending.
