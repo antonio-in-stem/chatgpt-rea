@@ -25,9 +25,24 @@ Arranque reproducido desde el worktree:
 
 El launcher verifica el inventario dos veces y resultó lento en el disco actual. No repetir un preflight adicional en el siguiente arranque. No omitir las verificaciones existentes ni modificar instalación personal/pristine.
 
+## Flujo central: verificación actual
+
+| Escenario | Estado | Evidencia / límite |
+| --- | --- | --- |
+| Mensaje demo y respuesta | Verificado | Ventana original y texto sintético observados. |
+| New chat y regreso desde sidebar | Verificado | Ida y vuelta comprobadas. |
+| Perfil → Settings → Appearance | Verificado | Controles originales operados en la instancia actual. |
+| Cambio de tema y persistencia tras recarga | Verificado | System/dark → Light; tras recarga, root light y radio Light seleccionado. Restaurado System y observado root dark/radio System seleccionado. |
+| Adjuntar/quitar/enviar | Pendiente en esta fase | Evidencia histórica no sustituye nueva comprobación integrada. |
+| Menús de conversación y regreso desde Ajustes | Pendiente en esta fase | No inferir del funcionamiento del menú de perfil. |
+
+Captura de Apariencia conservada localmente en `original-stack/state/demo-profile-host-v1/method-settings-light.png`, inspeccionada. No publicada. La primera captura con ese nombre se tomó antes del cambio por fallo del selector; fue reemplazada por la captura Light realmente verificada.
+
+Automatización: Demo-Controls añade choose-theme e inspect-theme para el input radio original. choose-theme solicita el cambio; su resultado no prueba que haya terminado. inspect-theme confirma el estado después. Durante recarga, ready=false no es fallo del frontend. La prueba no cambió renderer ni adapters de backend. Sintaxis Node comprobada.
+
 ## Próxima tarea única
 
-Validar el flujo central (adjuntos, menús, perfil/Ajustes, persistencia) en esta misma app. No reanudar extracciones aisladas. METHOD.md y AGENTS.md conservan secuencia y límites.
+Verificar adjunto demo desde composer hasta conversación y quitarlo antes de enviar en un segundo intento. Mantener esta instancia; no volver a validar todo el paquete. Después cerrar menús/regreso desde Ajustes. No reanudar extracción aislada; METHOD.md y AGENTS.md conservan secuencia y límites.
 
 ## Cuota y pendientes
 
