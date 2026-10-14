@@ -45,3 +45,6 @@ Latest: NavigationRail.js exports semantic D2o presentation subtree (exact extra
 
 
 Latest: Avatar.js literal original $Mo/eNo/tNo/HMo family plus helpers, shape table, sampling, easing, initials/color and initializers. Factory React/animate/motionPreference; compiler retained. Three new tests pass (body identity, all14 sizes/5shapes SSR, cache-load/error transitions), example build passes. Avatar not yet mounted in profile flow; browser shape animation unverified. Next actual profile controller iPo (initial) wraps Avatar and menu; identity inputs etc should be explicit demo adapters. Source image requests via Uco, accountqueries not needed as real service. Rail full integration remains pending.
+
+
+Latest: examples/AvatarFlow.js now connects original Avatar/ProfileFooter in authored local photo-edit flow (not original account UI). Main imports framer animate, mounts flow. Browser verified circle->blossom final original matrix/path, local SVG32px image load, broken PNG original DU fallback, removal disables remove control, zero page errors. Build passes. No new source functions this turn. Actual profile trigger aPo uses Wa imported sharedKmn; iPo contains account/profile priority and ZNo menu. Full legacy button needed before faithful trigger. Quota checked53% consumed, ceiling64%; no reset.

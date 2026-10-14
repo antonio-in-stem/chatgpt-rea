@@ -376,5 +376,21 @@
     "removeAndSubmit": true,
     "pageErrors": [],
     "sourceRenderer": "IOi"
+  },
+  "avatarFlow": {
+    "scope": "Authored local photo edit flow using original Avatar/ProfileFooter",
+    "photo": {
+      "tag": "IMG",
+      "naturalWidth": 32,
+      "visible": true
+    },
+    "errorFallback": "DU",
+    "removeClearsPhoto": true,
+    "blossomFinalTransform": "matrix(0.015625 0 0 0.015625 0 0)",
+    "pageErrors": [],
+    "limitations": [
+      "No matched animation comparison",
+      "Not original account/profile menu"
+    ]
   }
 }
