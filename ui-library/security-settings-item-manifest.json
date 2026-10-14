@@ -1,0 +1,24 @@
+{
+  "sources": [
+    {
+      "file": "settings-page-6c4c55bd9144.js",
+      "sha256": "5f5986604d794a5c7b9f2beacd1d63983dc7abefbc1297a77071369b4b0ad537",
+      "symbols": [
+        "Vr",
+        "Hr"
+      ]
+    },
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "symbols": [
+        "xbn",
+        "ZVc"
+      ]
+    }
+  ],
+  "limits": [
+    "Destination policy and external open operation remain caller adapters",
+    "No account security settings are changed"
+  ]
+}
