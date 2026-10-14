@@ -73,3 +73,6 @@ ui-library/src/KeyboardShortcuts.js -text
 ui-library/src/SettingsDisclosure.js -text
 
 ui-library/src/LinkShortcutPreference.js -text
+
+ui-library/src/SettingsDropdownButton.js -text
+ui-library/src/NumberShortcutPreference.js -text

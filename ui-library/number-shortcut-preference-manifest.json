@@ -1,0 +1,33 @@
+{
+  "sources": [
+    {
+      "file": "keyboard-shortcuts-settings-c347e431e5b9.js",
+      "sha256": "3fb6cc78dfd32c043a69b6a44e51b0ce16516e1122ad2fc076132f84e92ac891",
+      "symbols": [
+        "It",
+        "Lt"
+      ]
+    },
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "symbols": [
+        "hNs"
+      ]
+    },
+    {
+      "file": "app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "symbols": [
+        "QNi"
+      ]
+    }
+  ],
+  "limits": [
+    "Caller supplies runtime platform, selected target, keymap query and store",
+    "Conflict detection remains a required external adapter; original keymap resolver not extracted here",
+    "Promise save adapter must update target state after success",
+    "No system hotkey registration or complete settings router",
+    "No installed-app screenshot comparison"
+  ]
+}

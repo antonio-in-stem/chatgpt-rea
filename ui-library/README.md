@@ -450,3 +450,12 @@ Three focused tests pass, including exact source bodies and search/collapse bran
 Nested overlays must share a single recovered engine instance. `createMenu` now exposes `DialogPrimitives` from its existing engine; pass that to createDialog for dialogs containing menus from that instance. The local SettingsFlow now does so. Separate instances previously caused this menu to close immediately when opened inside a modal; no source engine code was changed.
 
 Browser verified four menu choices, disabled trigger during save, original error text on rejection, unchanged previous choice after failure, reenabling, successful retry to Alt+Click, selected radio on reopening and Escape closing only the menu while the dialog stays open. No console errors; build succeeds. Original jt/At/icon bodies and no-op selection/save adapter are tested. Full settings router, actual browser integration and installed-app screenshot comparison remain pending.
+
+
+### Numbered navigation preference and settings dropdown
+
+`createSettingsDropdownButton({React,Button})` returns original hNs, retaining original QNi chevron, default outline/toolbar styles, leading visual, content alignment, overrides and forwarded attributes.
+
+`createNumberShortcutPreference({React,settings,menu,DropdownButton,useStateSnapshot,saveTarget,hasNumberConflicts,formatMessage})` exposes original Lt and It message descriptors. Snapshot contains store, platform, target (sidebar/tabs) and keymapState (or null while unavailable). The original component overrides keymapState.primaryNumberShortcutTarget with the current target before calling the required conflict checker; that checker is not recovered here. saveTarget(store,value) returns a promise and must update snapshot target on success. Original pending disable, error state, modifier labels, descriptions, conflict notice and tabs/sidebar option ordering are retained. Unlike the link preference, this original row saves even when the current option is selected.
+
+The local example uses an in-memory target,500ms save and an explicit demo conflict flag. Browser verified switching to tabs and back to chats, changed description, selected radio on reopening, disabled trigger while saving, and conflict notice shown/removed. Four source/contract tests pass; build succeeds; no browser console errors. Native keymap resolution/registration, the entire settings route and installed-app screenshot comparison remain pending.

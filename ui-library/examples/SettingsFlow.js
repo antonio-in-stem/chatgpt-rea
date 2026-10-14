@@ -1,3 +1,4 @@
+import {createNumberShortcutFlow} from './NumberShortcutFlow.js';
 import {createLinkShortcutFlow} from './LinkShortcutFlow.js';
 import {createSettingsDisclosure} from '../src/SettingsDisclosure.js';
 // Local settings composition using original modal, sections, panels and action rows.
@@ -7,6 +8,7 @@ import {createDialogSurfaces} from '../src/DialogSurfaces.js';
 import {createSettingsSurfaces} from '../src/SettingsSurfaces.js';
 export function createSettingsFlow(React,{ReactDOM,tooltip,AssetIcon,Button,Switch,useDarkTheme,menu}){
  const h=React.createElement,dialog=createDialog({React,primitives:menu.DialogPrimitives,tooltip,AssetIcon}),layout=createDialogSurfaces({React,Button}),s=createSettingsSurfaces({React});
+ const NumberShortcutFlow=createNumberShortcutFlow(React,{settings:s,menu,Button,Switch});
  const LinkShortcutFlow=createLinkShortcutFlow(React,{settings:s,menu,Button,AssetIcon,Switch});
  const {AdvancedShortcutGroup}=createSettingsDisclosure({React,settings:s,Button,AssetIcon});
  return function SettingsFlow({onOpenChange,onOpenShortcuts}) {
@@ -23,7 +25,7 @@ export function createSettingsFlow(React,{ReactDOM,tooltip,AssetIcon,Button,Swit
     h(s.SettingsActionRow,{label:'Keyboard shortcuts',description:'View and search the local command list.',onClick:()=>{onOpenChange(false);onOpenShortcuts();}}))));
   return h(dialog.Dialog,{open:true,onOpenChange,size:'wide'},h(layout.DialogBody,null,
    h(layout.DialogSection,null,h(layout.DialogHeader,{title:h(dialog.DialogTitle,null,'Local preferences'),subtitle:'Recovered settings components with local actions.'})),
-   h(layout.DialogSection,null,appearance,keyboard,h(LinkShortcutFlow),h(AdvancedShortcutGroup,{shortcut:h(s.SettingsValueRow,{label:'Local shortcut preview'},h(s.ShortcutBadge,{keysLabel:'Ctrl+Shift+D'})),singleTapShortcut:h(s.SettingsValueRow,{label:'Local single-tap preview'},h(s.ShortcutBadge,{keysLabel:'Ctrl+D'}))})),
+   h(layout.DialogSection,null,appearance,keyboard,h(NumberShortcutFlow),h(LinkShortcutFlow),h(AdvancedShortcutGroup,{shortcut:h(s.SettingsValueRow,{label:'Local shortcut preview'},h(s.ShortcutBadge,{keysLabel:'Ctrl+Shift+D'})),singleTapShortcut:h(s.SettingsValueRow,{label:'Local single-tap preview'},h(s.ShortcutBadge,{keysLabel:'Ctrl+D'}))})),
    h(layout.DialogSection,null,h(layout.DialogFooter,null,h(dialog.DialogClose,{asChild:true},h(Button,{color:'secondary'},'Done'))))));
  };
 }

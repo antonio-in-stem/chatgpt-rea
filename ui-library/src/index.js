@@ -120,3 +120,6 @@ export {shortcutMatchScore} from './ShortcutMatching.js';
 export {createSettingsDisclosure} from './SettingsDisclosure.js';
 
 export {createLinkShortcutPreference} from './LinkShortcutPreference.js';
+
+export {createSettingsDropdownButton} from './SettingsDropdownButton.js';
+export {createNumberShortcutPreference} from './NumberShortcutPreference.js';

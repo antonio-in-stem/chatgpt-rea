@@ -753,5 +753,18 @@
       "No system browser modifier registration",
       "No installed-app screenshot comparison"
     ]
+  },
+  "numberShortcutPreference": {
+    "selectedTabsOnReopen": true,
+    "disabledWhileSaving": true,
+    "savedLabel": "Ctrl+1-9 for Chats",
+    "descriptionUpdated": true,
+    "conflictNoticeShownAndRemoved": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local keymap conflict flag; original conflict resolver pending",
+      "In-memory preference, no global key registration",
+      "No installed-app screenshot comparison"
+    ]
   }
 }
