@@ -781,5 +781,17 @@
       "Outer workspace shell, sidebar and routes pending",
       "No installed-app screenshot comparison"
     ]
+  },
+  "unsavedSettings": {
+    "keepEditingRetainsDraftAndSection": true,
+    "discardRestoresSavedAndNavigates": true,
+    "escapeRetainsDraft": true,
+    "savedDraftNavigatesWithoutDialog": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local dirty-state detection and section transition",
+      "Original full router blocker pending",
+      "No installed-app screenshot comparison"
+    ]
   }
 }

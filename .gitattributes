@@ -78,3 +78,5 @@ ui-library/src/SettingsDropdownButton.js -text
 ui-library/src/NumberShortcutPreference.js -text
 
 ui-library/src/SettingsContent.js -text
+
+ui-library/src/UnsavedSettingsDialog.js -text

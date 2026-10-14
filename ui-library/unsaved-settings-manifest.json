@@ -1,0 +1,13 @@
+{
+  "source": "settings-unsaved-changes-dialog-290274971a58.js",
+  "sha256": "ea5a212937c0b8a43adc7adb13f6710601154e8b32e3a59e52e77ba8bee438e5",
+  "symbols": [
+    "g"
+  ],
+  "bodySha256": "08f62a5fe7b4f63d9205ebf0ba24fee264f13821f9f2ddea01653d04f4fc7c7e",
+  "limits": [
+    "Caller owns dirty-state detection and pending navigation callback",
+    "Original shell route blocker is not included",
+    "No installed-app screenshot parity verification"
+  ]
+}

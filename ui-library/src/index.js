@@ -125,3 +125,5 @@ export {createSettingsDropdownButton} from './SettingsDropdownButton.js';
 export {createNumberShortcutPreference} from './NumberShortcutPreference.js';
 
 export {createSettingsContent} from './SettingsContent.js';
+
+export {createUnsavedSettingsDialog} from './UnsavedSettingsDialog.js';

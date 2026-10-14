@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createUnsavedSettingsDialog} from '../src/UnsavedSettingsDialog.js';
+const h=React.createElement,read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+function setup(){let modal,form;const buttons=[];const Component=createUnsavedSettingsDialog({React,dialog:{Dialog:p=>{modal=p;return p.children;},DialogTitle:'h1',DialogDescription:'p'},layout:{DialogBody:p=>{form=p;return p.children;},DialogSection:p=>p.children,DialogHeader:p=>h('header',null,p.title,p.subtitle),DialogFooter:p=>p.children},Button:p=>{buttons.push(p);return h('button',{type:p.type},p.children);}});return {render:p=>renderToStaticMarkup(h(Component,p)),buttons,get:()=>({modal,form})};}
+test('unsaved confirmation body remains identical to original',()=>{const manifest=JSON.parse(read('../unsaved-settings-manifest.json')),source=read('../../original-stack/state/recovered-all/readable/assets/'+manifest.source),i=source.indexOf('function g(');assert.ok(read('../src/UnsavedSettingsDialog.js').includes(source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1)));});
+test('original discard clears pending state before calling captured navigation',()=>{const a=setup(),calls=[];a.render({pendingNavigation:()=>calls.push('navigate'),onClearPendingNavigation:()=>calls.push('clear')});a.get().form.onSubmit({preventDefault:()=>calls.push('prevent')});assert.deepEqual(calls,['prevent','clear','navigate']);assert.equal(a.get().modal.size,'compact');assert.equal(a.get().modal.showDialogClose,false);assert.equal(a.buttons[1].color,'danger');assert.equal(a.buttons[1].type,'submit');});
+test('keep editing and modal dismissal clear only; absent navigation leaves modal closed',()=>{const a=setup(),calls=[];const html=a.render({pendingNavigation:()=>calls.push('navigate'),onClearPendingNavigation:()=>calls.push('clear')});assert.match(html,/Discard changes/);a.buttons[0].onClick();a.get().modal.onOpenChange(true);a.get().modal.onOpenChange(false);assert.deepEqual(calls,['clear','clear']);const b=setup();b.render({pendingNavigation:null,onClearPendingNavigation:()=>{}});assert.equal(b.get().modal.open,false);});
