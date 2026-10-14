@@ -766,5 +766,20 @@
       "In-memory preference, no global key registration",
       "No installed-app screenshot comparison"
     ]
+  },
+  "settingsContent": {
+    "targetScrollTop": 956,
+    "viewportHeight": 325,
+    "highlightAnimations": 1,
+    "sectionChangeScrollTop": 0,
+    "titleUpdated": true,
+    "headerObserverWritesInset": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local content/navigation controls",
+      "Delayed-target observer and reduced-motion matrix not yet browser-verified",
+      "Outer workspace shell, sidebar and routes pending",
+      "No installed-app screenshot comparison"
+    ]
   }
 }

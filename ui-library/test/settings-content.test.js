@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {motion,useTransform} from 'framer-motion';
+import {createSettingsContent} from '../src/SettingsContent.js';
+const h=React.createElement,read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8'),ui=createSettingsContent({React,motion,useTransform,useLayoutEnvironment:()=>{}});
+test('settings content, navigation effects, header and ref merger preserve shipped bodies',()=>{const output=read('../src/SettingsContent.js'),manifest=JSON.parse(read('../settings-content-manifest.json'));for(const entry of manifest.sources){const source=read('../../original-stack/state/recovered-all/readable/assets/'+entry.file);for(const name of entry.symbols){const i=source.indexOf('function '+name+'(');assert.ok(output.includes(source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1)),name);}}});
+test('embedded content retains compact density and max width but omits standalone footer',()=>{const html=renderToStaticMarkup(h(ui.SettingsContent,{embedded:true,density:'compact',title:'Example',footer:'Only standalone'},'Content'));assert.match(html,/data-density="compact"/);assert.match(html,/max-w-2xl/);assert.match(html,/heading-lg font-semibold leading-7/);assert.doesNotMatch(html,/Only standalone/);});
+test('slate navigation uses original page header, scroll container and footer',()=>{const html=renderToStaticMarkup(h(ui.SettingsNavigationTarget,{slateLayout:true,navigationKey:'a'},h(ui.SettingsContent,{title:'Settings title',subtitle:'Description',footer:'Footer'},'Content')));assert.match(html,/_shell_bomwa_2/);assert.match(html,/overflow-y-auto/);assert.match(html,/Footer/);assert.equal((html.match(/Settings title/g)||[]).length,1);assert.match(html,/heading-xl/);});
+test('sticky controls preserve original fade size and disable switches',()=>{const visible=renderToStaticMarkup(h(ui.StickyControls,{fadeSize:'compact'},'Control'));assert.match(visible,/after:h-2/);assert.match(renderToStaticMarkup(h(ui.StickyControls,{showScrollFade:false})),/after:hidden/);assert.doesNotMatch(renderToStaticMarkup(h(ui.StickyControls,{sticky:false})),/sticky z-30/);});
