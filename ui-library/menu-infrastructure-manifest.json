@@ -1,0 +1,17 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "pCi",
+    "oji",
+    "sji",
+    "Vji",
+    "Hji"
+  ],
+  "bodySha256": "4413bcdefb0814e278ded7c8c9a1f3194037d11b2525c047982b1769f2222287",
+  "transformation": "Original scroll/fade/peek measurement, observers, merged refs and portal wrappers retained; React, original layer and tooltip overlay portal injected.",
+  "limits": [
+    "Matched screenshot comparison pending",
+    "Nested submenu portal container integration pending"
+  ]
+}

@@ -1,5 +1,5 @@
 // Authored state controller around recovered sidebar components.
-export function createSidebarFlow(React,{SidebarItem,SidebarStatus,StatusPill,SidebarSection,SidebarSectionToggle,useSidebarOrder,Button}) {
+export function createSidebarFlow(React,{SidebarItem,SidebarStatus,StatusPill,SidebarSection,SidebarSectionToggle,useSidebarOrder,Button,Dropdown,MenuItem,MenuSectionLabel,MenuSeparator}) {
  const h=React.createElement;
  return function SidebarFlow() {
   const [keys,setKeys]=React.useState(['design','library','working']);
@@ -23,9 +23,12 @@ export function createSidebarFlow(React,{SidebarItem,SidebarStatus,StatusPill,Si
     titleTrailing:collapsed ? h(SidebarStatus,{statusState:{unreadCount:unread}}) : null
    },...rows),
    h(StatusPill,{label:`Selected: ${selected}`,maxWidth:'container'}),
-   h('div',{className:'flex gap-2 mt-2'},
-    h(Button,{color:'secondary',disabled:displayedKeys.indexOf(selected)===0,onClick:()=>controller.moveItem(selected,-1)},'Move up'),
-    h(Button,{color:'secondary',disabled:displayedKeys.indexOf(selected)===displayedKeys.length-1,onClick:()=>controller.moveItem(selected,1)},'Move down'))
+   h('div',{className:'mt-2'},h(Dropdown,{contentWidth:'menu',triggerButton:h(Button,{color:'secondary'},'Selected item actions')},
+    h(MenuSectionLabel,null,'Selected project'),
+    h(MenuItem,{disabled:displayedKeys.indexOf(selected)===0,onSelect:()=>controller.moveItem(selected,-1)},'Move up'),
+    h(MenuItem,{disabled:displayedKeys.indexOf(selected)===displayedKeys.length-1,onSelect:()=>controller.moveItem(selected,1)},'Move down'),
+    h(MenuSeparator),
+    h(MenuItem,{disabled:selected!=='library'||unread===0,onSelect:()=>setUnread(0)},'Mark as read')))
   );
  };
 }

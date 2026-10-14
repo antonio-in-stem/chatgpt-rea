@@ -26,7 +26,7 @@ ${floating}
  const wSi='default',TSi=100,ESi=12,DSi='[data-tooltip-overflow-target]',OSi='[data-tooltip-visibility-target]',C5=8,Zxi=300,b5='codex:dismiss-tooltips';
  const kSi={bottom:0,height:0,left:0,right:0,top:0,width:0,x:0,y:0,toJSON(){return {};}};
 ${body}
- return {Tooltip:w5,TooltipProvider:Jxi,TooltipOverlayContext:v5,dismissTooltips:qxi};
+ return {Tooltip:w5,TooltipProvider:Jxi,TooltipOverlayContext:v5,OverlayPortal:h5,dismissTooltips:qxi};
 }
 `;
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');

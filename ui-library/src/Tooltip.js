@@ -2536,5 +2536,5 @@ function SSi(e) {
   let t = e?.ownerDocument.defaultView;
   return t == null ? e instanceof HTMLButtonElement : e instanceof t.HTMLButtonElement;
 }
- return {Tooltip:w5,TooltipProvider:Jxi,TooltipOverlayContext:v5,dismissTooltips:qxi};
+ return {Tooltip:w5,TooltipProvider:Jxi,TooltipOverlayContext:v5,OverlayPortal:h5,dismissTooltips:qxi};
 }

@@ -89,3 +89,6 @@ export {createDropdownController} from './DropdownController.js';
 export {createMenuSurfaces} from './MenuSurfaces.js';
 
 export {createMenuEngine} from './MenuEngine.js';
+
+export {createMenu} from './Menu.js';
+export {createMenuInfrastructure} from './MenuInfrastructure.js';

@@ -307,3 +307,9 @@ This layer requires original-compatible Trigger/Content/Item/Group interaction p
 `createMenuEngine({React, ReactDOM})` now exports the recovered Root, Trigger, Portal, Content, Group, Label, Item, CheckboxItem, RadioGroup, RadioItem, ItemIndicator, Separator, Arrow, Sub, SubTrigger and SubContent. It preserves the entire 190,931-character source segment from zCe through wb and the shipped bundler runtime. No replacement Radix package is installed.
 
 Real browser checks on these primitives verified ArrowDown opening, skipping a disabled item, Enter selection/closing/focus return, Escape, outside click, Home and End. These are engine checks, not visual parity checks. Integration with MenuSurfaces/DropdownController, the app overlay portal and scroll-area dependencies remain next. Modal/submenu/radio/checkbox cases still need browser validation.
+
+### Integrated original menu (current entrypoint)
+
+Use `createMenu({React, ReactDOM, tooltip, AssetIcon, eventBridge, visualScale?})`, passing the full result of `createTooltip` and an event bridge exposing `subscribe(name, callback) -> unsubscribe`. It composes the recovered engine, controller, surfaces, original overlay wrappers and original scroll area. It exports Dropdown, all recovered menu surfaces, and ScrollArea. Earlier extraction notes about missing base primitives/scroll infrastructure are superseded for this entrypoint.
+
+The local SidebarFlow now uses this menu for reordering and mark-as-read actions. Those choices are authored demo actions; the visual/interaction components are recovered. Browser verified 220px menu/20px radius, disabled-item skipping, reorder/close/focus return, and a 30-item scroll-fade panel capped at200px. Overflow indicators switch correctly at the bottom. The original menu body was not restyled. Profile-specific menu contents, checkbox/radio/submenu presentation and full-window screenshot comparison remain pending.

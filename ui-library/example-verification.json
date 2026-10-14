@@ -453,5 +453,32 @@
       "ArrowUp does not open closed fixture",
       "No matched screenshot"
     ]
+  },
+  "integratedMenu": {
+    "scope": "Recovered menu engine/controller/surfaces/overlay/scroll with authored sidebar actions",
+    "width": 220,
+    "radius": "20px",
+    "disabledItemSkipped": true,
+    "reorderSelectionUpdatesSidebar": true,
+    "escapeReturnsFocus": true,
+    "overflow": {
+      "menuHeight": 200,
+      "scrollHeight": 857,
+      "clientHeight": 192,
+      "start": {
+        "up": false,
+        "down": true
+      },
+      "end": {
+        "up": true,
+        "down": false
+      }
+    },
+    "consoleErrors": 0,
+    "limits": [
+      "Profile-specific options pending",
+      "Submenu/checkbox/radio presentation pending",
+      "No matched original screenshot"
+    ]
   }
 }

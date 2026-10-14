@@ -9,13 +9,16 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 import * as ReactDOM from 'react-dom';
 import {motion,animate,AnimatePresence,MotionConfig,useMotionValue,LayoutGroup,useIsPresent} from 'framer-motion';
-import {createReaUI,createLegacyButton,createAvatar,createNavigationRail,createFileIcon,createAttachmentThumbnail,createResourceCards,createComposerContextAction,createTooltip,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
+import {createReaUI,createMenu,createLegacyButton,createAvatar,createNavigationRail,createFileIcon,createAttachmentThumbnail,createResourceCards,createComposerContextAction,createTooltip,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
 import {createDecisionFlow} from './DecisionFlow.js';
 const searchIcons=createSearchIcons(React,classNames);
 const AnimatedIcon=createAnimatedNavigationIcon({React,AnimatedIcon:createAnimatedArtwork({React})});
 const ui=createReaUI({React,motion,AnimatePresence,MotionConfig,AnimatedIcon});
 const {ComposerLayout}=createComposerLayout({React,motion,useMotionValue,useDarkTheme:ui.useDarkTheme,MotionConfig,LayoutGroup,AnimatePresence,useIsPresent});
-const {Tooltip,TooltipProvider}=createTooltip({React,ReactDOM,ShortcutBadge:ui.ShortcutBadge});
+const tooltip=createTooltip({React,ReactDOM,ShortcutBadge:ui.ShortcutBadge});
+const {Tooltip,TooltipProvider}=tooltip;
+// Local window event adapter for the original menu dismissal bridge.
+const menu=createMenu({React,ReactDOM,tooltip,AssetIcon:ui.AssetIcon,eventBridge:{subscribe(name,callback){window.addEventListener(name,callback);return ()=>window.removeEventListener(name,callback);}}});
 const composerActions=createComposerActions({React,motion,Spinner:ui.Spinner,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon,Tooltip,morphingEnabled:true});
 const contextActions=createComposerContextAction({React,Button:ui.Button,Tooltip,ShortcutBadge:ui.ShortcutBadge,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon});
 const {Avatar}=createAvatar({React,animate});
@@ -33,7 +36,7 @@ function useLocalThumbnailQuery({source}){
 const thumbnails=createAttachmentThumbnail({React,AttachmentUploadProgress:resources.AttachmentUploadProgress,useThumbnailQuery:useLocalThumbnailQuery,useAccountId:()=> 'local'});
 const ConversationFlow=createConversationFlow(React,{...ui,...resources,...thumbnails,FileIcon,...composerActions,...contextActions,ComposerLayout});
 const ViewerFlow=createViewerFlow(React,ui);
-const SidebarFlow=createSidebarFlow(React,ui);
+const SidebarFlow=createSidebarFlow(React,{...ui,...menu});
 const SearchFlow=createSearchFlow(React,ui);
 const DecisionFlow=createDecisionFlow(React,ui);
 function App(){
