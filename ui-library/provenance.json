@@ -307,6 +307,16 @@
       "manifest": "attachment-thumbnail-manifest.json",
       "transformation": "Original bodies with explicit query/account/translation hook adapters",
       "status": "Source identity, loading/ready/error/account guard tests and local image browser flow verified. Portable document worker remains pending."
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "components": [
+        "describeFile",
+        "fileExtension"
+      ],
+      "manifest": "file-descriptor-manifest.json",
+      "transformation": "Entire original function and table block, bundle initializer adapted",
+      "status": "Source differential classification verified; icon artwork renderer pending"
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

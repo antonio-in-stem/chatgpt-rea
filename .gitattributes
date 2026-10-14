@@ -17,3 +17,5 @@ ui-library/src/ComposerContextAction.js -text
 ui-library/src/ResourceCards.js -text
 
 ui-library/src/AttachmentThumbnail.js -text
+
+ui-library/src/fileDescriptor.js -text

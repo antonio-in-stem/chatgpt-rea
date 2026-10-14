@@ -1,3 +1,4 @@
+export {describeFile,fileExtension} from './fileDescriptor.js';
 export {createAttachmentThumbnail} from './AttachmentThumbnail.js';
 export {createResourceCards} from './ResourceCards.js';
 export {createComposerContextAction} from './ComposerContextAction.js';

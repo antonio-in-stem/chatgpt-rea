@@ -222,3 +222,8 @@ AttachmentCard accepts title/subtitle/icon, onClick, onRemove/onRemoveAriaLabel 
 `createAttachmentThumbnail({React, AttachmentUploadProgress, useThumbnailQuery, useAccountId, formatMessage?})` exports the original AttachmentThumbnail view (Ixn) and thumbnailMountedAt helper. Query input is `{source, importKind}` and its result is `{data: {dataUrl, byteLength} | undefined, isError}`. File sources retain the original accountId guard. The view waits for image onLoad before revealing a preview, handles onError/query fallback, and restores loading on changed URLs. It preserves original fit classes, progress overlay and performance measurement.
 
 The example uses an authored local Blob URL provider for images, revokes URLs on replacement/unmount and retains names on local submit. It is not the portable PDF/office thumbnail worker. Browser verified valid image ready, invalid image fallback, keyboard removal, successive selection, submission and both URLs revoked. ResourceCards now correctly requires AssetIcon (original shared t5), not CompactIcon; the previous preview-only adapter crash is fixed.
+
+
+### File classification
+
+`describeFile({fileName, mimeType, kind?, isNote?, sourceUrl?})` and `fileExtension(name)` preserve the complete shared B5..qwi block and its tables. Results include key, label, iconKey, category and isImageLike. MIME/provider precedence, hidden/extensionless files and Windows paths follow shipped behavior. The example uses the returned label as card subtitle and isImageLike for preview selection. The original file artwork renderer remains separate work; iconKey is not a rendered SVG. Three tests cover block identity, path cases and 760 differential combinations.

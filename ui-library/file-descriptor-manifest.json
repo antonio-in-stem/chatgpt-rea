@@ -1,0 +1,12 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "startSymbol": "B5",
+  "endSymbol": "qwi",
+  "bodySha256": "7f694291b9fa9cc432d75c226e8f1c60fd952c801f23580bf22e94d1b103d803",
+  "transformation": "Entire original classification block, tables and initializer unchanged; bundle initializer wrapper adapted, semantic exports added.",
+  "limits": [
+    "Describes icon keys; original artwork renderer is separate",
+    "Labels are original type labels, not invented localized display names"
+  ]
+}
