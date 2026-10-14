@@ -623,3 +623,9 @@ Four tests cover exact function identity, local-first order, selected marker, ca
 `examples/SettingsHostFlow.js` connects both original selected-host and filter triggers to the original menu engine, with one local and one demo remote connection. Selection changes local React state only. The demo supplies no host accent color; callers can connect their own color/theme services. It does not connect to a real host or reproduce the full settings page composition.
 
 Validation: seven host-dropdown/artwork tests pass, including original source identity, icon sizes, color propagation, disabled/fallback states and selection callbacks. The example builds (existing Lottie direct-eval warning remains). Browser verification selected Demo remote through the normal trigger and returned to Local through the filter menu using Enter; both selections closed the menu, with no page errors during initial rendering and the first selection. Full-window screenshot parity remains unverified.
+
+### Original accent palette
+
+`AccentPalette.js` preserves the distributed `BUr`, `VUr`, `HUr` and `$B` bodies, exposing normalization, serialization, theme resolution, seven accent colors, their classes and legacy color mappings. The host fixture now uses the original blue accent resolver instead of an uncolored local adapter. Theme selection remains supplied by the existing demo theme hook; host color selection is demo data.
+
+Validation: six focused palette/artwork tests pass. Browser verification confirms the remote icon changes from `rgb(2, 133, 255)` in light theme to `rgb(51, 156, 255)` in dark theme, with no page errors. The example builds; the pre-existing Lottie direct-eval warning remains. This verifies the recovered color behavior, not full-window visual parity.

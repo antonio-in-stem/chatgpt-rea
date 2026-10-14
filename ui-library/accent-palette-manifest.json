@@ -1,0 +1,27 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "records": [
+    {
+      "symbol": "BUr",
+      "sha256": "6268cc3b6c82bccca698d52f0860e4cb13b3398e13866c1c3386ec102dcfea7a"
+    },
+    {
+      "symbol": "VUr",
+      "sha256": "e7d45211769c322b389b7d3d336be88003b634164f2ff8becc52bca9907b03f5"
+    },
+    {
+      "symbol": "HUr",
+      "sha256": "7fb5892d26a76f042fc4f00ec57fd3382bdda0832ec0b6a888762aa4cca37587"
+    },
+    {
+      "symbol": "$B",
+      "sha256": "f7e24d5bc81e2b82970ab3560f1e417a614ba0e2c3a69d156843843d814550f2"
+    }
+  ],
+  "limits": [
+    "Pure distributed palette logic; callers supply the current resolved light/dark theme",
+    "serializeAccent expects a normalized palette name, matching the original contract",
+    "No full-screen visual parity claim"
+  ]
+}
