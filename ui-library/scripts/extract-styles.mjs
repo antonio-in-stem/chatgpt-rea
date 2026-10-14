@@ -8,6 +8,9 @@ if(!process.argv[2])throw Error('Pass the extracted webview/assets directory');
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const out=path.join(root,'styles','original');
 const names=['app-shared-9a94b907ed47.css','app-initial-99e8b4b455fa.css','app-primary-6a01c6b721a4.css','user-message-f152e09d34c3.css'];
+const htmlBytes=fs.readFileSync(path.join(input,'..','index.html'));
+const layerOrder=htmlBytes.toString('utf8').match(/@layer theme, base, components, utilities;/)?.[0];
+if(!layerOrder)throw Error('Original startup layer order missing');
 const files=new Map();
 for(const name of names){
  const bytes=fs.readFileSync(path.join(input,name));files.set(name,bytes);
@@ -28,6 +31,6 @@ for(const [name,bytes] of files){
  fs.writeFileSync(output,bytes);
  records.push({file:name,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});
 }
-fs.writeFileSync(path.join(root,'styles','original.css'),names.map(n=>`@import "./original/${n}";`).join('\n')+'\n');
-fs.writeFileSync(path.join(root,'styles','manifest.json'),JSON.stringify({method:'Byte-identical shared CSS baseline plus local URL dependencies; not a minimal per-component CSS closure',entrypoints:names,files:records,limitations:['Global resets and app-specific selectors remain present','Theme/root attributes and component visual parity require browser verification','Preserve original notices; extraction does not grant a new license']},null,2)+'\n');
+fs.writeFileSync(path.join(root,'styles','original.css'),layerOrder+'\n'+names.map(n=>`@import "./original/${n}";`).join('\n')+'\n');
+fs.writeFileSync(path.join(root,'styles','manifest.json'),JSON.stringify({method:'Byte-identical shared CSS baseline plus local URL dependencies; not a minimal per-component CSS closure',entrypoints:names,startup:{source:'webview/index.html',sha256:createHash('sha256').update(htmlBytes).digest('hex'),layerOrder},files:records,limitations:['Global resets and app-specific selectors remain present','Theme/root attributes and component visual parity require browser verification','Preserve original notices; extraction does not grant a new license']},null,2)+'\n');
 console.log(JSON.stringify({files:records.length,bytes:records.reduce((n,r)=>n+r.bytes,0)}));

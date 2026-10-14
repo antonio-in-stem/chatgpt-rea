@@ -19,3 +19,10 @@ test('shipped stylesheet closure remains byte-identical to recorded source hashe
   assert.equal(bytes.length,record.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),record.sha256);
  }
 });
+
+test('startup layer order precedes CSS imports to preserve component radii',()=>{
+ const manifest=JSON.parse(fs.readFileSync(new URL('../styles/manifest.json',import.meta.url)));
+ const css=fs.readFileSync(new URL('../styles/original.css',import.meta.url),'utf8');
+ assert.equal(manifest.startup.layerOrder,'@layer theme, base, components, utilities;');
+ assert(css.replaceAll('\r\n','\n').startsWith(manifest.startup.layerOrder+'\n@import'));
+});

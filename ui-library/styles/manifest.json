@@ -6,6 +6,11 @@
     "app-primary-6a01c6b721a4.css",
     "user-message-f152e09d34c3.css"
   ],
+  "startup": {
+    "source": "webview/index.html",
+    "sha256": "e5a9c64da5705de75d475147d59420902a293c4ec875f91507ba5bb8d6467525",
+    "layerOrder": "@layer theme, base, components, utilities;"
+  },
   "files": [
     {
       "file": "app-shared-9a94b907ed47.css",

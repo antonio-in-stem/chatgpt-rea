@@ -1,0 +1,32 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "Eg",
+    "Og",
+    "MSe",
+    "NSe",
+    "FSe",
+    "zSe",
+    "HSe",
+    "USe",
+    "QSe",
+    "aCe",
+    "oCe",
+    "sCe",
+    "cCe",
+    "lCe",
+    "pCe",
+    "gCe",
+    "Lg",
+    "wCe",
+    "DCe"
+  ],
+  "bodySha256": "377baa16db99263ac393c7ae7c245791d9791218804ca8c855099d149c4bc085",
+  "transformation": "Original function/initializer bodies retained, including transition reconciliation, interruption, delayed mount, frame scheduling and loading state. React imports and app configuration explicitly adapted. Timer hook uses original environment-dependent layout effect; unrelated resize/debounce hook omitted.",
+  "limits": [
+    "Profile menu controller not extracted",
+    "No matched screenshot comparison against installed app",
+    "Original shared CSS required"
+  ]
+}

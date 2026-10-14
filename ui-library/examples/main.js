@@ -9,7 +9,7 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 import * as ReactDOM from 'react-dom';
 import {motion,animate,AnimatePresence,MotionConfig,useMotionValue,LayoutGroup,useIsPresent} from 'framer-motion';
-import {createReaUI,createAvatar,createNavigationRail,createFileIcon,createAttachmentThumbnail,createResourceCards,createComposerContextAction,createTooltip,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
+import {createReaUI,createLegacyButton,createAvatar,createNavigationRail,createFileIcon,createAttachmentThumbnail,createResourceCards,createComposerContextAction,createTooltip,createComposerActions,createComposerLayout,createAnimatedArtwork,createAnimatedNavigationIcon} from '../src/index.js';
 import {createDecisionFlow} from './DecisionFlow.js';
 const searchIcons=createSearchIcons(React,classNames);
 const AnimatedIcon=createAnimatedNavigationIcon({React,AnimatedIcon:createAnimatedArtwork({React})});
@@ -20,7 +20,8 @@ const composerActions=createComposerActions({React,motion,Spinner:ui.Spinner,Res
 const contextActions=createComposerContextAction({React,Button:ui.Button,Tooltip,ShortcutBadge:ui.ShortcutBadge,ResponsiveIcon:ui.ResponsiveIcon,AssetIcon:ui.AssetIcon});
 const {Avatar}=createAvatar({React,animate});
 const {ProfileFooter}=createNavigationRail({React,SidebarList:ui.SidebarList});
-const AvatarFlow=createAvatarFlow(React,{...ui,Avatar,ProfileFooter});
+const {LegacyButton}=createLegacyButton({React});
+const AvatarFlow=createAvatarFlow(React,{...ui,Button:LegacyButton,Avatar,ProfileFooter});
 const {FileIcon}=createFileIcon({React,AssetIcon:ui.AssetIcon,useDarkTheme:ui.useDarkTheme});
 const resources=createResourceCards({React,AssetIcon:ui.AssetIcon});
 // Authored local image provider; does not emulate the original upload/query service.

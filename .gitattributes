@@ -31,3 +31,5 @@ ui-library/src/FileIcon.js -text
 ui-library/src/NavigationRail.js -text
 
 ui-library/src/Avatar.js -text
+
+ui-library/src/LegacyButton.js -text

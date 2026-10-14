@@ -260,3 +260,9 @@ The example uses an authored local Blob URL provider for images, revokes URLs on
 
 
 AvatarFlow is an authored local photo-edit demo, not the shipped account menu. It connects the recovered Avatar and compact ProfileFooter, allows replacing/removing an in-memory selected photo, and choosing original shapes. Browser verified circle-to-blossom reaches original path/transform, a32px SVG loads, broken image falls back to DU, remove clears the photo, zero page errors. This is runtime evidence, not matched visual animation parity. Original profile trigger aPo delegates to shared legacy Wa (Kmn), not the already extracted Button family; do not substitute these when recovering iPo/ZNo.
+
+### Legacy button and transition family
+
+`createLegacyButton({React, config})` exports `LegacyButton`, `LoadingIndicator`, and `TransitionGroup` from original shared ECe/VSe/yCe. The configuration adapter retains shipped pill/squircle/pressable defaults. Original keyed enter/exit, delayed mounting, interruption, reduced-motion branch and loading/inert semantics remain. See `legacy-button-manifest.json`. This is a different original family from the existing `Button`.
+
+The style entrypoint now includes the exact startup layer order recovered from `webview/index.html`, before the byte-identical CSS imports. Omitting it lets the reset layer override component styles, including button corners. Consumers should load this entrypoint before other Tailwind layer declarations. Browser state checks are recorded; full visual comparison remains pending.

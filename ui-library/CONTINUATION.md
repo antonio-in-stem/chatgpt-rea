@@ -2,7 +2,7 @@
 
 Continue the original Electron frontend extraction and reusable component library. Rust is explicitly deferred; legacy goal wording does not override that instruction. Public GitHub main pushes authorized.
 
-User authorized 15 additional quota points after pausing at 49% consumed. Ceiling: 64% consumed, retain margin. Latest check: 52%. Do not reset quota.
+User authorized 15 additional quota points after pausing at 49% consumed. Ceiling: 64% consumed, retain margin. Latest check: 54%. Do not reset quota.
 
 Current library: shared buttons, sidebar/navigation, animated icons, theme observation, search, switches/badges/viewer surfaces, conversation shell/backdrop and user bubble, composer root plus 19 subcomponents, primary action/send-stop-voice morphing, original Tooltip/TooltipProvider and floating engine, context/add-files action.
 
@@ -48,3 +48,5 @@ Latest: Avatar.js literal original $Mo/eNo/tNo/HMo family plus helpers, shape ta
 
 
 Latest: examples/AvatarFlow.js now connects original Avatar/ProfileFooter in authored local photo-edit flow (not original account UI). Main imports framer animate, mounts flow. Browser verified circle->blossom final original matrix/path, local SVG32px image load, broken PNG original DU fallback, removal disables remove control, zero page errors. Build passes. No new source functions this turn. Actual profile trigger aPo uses Wa imported sharedKmn; iPo contains account/profile priority and ZNo menu. Full legacy button needed before faithful trigger. Quota checked53% consumed, ceiling64%; no reset.
+
+Latest: recovered LegacyButton ECe/DCe, LoadingIndicator VSe, TransitionGroup yCe with original reconciliation, timing, interruption and helpers (19 original bodies). React imports/config are explicit adapters. Browser verified loading entry/exit/interruption. Found missing startup CSS layer declaration: original webview/index.html sets @layer theme, base, components, utilities before dependencies. Restored it in styles/original.css and generator; fixes reset overriding component radii (0px -> original 9999px pill). Original CSS assets unchanged. Avatar demo edit actions use LegacyButton. 98 tests passed in full, then the additional startup-order regression and stylesheet checks passed (99 tests total). Profile trigger/menu still pending; no full-window parity claim.

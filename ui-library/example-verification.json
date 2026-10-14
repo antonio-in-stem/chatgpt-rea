@@ -285,7 +285,7 @@
     "afterRemoval": [
       "sample-b.txt"
     ],
-    "submitted": "Attachment verification \u2014 sample-b.txt",
+    "submitted": "Attachment verification — sample-b.txt",
     "attachmentsCleared": true,
     "inputFocused": true,
     "button": {
@@ -391,6 +391,27 @@
     "limitations": [
       "No matched animation comparison",
       "Not original account/profile menu"
+    ]
+  },
+  "legacyButton": {
+    "source": "ECe/DCe + yCe/Lg",
+    "loading": {
+      "entering": true,
+      "disabled": true,
+      "exitRetainsLoader": true,
+      "exitRemovesLoader": true,
+      "interruptedExitReturnsToLoaded": true
+    },
+    "cssLayerRegression": {
+      "beforeRadius": "0px",
+      "afterRadius": "9999px",
+      "height": "24px",
+      "fix": "Original webview/index.html @layer declaration precedes imports"
+    },
+    "consoleErrors": 0,
+    "limits": [
+      "No matched original screenshot",
+      "Reduced-motion browser case pending"
     ]
   }
 }
