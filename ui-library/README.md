@@ -601,3 +601,10 @@ Original collapse/expand and active-pet SVG initializers are now available via c
 createSecuritySettingsItem preserves original Vr/Hr, including collapsed label tooltip, expanded external indicator, 12px right tooltip offset and event/href/initiator/openTarget dispatch. Supply the original security descriptor/icon, NavigationItem, Tooltip, ExternalLink renderer, ExternalIcon and a caller-owned openExternalEvent. No account security action is executed by the factory.
 
 createExternalDestinationIndicator preserves xbn, selecting the supplied browser or external SVG based on the required useOpenTarget policy hook. createSettingsExternalIcon recovers the original ZVc external-link glyph. Three tests cover source identity, expanded/collapsed composition, dispatch payload and destination-indicator branch; build passes with the existing Lottie warning. The local sidebar fixture still excludes external destinations until its local action adapter is wired; no runtime/security-screen completion claim is made.
+
+
+### Security entry integrated with a local external action
+
+The sidebar fixture now enables the original Security Settings entry and its search result. Both use the recovered external indicator and glyph, original security artwork, original collapsed tooltip behavior and original event dispatch. The external adapter records the target in local visible status only; it does not navigate or modify accounts. Its destination policy accepts the explicitly supplied external-browser target; other policies remain outside this fixture.
+
+Browser verified normal click, keyboard selection from a Security search, Escape back to navigation and collapsed click, all preserving the original security destination without page errors. The collapsed entry renders one icon, omitting its expanded trailing indicator. Teams, plugin/remote queries and full destination screens remain pending. Earlier statements that the fixture rejects security destinations are superseded by this integration.
