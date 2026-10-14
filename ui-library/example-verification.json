@@ -507,5 +507,15 @@
       "Hover cancellation/RTL/zoom not browser-verified",
       "No matched original screenshot"
     ]
+  },
+  "menuSearch": {
+    "ctrlASelection": "Component",
+    "arrowDownFocus": "Component library",
+    "arrowUpReturnsInput": true,
+    "selectedProject": "library",
+    "noResultsVisible": true,
+    "escapeCloses": true,
+    "consoleErrors": 0,
+    "scope": "Original input/menu, authored local filtering"
   }
 }

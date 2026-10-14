@@ -39,15 +39,22 @@
     "ASi",
     "FSi",
     "ISi",
+    "Pji",
+    "Fji",
+    "Iji",
+    "Txi",
+    "wxi",
+    "EAi",
     "f8n",
-    "v8n"
+    "v8n",
+    "etr"
   ],
-  "bodySha256": "61ee094bc7754420e9009baa9e6922a51e1b2d5836eaace4eaffaead57477fed",
+  "bodySha256": "2b2d986108f5aa06ac4e34d861fdc4bd2d40d4c05906f99256a0d4743b24bd09",
   "initializerSha256": "6ab93d32146b6f49ded0d1a4fcc650bc1f615af734d05ec86413cc78441e695c",
   "transformation": "Original functions and menu tooltip/style initializer retained; only terminating comma changed to semicolon in initializer slice. React/compiler and original interaction/scroll/tooltip/icon dependencies explicitly injected.",
   "limits": [
     "Requires underlying menu primitives and scroll-area extraction",
-    "Menu search still pending",
+    "Profile-specific menu content pending",
     "No full menu runtime or screenshot parity claim"
   ]
 }

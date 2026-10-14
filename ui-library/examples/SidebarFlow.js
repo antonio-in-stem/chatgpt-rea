@@ -1,7 +1,8 @@
 // Authored state controller around recovered sidebar components.
-export function createSidebarFlow(React,{SidebarItem,SidebarStatus,StatusPill,SidebarSection,SidebarSectionToggle,useSidebarOrder,Button,Dropdown,MenuItem,MenuSectionLabel,MenuSeparator,MenuCheckboxItem,MenuFlyoutSubmenuItem}) {
+export function createSidebarFlow(React,{SidebarItem,SidebarStatus,StatusPill,SidebarSection,SidebarSectionToggle,useSidebarOrder,Button,Dropdown,MenuItem,MenuSectionLabel,MenuSeparator,MenuCheckboxItem,MenuFlyoutSubmenuItem,MenuSearchInput,MenuRadioGroup,MenuRadioItem,MenuMessage}) {
  const h=React.createElement;
  return function SidebarFlow() {
+  const [query,setQuery]=React.useState('');
   const [keys,setKeys]=React.useState(['design','library','working']);
   const {controller,displayedKeys}=useSidebarOrder({keys,onOrderChange:async({nextKeys})=>setKeys(nextKeys)});
   const [collapsed,setCollapsed]=React.useState(false),[showStatus,setShowStatus]=React.useState(true);
@@ -24,6 +25,9 @@ export function createSidebarFlow(React,{SidebarItem,SidebarStatus,StatusPill,Si
    },...rows),
    h(StatusPill,{label:`Selected: ${selected}`,maxWidth:'container'}),
    h('div',{className:'mt-2'},h(Dropdown,{contentWidth:'menu',triggerButton:h(Button,{color:'secondary'},'Selected item actions')},
+    h(MenuSearchInput,{'aria-label':'Find project',placeholder:'Find project',value:query,onChange:event=>setQuery(event.target.value),sticky:true}),
+    query?h(MenuRadioGroup,{value:selected,onValueChange:setSelected},...items.filter(item=>item.label.toLowerCase().includes(query.toLowerCase())).map(item=>h(MenuRadioItem,{key:item.id,value:item.id},item.label))):null,
+    query&&!items.some(item=>item.label.toLowerCase().includes(query.toLowerCase()))?h(MenuMessage,null,'No matching projects'):null,
     h(MenuSectionLabel,null,'Selected project'),
     h(MenuFlyoutSubmenuItem,{label:'Change order'},h(MenuItem,{disabled:displayedKeys.indexOf(selected)===0,onSelect:()=>controller.moveItem(selected,-1)},'Move up'),
     h(MenuItem,{disabled:displayedKeys.indexOf(selected)===displayedKeys.length-1,onSelect:()=>controller.moveItem(selected,1)},'Move down')),

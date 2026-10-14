@@ -325,3 +325,9 @@ Browser verified checkbox toggle without dismissal and exclusive radio selection
 `createMenu` also exports original MenuSubmenuItem (inline expansion, props trigger/children/isDefaultOpen/onOpenChange) and MenuFlyoutSubmenuItem (lateral panel with label/children and original controlled-state/placement/tooltip options). Pass `motion` and `AnimatePresence` for inline transitions; missing animation dependencies fail explicitly when that path is rendered. The flyout uses the original shared portal context, media-query hook,200ms hover timer, arrows and focus engine.
 
 Browser verified ArrowRight enters the nested item, ArrowLeft returns focus to its parent, nested selection executes, and inline expansion/selection executes. Sidebar ordering actions now use the original flyout component. RTL, hover cancellation, parent-bottom alignment and zoom cases remain unverified. The recovered compact-mode query is literally `not all`; it has been preserved.
+
+### Menu search/input
+
+`createMenu` exposes original MenuInput (Pji), MenuSearchInput (Fji) and focusMenuItem (Iji). Search keeps sticky/inset variants, caller trailing content and original compact/leading SVG artwork. It controls no dataset itself: the demo supplies local project filtering and selection. Ctrl+A remains inside the input, ArrowDown enters the first enabled result, and ArrowUp from the first result returns to the input via the original MenuContent handler.
+
+Browser verified filtering/selecting Component library, Ctrl+A, both focus transitions, no-results status and Escape. Original profile-specific menu contents and full-screen fidelity remain pending.

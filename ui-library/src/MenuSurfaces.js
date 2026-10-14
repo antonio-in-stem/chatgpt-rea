@@ -5,13 +5,14 @@ export function createMenuSurfaces({React,primitives,Tooltip:w5,AssetIcon:t5,Scr
  if(!w5||!t5||!sji||!compilerRuntime?.c)throw new TypeError('Menu surfaces require original tooltip, asset icon, scroll area and compiler runtime');
  const {Trigger:mb,Content:gb,Item:_b,Group:fNe,CheckboxItem:vb,RadioItem:bb,RadioGroup:yb,ItemIndicator:xb,SubTrigger:Sb,SubContent:Cb,Portal:hb}=primitives;
  const t=fn=>fn,o=()=>React,c=()=>compilerRuntime,Uf=()=>{},x5=()=>{},Q=()=>{},Z=asset=>({...asset,body:asset.body.trim(),hasGradients:false}),m7=compilerRuntime,tji=compilerRuntime,h7=React,v5=TooltipOverlayContext??React.createContext(undefined);
- const g7={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},c7=g7,K=()=>g7,d7=g7,fji=compilerRuntime,LSi=compilerRuntime,RSi=React;
+ const g7={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},c7=g7,K=()=>g7,d7=g7,fji=compilerRuntime,c5=compilerRuntime,l5=g7,LSi=compilerRuntime,RSi=React;
  const Qji=PortalContainerContext??React.createContext(undefined),d5=()=>visualScale,HMe=primitives,Yji=200,pS=message=>formatMessage(message);
  const missingMotion=()=>{throw new TypeError('Inline submenu requires motion and AnimatePresence');},$w=motion??{div:missingMotion},M1e=AnimatePresence??missingMotion;
  const uCi={duration:300/1e3,ease:[0.19,1,0.22,1]};
  const _7={maxWidth:'min(var(--radix-dropdown-menu-content-available-width), calc(100vw - 16px))',maxHeight:'min(var(--radix-dropdown-menu-content-available-height), calc(100vh - 16px))'};
+ const Sxi={CompactSource:'_CompactSource_ym4jk_2',LeadingSource:'_LeadingSource_ym4jk_6'};
  const $ji={..._7,maxHeight:'calc(100vh - 16px)'};
- let MAi,NAi,PAi,FAi,M5,jSi,MSi,NSi,PSi,dAi,fAi,d8n,_8n;
+ let MAi,NAi,PAi,FAi,M5,jSi,MSi,NSi,PSi,dAi,fAi,d8n,_8n,$er,wAi,TAi;
  let IAi,LAi,RAi,zAi,BAi,VAi,HAi,UAi,WAi,GAi,KAi,qAi,JAi,YAi,XAi,ZAi,o7,gji,_ji,vji,yji,f7,eMi,v7,tMi,nMi,uAi,r7,G6n,pji,mji;
 function s7() {
   return (s7 = t(() => {
@@ -2220,6 +2221,258 @@ function ISi(e) {
     n && i
   );
 }
+function Pji(e) {
+  let t = (0, m7.c)(12),
+    n,
+    r,
+    i;
+  t[0] === e
+    ? ((n = t[1]), (r = t[2]), (i = t[3]))
+    : (({ onKeyDown: r, className: n, ...i } = e), (t[0] = e), (t[1] = n), (t[2] = r), (t[3] = i));
+  let a;
+  t[4] === n
+    ? (a = t[5])
+    : ((a = q(
+        `w-full min-w-0 rounded-sm border border-none px-row-x py-row-y text-sm !outline-none`,
+        n,
+      )),
+      (t[4] = n),
+      (t[5] = a));
+  let o;
+  t[6] === r
+    ? (o = t[7])
+    : ((o = (e) => {
+        if ((e.stopPropagation(), (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === `a`)) {
+          (e.preventDefault(), e.currentTarget.select());
+          return;
+        }
+        r?.(e);
+      }),
+      (t[6] = r),
+      (t[7] = o));
+  let s;
+  return (
+    t[8] !== i || t[9] !== a || t[10] !== o
+      ? ((s = (0, g7.jsx)(`input`, { className: a, autoFocus: !0, onKeyDown: o, ...i })),
+        (t[8] = i),
+        (t[9] = a),
+        (t[10] = o),
+        (t[11] = s))
+      : (s = t[11]),
+    s
+  );
+}
+function Fji(e) {
+  let t = (0, m7.c)(29),
+    n,
+    r,
+    i,
+    a,
+    o,
+    s,
+    c;
+  t[0] === e
+    ? ((n = t[1]), (r = t[2]), (i = t[3]), (a = t[4]), (o = t[5]), (s = t[6]), (c = t[7]))
+    : (({
+        className: n,
+        inputClassName: r,
+        onKeyDown: i,
+        sticky: o,
+        trailingContent: c,
+        variant: s,
+        ...a
+      } = e),
+      (t[0] = e),
+      (t[1] = n),
+      (t[2] = r),
+      (t[3] = i),
+      (t[4] = a),
+      (t[5] = o),
+      (t[6] = s),
+      (t[7] = c));
+  let l = o !== void 0 && o,
+    u =
+      (s === void 0 ? `default` : s) === `inset` &&
+      `m-2 !w-auto rounded-lg border border-primary-outline`,
+    d;
+  t[8] !== n || t[9] !== u
+    ? ((d = q(
+        v7.content,
+        `p-[var(--app-menu-item-padding,var(--padding-row-y)_var(--padding-row-x))]`,
+        u,
+        n,
+      )),
+      (t[8] = n),
+      (t[9] = u),
+      (t[10] = d))
+    : (d = t[10]);
+  let f;
+  t[11] === Symbol.for(`react.memo_cache_sentinel`)
+    ? ((f = (0, g7.jsx)($Ai, {
+        children: (0, g7.jsx)(Txi, { className: `text-tertiary`, icon16: Jpr, legacyIcon: TAi }),
+      })),
+      (t[11] = f))
+    : (f = t[11]);
+  let p;
+  t[12] === r
+    ? (p = t[13])
+    : ((p = q(
+        `!w-auto flex-1 appearance-none !rounded-none !border-none bg-transparent !px-0 !py-0 text-default placeholder:text-tertiary`,
+        r,
+      )),
+      (t[12] = r),
+      (t[13] = p));
+  let m;
+  t[14] === i
+    ? (m = t[15])
+    : ((m = (e) => {
+        (i?.(e),
+          !e.defaultPrevented &&
+            (e.key === `ArrowDown` || e.key === `ArrowUp`) &&
+            Iji(e.currentTarget, e.key === `ArrowDown` ? `next` : `previous`) &&
+            e.preventDefault());
+      }),
+      (t[14] = i),
+      (t[15] = m));
+  let h;
+  t[16] !== a || t[17] !== p || t[18] !== m
+    ? ((h = (0, g7.jsx)(Pji, { className: p, onKeyDown: m, ...a })),
+      (t[16] = a),
+      (t[17] = p),
+      (t[18] = m),
+      (t[19] = h))
+    : (h = t[19]);
+  let g;
+  t[20] === c
+    ? (g = t[21])
+    : ((g = c ? (0, g7.jsx)(`div`, { className: `shrink-0`, children: c }) : null),
+      (t[20] = c),
+      (t[21] = g));
+  let _;
+  t[22] !== d || t[23] !== h || t[24] !== g
+    ? ((_ = (0, g7.jsxs)(`div`, { className: d, children: [f, h, g] })),
+      (t[22] = d),
+      (t[23] = h),
+      (t[24] = g),
+      (t[25] = _))
+    : (_ = t[25]);
+  let v = _,
+    y;
+  return (
+    t[26] !== v || t[27] !== l
+      ? ((y = l
+          ? (0, g7.jsx)(`div`, {
+              className: `sticky top-0 z-10 -mx-1 -mt-1 bg-surface-elevated-secondary p-1 before:pointer-events-none before:absolute before:inset-x-0 before:-top-1 before:h-1 before:bg-surface-elevated-secondary before:content-['']`,
+              children: v,
+            })
+          : v),
+        (t[26] = v),
+        (t[27] = l),
+        (t[28] = y))
+      : (y = t[28]),
+    y
+  );
+}
+function Iji(e, t) {
+  let n = Lji(e),
+    r = t === `next` ? n[0] : n[n.length - 1];
+  return (r?.focus(), r != null);
+}
+function Txi(e) {
+  let t = (0, c5.c)(22),
+    n,
+    r,
+    i,
+    a,
+    o,
+    s;
+  t[0] === e
+    ? ((n = t[1]), (r = t[2]), (i = t[3]), (a = t[4]), (o = t[5]), (s = t[6]))
+    : (({ className: a, icon16: n, asset16: i, legacyIcon: r, legacyClassName: s, ...o } = e),
+      (t[0] = e),
+      (t[1] = n),
+      (t[2] = r),
+      (t[3] = i),
+      (t[4] = a),
+      (t[5] = o),
+      (t[6] = s));
+  let c = s === void 0 ? `icon-2xs shrink-0` : s,
+    l;
+  t[7] !== a || t[8] !== c ? ((l = q(c, a)), (t[7] = a), (t[8] = c), (t[9] = l)) : (l = t[9]);
+  let u;
+  t[10] !== r || t[11] !== o || t[12] !== l
+    ? ((u = (0, l5.jsx)(r, { className: l, ...o })),
+      (t[10] = r),
+      (t[11] = o),
+      (t[12] = l),
+      (t[13] = u))
+    : (u = t[13]);
+  let d;
+  t[14] !== n || t[15] !== i || t[16] !== a || t[17] !== o
+    ? ((d =
+        i == null
+          ? (0, l5.jsx)(n, { className: a, ...o })
+          : (0, l5.jsx)(t5, { className: a, ...o, asset: i })),
+      (t[14] = n),
+      (t[15] = i),
+      (t[16] = a),
+      (t[17] = o),
+      (t[18] = d))
+    : (d = t[18]);
+  let f;
+  return (
+    t[19] !== u || t[20] !== d
+      ? ((f = (0, l5.jsx)(wxi, { compact: u, leading: d })), (t[19] = u), (t[20] = d), (t[21] = f))
+      : (f = t[21]),
+    f
+  );
+}
+function wxi(e) {
+  let t = (0, c5.c)(9),
+    { "aria-hidden": n, compact: r, leading: i } = e,
+    a;
+  t[0] !== n || t[1] !== r
+    ? ((a = (0, l5.jsx)(`span`, { className: Sxi.CompactSource, "aria-hidden": n, children: r })),
+      (t[0] = n),
+      (t[1] = r),
+      (t[2] = a))
+    : (a = t[2]);
+  let o;
+  t[3] !== n || t[4] !== i
+    ? ((o = (0, l5.jsx)(`span`, { className: Sxi.LeadingSource, "aria-hidden": n, children: i })),
+      (t[3] = n),
+      (t[4] = i),
+      (t[5] = o))
+    : (o = t[5]);
+  let s;
+  return (
+    t[6] !== a || t[7] !== o
+      ? ((s = (0, l5.jsxs)(l5.Fragment, { children: [a, o] })), (t[6] = a), (t[7] = o), (t[8] = s))
+      : (s = t[8]),
+    s
+  );
+}
+function EAi() {
+  return (EAi = t(() => {
+    (o(),
+      (wAi = K()),
+      (TAi = (e) =>
+        (0, wAi.jsx)(`svg`, {
+          width: 16,
+          height: 16,
+          viewBox: `0 0 16 16`,
+          fill: `none`,
+          xmlns: `http://www.w3.org/2000/svg`,
+          ...e,
+          children: (0, wAi.jsx)(`path`, {
+            fillRule: `evenodd`,
+            clipRule: `evenodd`,
+            d: `M7.33057 1.98535C10.2484 1.98535 12.6136 4.3508 12.6138 7.26855C12.6138 8.58031 12.1346 9.77942 11.3433 10.7031L13.9897 13.3496C14.1655 13.5253 14.1655 13.8106 13.9897 13.9863C13.814 14.1621 13.5288 14.1621 13.353 13.9863L10.7017 11.335C9.78678 12.0942 8.61243 12.5518 7.33057 12.5518C4.41281 12.5516 2.04736 10.1864 2.04736 7.26855C2.04754 4.35091 4.41292 1.98553 7.33057 1.98535ZM7.33057 2.88574C4.90998 2.88592 2.94793 4.84796 2.94775 7.26855C2.94775 9.68929 4.90987 11.6522 7.33057 11.6523C9.75141 11.6523 11.7144 9.6894 11.7144 7.26855C11.7142 4.84786 9.75131 2.88574 7.33057 2.88574Z`,
+            fill: `currentColor`,
+          }),
+        })));
+  }))();
+}
 function f8n() {
   return (f8n = t(() => {
     (Q(),
@@ -2280,8 +2533,38 @@ function v8n() {
       })));
   }))();
 }
- s7();bji();i7();K6n();pAi();pCi();a7();FSi();f8n();v8n();
- const Bdr=t5.fromPreset?.(d8n),Udr=t5.fromPreset?.(_8n);
+function etr() {
+  return (etr = t(() => {
+    (Q(),
+      ($er = Z({
+        name: `magnifying-glass-lg-light-16`,
+        canvas: {
+          width: 16,
+          height: 16,
+          viewBox: `0 0 16 16`,
+          frame: { x: 0, y: 0, width: 16, height: 16 },
+          inkBounds: { x: 1.970062, y: 1.910156, width: 12.226837, height: 12.283203 },
+          visualBounds: { x: 1.970062, y: 1.910156, width: 12.226837, height: 12.283203 },
+        },
+        paint: { kind: `monochrome` },
+        optical: {
+          shape: `non-circular`,
+          bounds: { x: 1.970062, y: 1.910156, width: 12.226837, height: 12.283203 },
+          center: { x: 8.083481, y: 8.051758 },
+          insets: { top: 1.910156, right: 1.803101, bottom: 1.806641, left: 1.970062 },
+          anchors: {
+            frame: { x: 8, y: 8 },
+            ink: { x: 8.083481, y: 8.051758 },
+            foreground: { x: 8.083481, y: 8.051758 },
+          },
+        },
+        capabilities: [`icon`],
+        body: `<path fill-rule="evenodd" clip-rule="evenodd" d="M7.32849 1.91016C10.2877 1.91016 12.6867 4.30938 12.6869 7.26855C12.6869 8.57363 12.2192 9.7688 11.4437 10.6982L14.0433 13.2979C14.2481 13.5028 14.2481 13.8351 14.0433 14.04C13.8384 14.245 13.5062 14.2449 13.3011 14.04L10.6957 11.4346C9.77536 12.1793 8.60462 12.627 7.32849 12.627C4.36931 12.6268 1.97009 10.2278 1.97009 7.26855C1.97027 4.30949 4.36942 1.91033 7.32849 1.91016ZM7.32849 2.96094C4.94932 2.96111 3.02105 4.88939 3.02087 7.26855C3.02087 9.64787 4.94921 11.577 7.32849 11.5771C9.70792 11.5771 11.6371 9.64798 11.6371 7.26855C11.6369 4.88928 9.70781 2.96094 7.32849 2.96094Z" fill="currentColor"/>`,
+      })));
+  }))();
+}
+ s7();bji();i7();K6n();pAi();pCi();a7();FSi();EAi();f8n();v8n();etr();
+ const Bdr=t5.fromPreset?.(d8n),Udr=t5.fromPreset?.(_8n),Jpr=t5.fromPreset?.($er);
  (pji = { default: `h-5 w-8`, sm: `h-4 w-7` }),
       (mji = {
         default: `h-4 w-4 data-[state=unchecked]:translate-x-[2px] data-[state=checked]:translate-x-[14px] rtl:data-[state=unchecked]:-translate-x-[2px] rtl:data-[state=checked]:-translate-x-[14px]`,
@@ -2385,5 +2668,5 @@ function v8n() {
       }),
       (tMi = { messageBase: `px-row-x text-sm` }),
       (nMi = { xs: `icon-xs`, sm: `icon-sm`, base: `icon-base`, md: `icon-md` });
- return {MenuSubmenuItem:Wji,MenuFlyoutSubmenuItem:Gji,MenuCheckboxItem:Dji,MenuRadioItem:Aji,MenuRadioGroup:yb,MenuTrigger:xji,MenuContent:Sji,MenuItem:Cji,MenuItemIcon:Nji,MenuSeparator:Rji,MenuSectionLabel:zji,MenuMessage:Bji,MenuTitle:Kji,MenuGroup:Jji,MenuSection:qji,MenuRow:QAi,followingEnabledItems:Lji};
+ return {MenuInput:Pji,MenuSearchInput:Fji,focusMenuItem:Iji,MenuSubmenuItem:Wji,MenuFlyoutSubmenuItem:Gji,MenuCheckboxItem:Dji,MenuRadioItem:Aji,MenuRadioGroup:yb,MenuTrigger:xji,MenuContent:Sji,MenuItem:Cji,MenuItemIcon:Nji,MenuSeparator:Rji,MenuSectionLabel:zji,MenuMessage:Bji,MenuTitle:Kji,MenuGroup:Jji,MenuSection:qji,MenuRow:QAi,followingEnabledItems:Lji};
 }
