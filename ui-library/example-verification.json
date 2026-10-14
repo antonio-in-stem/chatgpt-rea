@@ -602,5 +602,23 @@
       "Feed skeleton/row, demo-build and external-link indicator remain required dependencies",
       "Full-window parity pending"
     ]
+  },
+  "richNewsFeed": {
+    "localPostCount": 3,
+    "utcDates": [
+      "2026-10-12",
+      "2026-10-10",
+      "2026-10-08"
+    ],
+    "newVersionMarkers": 1,
+    "selectedPost": "demo-1",
+    "loadingShimmers": 6,
+    "disabledLoadingRows": 3,
+    "restoredPostDates": 3,
+    "consoleErrors": 0,
+    "limits": [
+      "Local posts; no feed backend or release-details modal",
+      "No screenshot match against installed app"
+    ]
   }
 }

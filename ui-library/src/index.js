@@ -100,3 +100,5 @@ export {createProfileMenuLayout} from './ProfileMenuLayout.js';
 export {createProfilePetMenuItem} from './ProfilePetMenuItem.js';
 
 export {createProfileHelpMenu} from './ProfileHelpMenu.js';
+
+export {createLoadingSurfaces} from './LoadingSurfaces.js';

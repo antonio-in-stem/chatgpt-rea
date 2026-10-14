@@ -52,3 +52,5 @@ ui-library/src/ProfileMenuLayout.js -text
 ui-library/src/ProfilePetMenuItem.js -text
 
 ui-library/src/ProfileHelpMenu.js -text
+
+ui-library/src/LoadingSurfaces.js -text

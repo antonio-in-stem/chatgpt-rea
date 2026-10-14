@@ -1,0 +1,26 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "rC",
+    "iC",
+    "SRt",
+    "CRt",
+    "xRt",
+    "WFc",
+    "Bws",
+    "Wws",
+    "Hws",
+    "Jws",
+    "Yws",
+    "Zws",
+    "uq",
+    "lq"
+  ],
+  "bodySha256": "1c566594adb2fcfeaaac5910fbf96c52b16880789c9d2cce77f87db22fb0bbea",
+  "seedSegmentSha256": "c32e77a97fce86b2e30751d579192b15d7762e85fdd4f3ee317e5f3b9c4d883c",
+  "transformation": "Original bodies and bundled seedrandom closure preserved; terminal comma replaced with semicolon; React/motion preference injected.",
+  "limits": [
+    "No whole-window visual parity claim"
+  ]
+}
