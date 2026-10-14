@@ -1,0 +1,21 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "UF",
+    "Mar",
+    "Nar",
+    "Par",
+    "Far"
+  ],
+  "transition": {
+    "source": "app-shared-737655e1fb23.js",
+    "symbol": "uCi",
+    "literal": "{ duration: 300 / 1e3, ease: [0.19, 1, 0.22, 1] }"
+  },
+  "limits": [
+    "Context menu adapter required when menuRef is supplied",
+    "Host motion/scale preferences remain explicit hooks",
+    "Complete settings sidebar not included"
+  ]
+}

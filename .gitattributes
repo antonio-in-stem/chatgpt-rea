@@ -101,3 +101,5 @@ ui-library/src/SettingsExtensionArtwork.js -text
 ui-library/src/ListNavigation.js -text
 
 ui-library/src/SettingsSections.js -text
+
+ui-library/src/NavigationSurfaces.js -text
