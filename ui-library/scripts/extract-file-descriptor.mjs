@@ -10,7 +10,7 @@ const output=`// Generated original filename/MIME classification. See file-descr
 const t=fn=>fn;
 ${body}
 qwi();
-export {pwi as describeFile,B5 as fileExtension};
+export {pwi as describeFile,B5 as fileExtension,fwi as fileMimeOverride};
 `;
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 fs.writeFileSync(path.join(root,'src/fileDescriptor.js'),output);

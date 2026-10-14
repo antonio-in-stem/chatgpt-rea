@@ -21,3 +21,5 @@ ui-library/src/AttachmentThumbnail.js -text
 ui-library/src/fileDescriptor.js -text
 
 ui-library/src/FileTypeGlyph.js -text
+
+ui-library/src/fileIconSelection.js -text

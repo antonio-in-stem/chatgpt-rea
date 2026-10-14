@@ -328,6 +328,17 @@
       "manifest": "file-icons-manifest.json",
       "transformation": "Original preset initializer bodies and ROi lookup copied. Trusted fixed assets normalized; thin adapter exposes supported source branches explicitly.",
       "status": "All extracted initializer bodies and real AssetIcon render paths verified; local browser PDF/CSV/code colors checked; complete branded/provider renderer pending"
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "components": [
+        "resolveFileIcon",
+        "resolveFileProvider",
+        "describeFileArtwork"
+      ],
+      "manifest": "file-icon-selection-manifest.json",
+      "transformation": "Original provider parsing and resolver bodies with descriptor imports",
+      "status": "432 source-differential combinations and explicit ID/provider validation pass; full artwork rendering pending"
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

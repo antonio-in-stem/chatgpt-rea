@@ -1,0 +1,21 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "providerStart": "MTi",
+  "providerEnd": "wEi",
+  "symbols": [
+    "UEi",
+    "WEi",
+    "KEi",
+    "qEi",
+    "YEi",
+    "JEi",
+    "QEi"
+  ],
+  "bodySha256": "431f31b46a5377bf599e8981fcb5c5b377bd02e44d6212f83a4053e84b470b32",
+  "transformation": "Original provider parsing block and icon resolver bodies, original initializers; shared classification imported from prior extraction.",
+  "limits": [
+    "Resolver returns document or provider brand selection; full artwork renderer remains separate",
+    "No cloud connection or account synchronization implemented"
+  ]
+}

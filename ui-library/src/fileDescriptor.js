@@ -362,4 +362,4 @@ function qwi() {
   }))();
 }
 qwi();
-export {pwi as describeFile,B5 as fileExtension};
+export {pwi as describeFile,B5 as fileExtension,fwi as fileMimeOverride};

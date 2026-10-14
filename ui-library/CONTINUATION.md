@@ -6,7 +6,7 @@ User authorized 15 additional quota points after pausing at 49% consumed. Ceilin
 
 Current library: shared buttons, sidebar/navigation, animated icons, theme observation, search, switches/badges/viewer surfaces, conversation shell/backdrop and user bubble, composer root plus 19 subcomponents, primary action/send-stop-voice morphing, original Tooltip/TooltipProvider and floating engine, context/add-files action.
 
-Most recent: ComposerContextAction eIt/tIt from initial, plus 16/20px artwork and compact emblem from shared. Original compiler cache retained. Demo opens native file picker; filenames use generic Badge/Button in original Attachments container. These rows and direct file selection are authored demonstrations, not original attachment cards/context menu. Click/Enter picker, multi-file selection/removal, submit/clear/focus verified. Unit count: 79; full sequential checks pass.
+Most recent: ComposerContextAction eIt/tIt from initial, plus 16/20px artwork and compact emblem from shared. Original compiler cache retained. Demo opens native file picker; filenames use generic Badge/Button in original Attachments container. These rows and direct file selection are authored demonstrations, not original attachment cards/context menu. Click/Enter picker, multi-file selection/removal, submit/clear/focus verified. Unit count: 82; full sequential checks pass.
 
 Next priorities: original context menu and attachment cards, actual rich text editor, full rail/sidebar/conversation integration and matched original screenshots. Tooltip rich/coachmark/interactive/zoom runtime cases need coverage. Compiler cache retained for Tooltip, ComposerContextAction, ComposerLayout and ComposerActions. Earlier icon/asset factories still recreate arrays and need lifecycle review. Composer regression preserved draft, keyboard tooltip and submission across theme/layout toggles.
 
@@ -30,3 +30,6 @@ Latest: fileDescriptor.js generated from complete shared B5..qwi block (10,714 c
 
 
 Latest: FileTypeGlyph.js extracts all ROi 16/20 assets plus OOi/h$ text presets, retaining original initializer bodies and original table. Demo uses explicit 16px branded variant; original full branded/provider renderer still pending (do not equate these glyphs with every icon route). Browser PDF red rgb250/66/62, CSV green rgb4/184/76, code neutral, all viewBox16 and no errors. 2 tests added: all preset bodies/table and actual AssetIcon SSR for every key/size. Latest quota still52%, ceiling64%.
+
+
+Latest: fileIconSelection.js contains original MTi..wEi provider parser block plus UEi/WEi/KEi/qEi/YEi/JEi/QEi. Imports existing descriptor helpers including internal fileMimeOverride. Exports resolveFileIcon/resolveFileProvider/describeFileArtwork; local demo now uses resolved iconKey. Three tests pass (source body, ID validation/provider mismatch, 432 differential combinations); build passes. Artwork renderer itself still pending. Next actual full renderer IOi around shared266475, initializer zOi, vTi->yTi legacy artwork map; xOi provider artwork. No claims of complete frontend.

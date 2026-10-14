@@ -232,3 +232,8 @@ The example uses an authored local Blob URL provider for images, revokes URLs on
 ### File glyph presets
 
 `createFileTypeGlyph({React, AssetIcon: ui.AssetIcon})` exposes the recovered ROi table's 16px branded and 16/20px monochrome branches, plus text glyphs. Props: iconKey, size (16 default), variant (branded default), className and SVG props. Original preset bodies, optical metadata and color classes are preserved. Unsupported keys return null; 20px branded file artwork explicitly requires the still-pending full renderer instead of silently substituting a different glyph. `fileIconAssets` and `textFileIconAssets` are also exported. Browser verified PDF/CSV/code viewBoxes and colors; 2 new tests verify every initializer and render every key/size through real AssetIcon.
+
+
+### File/provider icon selection
+
+`resolveFileIcon({fileName, fileExtension?, mimeType?, sourceMimeType?, sourceUrl?, libraryProvider?, mountedLibraryFileId?})` returns the original document/iconKey or brand/provider decision. `resolveFileProvider` and `describeFileArtwork` are also exported. The full original mounted-ID parsing block and URL/MIME rules are retained, including provider mismatch rejection and Figma/Office special cases. This is a resolver, not a replacement artwork renderer; provider brands still require their original artwork extraction. The example now routes local keys through this resolver. Tests compare 432 combinations against the recovered source and check invalid IDs/provider conflicts.
