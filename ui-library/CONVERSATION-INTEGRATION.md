@@ -44,3 +44,11 @@ Observed in the same pinned readable app-initial bundle:
 - The immediate next missing boundary is upstream store/router/runtime provisioning for cDs/eii and the conversation editor/controller. A fake Bir value would suppress the explicit error while losing layout behavior; it is rejected as an implementation shortcut.
 
 No standalone mount was executed, and no independent consumer was produced in this trace. The original runtime already demonstrates the integrated provider chain, but does not prove that the library supplies it. The 67% investigation stop remains in force; do not interpret discovery of Rri as a passed integration gate.
+
+## Gate disposition at 67% usage
+
+The bounded investigation is closed without an independently mountable conversation screen. This is a limitation of the demonstrated boundary, not proof that separation is impossible. Do not resume recursive provider tracing automatically.
+
+Additional static evidence in the same bundle: GPc nests Gkc (persisted-state hydration), $Nc and the provider chain above ZPc. ZPc reads route and auth state, dispatches ready and updates DR/zp/Op plus the host bridge on navigation. The entry app-main uses initial exports hh/OFc and mh/UFc; their startup path initializes shared services and lifecycle listeners. Re-running startup in the existing reference window is not a supported isolation experiment. No independent mount was executed.
+
+The original runtime remains the reference. Its central conversation regression now has a bounded UI runner, documented in original-stack/README.md. Passing that runner does not pass this library integration gate.

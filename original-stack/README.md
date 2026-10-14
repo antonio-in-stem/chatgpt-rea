@@ -10,11 +10,23 @@ The working demo uses the original shipped renderer and a separately instrumente
 ./original-stack/Start-Demo.ps1 -StateName demo-profile-host-v1 -DemoHost -DemoPagesTls -InspectRuntime
 ```
 
-This command assumes the local captured runtime, installed demo package and Python dependencies are already present; a fresh Git clone alone is not runnable. Recovered production assets and local profiles are intentionally excluded from Git. `HANDOFF.md` at the repository root records the latest installed package, hashes, process state and unbuilt changes.
+This command assumes the local captured runtime, installed demo package and Python dependencies are already present; a fresh Git clone alone is not runnable. Recovered production assets and local profiles are intentionally excluded from Git. `CURRENT-STATUS.md` at the repository root records current evidence and next work; historical handoff entries are not current status.
 
 Pages currently exercises the original rich editor, nested pages, trash/restore, pins/icons, comments, activity and checkpoint preview/comparison/restore against synthetic local data. Versions uses a separate loopback TLS listener and process-scoped hostname/SPKI settings; it does not change system DNS or certificate trust. Renderer JavaScript/CSS remain unchanged. This is not proof that every frontend feature works: shared spaces, other artifact types, external providers and additional interaction states remain incomplete. Rust is deferred.
 
 The sections below are chronological investigation notes. Earlier statements about sign-in blockers or missing features describe earlier builds; consult the current evidence files and root handoff for verified status.
+
+## One-command conversation acceptance
+
+Against an already running isolated demo (does not launch or rebuild it):
+
+```powershell
+node original-stack/Verify-ConversationFlow.cjs demo-profile-host-v1
+```
+
+Uses original UI controls to create a uniquely named synthetic chat, attach/remove/send the packaged demo PNG, receive the fixed demo response, navigate away/back, rename, reload, and verify message/image persistence. It leaves that synthetic chat for inspection. It requires the original English UI and an unobscured main window; it does not close arbitrary dialogs or operate personal profiles.
+
+Exit 0 requires all 13 observations. Read-only observations tolerate the transient missing document during reload with a bounded wait; mutations are never automatically retried. The local state report contains only scenario outcomes, no DOM text or screenshots. This is behavioral regression evidence, not proof of visual parity, all frontend features, or standalone component-library integration.
 
 ## Preserved inputs
 

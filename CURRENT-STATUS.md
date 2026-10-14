@@ -43,16 +43,24 @@ Automatización: Demo-Controls añade choose-theme e inspect-theme para el input
 
 ## Próxima tarea única
 
-Puerta de integración de conversación: `ui-library/CONVERSATION-INTEGRATION.md`. La auditoría confirma que ConversationFlow usa textarea/estado local y que la galería no contiene el shell original. Los exports originales hN/gN dependen de navegación/estado y el layout GIi exige el contexto Bir. No se implementó una pantalla aproximada.
+Integrar una pantalla de Ajustes reutilizable con los contratos/componentes ya recuperados, un consumidor propio y controles con estado demo. Revisar primero SettingsWorkspace y su ejemplo existente; no abrir otra extracción general. Aceptación: pantalla completa, navegación entre paneles, persistencia de preferencias demo y comparación con Apariencia original en tamaño/tema equivalentes. No declarar equivalencia por un build o por la cantidad de componentes.
 
-Provider identificado: Rri suministra Bir; eii construye su navigation con refs, medidas, motion y callbacks. Orden observado: cDs → eii → Rri/Bir → lDs → GIi. Esto no demuestra un montaje independiente. Experimento pendiente: resolver el store/router raíz y editor original sin inventar el estado de ventana. Si al 67% usado no existe una vía viable, detener esta investigación y reportar el bloqueo; no regresar a extracción indefinida de funciones. La demo original sigue siendo referencia funcional y no se publican capturas/texto completos.
+La separación de conversación sigue pendiente. Su investigación acotada se cerró en 67% sin frontera de montaje independiente demostrada; véase ui-library/CONVERSATION-INTEGRATION.md. No retomar automáticamente la cadena de providers. La demo original y su prueba integrada son referencia, no sustituyen la biblioteca.
 
 ## Cuota y pendientes
 
-Baseline 64%; última consulta 66%; máximo 74%. A 72% no empezar implementación nueva. La cuota es compartida; comprobar antes de lotes sustantivos. No usar reset credits. El hito temprano quedó verificado antes de 66%.
+Baseline 64%; última consulta 67%; máximo 74%. A 72% no empezar implementación nueva. La cuota es compartida; comprobar antes de lotes sustantivos. No usar reset credits. El hito temprano quedó verificado antes de 66%.
 
 Pendientes globales: comparar visualmente estados equivalentes con la referencia del usuario, matriz completa de pantallas/estados y biblioteca integrada de flujos reutilizables. Avatar/cuenta/datos son sintéticos y la variante de navegación no representa necesariamente el perfil del usuario. No hay porcentaje global de finalización defendible.
 
 ## Evidencia de adjuntos de esta fase
 
 Captura local inspeccionada: `original-stack/state/demo-profile-host-v1/method-attachment-conversation.png`. No publicada. Se utilizó únicamente el PNG empaquetado sintético de 100x100. Los controles originales realizaron pegado/quitar/envío/visor/zoom/cierre. Demo-Controls añade una operación limitada a esa conversación de verificación, una sola imagen cargada, dimensiones esperadas y hit-test del elemento imagen. No se modificó el renderer. Node --check pasó. Persistencia tras recarga verificada en la fase siguiente: imagen cargada, natural 100x100 y miniatura 78x78 tras volver al chat.
+
+## Lote verificado: regresión del flujo central
+
+Pantalla: conversación original. Problema corregido: los escenarios integrados requerían comandos manuales dispersos, sin una ejecución única que fallara ante una regresión. Cambio acotado: runner que opera el renderer mediante Demo-Controls, crea sólo datos sintéticos y comprueba nuevo chat, envío, adjunto, navegación, renombrado y persistencia. Aceptación: ejecución real completa, resultados booleanos resumidos sin publicar texto/capturas. No inicia procesos ni repite inventarios.
+
+La búsqueda de montaje independiente se cierra por ahora sin una frontera viable demostrada: GPc monta hidratación persistente Gkc, $Nc y la cadena de providers; ZPc consume rutas y notifica servicios globales. El arranque OFc/UFc tiene efectos globales. No se probará ejecutarlo dos veces sobre la instancia de referencia. Esto no demuestra que la separación sea imposible.
+
+Resultado: Verify-ConversationFlow.cjs final ejecutado en la instancia existente, exit 0, 13 observaciones aprobadas. Comprueba el mensaje dentro de thread-scroll-container para no confundir el título de sidebar con el turno. Se observó un fallo transitorio de lectura durante reload; ahora sólo las consultas reintentan dentro de 20 segundos, sin repetir acciones. Node --check pasó para runner y controles. Reporte local: state/demo-profile-host-v1/conversation-flow-check.json. No se publican capturas ni texto de renderer. La prueba deja conversaciones sintéticas con prefijo REA flow. Cuota de este lote: 66% → 67% compartida de cuenta.
