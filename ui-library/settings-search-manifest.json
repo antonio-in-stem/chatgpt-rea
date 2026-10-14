@@ -1,0 +1,34 @@
+{
+  "sources": [
+    {
+      "file": "settings-page-6c4c55bd9144.js",
+      "sha256": "5f5986604d794a5c7b9f2beacd1d63983dc7abefbc1297a77071369b4b0ad537"
+    },
+    {
+      "file": "_virtual_settings-search-documents-ea4141d234e9.js",
+      "sha256": "cec2e4c22d507cd66f4065687d743006cabe1dffdd876fcaeeb705ff0113fb79"
+    }
+  ],
+  "symbols": [
+    "Qn",
+    "$n",
+    "er",
+    "tr",
+    "nr",
+    "rr",
+    "ir",
+    "ar",
+    "lr"
+  ],
+  "adapters": [
+    "Host section label descriptors and feature flags",
+    "Browser subpage mapping and settings route construction",
+    "Creator Micro label descriptor",
+    "Numeric sum replaces lodash wrapper"
+  ],
+  "limits": [
+    "Search index is shipped text, not evidence of fully implemented screens",
+    "Sidebar controller and route registry are not included",
+    "No installed-app visual parity claim"
+  ]
+}

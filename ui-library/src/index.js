@@ -127,3 +127,6 @@ export {createNumberShortcutPreference} from './NumberShortcutPreference.js';
 export {createSettingsContent} from './SettingsContent.js';
 
 export {createUnsavedSettingsDialog} from './UnsavedSettingsDialog.js';
+
+export {createSettingsSearch} from './SettingsSearch.js';
+export {settingsSearchDocuments} from './SettingsSearchDocuments.js';

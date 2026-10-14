@@ -80,3 +80,6 @@ ui-library/src/NumberShortcutPreference.js -text
 ui-library/src/SettingsContent.js -text
 
 ui-library/src/UnsavedSettingsDialog.js -text
+
+ui-library/src/SettingsSearch.js -text
+ui-library/src/SettingsSearchDocuments.js -text

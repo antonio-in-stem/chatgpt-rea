@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createSettingsSearch} from '../src/SettingsSearch.js';
+import {settingsSearchDocuments} from '../src/SettingsSearchDocuments.js';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+const labels={appearance:'Appearance',voice:'Voice',hidden:'Hidden','local-environments':'Local environments','browser-use':'Browser',worktrees:'Worktrees'};
+const api=createSettingsSearch({getSectionMessage:slug=>({id:slug,defaultMessage:labels[slug]??slug}),getBrowserSubpage:id=>'/browser/'+id,buildSettingsPath:(slug,query='')=>'/settings/'+slug+query,creatorMicroMessage:{defaultMessage:'Creator Micro'}});
+const intl={messages:{},formatMessage:m=>m.defaultMessage};
+const target=(sectionSlug,messages=[],terms=[])=>({sectionSlug,messages,terms});
+const msg=(id,defaultMessage)=>({id,defaultMessage});
+const search=(query,targets,extra={})=>api.searchSettings({intl,query,targets,visibleSectionSlugs:targets.map(t=>t.sectionSlug),...extra});
+test('search bodies and document index retain distributed source exactly',()=>{const manifest=JSON.parse(read('../settings-search-manifest.json')),source=read('../../original-stack/state/recovered-all/readable/assets/'+manifest.sources[0].file),output=read('../src/SettingsSearch.js');for(const name of manifest.symbols){const i=source.indexOf('function '+name+'(');assert.ok(output.includes(source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1)),name);}const data=read('../../original-stack/state/recovered-all/readable/assets/'+manifest.sources[1].file);assert.equal(read('../src/SettingsSearchDocuments.js').split('const e=fn=>fn;\n')[1],data.slice(data.indexOf('\n')+1));assert.ok(Object.keys(settingsSearchDocuments).length>20);assert.ok(Object.values(settingsSearchDocuments).every(list=>list.every(m=>typeof m.id==='string'&&typeof m.defaultMessage==='string')));});
+test('empty search, visible section filtering and title precedence',()=>{const targets=[target('voice',[],['Appearance']),target('appearance'),target('hidden',[],['Appearance'])];assert.deepEqual(search('  ',targets),[]);const result=search('Appearance',targets,{visibleSectionSlugs:['voice','appearance']});assert.deepEqual(result.map(r=>r.sectionSlug),['appearance','voice']);});
+test('hierarchical message groups require words in the same group and hide markup labels',()=>{const t=target('appearance',[msg('color','Theme'),msg('color.dark','Midnight'),msg('unrelated','Volume')]);assert.equal(search('Theme Midnight',[t]).length,1);assert.equal(search('Midnight Volume',[t]).length,0);assert.equal(search('danger',[target('appearance',[msg('warning','<b>danger</b>')])])[0].label,'Appearance');});
+test('localized documents and browser deep links remain available',()=>{const t=target('browser-use',[msg('camera','Camera permission')]);const result=search('Camara',[t],{intl:{messages:{camera:'Camara permiso'},formatMessage:m=>m.defaultMessage}});assert.equal(result[0].label,'Camara permiso');assert.equal(result[0].path,'/browser/camera');});
+test('legacy destinations preserve their original fallback routes',()=>{assert.deepEqual(api.resolveSettingsDestination('local-environments',[]),{sectionSlug:'worktrees',path:'/settings/worktrees?tab=environments'});assert.equal(api.resolveSettingsDestination('cloud-settings',[]).path,'/settings/cloud-environments?tab=preferences');assert.equal(api.resolveSettingsDestination('local-environments',[{slug:'local-environments'}]).path,'/settings/local-environments');});
