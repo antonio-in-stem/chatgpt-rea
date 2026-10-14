@@ -41,11 +41,13 @@ Captura de Apariencia conservada localmente en `original-stack/state/demo-profil
 
 Automatización: Demo-Controls añade choose-theme e inspect-theme para el input radio original. choose-theme solicita el cambio; su resultado no prueba que haya terminado. inspect-theme confirma el estado después. Durante recarga, ready=false no es fallo del frontend. La prueba no cambió renderer ni adapters de backend. Sintaxis Node comprobada.
 
-## Próxima tarea única
+## Decisión de empaquetado pendiente
 
-Integrar una pantalla de Ajustes reutilizable con los contratos/componentes ya recuperados, un consumidor propio y controles con estado demo. Revisar primero SettingsWorkspace y su ejemplo existente; no abrir otra extracción general. Aceptación: pantalla completa, navegación entre paneles, persistencia de preferencias demo y comparación con Apariencia original en tamaño/tema equivalentes. No declarar equivalencia por un build o por la cantidad de componentes.
+La revisión de Ajustes invalida el supuesto de que SettingsWorkspace permite una pantalla independiente con las piezas actuales: su WorkspaceShell es sDs, el mismo shell de conversación todavía sin separar. SettingsFlow es una composición local declarada; SettingsPageFlow tiene filas demo y no es la pantalla original. No se modificó su presentación ni se declaró el hito completado.
 
-La separación de conversación sigue pendiente. Su investigación acotada se cerró en 67% sin frontera de montaje independiente demostrada; véase ui-library/CONVERSATION-INTEGRATION.md. No retomar automáticamente la cadena de providers. La demo original y su prueba integrada son referencia, no sustituyen la biblioteca.
+Pregunta enviada al usuario: si la biblioteca puede incluir las dependencias originales de estado/servicios y sus bundles, o si los componentes deben ser independientes de la app. La primera opción conserva el acoplamiento y exige un contrato consumidor real; no se debe vender un launcher como biblioteca. La segunda mantiene la separación como trabajo obligatorio. No implementar la opción dependiente de esta respuesta hasta recibirla, ni gastar la cuota restante en una nueva cadena de providers. Rust sigue diferido.
+
+La separación de conversación sigue pendiente. Su investigación acotada se cerró en 67% sin frontera de montaje independiente demostrada; véase ui-library/CONVERSATION-INTEGRATION.md. La demo original y su prueba integrada son referencia, no sustituyen la biblioteca.
 
 ## Cuota y pendientes
 

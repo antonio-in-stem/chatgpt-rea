@@ -52,3 +52,11 @@ The bounded investigation is closed without an independently mountable conversat
 Additional static evidence in the same bundle: GPc nests Gkc (persisted-state hydration), $Nc and the provider chain above ZPc. ZPc reads route and auth state, dispatches ready and updates DR/zp/Op plus the host bridge on navigation. The entry app-main uses initial exports hh/OFc and mh/UFc; their startup path initializes shared services and lifecycle listeners. Re-running startup in the existing reference window is not a supported isolation experiment. No independent mount was executed.
 
 The original runtime remains the reference. Its central conversation regression now has a bounded UI runner, documented in original-stack/README.md. Passing that runner does not pass this library integration gate.
+
+## Settings does not bypass the shell boundary
+
+Inspected the existing SettingsWorkspace factory: its sDs WorkspaceShell dependency is the same original shell above. Existing SettingsFlow explicitly declares a local composition; SettingsPageFlow renders synthetic option rows. Neither establishes an original standalone settings screen. This invalidates the proposed shortcut of simply assembling the current examples as that screen.
+
+The original lazy route points to appearance-settings-8556dce50ba2.js (readable artifact 1109 bytes; SHA256 e3ec9c088d7d77b7d0b0f5881af82313b84c9046668b04c68ff4e12fb424f782). Its exported AppearanceSettings body f consumes navigation context, SettingsContent and the imported general-settings export n. That resolves to qs in general-settings-161845fad443.js (257530 bytes; SHA256 9e97b011b119f981263eb586b633bcafd94441586a02b662b5c505cfe2edd897). qs composes mode, visual preferences, reset and advanced controls and reads shared state. These hashes identify the readable files inspected, not pristine ASAR members.
+
+No consumer mount or visual comparison was executed in this review. Before another separation attempt, the user was asked whether packaging may retain original internal bundles/state/services or must produce app-independent components. This is a packaging choice, not permission to approximate the UI or claim that a launcher is a component library.
