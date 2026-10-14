@@ -3,11 +3,11 @@ import {classNames as q} from './classNames.js';
 export function createMenuSurfaces({React,primitives,Tooltip:w5,AssetIcon:t5,ScrollArea:sji,TooltipOverlayContext,compilerRuntime=React.__COMPILER_RUNTIME}){
  for(const name of ['Trigger','Content','Item','Group'])if(!primitives?.[name])throw new TypeError('Missing menu primitive '+name);
  if(!w5||!t5||!sji||!compilerRuntime?.c)throw new TypeError('Menu surfaces require original tooltip, asset icon, scroll area and compiler runtime');
- const {Trigger:mb,Content:gb,Item:_b,Group:fNe}=primitives;
- const t=fn=>fn,m7=compilerRuntime,tji=compilerRuntime,h7=React,v5=TooltipOverlayContext??React.createContext(undefined);
- const g7={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},c7=g7;
+ const {Trigger:mb,Content:gb,Item:_b,Group:fNe,CheckboxItem:vb,RadioItem:bb,RadioGroup:yb,ItemIndicator:xb}=primitives;
+ const t=fn=>fn,o=()=>React,Q=()=>{},Z=asset=>({...asset,body:asset.body.trim(),hasGradients:false}),m7=compilerRuntime,tji=compilerRuntime,h7=React,v5=TooltipOverlayContext??React.createContext(undefined);
+ const g7={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},c7=g7,K=()=>g7,d7=g7,fji=compilerRuntime;
  const _7={maxWidth:'min(var(--radix-dropdown-menu-content-available-width), calc(100vw - 16px))',maxHeight:'min(var(--radix-dropdown-menu-content-available-height), calc(100vh - 16px))'};
- let IAi,LAi,RAi,zAi,BAi,VAi,HAi,UAi,WAi,GAi,KAi,qAi,JAi,YAi,XAi,ZAi,o7,gji,_ji,vji,yji,f7,eMi,v7,tMi,nMi;
+ let IAi,LAi,RAi,zAi,BAi,VAi,HAi,UAi,WAi,GAi,KAi,qAi,JAi,YAi,XAi,ZAi,o7,gji,_ji,vji,yji,f7,eMi,v7,tMi,nMi,uAi,r7,G6n,pji,mji;
 function s7() {
   return (s7 = t(() => {
     ((IAi = `_itemBase_14z1j_2`),
@@ -1064,7 +1064,505 @@ function qji(e) {
     l
   );
 }
- s7();bji();
+function Dji(e) {
+  let t = (0, m7.c)(52),
+    n,
+    r,
+    i,
+    a,
+    o,
+    s,
+    c,
+    l,
+    u,
+    d,
+    f;
+  t[0] === e
+    ? ((n = t[1]),
+      (r = t[2]),
+      (i = t[3]),
+      (a = t[4]),
+      (o = t[5]),
+      (s = t[6]),
+      (c = t[7]),
+      (l = t[8]),
+      (u = t[9]),
+      (d = t[10]),
+      (f = t[11]))
+    : (({
+        children: i,
+        closeOnSelect: d,
+        checked: r,
+        className: a,
+        disabled: o,
+        href: s,
+        indicator: f,
+        leftIcon: c,
+        onSelect: l,
+        SubText: n,
+        ...u
+      } = e),
+      (t[0] = e),
+      (t[1] = n),
+      (t[2] = r),
+      (t[3] = i),
+      (t[4] = a),
+      (t[5] = o),
+      (t[6] = s),
+      (t[7] = c),
+      (t[8] = l),
+      (t[9] = u),
+      (t[10] = d),
+      (t[11] = f));
+  let p = d !== void 0 && d,
+    m = f === void 0 ? `checkmark` : f,
+    h,
+    g;
+  if (t[12] !== i) {
+    let e = h7.Children.toArray(i);
+    ((h = h7.isValidElement(e[0]) && e[0].type === Nji ? e[0] : null),
+      (g = h ? e.slice(1) : i),
+      (t[12] = i),
+      (t[13] = h),
+      (t[14] = g));
+  } else ((h = t[13]), (g = t[14]));
+  let _ = g,
+    v;
+  t[15] !== h || t[16] !== c
+    ? ((v =
+        c != null || h != null
+          ? (0, g7.jsx)(`span`, { className: o7.leadingIcon, children: c ?? h })
+          : null),
+      (t[15] = h),
+      (t[16] = c),
+      (t[17] = v))
+    : (v = t[17]);
+  let y;
+  t[18] === _
+    ? (y = t[19])
+    : ((y = (0, g7.jsx)(`span`, { className: `truncate`, children: _ })), (t[18] = _), (t[19] = y));
+  let b;
+  t[20] === n
+    ? (b = t[21])
+    : ((b =
+        n == null
+          ? null
+          : (0, g7.jsx)(`span`, {
+              className: `text-xs leading-dense whitespace-normal text-tertiary`,
+              children: n,
+            })),
+      (t[20] = n),
+      (t[21] = b));
+  let x;
+  t[22] !== y || t[23] !== b
+    ? ((x = (0, g7.jsxs)(`div`, { className: `flex min-w-0 flex-1 flex-col`, children: [y, b] })),
+      (t[22] = y),
+      (t[23] = b),
+      (t[24] = x))
+    : (x = t[24]);
+  let S;
+  t[25] !== r || t[26] !== m
+    ? ((S =
+        m === `switch`
+          ? (0, g7.jsx)(dji, { checked: r === !0, size: `sm` })
+          : (0, g7.jsx)(`span`, {
+              className: `icon-xs shrink-0`,
+              children: (0, g7.jsx)(xb, { children: (0, g7.jsx)(r7, { className: `icon-xs` }) }),
+            })),
+      (t[25] = r),
+      (t[26] = m),
+      (t[27] = S))
+    : (S = t[27]);
+  let C;
+  t[28] !== v || t[29] !== x || t[30] !== S
+    ? ((C = (0, g7.jsxs)(`div`, {
+        "data-menu-row-content": !0,
+        className: v7.content,
+        children: [v, x, S],
+      })),
+      (t[28] = v),
+      (t[29] = x),
+      (t[30] = S),
+      (t[31] = C))
+    : (C = t[31]);
+  let w = C,
+    T = s != null,
+    E = s != null && `focus:!outline-none !text-default`,
+    D = o ? `cursor-default opacity-50` : v7.itemInteractive,
+    O;
+  t[32] !== a || t[33] !== E || t[34] !== D
+    ? ((O = q(`no-drag flex flex-col`, v7.itemBase, `rounded-xl text-default`, E, D, a)),
+      (t[32] = a),
+      (t[33] = E),
+      (t[34] = D),
+      (t[35] = O))
+    : (O = t[35]);
+  let k;
+  t[36] !== p || t[37] !== s || t[38] !== l
+    ? ((k = (e) => {
+        (s == null && !p && e.preventDefault(), l?.(e));
+      }),
+      (t[36] = p),
+      (t[37] = s),
+      (t[38] = l),
+      (t[39] = k))
+    : (k = t[39]);
+  let A;
+  t[40] !== o || t[41] !== s || t[42] !== w
+    ? ((A =
+        s == null
+          ? w
+          : (0, g7.jsx)(`a`, {
+              href: s,
+              onAuxClick: o ? kji : void 0,
+              onClick: o ? Oji : void 0,
+              children: w,
+            })),
+      (t[40] = o),
+      (t[41] = s),
+      (t[42] = w),
+      (t[43] = A))
+    : (A = t[43]);
+  let j;
+  return (
+    t[44] !== r ||
+    t[45] !== o ||
+    t[46] !== u ||
+    t[47] !== T ||
+    t[48] !== O ||
+    t[49] !== k ||
+    t[50] !== A
+      ? ((j = (0, g7.jsx)(vb, {
+          asChild: T,
+          className: O,
+          checked: r,
+          disabled: o,
+          onSelect: k,
+          ...u,
+          children: A,
+        })),
+        (t[44] = r),
+        (t[45] = o),
+        (t[46] = u),
+        (t[47] = T),
+        (t[48] = O),
+        (t[49] = k),
+        (t[50] = A),
+        (t[51] = j))
+      : (j = t[51]),
+    j
+  );
+}
+function Aji(e) {
+  "use forget";
+  let t = (0, m7.c)(35),
+    n,
+    r,
+    i,
+    a,
+    o,
+    s,
+    c,
+    l,
+    u;
+  t[0] === e
+    ? ((n = t[1]),
+      (r = t[2]),
+      (i = t[3]),
+      (a = t[4]),
+      (o = t[5]),
+      (s = t[6]),
+      (c = t[7]),
+      (l = t[8]),
+      (u = t[9]))
+    : (({
+        asChild: r,
+        children: i,
+        className: a,
+        disabled: o,
+        href: s,
+        icon: c,
+        SubText: n,
+        variant: u,
+        ...l
+      } = e),
+      (t[0] = e),
+      (t[1] = n),
+      (t[2] = r),
+      (t[3] = i),
+      (t[4] = a),
+      (t[5] = o),
+      (t[6] = s),
+      (t[7] = c),
+      (t[8] = l),
+      (t[9] = u));
+  let d = u === void 0 ? `default` : u,
+    f = d === `icon` || d === `swatch`,
+    p;
+  t[10] !== n || t[11] !== i || t[12] !== c || t[13] !== f || t[14] !== d
+    ? ((p = f
+        ? i
+        : (0, g7.jsxs)(`div`, {
+            className: d === `chatgpt` ? `flex items-center gap-1.5` : v7.content,
+            children: [
+              c,
+              (0, g7.jsxs)(`div`, {
+                className: q(`flex min-w-0 flex-1 flex-col`, d === "default" && `gap-1`),
+                children: [
+                  (0, g7.jsx)(`span`, {
+                    className: q(`whitespace-normal`, d === "default" && `font-medium`),
+                    children: i,
+                  }),
+                  n != null && d !== `descriptive`
+                    ? (0, g7.jsx)(`span`, {
+                        className: q(
+                          `text-xs whitespace-normal`,
+                          d === `chatgpt`
+                            ? `leading-4 text-secondary`
+                            : `leading-dense text-tertiary`,
+                        ),
+                        children: n,
+                      })
+                    : null,
+                ],
+              }),
+              (0, g7.jsx)(`span`, {
+                className: d === `chatgpt` ? `size-4 shrink-0` : `icon-sm shrink-0`,
+                children: (0, g7.jsx)(xb, {
+                  children:
+                    d === `chatgpt`
+                      ? (0, g7.jsx)(b$, {})
+                      : (0, g7.jsx)(r7, { className: `icon-sm` }),
+                }),
+              }),
+            ],
+          })),
+      (t[10] = n),
+      (t[11] = i),
+      (t[12] = c),
+      (t[13] = f),
+      (t[14] = d),
+      (t[15] = p))
+    : (p = t[15]);
+  let m = p,
+    h;
+  t[16] !== n || t[17] !== m || t[18] !== d
+    ? ((h =
+        d === `descriptive`
+          ? (0, g7.jsxs)(`div`, {
+              className: `flex w-full min-w-0 flex-col gap-1`,
+              children: [
+                m,
+                n != null &&
+                  (0, g7.jsx)(`span`, {
+                    className: `text-xs leading-dense whitespace-normal text-tertiary`,
+                    children: n,
+                  }),
+              ],
+            })
+          : m),
+      (t[16] = n),
+      (t[17] = m),
+      (t[18] = d),
+      (t[19] = h))
+    : (h = t[19]);
+  let g = h,
+    _;
+  t[20] !== a || t[21] !== o || t[22] !== f || t[23] !== d
+    ? ((_ = q(
+        f
+          ? [
+              `no-drag flex size-9 items-center justify-center rounded-full p-0 text-default outline-hidden focus-visible:ring-2 focus-visible:ring-ring`,
+              o ? `cursor-default opacity-50` : `cursor-interaction`,
+              d === `icon` &&
+                `data-highlighted:bg-primary-ghost-hover data-[state=checked]:bg-primary-ghost-hover data-[state=checked]:ring-1 data-[state=checked]:ring-border`,
+            ]
+          : [
+              `no-drag`,
+              d === `chatgpt`
+                ? `mx-1.5 rounded-lg px-2.5 py-2 text-sm leading-5 outline-none`
+                : [v7.itemBase, `rounded-xl`],
+              `text-default`,
+              o && `cursor-default opacity-50`,
+              !o &&
+                (d === `chatgpt`
+                  ? `cursor-interaction data-[highlighted]:bg-primary-ghost-hover`
+                  : v7.itemInteractive),
+            ],
+        a,
+      )),
+      (t[20] = a),
+      (t[21] = o),
+      (t[22] = f),
+      (t[23] = d),
+      (t[24] = _))
+    : (_ = t[24]);
+  let v = s != null || r,
+    y;
+  t[25] !== o || t[26] !== s || t[27] !== g
+    ? ((y =
+        s == null
+          ? g
+          : (0, g7.jsx)(`a`, {
+              href: s,
+              onAuxClick: o ? Mji : void 0,
+              onClick: o ? jji : void 0,
+              children: g,
+            })),
+      (t[25] = o),
+      (t[26] = s),
+      (t[27] = g),
+      (t[28] = y))
+    : (y = t[28]);
+  let b;
+  return (
+    t[29] !== o || t[30] !== l || t[31] !== _ || t[32] !== v || t[33] !== y
+      ? ((b = (0, g7.jsx)(bb, { className: _, disabled: o, ...l, asChild: v, children: y })),
+        (t[29] = o),
+        (t[30] = l),
+        (t[31] = _),
+        (t[32] = v),
+        (t[33] = y),
+        (t[34] = b))
+      : (b = t[34]),
+    b
+  );
+}
+function Oji(e) {
+  return e.preventDefault();
+}
+function kji(e) {
+  return e.preventDefault();
+}
+function jji(e) {
+  return e.preventDefault();
+}
+function Mji(e) {
+  return e.preventDefault();
+}
+function dji(e) {
+  let t = (0, fji.c)(16),
+    { checked: n, size: r, tone: i, trackClassName: a, thumbClassName: o } = e,
+    s = r === void 0 ? `default` : r,
+    c = i === void 0 ? `accent` : i,
+    l = n ? `checked` : `unchecked`,
+    u = n && (c === `neutral` ? `bg-text` : `bg-chart-blue`),
+    d = !n && `bg-text/10`,
+    f = pji[s],
+    p;
+  t[0] !== u || t[1] !== d || t[2] !== f || t[3] !== a
+    ? ((p = q(
+        `relative inline-flex shrink-0 items-center rounded-full transition-colors duration-basic ease-out`,
+        u,
+        d,
+        f,
+        a,
+      )),
+      (t[0] = u),
+      (t[1] = d),
+      (t[2] = f),
+      (t[3] = a),
+      (t[4] = p))
+    : (p = t[4]);
+  let m =
+      c === `neutral` && n
+        ? `border-transparent bg-surface`
+        : `border-control-thumb-on-accent bg-control-thumb-on-accent`,
+    h = mji[s],
+    g;
+  t[5] !== m || t[6] !== h || t[7] !== o
+    ? ((g = q(
+        `rounded-full border shadow-sm transition-transform duration-basic ease-out data-[state=unchecked]:translate-x-0`,
+        m,
+        h,
+        o,
+      )),
+      (t[5] = m),
+      (t[6] = h),
+      (t[7] = o),
+      (t[8] = g))
+    : (g = t[8]);
+  let _;
+  t[9] !== l || t[10] !== g
+    ? ((_ = (0, d7.jsx)(`span`, { className: g, "data-state": l })),
+      (t[9] = l),
+      (t[10] = g),
+      (t[11] = _))
+    : (_ = t[11]);
+  let v;
+  return (
+    t[12] !== l || t[13] !== _ || t[14] !== p
+      ? ((v = (0, d7.jsx)(`span`, {
+          "aria-hidden": !0,
+          className: p,
+          "data-state": l,
+          children: _,
+        })),
+        (t[12] = l),
+        (t[13] = _),
+        (t[14] = p),
+        (t[15] = v))
+      : (v = t[15]),
+    v
+  );
+}
+function i7() {
+  return (i7 = t(() => {
+    (o(),
+      (uAi = K()),
+      (r7 = (e) =>
+        (0, uAi.jsx)(`svg`, {
+          width: 17,
+          height: 17,
+          viewBox: `0 0 17 17`,
+          fill: `none`,
+          xmlns: `http://www.w3.org/2000/svg`,
+          ...e,
+          children: (0, uAi.jsx)(`path`, {
+            d: `M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z`,
+            fill: `currentColor`,
+          }),
+        })));
+  }))();
+}
+function K6n() {
+  return (K6n = t(() => {
+    (Q(),
+      (G6n = Z({
+        name: `checkmark-md-light-16`,
+        canvas: {
+          width: 16,
+          height: 16,
+          viewBox: `0 0 16 16`,
+          frame: { x: 0, y: 0, width: 16, height: 16 },
+          inkBounds: { x: 3.474655, y: 3.803467, width: 9.046768, height: 8.309814 },
+          visualBounds: { x: 3.474655, y: 3.803467, width: 9.046768, height: 8.309814 },
+        },
+        paint: { kind: `monochrome` },
+        optical: {
+          shape: `non-circular`,
+          bounds: { x: 3.474655, y: 3.803467, width: 9.046768, height: 8.309814 },
+          center: { x: 7.998039, y: 7.958374 },
+          insets: { top: 3.803467, right: 3.478577, bottom: 3.886719, left: 3.474655 },
+          anchors: {
+            frame: { x: 8, y: 8 },
+            ink: { x: 7.998039, y: 7.958374 },
+            foreground: { x: 7.998039, y: 7.958374 },
+          },
+        },
+        capabilities: [`icon`],
+        body: `<path d="M11.5624 4.0338C11.7255 3.79403 12.0522 3.73111 12.2919 3.89415C12.5314 4.05717 12.5933 4.38398 12.4306 4.62364L7.539 11.818C7.30083 12.1681 6.80219 12.215 6.50286 11.9156L3.62786 9.03478C3.4231 8.82953 3.42363 8.4964 3.62884 8.29161C3.8341 8.08683 4.16722 8.08733 4.372 8.29259L6.92474 10.8512L11.5624 4.0338Z" fill="currentColor"/>`,
+      })));
+  }))();
+}
+ s7();bji();i7();K6n();
+ (pji = { default: `h-5 w-8`, sm: `h-4 w-7` }),
+      (mji = {
+        default: `h-4 w-4 data-[state=unchecked]:translate-x-[2px] data-[state=checked]:translate-x-[14px] rtl:data-[state=unchecked]:-translate-x-[2px] rtl:data-[state=checked]:-translate-x-[14px]`,
+        sm: `h-3 w-3 data-[state=unchecked]:translate-x-[2px] data-[state=checked]:translate-x-[14px] rtl:data-[state=unchecked]:-translate-x-[2px] rtl:data-[state=checked]:-translate-x-[14px]`,
+      });
+ const b$=props=>{if(!t5.fromPreset)throw new TypeError('Original preset icon factory required');return g7.jsx(Checkmark,props);};
+ const Checkmark=t5.fromPreset?.(G6n);
  (eMi = (e) => {
         "use forget";
         let t = (0, m7.c)(20),
@@ -1161,5 +1659,5 @@ function qji(e) {
       }),
       (tMi = { messageBase: `px-row-x text-sm` }),
       (nMi = { xs: `icon-xs`, sm: `icon-sm`, base: `icon-base`, md: `icon-md` });
- return {MenuTrigger:xji,MenuContent:Sji,MenuItem:Cji,MenuItemIcon:Nji,MenuSeparator:Rji,MenuSectionLabel:zji,MenuMessage:Bji,MenuTitle:Kji,MenuGroup:Jji,MenuSection:qji,MenuRow:QAi,followingEnabledItems:Lji};
+ return {MenuCheckboxItem:Dji,MenuRadioItem:Aji,MenuRadioGroup:yb,MenuTrigger:xji,MenuContent:Sji,MenuItem:Cji,MenuItemIcon:Nji,MenuSeparator:Rji,MenuSectionLabel:zji,MenuMessage:Bji,MenuTitle:Kji,MenuGroup:Jji,MenuSection:qji,MenuRow:QAi,followingEnabledItems:Lji};
 }

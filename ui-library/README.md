@@ -313,3 +313,9 @@ Real browser checks on these primitives verified ArrowDown opening, skipping a d
 Use `createMenu({React, ReactDOM, tooltip, AssetIcon, eventBridge, visualScale?})`, passing the full result of `createTooltip` and an event bridge exposing `subscribe(name, callback) -> unsubscribe`. It composes the recovered engine, controller, surfaces, original overlay wrappers and original scroll area. It exports Dropdown, all recovered menu surfaces, and ScrollArea. Earlier extraction notes about missing base primitives/scroll infrastructure are superseded for this entrypoint.
 
 The local SidebarFlow now uses this menu for reordering and mark-as-read actions. Those choices are authored demo actions; the visual/interaction components are recovered. Browser verified 220px menu/20px radius, disabled-item skipping, reorder/close/focus return, and a 30-item scroll-fade panel capped at200px. Overflow indicators switch correctly at the bottom. The original menu body was not restyled. Profile-specific menu contents, checkbox/radio/submenu presentation and full-window screenshot comparison remain pending.
+
+### Menu selection variants
+
+`createMenu` now also exports MenuCheckboxItem, MenuRadioGroup and MenuRadioItem from original Dji/Aji. Checkbox `indicator` supports the original checkmark/switch paths, remains open by default, and accepts `closeOnSelect`. Radio variants include default, descriptive, icon, swatch and chatgpt. The chatgpt indicator uses the original16px preset through the recovered `$` preset factory (`AssetIcon.fromPreset`); other rows retain the17px original mark.
+
+Browser verified checkbox toggle without dismissal and exclusive radio selection surviving close/reopen with the selected SVG. The sidebar demo checkbox controls status visibility. Submenus/search and profile-specific menu contents are still pending.

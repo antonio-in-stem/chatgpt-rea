@@ -1,8 +1,9 @@
 // Generated original asset renderer. See asset-renderer-manifest.json.
+import {classNames as q} from './classNames.js';
 export function createAssetIcon(React){
 const m2n=/^[A-Za-z_:][A-Za-z0-9_.:-]*$/,h2n=new Set(['icon','mask','clipPath']);
 const ilr={c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},Ibi=ilr,alr=React;
-const olr={jsx:(type,props)=>React.createElement(type,props)},Lbi=olr;
+const olr={jsx:(type,props)=>React.createElement(type,props)},Lbi=olr,glr=React.__COMPILER_RUNTIME??ilr,_lr=olr,flr={Icon:'_Icon_uttcz_1'};
 function t2n(e) {
   return e.replace(/[.*+?^$(){}|[\]\\]/g, `\\$&`);
 }
@@ -355,5 +356,55 @@ function t5(e) {
     u
   );
 }
+function $(e, t) {
+  let n = llr(e),
+    r = mlr(n, t);
+  function i(e) {
+    let t = (0, glr.c)(6),
+      i;
+    t[0] === e.className
+      ? (i = t[1])
+      : ((i = q(flr.Icon, e.className)), (t[0] = e.className), (t[1] = i));
+    let a = e.focusable ?? `false`,
+      o;
+    return (
+      t[2] !== e || t[3] !== i || t[4] !== a
+        ? ((o = (0, _lr.jsx)(rlr, {
+            preset: n,
+            icon: r,
+            svgProps: { ...e, className: i, focusable: a },
+          })),
+          (t[2] = e),
+          (t[3] = i),
+          (t[4] = a),
+          (t[5] = o))
+        : (o = t[5]),
+      o
+    );
+  }
+  return Object.assign(i, {
+    createElement(e, t) {
+      let i = e.createElementNS(`http://www.w3.org/2000/svg`, `svg`);
+      (i.setAttribute(`aria-hidden`, `true`),
+        i.setAttribute(`class`, q(flr.Icon, t)),
+        i.setAttribute(`focusable`, `false`),
+        i.setAttribute(`height`, String(n.canvas.height)),
+        i.setAttribute(`viewBox`, n.canvas.viewBox),
+        i.setAttribute(`width`, String(n.canvas.width)),
+        r.supportsWideGamut && i.setAttribute(`data-icon-p3`, n.name));
+      for (let [e, t] of Object.entries(r.style ?? {}))
+        t != null && i.style.setProperty(e, String(t));
+      if (r.kind === `sprite`) {
+        let t = e.createElementNS(`http://www.w3.org/2000/svg`, `use`);
+        (t.setAttribute(`href`, r.href),
+          t.setAttribute(`fill`, `currentColor`),
+          r.transform != null && t.setAttribute(`transform`, r.transform),
+          i.append(t));
+      } else i.innerHTML = r2n(r.body, `${n.name}-${crypto.randomUUID()}`);
+      return i;
+    },
+  });
+}
+t5.fromPreset=$;
 return t5;
 }

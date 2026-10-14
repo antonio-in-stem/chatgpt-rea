@@ -20,14 +20,23 @@
     "Bji",
     "Kji",
     "Jji",
-    "qji"
+    "qji",
+    "Dji",
+    "Aji",
+    "Oji",
+    "kji",
+    "jji",
+    "Mji",
+    "dji",
+    "i7",
+    "K6n"
   ],
-  "bodySha256": "d61c50fa27ebfdac62757f01d076ba5178a39440bb133b7e2ec6aab13fecedb4",
+  "bodySha256": "f037ebfac21187729dbbb354acf8edc884da62f7ef462aca122bb9d64b092975",
   "initializerSha256": "6ab93d32146b6f49ded0d1a4fcc650bc1f615af734d05ec86413cc78441e695c",
   "transformation": "Original functions and menu tooltip/style initializer retained; only terminating comma changed to semicolon in initializer slice. React/compiler and original interaction/scroll/tooltip/icon dependencies explicitly injected.",
   "limits": [
     "Requires underlying menu primitives and scroll-area extraction",
-    "Checkbox/radio/submenus/search still pending",
+    "Submenus/search still pending",
     "No full menu runtime or screenshot parity claim"
   ]
 }

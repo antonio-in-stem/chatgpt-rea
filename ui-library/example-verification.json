@@ -480,5 +480,20 @@
       "Submenu/checkbox/radio presentation pending",
       "No matched original screenshot"
     ]
+  },
+  "menuSelection": {
+    "checkboxBefore": true,
+    "checkboxAfter": false,
+    "checkboxKeepsMenuOpen": true,
+    "radioAfterReopen": {
+      "one": false,
+      "two": true
+    },
+    "selectedRadioViewBox": "0 0 16 16",
+    "consoleErrors": 0,
+    "limits": [
+      "No matched original screenshot",
+      "Indeterminate and linked disabled browser cases pending"
+    ]
   }
 }

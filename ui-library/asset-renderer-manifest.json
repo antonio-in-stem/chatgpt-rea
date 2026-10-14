@@ -15,9 +15,10 @@
     "mlr",
     "hlr",
     "rlr",
-    "t5"
+    "t5",
+    "$"
   ],
-  "bodySha256": "0f4c2388b66ccda161912b12c53c1d95b087009e1bcbaed3d231aaed7e94c0c3",
+  "bodySha256": "fbd5d1994b840fcee10a37744b09a3b286f40eea32d9392b6d7fa57d2a169cac",
   "transformation": "Original function bodies retained. React/JSX injected; compiler memo arrays initialized per render (memo optimization removed). Original capability and identifier constants retained.",
   "limits": [
     "Consumes trusted recovered preset objects, not arbitrary SVG input",
