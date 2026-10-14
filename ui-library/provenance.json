@@ -339,6 +339,17 @@
       "manifest": "file-icon-selection-manifest.json",
       "transformation": "Original provider parsing and resolver bodies with descriptor imports",
       "status": "432 source-differential combinations and explicit ID/provider validation pass; full artwork rendering pending"
+    },
+    {
+      "source": "app-shared-737655e1fb23.js",
+      "components": [
+        "ProviderArtwork",
+        "FigmaDocumentArtwork",
+        "providerArtworkAssets"
+      ],
+      "manifest": "provider-artwork-manifest.json",
+      "transformation": "Original 35 asset initializers, light/dark Figma bodies, table, gradient detector and view functions. Explicit runtime/theme adapter.",
+      "status": "All preset render tests and gradient uniqueness pass. Figma/Office live demo and Figma theme change verified. Full generic legacy file renderer pending."
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

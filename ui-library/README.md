@@ -237,3 +237,8 @@ The example uses an authored local Blob URL provider for images, revokes URLs on
 ### File/provider icon selection
 
 `resolveFileIcon({fileName, fileExtension?, mimeType?, sourceMimeType?, sourceUrl?, libraryProvider?, mountedLibraryFileId?})` returns the original document/iconKey or brand/provider decision. `resolveFileProvider` and `describeFileArtwork` are also exported. The full original mounted-ID parsing block and URL/MIME rules are retained, including provider mismatch rejection and Figma/Office special cases. This is a resolver, not a replacement artwork renderer; provider brands still require their original artwork extraction. The example now routes local keys through this resolver. Tests compare 432 combinations against the recovered source and check invalid IDs/provider conflicts.
+
+
+### Provider artwork
+
+`createProviderArtwork({React, AssetIcon: ui.AssetIcon, useDarkTheme: ui.useDarkTheme})` exports ProviderArtwork, FigmaDocumentArtwork and providerArtworkAssets. Original keys box/dropbox/google_drive/ms-office-document/onedrive/sharepoint/sites provide 12/16/20/24/32px presets. figma-document uses original light/dark 24px SVG geometry scaled by the original wrapper. ProviderArtwork defaults to size24; callers must use supported original keys/sizes. All 35 asset initializers, theme components, lookup table and gradient detection preserve recovered bodies; the runtime retains compiler caches. Tests cover each preset's real AssetIcon rendering and repeated gradient ID isolation. Demo Figma/Office 16px attachment icons and Figma theme change verified in browser, no errors. The full generic legacy file artwork renderer remains separate.

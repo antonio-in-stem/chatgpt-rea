@@ -352,5 +352,19 @@
     "codeColor": "color(srgb 0.87451 0.87451 0.87451 / 0.65)",
     "pageErrors": [],
     "scope": "Recovered small glyph branch; not full original-screen parity"
+  },
+  "providerArtwork": {
+    "figma": {
+      "width": 16,
+      "viewBox": "0 0 24 24",
+      "paths": 7,
+      "themeChangesArtwork": true
+    },
+    "office": {
+      "width": 16,
+      "viewBox": "0 0 16 16",
+      "paths": 4
+    },
+    "pageErrors": []
   }
 }
