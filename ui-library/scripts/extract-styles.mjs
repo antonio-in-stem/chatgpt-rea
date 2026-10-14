@@ -7,7 +7,7 @@ const input=path.resolve(process.argv[2]||'');
 if(!process.argv[2])throw Error('Pass the extracted webview/assets directory');
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const out=path.join(root,'styles','original');
-const names=['app-shared-9a94b907ed47.css','app-initial-99e8b4b455fa.css','app-primary-6a01c6b721a4.css'];
+const names=['app-shared-9a94b907ed47.css','app-initial-99e8b4b455fa.css','app-primary-6a01c6b721a4.css','user-message-f152e09d34c3.css'];
 const files=new Map();
 for(const name of names){
  const bytes=fs.readFileSync(path.join(input,name));files.set(name,bytes);

@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Forty-three tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Forty-seven tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -146,3 +146,12 @@ The authored example uses Switch to change root theme, ShortcutBadge to describe
 `ViewerButton` preserves c9's default/primary/selected/dropdown/zoom/label/avatarGroup variants around the shared Button. `ViewerControl` preserves CRi's ghostActive/full-radius defaults. Shared button interaction and loading/disabled semantics remain available; caller prop precedence matches the recovered wrappers.
 
 `examples/ViewerFlow.js` connects these controls to an authored 50–200% text preview with reset. The range, step and preview content are demonstration choices, not recovered viewer business logic. Browser checks confirmed increment, both disabled boundaries, Enter reset to 100%, a 36px capsule and 32px inner buttons in the current example. Original viewer content, compound actions and matched screenshot fidelity remain pending.
+
+
+### Conversation surfaces
+
+`ConversationLayout` preserves GIn's header/banner/body hierarchy, `containerRef`, caller attributes, floating-panel padding and reduced-motion classes. Pass `floatingPanelWidth` in pixels; the responsive rule requires the original named `app-shell-main-content` container. `ComposerBackdrop` preserves KIn's combined (omitted part), `fade` and `surface` branches, including ancestor-state selectors. It needs the original positioned layout context.
+
+`UserMessageBubble` extracts Ft's non-editing visual subtree. Inputs are already-resolved `alignment`, `accentColor`, `compact`, `otherUser`, `temporary`, `hasText`, and rendered `children`. Its original lazy stylesheet is now included byte-for-byte. No account, telemetry or backend service is required. This is a surface, not the complete message controller: editing, copying, reactions, sender identity, attachments and markdown remain separate work.
+
+`examples/ConversationFlow.js` connects the shell and bubbles to local message submission and variant toggles. Its form and composition are authored demonstrations, not the original composer or conversation screen. Browser checks observed normal radius 22px/padding 10px 16px and compact radius 16px/padding 8px 12px; temporary mode draws the original dashed SVG outline. Enter appends a message, clears the field and keeps focus. The current CSS cascade computes corner-shape superellipse(1.5) for normal/compact and superellipse(1) for temporary; exact original-context visual comparison remains pending. Differential tests cover 64 resolved bubble variants plus shell/backdrop structure and refs.

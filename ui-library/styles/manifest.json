@@ -3,7 +3,8 @@
   "entrypoints": [
     "app-shared-9a94b907ed47.css",
     "app-initial-99e8b4b455fa.css",
-    "app-primary-6a01c6b721a4.css"
+    "app-primary-6a01c6b721a4.css",
+    "user-message-f152e09d34c3.css"
   ],
   "files": [
     {
@@ -330,6 +331,11 @@
       "file": "app-primary-6a01c6b721a4.css",
       "bytes": 43869,
       "sha256": "4fa4b28e72c437f924e45aeeff2b4c26f23f37fe29048258779f816c212f1574"
+    },
+    {
+      "file": "user-message-f152e09d34c3.css",
+      "bytes": 1587,
+      "sha256": "25ad82aec4bf9cca733ca538de34fe765ba0c1efa00883bad870044881b2624c"
     }
   ],
   "limitations": [

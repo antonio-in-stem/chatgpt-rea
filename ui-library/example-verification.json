@@ -143,5 +143,34 @@
       "Authored zoom range and preview content",
       "No original screenshot comparison"
     ]
+  },
+  "conversationSurfaces": {
+    "normal": {
+      "radius": "22px",
+      "padding": "10px 16px",
+      "maxWidth": "70%",
+      "cornerShape": "superellipse(1.5)"
+    },
+    "compact": {
+      "radius": "16px",
+      "padding": "8px 12px",
+      "maxWidth": "min(456px, 100%)",
+      "cornerShape": "superellipse(1.5)"
+    },
+    "temporary": {
+      "cornerShape": "superellipse(1)",
+      "outlineRects": 1
+    },
+    "submit": {
+      "key": "Enter",
+      "messages": 2,
+      "last": "Connected local message",
+      "inputValue": "",
+      "focused": true
+    },
+    "limits": [
+      "Authored composition and form; not original composer",
+      "No matched original screenshot comparison"
+    ]
   }
 }

@@ -13,7 +13,7 @@ test('class utility agrees with recovered production functions',()=>{
 });
 test('shipped stylesheet closure remains byte-identical to recorded source hashes',()=>{
  const manifest=JSON.parse(fs.readFileSync(new URL('../styles/manifest.json',import.meta.url)));
- assert.equal(manifest.entrypoints.length,3);
+ assert.deepEqual(manifest.entrypoints,['app-shared-9a94b907ed47.css','app-initial-99e8b4b455fa.css','app-primary-6a01c6b721a4.css','user-message-f152e09d34c3.css']);
  for(const record of manifest.files){
   const bytes=fs.readFileSync(new URL('../styles/original/'+record.file,import.meta.url));
   assert.equal(bytes.length,record.bytes);assert.equal(createHash('sha256').update(bytes).digest('hex'),record.sha256);

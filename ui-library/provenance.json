@@ -187,6 +187,36 @@
         "DisclosureIcon dependency still required for disclosure variant",
         "Matched visual comparison pending"
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "formattedSourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+      "components": [
+        "ConversationLayout",
+        "ComposerBackdrop"
+      ],
+      "symbols": [
+        "GIn",
+        "KIn"
+      ],
+      "transformation": "Removed compiler memo slots; retained DOM, classes, prop precedence, floating panel variable and backdrop branches. Stable ref uses insertion effect and useCallback, preserving p5 update timing; internal React render-phase guard omitted. Original GIn discards merged-ref cleanup returns; extraction also discards them.",
+      "status": "Differential DOM and ref contract checks; original matched screenshot pending. Not the complete conversation canvas, scroll controller or composer."
+    },
+    {
+      "source": "user-message-bd254db1d77f.js",
+      "formattedSourceSha256": "9947e7e3170cc115cdc360c884a37058bd23232c541cb6b8a8160c4e3c458245",
+      "components": [
+        "UserMessageBubble"
+      ],
+      "symbols": [
+        "Ft (non-editing bubble branch)",
+        "Q"
+      ],
+      "transformation": "Extracted visual subtree with exact classes, accent variable and temporary outline SVG. Resolved compact/other-user/has-text state becomes explicit props. Content is a caller-rendered slot. Original lazy CSS copied byte-identically.",
+      "limitations": [
+        "Not full Ft: copy/edit controls, reactions, sender identity, attachments, markdown and feature/account resolution are not in this component.",
+        "Native corner-shape support depends on rendering engine. Matched original screenshots pending."
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",
