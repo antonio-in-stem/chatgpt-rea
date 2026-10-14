@@ -1,0 +1,21 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "records": [
+    {
+      "symbol": "T7o",
+      "kind": "svg-expression",
+      "sha256": "64b7c98fc929f5a8f8b47d04ca913d6fd1c8df28b74ca92b396342936cdcf910"
+    },
+    {
+      "symbol": "KRo",
+      "kind": "function",
+      "sha256": "b87f58c50e560cb1e2ffea6e0d7887ef0d053e47a36e6e8f6b5c926959e91856"
+    }
+  ],
+  "limits": [
+    "Host color lookup, resolved light/dark theme and palette conversion are explicit adapters",
+    "Remote default/16/20 artwork remains injected; no placeholder icon is supplied",
+    "No runtime connectivity or screenshot parity claim"
+  ]
+}

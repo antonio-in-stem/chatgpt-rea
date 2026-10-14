@@ -1,0 +1,64 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "records": [
+    {
+      "alias": "Icon16",
+      "exportName": "Dtt",
+      "symbol": "zpr",
+      "preset": "p$",
+      "isAsset": false
+    },
+    {
+      "alias": "Icon20",
+      "exportName": "Ott",
+      "symbol": "Bpr",
+      "preset": "y9n",
+      "isAsset": false
+    },
+    {
+      "alias": "FilterIcon",
+      "exportName": "Xet",
+      "symbol": "_pr",
+      "preset": "h7n",
+      "isAsset": false
+    },
+    {
+      "alias": "SelectedAsset",
+      "exportName": "vpt",
+      "symbol": "V6n",
+      "preset": "V6n",
+      "isAsset": true
+    }
+  ],
+  "initializers": [
+    {
+      "preset": "p$",
+      "initializer": "m$",
+      "sha256": "87988a3fb67e8c48ab0ba0064984f691f06eacf36f781da6700601400c4762d3"
+    },
+    {
+      "preset": "y9n",
+      "initializer": "b9n",
+      "sha256": "e10f2751d884537bb11ffd451370abe1f0bc7162d0dec2026ef48c36c8de8e0b"
+    },
+    {
+      "preset": "h7n",
+      "initializer": "g7n",
+      "sha256": "23017936aa638ac150ebfdfe9b8f64adc9204861e7e4d4d13db0724a08e5385a"
+    },
+    {
+      "preset": "V6n",
+      "initializer": "H6n",
+      "sha256": "bfb791e12b187653a2d416e06bcbfb51e402fae7c138bd7e652b0c81b6621ef5"
+    }
+  ],
+  "defaultIcon": {
+    "symbol": "EEi",
+    "sha256": "530380318deba0871238e152a97ec483af8a0ce4415df5f9fa2a6f626e1739d4"
+  },
+  "limits": [
+    "Asset descriptor normalization uses the existing recovered AssetIcon adapter",
+    "No full-screen visual parity claim"
+  ]
+}
