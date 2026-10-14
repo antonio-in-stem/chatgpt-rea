@@ -92,3 +92,5 @@ export {createMenuEngine} from './MenuEngine.js';
 
 export {createMenu} from './Menu.js';
 export {createMenuInfrastructure} from './MenuInfrastructure.js';
+
+export {createProfileMenu} from './ProfileMenu.js';

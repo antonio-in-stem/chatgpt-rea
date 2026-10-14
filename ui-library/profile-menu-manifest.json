@@ -1,0 +1,23 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "Lli",
+    "QNo"
+  ],
+  "shared": "app-shared-737655e1fb23.js",
+  "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "sharedSymbols": [
+    "Bki"
+  ],
+  "iconSha256": "c34c95920d83dedd6d49933d33fa9d0d0d7167d2316b2e24ce272585f585108e",
+  "bodySha256": "877ca771fb0e21b1725e5bdf2c64b4b6537183e3b60c9f19dafe4cefa864795d",
+  "loadingInitializerSha256": "17924fe91fb04b86a25a9fb7c7dac3659ba1954836fe96123a03bc93a5aa97fb",
+  "transformation": "QNo and Lli bodies and nPo loading markup unchanged. React, menu and snapshot hooks injected. Focus/hover invoke required caller prefetch; telemetry is local onOpen callback.",
+  "limits": [
+    "ProfileDropdownItems Yi contents are not yet recovered into this module",
+    "ZNo account prefetch wrapper is not included; local snapshots supply data",
+    "Lazy item loading/error recovery must be supplied by consumer adapter",
+    "Full-window visual parity not established"
+  ]
+}

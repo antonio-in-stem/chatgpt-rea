@@ -1,3 +1,4 @@
+import {createProfileMenuFlow} from './ProfileMenuFlow.js';
 import {createAvatarFlow} from './AvatarFlow.js';
 import {createConversationFlow} from './ConversationFlow.js';
 import {createViewerFlow} from './ViewerFlow.js';
@@ -24,6 +25,7 @@ const contextActions=createComposerContextAction({React,Button:ui.Button,Tooltip
 const {Avatar}=createAvatar({React,animate});
 const {ProfileFooter}=createNavigationRail({React,SidebarList:ui.SidebarList});
 const {LegacyButton}=createLegacyButton({React});
+const ProfileMenuFlow=createProfileMenuFlow(React,{menu,Tooltip,Button:ui.Button,LegacyButton,Avatar,AssetIcon:ui.AssetIcon,ProfileFooter});
 const AvatarFlow=createAvatarFlow(React,{...ui,Button:LegacyButton,Avatar,ProfileFooter});
 const {FileIcon}=createFileIcon({React,AssetIcon:ui.AssetIcon,useDarkTheme:ui.useDarkTheme});
 const resources=createResourceCards({React,AssetIcon:ui.AssetIcon});
@@ -45,6 +47,6 @@ function App(){
   React.createElement('h1',{className:'mb-4 text-xl font-medium'},'Reusable decision flow'),
   React.createElement('div',{className:'flex items-center gap-2 mb-4'},React.createElement('label',{htmlFor:'dark-theme'},'Dark theme'),React.createElement(ui.Switch,{id:'dark-theme',ariaLabel:'Dark theme',checked:dark===true,onChange:value=>{document.documentElement.dataset.theme=value ? 'dark' : 'light';}})),
   React.createElement(DecisionFlow,{onConfirm:setResult}),
-  result ? React.createElement('p',{role:'status',className:'mt-4'},React.createElement(ui.Badge,{variant:'success'},`Confirmed: ${result.mode}`)) : null,React.createElement(ui.NavigationItem,{label:'Focus project search',icon:searchIcons.Search16,animatedIcon:'sidebar-search',fullWidth:false,onClick:()=>document.getElementById('project-search')?.focus()}),React.createElement('p',{className:'text-secondary text-sm'},'Use ',React.createElement(ui.ShortcutBadge,{keysLabel:'Tab'}),' to move between controls and ',React.createElement(ui.ShortcutBadge,{keysLabel:'Enter'}),' to activate.'),React.createElement(SearchFlow),React.createElement(ViewerFlow),React.createElement(ConversationFlow),React.createElement(SidebarFlow),React.createElement(AvatarFlow));
+  result ? React.createElement('p',{role:'status',className:'mt-4'},React.createElement(ui.Badge,{variant:'success'},`Confirmed: ${result.mode}`)) : null,React.createElement(ui.NavigationItem,{label:'Focus project search',icon:searchIcons.Search16,animatedIcon:'sidebar-search',fullWidth:false,onClick:()=>document.getElementById('project-search')?.focus()}),React.createElement('p',{className:'text-secondary text-sm'},'Use ',React.createElement(ui.ShortcutBadge,{keysLabel:'Tab'}),' to move between controls and ',React.createElement(ui.ShortcutBadge,{keysLabel:'Enter'}),' to activate.'),React.createElement(SearchFlow),React.createElement(ViewerFlow),React.createElement(ConversationFlow),React.createElement(SidebarFlow),React.createElement(AvatarFlow),React.createElement(ProfileMenuFlow));
 }
 createRoot(document.getElementById('root')).render(React.createElement(TooltipProvider,null,React.createElement(App)));

@@ -517,5 +517,35 @@
     "escapeCloses": true,
     "consoleErrors": 0,
     "scope": "Original input/menu, authored local filtering"
+  },
+  "profileMenu": {
+    "source": "Original QNo/Lli/nPo/Bki with snapshot and local menu-item adapters",
+    "compact": {
+      "side": "right",
+      "width": 228,
+      "radius": "20px"
+    },
+    "expanded": {
+      "sidebarWidth": 308,
+      "side": "top",
+      "width": 292,
+      "radius": "20px"
+    },
+    "arrowDownOpens": true,
+    "enterSelectsAndCloses": true,
+    "selectionReturnsFocus": true,
+    "escapeCloses": true,
+    "localPhotoLoads": true,
+    "localPhotoRemoves": true,
+    "consoleErrors": 0,
+    "suite": {
+      "passed": 129,
+      "failed": 0
+    },
+    "limits": [
+      "Yi original account-menu items pending",
+      "ZNo prefetch and lazy error fallback pending",
+      "No matched full-window screenshot"
+    ]
   }
 }

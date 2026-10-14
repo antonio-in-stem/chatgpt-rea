@@ -44,3 +44,5 @@ ui-library/src/MenuEngine.js -text
 ui-library/src/BundleRuntime.js -text
 
 ui-library/src/MenuInfrastructure.js -text
+
+ui-library/src/ProfileMenu.js -text
