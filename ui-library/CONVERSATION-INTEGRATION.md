@@ -33,3 +33,14 @@ Line counts describe inspected function bodies, not effort estimates or completi
 4. Stop this integration investigation at 67% account usage if there is still no viable mount/provider boundary. Report evidence and tradeoff; do not launch an unbounded chain of function extractions or substitute an authored shell.
 
 The separate standalone library is still a required deliverable. Embedding the entire demo app or exposing a launcher is useful runtime reuse, but must not be described as a reusable React component library. Rust remains deferred.
+
+## Provider trace — 2026-10-14
+
+Observed in the same pinned readable app-initial bundle:
+
+- `Rri` is the actual `Bir.Provider` owner. It accepts navigation and panel widths, reads SC/vC/Ec/Fni, derives motion through Vi/Ll, and supplies `{...navigation, sidebarMotion}` around the original motion div.
+- `eii` constructs that navigation object from live refs/state, measurements and registration callbacks, then mounts Rri inside Zri.Provider. cDs reaches eii; lDs reaches GIi beneath it. This establishes the original composition order; it does not yet establish a standalone root.
+- GIi consumes shell/skip-link/banner/titlebar DOM containers, window chrome flags, panel visibility/mount state, sidebar motion, widths/insets/height, target width and header/tab registration functions. These are active lifecycle values, not a static visual token set.
+- The immediate next missing boundary is upstream store/router/runtime provisioning for cDs/eii and the conversation editor/controller. A fake Bir value would suppress the explicit error while losing layout behavior; it is rejected as an implementation shortcut.
+
+No standalone mount was executed, and no independent consumer was produced in this trace. The original runtime already demonstrates the integrated provider chain, but does not prove that the library supplies it. The 67% investigation stop remains in force; do not interpret discovery of Rri as a passed integration gate.

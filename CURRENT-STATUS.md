@@ -45,7 +45,7 @@ Automatización: Demo-Controls añade choose-theme e inspect-theme para el input
 
 Puerta de integración de conversación: `ui-library/CONVERSATION-INTEGRATION.md`. La auditoría confirma que ConversationFlow usa textarea/estado local y que la galería no contiene el shell original. Los exports originales hN/gN dependen de navegación/estado y el layout GIi exige el contexto Bir. No se implementó una pantalla aproximada.
 
-Experimento acotado: identificar el provider Bir y probar un límite de montaje viable con el estado original y adaptadores demo explícitos. Si al 67% usado no existe una vía viable, detener esta investigación y reportar el bloqueo; no regresar a extracción indefinida de funciones. La demo original sigue siendo referencia funcional y no se publican capturas/texto completos.
+Provider identificado: Rri suministra Bir; eii construye su navigation con refs, medidas, motion y callbacks. Orden observado: cDs → eii → Rri/Bir → lDs → GIi. Esto no demuestra un montaje independiente. Experimento pendiente: resolver el store/router raíz y editor original sin inventar el estado de ventana. Si al 67% usado no existe una vía viable, detener esta investigación y reportar el bloqueo; no regresar a extracción indefinida de funciones. La demo original sigue siendo referencia funcional y no se publican capturas/texto completos.
 
 ## Cuota y pendientes
 
