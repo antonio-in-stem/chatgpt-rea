@@ -2,7 +2,7 @@
 
 ## Hito actual
 
-Hito 1 parcialmente verificado en 65% de cuota usada: la copia original arranca, muestra una ventana completa y permite enviar un mensaje demo. New chat abre la pantalla inicial; antes de esa acción se comprobó la selección de la conversación desde la sidebar. Falta volver a seleccionarla después de New chat para cerrar la prueba de ida y vuelta. No equivale a completar todos los flujos ni la biblioteca. Rust sigue diferido.
+Hito 1 verificado en 65% de cuota usada: la copia original arranca, muestra una ventana completa y permite enviar un mensaje demo. New chat abre la pantalla inicial; antes de esa acción se comprobó la selección de la conversación desde la sidebar. Después de New chat se volvió a seleccionar la conversación: messageVisible=true, responseVisible=true y newChatLandingVisible=false. La prueba de ida y vuelta quedó cerrada. No equivale a completar todos los flujos ni la biblioteca. Rust sigue diferido.
 
 ## Evidencia local (no publicada)
 
@@ -27,10 +27,10 @@ El launcher verifica el inventario dos veces y resultó lento en el disco actual
 
 ## Próxima tarea única
 
-Cerrar la navegación de vuelta al chat y conservar la comprobación local. Luego validar el flujo central (adjuntos, menús, perfil/Ajustes, persistencia) en esta misma app. No reanudar extracciones aisladas. METHOD.md y AGENTS.md conservan secuencia y límites.
+Validar el flujo central (adjuntos, menús, perfil/Ajustes, persistencia) en esta misma app. No reanudar extracciones aisladas. METHOD.md y AGENTS.md conservan secuencia y límites.
 
 ## Cuota y pendientes
 
-Baseline 64%; última consulta 65%; máximo 74%. A 72% no empezar implementación nueva. La cuota es compartida; comprobar antes de lotes sustantivos. No usar reset credits. El hito temprano sigue pendiente de cerrar la vuelta al chat antes de 66%.
+Baseline 64%; última consulta 65%; máximo 74%. A 72% no empezar implementación nueva. La cuota es compartida; comprobar antes de lotes sustantivos. No usar reset credits. El hito temprano quedó verificado antes de 66%.
 
 Pendientes globales: comparar visualmente estados equivalentes con la referencia del usuario, matriz completa de pantallas/estados y biblioteca integrada de flujos reutilizables. Avatar/cuenta/datos son sintéticos y la variante de navegación no representa necesariamente el perfil del usuario. No hay porcentaje global de finalización defendible.
