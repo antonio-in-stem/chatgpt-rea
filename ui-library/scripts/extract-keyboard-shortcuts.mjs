@@ -15,17 +15,19 @@ ${fuzzy}
 j2();
 export {k2 as shortcutMatchScore};
 `);
-const groupSymbols=['b6s','w6s','T6s','E6s'],rowSymbols=['tVi','dxi','nVi','eVi','sVi','uVi','dVi'];
+const groupSymbols=['b6s','w6s','T6s','E6s'],rowSymbols=['tVi','dxi','nVi','eVi','sVi','uVi','dVi','XBi','ZBi','QBi','$Bi','K6n'];
 fs.writeFileSync(path.join(root,'src/SettingsSurfaces.js'),`// Original settings group and label/value row presentation.
 import {classNames as q} from './classNames.js';
-export function createSettingsSurfaces({React,compilerRuntime=React.__COMPILER_RUNTIME}){
+import {createAssetIcon} from './AssetIcon.js';
+export function createSettingsSurfaces({React,AssetIcon=createAssetIcon(React),compilerRuntime=React.__COMPILER_RUNTIME}){
 ${runtime}
 const ng=q,D6s=compilerRuntime,x6s=compilerRuntime,x9=compilerRuntime,fxi=compilerRuntime,I8=runtime,S6s=runtime,S9=runtime,pxi=runtime,fVi=compilerRuntime,pVi=runtime,t=fn=>fn;
-let aVi,oVi,cVi,lVi;
+const rVi=React,Q=()=>{},Z=asset=>({...asset,body:asset.body.trim(),hasGradients:false});
+let aVi,oVi,cVi,lVi,G6n;
 ${groupSymbols.map(n=>def(s.initial,n)).join('\n')}
 ${rowSymbols.map(n=>def(s.shared,n)).join('\n')}
-sVi();uVi();
-return {SettingsLabel:nVi,SettingsActionRow:eVi,SettingsPanel:dVi,SettingsGroup:Object.assign(w6s,{Header:T6s,Content:E6s,Footer:b6s}),SettingsValueRow:tVi,ShortcutBadge:dxi};
+sVi();uVi();K6n();const b$=AssetIcon.fromPreset(G6n);
+return {SettingsControlRow:XBi,SettingsRadioRow:$Bi,SettingsMutedValue:ZBi,SettingsHint:QBi,SettingsLabel:nVi,SettingsActionRow:eVi,SettingsPanel:dVi,SettingsGroup:Object.assign(w6s,{Header:T6s,Content:E6s,Footer:b6s}),SettingsValueRow:tVi,ShortcutBadge:dxi};
 }
 `);
 const symbols=['Oe','Pe','Fe','J','Ie','Le'];

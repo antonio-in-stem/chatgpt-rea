@@ -11,8 +11,8 @@ export function createSettingsFlow(React,{ReactDOM,tooltip,AssetIcon,Button,Swit
   const appearance=h(s.SettingsGroup,null,
    h(s.SettingsGroup.Header,{title:'Appearance'}),
    h(s.SettingsGroup.Content,null,h(s.SettingsPanel,null,
-    h(s.SettingsValueRow,{label:h(s.SettingsLabel,{label:'Dark theme',description:'Changes this local example.'}),valueAlignment:'end'},
-     h(Switch,{ariaLabel:'Settings dark theme',checked:dark===true,onChange:value=>{document.documentElement.dataset.theme=value?'dark':'light';}})))),
+    h(s.SettingsControlRow,{label:'Dark theme',description:'Changes this local example.',control:props=>h(Switch,{...props,checked:dark===true,onChange:value=>{document.documentElement.dataset.theme=value?'dark':'light';}})}),
+    ...['light','dark'].map(value=>h(s.SettingsRadioRow,{key:value,id:'local-theme-'+value,name:'local-theme',value,ariaLabel:value==='light'?'Light appearance':'Dark appearance',label:value==='light'?'Light':'Dark',checked:dark===(value==='dark'),indicator:'checkmark',onChange:()=>{document.documentElement.dataset.theme=value;}})))),
    h(s.SettingsGroup.Footer,null,'Theme selection applies immediately.'));
   const keyboard=h(s.SettingsGroup,null,
    h(s.SettingsGroup.Header,{title:'Keyboard'}),

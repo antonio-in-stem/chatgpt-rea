@@ -711,5 +711,18 @@
       "Local preferences composition; original complete settings router pending",
       "No installed-app screenshot comparison"
     ]
+  },
+  "settingsControls": {
+    "nativeArrowSelection": true,
+    "exclusiveRadioSelection": true,
+    "rootTheme": "dark",
+    "switchSynchronized": true,
+    "descriptionLinked": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local appearance composition",
+      "Radio row has no original disabled prop",
+      "Full settings navigation and screenshot parity pending"
+    ]
   }
 }

@@ -423,3 +423,12 @@ Validation after this extraction:165 tests pass; example builds; browser console
 Profile demo Settings now opens a local preference composition using these surfaces and the recovered dialog. Theme switch changes the example root immediately; the keyboard action replaces preferences with the existing shortcut screen. This is explicitly an authored local composition, not the installed complete settings navigation/router or a claim that all settings features are recovered.
 
 Eight focused tests pass (including retained source identity). Example build succeeds. Browser verified theme true-to-false updates the root to light, and opening keyboard shortcuts leaves exactly one dialog with four local command rows. No console errors. Screenshot parity with the installed app remains unverified.
+
+
+### Settings control and radio rows
+
+`createSettingsSurfaces` additionally exposes SettingsControlRow (XBi), SettingsRadioRow ($Bi), SettingsMutedValue (ZBi) and SettingsHint (QBi). The original selected-checkmark initializer K6n is retained and rendered through AssetIcon.fromPreset; the existing recovered icon renderer is the default.
+
+SettingsControlRow accepts a control node or render function. A function receives generated aria-labelledby/aria-describedby pointing to the actual label/description. Split, stacked, nested, featured and recommendation layouts and control sizing are preserved. SettingsRadioRow retains native radio grouping, selection highlight, default/form/inline variants, full-row label hit target and radio/checkmark indicators. The original radio component has no disabled prop; do not infer one from the action row API.
+
+The local preferences demo uses the original control row for its switch and checkmark radio rows for light/dark. Browser verified ArrowDown selects dark, deselects light, updates root theme and synchronizes the switch; its accessible description resolves to the displayed text. Eleven focused tests pass; example builds; zero browser console errors. This remains a local composition, not the complete installed settings page or verified screenshot parity.
