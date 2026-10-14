@@ -580,3 +580,10 @@ The search fixture now uses these original descriptors instead of authored label
 createSettingsLabels now also exposes SettingsSectionTitle, the unchanged _Ns renderer. It preserves page-specific descriptor IDs, its context-sensitive ChatGPT branch and explicit reuse of navigation labels for the original delegated cases. Unknown slugs return no content, as in the distributed function; no fallback title is invented. This supersedes the earlier note that page headings were not recovered.
 
 Five label tests now pass, including exact function identity, separate navigation/page localization IDs, context branches and rendering every original switch case without missing dependencies. These tests prove the title renderer, not implementation of all corresponding pages. Complete settings destination content and sidebar integration remain pending.
+
+
+### Complete settings sidebar controller extraction
+
+createSettingsSidebar now retains the complete original Or body (149 compiler slots) and its local pure helpers. The factory receives recovered visual components, labels, search and list-navigation hook, plus explicit host snapshot/query/plugin-routing/prefetch/external-navigation adapters. It preserves the original grouped/plain/collapsed branches, host-filter action, search-result dispatch, section selection and disabled/prefetch rules. Feature/auth/host visibility is resolved upstream. uniqBy is adapted locally for the original path/panelSlug call sites.
+
+Two initial tests verify every controller/helper body against the artifact and render the grouped sidebar with local adapters, checking active section, disabled click/preload suppression and keyboard-navigation markers. This is an extraction boundary, not completed runtime integration: plugin/host query branches, collapse and full keyboard/search interactions still require browser verification with the complete factory wiring. The existing demo continues using the separately verified search flow until that integration is ready. No whole-window parity claim is made.

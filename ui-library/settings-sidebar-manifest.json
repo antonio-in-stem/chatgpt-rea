@@ -1,0 +1,34 @@
+{
+  "source": "settings-page-6c4c55bd9144.js",
+  "sha256": "5f5986604d794a5c7b9f2beacd1d63983dc7abefbc1297a77071369b4b0ad537",
+  "symbols": [
+    "Or",
+    "kr",
+    "Ar",
+    "jr",
+    "Mr",
+    "Nr",
+    "Pr",
+    "Fr",
+    "Ir",
+    "Lr",
+    "Rr",
+    "zr",
+    "Br",
+    "Gr",
+    "Kr",
+    "qr"
+  ],
+  "adapters": [
+    "Resolved host state and plugin views",
+    "Query/search-target hooks and plugin route resolution",
+    "Original recovered components labels artwork and list controller",
+    "Prefetch and external navigation",
+    "Localization and uniqBy"
+  ],
+  "limits": [
+    "Factory extraction needs host adapter integration",
+    "Original visibility provider runs upstream",
+    "Full installed-window visual parity remains unverified"
+  ]
+}
