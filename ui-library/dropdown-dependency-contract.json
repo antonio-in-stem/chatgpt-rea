@@ -1,0 +1,36 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "controller": "p7",
+  "primitives": {
+    "Root": "pb = JMe",
+    "Trigger": "xji -> mb",
+    "Content": "Sji",
+    "Portal": "Vji",
+    "Layer": "hb = ZMe",
+    "ModalLayer": "Hji -> h5"
+  },
+  "sharedContexts": [
+    "Qji",
+    "v5"
+  ],
+  "profile": {
+    "controller": "QNo",
+    "entry": "ZNo",
+    "lazyChunk": "profile-dropdown-items-a9739dde34e4.js",
+    "items": "Yi",
+    "rail": {
+      "align": "end",
+      "alignOffset": -4,
+      "side": "right",
+      "sideOffset": 4,
+      "contentWidth": "railMenu"
+    },
+    "expanded": {
+      "align": "start",
+      "side": "top",
+      "sideOffset": 6,
+      "width": "calc(sidebarFooter.width px - 2 * var(--padding-row-cell-x, var(--padding-row-x)))"
+    }
+  },
+  "status": "Controller extracted; underlying primitives and profile items pending. Tests do not prove runtime menu fidelity."
+}

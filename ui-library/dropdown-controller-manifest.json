@@ -1,0 +1,27 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sourceSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "OAi",
+    "kAi",
+    "jAi",
+    "AAi",
+    "a7",
+    "pCi",
+    "qxi",
+    "$xi",
+    "eSi",
+    "tSi",
+    "nSi",
+    "rSi",
+    "Uji",
+    "p7"
+  ],
+  "bodySha256": "788231ef866d24d28d457cc4aba50bf62cfad00375124d7ec034a9f81a2509b0",
+  "transformation": "Original p7 controller, state hook, dimensions, ref cleanup, hover geometry and suspense bodies. React/compiler/event bridge/visual scale/overlay context explicit. Underlying original Root/Trigger/Content/Portal/Layer/ModalLayer still required, with no fallback substitutes.",
+  "limits": [
+    "Not a standalone dropdown yet: original menu primitives must be extracted",
+    "No menu interaction or visual parity claim from controller tests",
+    "Profile dropdown items lazy chunk remains pending"
+  ]
+}

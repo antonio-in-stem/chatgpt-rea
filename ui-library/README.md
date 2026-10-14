@@ -289,3 +289,9 @@ const snapshot = {
 Additional optional inputs are `sessionQuery` (data accountId/userId/email), `profileQuery` (data.profile_details with display_name/profile_picture_url/username and isPending), `queries.modelProvider`, `ambientUsageEnabled`, and `navigate`. Workspace accounts use their own name/photo; the source's personal-image priority and loading branches remain intact. `useImageSource(url)` returns `{src, isError}`; local consumers can resolve local URLs directly. `ProfileMenu` receives `triggerButton`, `defaultOpen`, `hideUsage`, `hasAmbientUsageSubtext`, and `sidebarFooter` identity/width metadata. It must preserve trigger props when attaching its interaction.
 
 The original dropdown contents ZNo remain pending. Debug/process-memory and device controllers are explicit optional slots, not recovered here. Browser verification mounted the original controller/avatar/footer together: keyboard activation, 36px compact trigger with 10px radius, loading-to-photo update, and compact-to-expanded workspace identity. Its test-only menu adapter verifies trigger behavior, not original menu fidelity.
+
+### Dropdown controller (dependency extraction in progress)
+
+`createDropdownController` retains original p7, its state hook, size presets, hover safe-triangle geometry, ref cleanup and loading-content focus handling. Inputs include React, compiler runtime, visualScale, TooltipOverlayContext, an eventBridge with `subscribe`, and required menu primitives. It exposes Dropdown, useDropdownState, DropdownSuspense and dimension helpers.
+
+This is currently a controller extraction, **not a standalone menu**. Root/Trigger/Content/Portal/Layer/ModalLayer must be supplied; missing primitives throw instead of silently falling back to approximate DOM. Original lower-level primitive extraction is pending. Its tests check source identity and the controller-to-primitive contract, not real menu keyboard behavior or visual parity.
