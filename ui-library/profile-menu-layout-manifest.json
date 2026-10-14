@@ -1,0 +1,81 @@
+{
+  "source": "profile-dropdown-items-a9739dde34e4.js",
+  "sha256": "0e76ab4388ebbc2aa7464956f7fd7a0644e051fc7a0edfdac6871322b0cb0914",
+  "shared": "app-shared-737655e1fb23.js",
+  "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "Wi",
+    "ci",
+    "si"
+  ],
+  "artwork": [
+    {
+      "alias": "mt",
+      "asset": "s6n",
+      "function": "c6n",
+      "preset": true
+    },
+    {
+      "alias": "Ze",
+      "asset": "l6n",
+      "function": "u6n",
+      "preset": true
+    },
+    {
+      "alias": "Bt",
+      "asset": "lrr",
+      "function": "urr",
+      "preset": true
+    },
+    {
+      "alias": "xe",
+      "asset": "drr",
+      "function": "frr",
+      "preset": true
+    },
+    {
+      "alias": "le",
+      "asset": "l9n",
+      "function": "u9n",
+      "preset": false
+    },
+    {
+      "alias": "te",
+      "asset": "d9n",
+      "function": "f9n",
+      "preset": false
+    },
+    {
+      "alias": "Mt",
+      "asset": "xnr",
+      "function": "Snr",
+      "preset": false
+    },
+    {
+      "alias": "We",
+      "asset": "Ona",
+      "function": "kna",
+      "preset": false
+    },
+    {
+      "alias": "x",
+      "asset": "p3n",
+      "function": "m3n",
+      "preset": true
+    },
+    {
+      "alias": "k",
+      "asset": "h3n",
+      "function": "g3n",
+      "preset": true
+    }
+  ],
+  "bodySha256": "5ae521e8c808f6eb7e937547a1b423140cae8b95d2f78ca5b3c9f895108cce91",
+  "artworkSha256": "be54233b5fd80b41eacbd39a9277e756cf346b7a79a5fd344ae7a92e8e29be53",
+  "limits": [
+    "Yi account and feature gating controller pending",
+    "Help and pet items require explicit adapters",
+    "Provider query/name/schema are caller boundaries",
+    "No full-window visual parity claim"
+  ]
+}

@@ -94,3 +94,5 @@ export {createMenu} from './Menu.js';
 export {createMenuInfrastructure} from './MenuInfrastructure.js';
 
 export {createProfileMenu} from './ProfileMenu.js';
+
+export {createProfileMenuLayout} from './ProfileMenuLayout.js';
