@@ -116,3 +116,5 @@ export {createShortcutSearchInput} from './ShortcutSearchInput.js';
 export {createSettingsSurfaces} from './SettingsSurfaces.js';
 export {createKeyboardShortcuts} from './KeyboardShortcuts.js';
 export {shortcutMatchScore} from './ShortcutMatching.js';
+
+export {createSettingsDisclosure} from './SettingsDisclosure.js';

@@ -1,0 +1,33 @@
+{
+  "sources": [
+    {
+      "file": "settings-row-disclosure-6b4fdbc87e7d.js",
+      "sha256": "7fcf889dfb6b1d2dcb98766ea1f5779bdebe5b12b59e7344e0b8d6bf255b0e41",
+      "symbols": [
+        "a"
+      ]
+    },
+    {
+      "file": "keyboard-shortcuts-settings-c347e431e5b9.js",
+      "sha256": "3fb6cc78dfd32c043a69b6a44e51b0ce16516e1122ad2fc076132f84e92ac891",
+      "symbols": [
+        "Et"
+      ]
+    },
+    {
+      "file": "app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+      "symbols": [
+        "sVi",
+        "i8n",
+        "v8n"
+      ]
+    }
+  ],
+  "limits": [
+    "Disclosure caller owns trigger state; original Et owns its advanced state",
+    "Shortcut nodes supplied by caller; no dictation or hotkey registration",
+    "Original search branch exposes single-tap content directly",
+    "No installed-app screenshot parity verification"
+  ]
+}

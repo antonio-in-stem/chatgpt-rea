@@ -724,5 +724,18 @@
       "Radio row has no original disabled prop",
       "Full settings navigation and screenshot parity pending"
     ]
+  },
+  "settingsDisclosure": {
+    "initialExpanded": false,
+    "enterExpands": true,
+    "ariaControlsResolves": true,
+    "spaceCollapses": true,
+    "collapsedContentRemoved": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local shortcut nodes only",
+      "No recording or global hotkeys",
+      "No installed-app screenshot comparison"
+    ]
   }
 }

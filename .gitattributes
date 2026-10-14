@@ -69,3 +69,5 @@ ui-library/src/ShortcutSearchInput.js -text
 ui-library/src/SettingsSurfaces.js -text
 ui-library/src/ShortcutMatching.js -text
 ui-library/src/KeyboardShortcuts.js -text
+
+ui-library/src/SettingsDisclosure.js -text

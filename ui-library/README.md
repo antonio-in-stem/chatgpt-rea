@@ -432,3 +432,12 @@ Eight focused tests pass (including retained source identity). Example build suc
 SettingsControlRow accepts a control node or render function. A function receives generated aria-labelledby/aria-describedby pointing to the actual label/description. Split, stacked, nested, featured and recommendation layouts and control sizing are preserved. SettingsRadioRow retains native radio grouping, selection highlight, default/form/inline variants, full-row label hit target and radio/checkmark indicators. The original radio component has no disabled prop; do not infer one from the action row API.
 
 The local preferences demo uses the original control row for its switch and checkmark radio rows for light/dark. Browser verified ArrowDown selects dark, deselects light, updates root theme and synchronizes the switch; its accessible description resolves to the displayed text. Eleven focused tests pass; example builds; zero browser console errors. This remains a local composition, not the complete installed settings page or verified screenshot parity.
+
+
+### Settings disclosure and advanced shortcut group
+
+`createSettingsDisclosure({React,settings,Button,AssetIcon,formatMessage?})` exposes SettingsRowDisclosure (original a) and AdvancedShortcutGroup (original Et). Supply createSettingsSurfaces results and recovered button/icon components. Disclosure accepts children, content, contentId and expanded; collapsed content is unmounted. The original divider classes and both 16px chevron presets are retained.
+
+AdvancedShortcutGroup accepts shortcut, singleTapShortcut and searching. Its original state hides the secondary shortcut initially, expands through the Advanced button and binds aria-controls/aria-expanded to the disclosed content. During search, the secondary content is shown directly and the toggle disappears. No secondary shortcut means no toggle. Original dictation hint text is retained; this component does not implement dictation, recording or system hotkeys. The demo labels its supplied rows as local previews.
+
+Three focused tests pass, including exact source bodies and search/collapse branches. Browser verified Enter expands, the controlled ID exists, Space collapses and removes content, with no console errors. Build succeeds. Full keyboard shortcut editing and installed-app screenshot comparison remain pending.

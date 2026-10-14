@@ -1,0 +1,15 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createSettingsDisclosure} from '../src/SettingsDisclosure.js';
+import {createSettingsSurfaces} from '../src/SettingsSurfaces.js';
+import {createAssetIcon} from '../src/AssetIcon.js';
+const h=React.createElement,read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+let buttonProps;
+const ui=createSettingsDisclosure({React,settings:createSettingsSurfaces({React}),AssetIcon:createAssetIcon(React),Button:p=>{buttonProps=p;return h('button',{'aria-expanded':p['aria-expanded'],'aria-controls':p['aria-controls'],onClick:p.onClick},p.children);}});
+const render=(C,p)=>renderToStaticMarkup(h(C,p));
+test('disclosure, advanced group, divider and both chevrons retain exact shipped bodies',()=>{const out=read('../src/SettingsDisclosure.js'),manifest=JSON.parse(read('../settings-disclosure-manifest.json'));for(const entry of manifest.sources){const src=read('../../original-stack/state/recovered-all/readable/assets/'+entry.file);for(const name of entry.symbols){const i=src.indexOf('function '+name+'('),body=src.slice(i,i+src.slice(i).search(/^}\r?$/m)+1);assert.ok(out.includes(body),name);}}});
+test('controlled disclosure removes collapsed content and preserves explicit expanded ID',()=>{const props={children:'Trigger',content:'Details',contentId:'details'};const closed=render(ui.SettingsRowDisclosure,{...props,expanded:false}),open=render(ui.SettingsRowDisclosure,{...props,expanded:true});assert.match(closed,/Trigger/);assert.doesNotMatch(closed,/Details/);assert.match(open,/id="details"/);assert.match(open,/Details/);assert.match(open,/after:bg-border/);});
+test('advanced shortcut branch is collapsed initially; search shows secondary content without trigger',()=>{const props={shortcut:'Main shortcut',singleTapShortcut:'Single tap shortcut'};const closed=render(ui.AdvancedShortcutGroup,props);assert.match(closed,/Main shortcut/);assert.match(closed,/Advanced/);assert.doesNotMatch(closed,/Single tap shortcut/);assert.equal(buttonProps['aria-expanded'],false);assert.ok(buttonProps['aria-controls']);const searching=render(ui.AdvancedShortcutGroup,{...props,searching:true});assert.match(searching,/Single tap shortcut/);assert.doesNotMatch(searching,/Advanced/);assert.doesNotMatch(render(ui.AdvancedShortcutGroup,{shortcut:'Main'}),/Advanced/);});
