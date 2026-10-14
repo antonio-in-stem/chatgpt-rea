@@ -277,6 +277,24 @@
         "Demo attachment flow and filename rows authored locally",
         "Matched original screenshot pending"
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "components": [
+        "ResourceCard",
+        "ResourceCardAction",
+        "ResourceCardIcon",
+        "ResourceCardThumbnail",
+        "ResourceCardRow",
+        "AttachmentRemoveButton",
+        "AttachmentCard",
+        "AttachmentPill",
+        "AttachmentPreviewCard",
+        "AttachmentPreviewCaption"
+      ],
+      "manifest": "resource-cards-manifest.json",
+      "transformation": "Literal recovered function bodies, React compiler cache retained; original JSX interop and fixed initialization adapted. Link and CompactIcon explicit adapters. Fixed asset normalization only.",
+      "status": "Original bodies verified; React SSR variants and removal keyboard/event isolation pass; local browser attachment add/remove/submit passed. Full original screenshot parity pending."
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

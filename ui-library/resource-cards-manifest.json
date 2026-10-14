@@ -1,0 +1,30 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "nxn",
+    "rxn",
+    "ixn",
+    "axn",
+    "oxn",
+    "mxn",
+    "hxn",
+    "yxn",
+    "Cxn",
+    "Exn",
+    "Dxn"
+  ],
+  "bodySha256": "edba2e38d96c9f0452c92121b775ae578899349ac71dafb0d3eeaefff5de4286",
+  "sharedSource": "app-shared-737655e1fb23.js",
+  "sharedSymbols": [
+    "SMi",
+    "ePi"
+  ],
+  "sharedBodySha256": "a2b2ca907eebed257df87050d5c991f26c75d4f87cba9c6f9ca24c940850983f",
+  "transformation": "Literal recovered function bodies, React compiler cache retained; original JSX interop and fixed initialization adapted. Link and CompactIcon explicit adapters. Fixed asset normalization only.",
+  "limits": [
+    "Preview and icon are caller slots; thumbnail generation and upload status controller are separate",
+    "Demo file selection and message submission remain authored local behavior",
+    "Matched original full-screen comparison pending"
+  ]
+}

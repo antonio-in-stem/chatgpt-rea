@@ -205,3 +205,10 @@ Browser verification exercised picker opening by click and Enter, two generated 
 
 
 ComposerLayout and ComposerActions now require the React compiler runtime (defaults to React.__COMPILER_RUNTIME). Their original memo slots persist across renders, matching the recovered functions instead of allocating fresh slots. Contract tests verify reuse of unchanged footer/action elements and handlers, and invalidation when inputs change. Browser regression preserved the draft across single-line, bubble and theme toggles; tooltip keyboard navigation and submission still worked without page/console errors. Older non-composer factories with fresh memo arrays remain separately documented.
+
+
+### Resource and attachment surfaces
+
+`createResourceCards({React, CompactIcon: ui.CompactIcon, Link?})` exports ResourceCard, ResourceCardAction, ResourceCardIcon, ResourceCardThumbnail, ResourceCardRow, AttachmentRemoveButton, AttachmentCard, AttachmentPill, AttachmentPreviewCard and AttachmentPreviewCaption. Original compiler caches, classes, close artwork and event isolation are retained. ResourceCard accepts the original default, attachment, composer-attachment, thread-attachment, artifact-list, file-tile and link-preview variants. The href action requires an explicit Link adapter.
+
+AttachmentCard accepts title/subtitle/icon, onClick, onRemove/onRemoveAriaLabel and composer/thread variant. AttachmentPill accepts pill/card layout and preserves Enter/Space removal. AttachmentPreviewCard accepts filename/icon/preview, onClick and onRemove/removeAriaLabel; preview generation is not included. The local conversation example now uses AttachmentCard instead of generic filename rows. File type icons, thumbnail generation and upload-status controllers remain separate extraction work. No full-screen visual equivalence is claimed.

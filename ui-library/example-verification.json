@@ -316,5 +316,16 @@
     "limits": [
       "Original screenshot parity remains pending"
     ]
+  },
+  "resourceCards": {
+    "fixture": "Two in-memory text files; local demo only",
+    "beforeRemoval": 2,
+    "afterRemoval": 1,
+    "afterSubmit": 0,
+    "submittedRemainingName": true,
+    "observedRadius": "10px",
+    "observedHeight": 52,
+    "pageErrors": [],
+    "limits": "Preview and pill interaction tested separately in unit tests; file icon classification not connected; no original screenshot comparison"
   }
 }
