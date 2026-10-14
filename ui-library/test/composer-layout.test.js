@@ -8,10 +8,12 @@ import {classNames} from '../src/classNames.js';
 const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
 const source=read('../../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js'),generated=read('../src/ComposerLayout.js'),manifest=JSON.parse(read('../composer-manifest.json'));
 const definition=(text,name)=>{const start=text.indexOf('function '+name+'(');return text.slice(start,text.indexOf('\n}',start)+2);};
-const React={createContext:value=>({value}),useContext:c=>c.value,useRef:current=>({current}),useLayoutEffect:()=>{},createElement:(type,props)=>({type,props})};
+const React={Fragment:'fragment',useId:()=> 'id',useState:init=>[typeof init==='function'?init():init,()=>{}],useEffect:()=>{},useEffectEvent:fn=>fn,useSyncExternalStore:(subscribe,snapshot)=>snapshot(),createContext:value=>({value}),useContext:c=>c.value,useRef:current=>({current}),useLayoutEffect:()=>{},createElement:(type,props)=>({type,props})};
 const motion={div:'motion.div'},useMotionValue=value=>({value,set(){}}),useDarkTheme=()=>true;
-const ui=createComposerLayout({React,motion,useMotionValue,useDarkTheme}),C=ui.ComposerLayout;
-const context={YS:{c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},XS:React,OLt:React,ZS:{jsx:React.createElement,jsxs:React.createElement},Kl:motion,Lm:useMotionValue,Vd:useDarkTheme,QS:ui.ComposerLayoutContext,KS:ui.ComposerEnvironment,FIt:ui.ComposerPresentation,ng:classNames,e:fn=>fn,t:fn=>fn};
+const adapters={MotionConfig:'MotionConfig',LayoutGroup:'LayoutGroup',AnimatePresence:'AnimatePresence',useIsPresent:()=>true};
+const ui=createComposerLayout({React,motion,useMotionValue,useDarkTheme,...adapters}),C=ui.ComposerLayout;
+const context={YS:{c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},XS:React,OLt:React,ZS:{Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key})},Kl:motion,Lm:useMotionValue,Vd:useDarkTheme,QS:ui.ComposerLayoutContext,KS:ui.ComposerEnvironment,FIt:ui.ComposerPresentation,ng:classNames,e:fn=>fn,t:fn=>fn};
+Object.assign(context,{BIt:ui.ComposerFocusTarget,Qa:()=>false,ft:()=>false,Ef:()=>1,TLt:{duration:0.3,ease:[0.23,1,0.32,1]},Ege:adapters.MotionConfig,BMe:adapters.LayoutGroup,Yp:adapters.AnimatePresence,EOe:adapters.useIsPresent});
 context.DLt=context.YS;context.kLt=context.ZS;
 vm.createContext(context);
 vm.runInContext('var JS,HIt,UIt,WIt,GIt,KIt,qIt,JIt,YIt,XIt,ZIt,QIt,$It,eLt;'+definition(source,'tLt')+';tLt();'+manifest.symbols.map(n=>definition(source,n)).join('\n'),context);
@@ -20,7 +22,7 @@ vm.runInContext('var M5;'+definition(shared,'pCi')+';pCi();const Fd=M5;',context
 const plain=x=>JSON.parse(JSON.stringify(x));
 test('composer keeps original function bodies and reference merger byte-for-byte',()=>{
  for(const name of manifest.symbols)assert.equal(definition(generated,name),definition(source,name));
- assert.equal(definition(generated,'pCi'),definition(shared,'pCi'));
+ for(const name of ['pCi','ASi','ISi'])assert.equal(definition(generated,name),definition(shared,name));
  assert.equal(createHash('sha256').update(manifest.symbols.map(n=>definition(source,n)).join('\n')).digest('hex'),manifest.bodySha256);
 });
 test('composer surfaces preserve original context, attributes, variants and motion contracts',()=>{
@@ -63,4 +65,40 @@ test('home surface clamps radius to geometry and cleans up its resize observer',
    assert.deepEqual(values,[5,10]);assert.deepEqual(events,['border-box','disconnect']);
   }
  }finally{globalThis.ResizeObserver=oldObserver;globalThis.getComputedStyle=oldStyle;}
+});
+
+test('adaptive footer preserves responsive ordering, dictation, document and voice branches',()=>{
+ const previous=globalThis.window;
+ try{for(const narrow of [false,true])for(const layout of ['single-line','multiline'])for(const dictation of [undefined,{showTranscript:false,controls:'Waveform'},{showTranscript:true,controls:'Transcript'}])for(const mode of ['normal','document','voice']){
+  globalThis.window={matchMedia:query=>({matches:query==='(width < 40rem)' && narrow})};context.Qa=()=>narrow;
+  ui.ComposerLayoutContext.value={canStackSingleLine:true,isDocument:mode==='document'};
+  const props={input:'Input',leadingControls:'Leading',trailingControls:'Trailing',layout,dictation,isVoiceLayout:mode==='voice'};
+  assert.deepEqual(plain(C.AdaptiveFooter(props)),plain(context.oLt(props)));
+ }}finally{globalThis.window=previous;}
+});
+test('composer transition and utility slots preserve original motion and presence contracts',()=>{
+ context.Qa=()=>false;ui.ComposerLayoutContext.value={isHome:true};ui.ComposerEnvironment.value={shouldAnimate:true};
+ assert.deepEqual(plain(C.LayoutTransition({children:'Child'})),plain(context.rLt({children:'Child'})));
+ for(const kind of ['home','thread'])assert.deepEqual(plain(C.ComposerTransition({placement:{kind,mode:'search'},children:'Child'})),plain(context.aLt({placement:{kind,mode:'search'},children:'Child'})));
+ for(const variant of ['home','thread'])for(const isVisible of [true,false])for(const isHidden of [true,false])for(const position of ['above','below']){
+  const props={variant,isVisible,isHidden,position,children:'Utility'};
+  const actual=C.UtilityBarSlot(props),original=context.fLt(props);
+  assert.deepEqual(plain(actual),plain(original));
+  if(variant==='home'&&isVisible){const nested=actual.props.children;assert.deepEqual(plain(nested.type(nested.props)),plain(context.pLt(original.props.children.props)));}
+ }
+});
+
+test('dictation exit restores editor focus only when the original focus guard allows it',()=>{
+ const oldRef=React.useRef,oldEffect=React.useEffect;
+ try{for(const original of [false,true])for(const focusState of ['body','inside','outside','unfocused']){
+  const refs=[],effects=[],calls=[];let cursor=0;
+  React.useRef=initial=>refs[cursor++]??(refs[cursor-1]={current:initial});React.useEffect=fn=>effects.push(fn);
+  ui.ComposerLayoutContext.value={canStackSingleLine:true};ui.ComposerFocusTarget.value={focus:()=>calls.push('focus')};
+  const body={},inside={},outside={},doc={body,hasFocus:()=>focusState!=='unfocused',activeElement:focusState==='body'?body:focusState==='inside'?inside:outside};
+  const node={ownerDocument:doc,contains:e=>e===inside};
+  const render=original?context.oLt:C.AdaptiveFooter;
+  const first=render({layout:'single-line',dictation:{showTranscript:false}});first.props.ref(node);effects.splice(0).forEach(fn=>fn());
+  cursor=0;render({layout:'single-line'});effects.splice(0).forEach(fn=>fn());
+  assert.deepEqual(calls,['body','inside'].includes(focusState)?['focus']:[]);
+ }}finally{React.useRef=oldRef;React.useEffect=oldEffect;}
 });

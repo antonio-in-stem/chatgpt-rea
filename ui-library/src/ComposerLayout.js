@@ -1,10 +1,61 @@
 import {classNames as ng} from './classNames.js';
+import {createMotionPreference} from './motionPreference.js';
 // Generated from shipped functions. See composer-manifest.json.
-export function createComposerLayout({React,motion,useMotionValue,useDarkTheme}){
+export function createComposerLayout({React,motion,useMotionValue,useDarkTheme,MotionConfig,LayoutGroup,AnimatePresence,useIsPresent,motionPreference,visualScale=1}){
 if(!React.createContext||!motion?.div||!useMotionValue||!useDarkTheme)throw new TypeError('React, motion.div, useMotionValue and useDarkTheme are required');
 const XS=React,OLt=React,YS={c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},DLt=YS;
-const ZS={jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key})},kLt=ZS;
+const ZS={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key})},kLt=ZS;
 const Kl=motion,Lm=useMotionValue,Vd=useDarkTheme;
+const Ege=MotionConfig,BMe=LayoutGroup,Yp=AnimatePresence,EOe=useIsPresent;
+const ft=createMotionPreference(React,motionPreference),Ef=()=>visualScale,TLt={duration:0.3,ease:[0.23,1,0.32,1]};
+const LSi=YS,RSi=React,jSi=React,MSi=()=>()=>{},NSi=()=>true,PSi=()=>true;
+function ASi() {
+  return (0, jSi.useSyncExternalStore)(MSi, NSi, PSi);
+}
+function ISi(e) {
+  let t = (0, LSi.c)(5),
+    n = ASi(),
+    r;
+  t[0] === e
+    ? (r = t[1])
+    : ((r = () =>
+        typeof window > `u` || typeof window.matchMedia != `function`
+          ? !1
+          : window.matchMedia(e).matches),
+      (t[0] = e),
+      (t[1] = r));
+  let [i, a] = (0, RSi.useState)(r),
+    o,
+    s;
+  return (
+    t[2] === e
+      ? ((o = t[3]), (s = t[4]))
+      : ((o = () => {
+          if (typeof window > `u` || typeof window.matchMedia != `function`) return;
+          let t = window.matchMedia(e);
+          a(t.matches);
+          let n = (e) => {
+            a(e.matches);
+          };
+          return typeof t.addEventListener == `function`
+            ? (t.addEventListener(`change`, n),
+              () => {
+                t.removeEventListener(`change`, n);
+              })
+            : (t.addListener(n),
+              () => {
+                t.removeListener(n);
+              });
+        }),
+        (s = [e]),
+        (t[2] = e),
+        (t[3] = o),
+        (t[4] = s)),
+    (0, RSi.useEffect)(o, s),
+    n && i
+  );
+}
+const Qa=ISi,BIt=React.createContext(null);
 const QS=React.createContext({isHome:false,isInline:false,canStackSingleLine:false});
 const KS=React.createContext({activeBrowserTabId:null,isInsideOverlay:false,onAttachmentAdded:()=>{},shouldAnimate:true}),FIt=React.createContext('default');
 const JS={
@@ -62,6 +113,535 @@ function pCi() {
   }))();
 }
 pCi();const Fd=M5;
+function rLt(e) {
+  let t = (0, YS.c)(10),
+    { children: n } = e,
+    r = (0, XS.useId)(),
+    i = Ef(),
+    a = ft() ? `always` : `never`,
+    o;
+  t[0] === Symbol.for(`react.memo_cache_sentinel`)
+    ? ((o = { layout: { ...TLt, type: `tween` } }), (t[0] = o))
+    : (o = t[0]);
+  let s;
+  t[1] === i
+    ? (s = t[2])
+    : ((s = (e) => {
+        let { x: t, y: n } = e;
+        return { x: t / i, y: n / i };
+      }),
+      (t[1] = i),
+      (t[2] = s));
+  let c;
+  t[3] !== n || t[4] !== a || t[5] !== s
+    ? ((c = (0, ZS.jsx)(Ege, {
+        reducedMotion: a,
+        transition: o,
+        transformPagePoint: s,
+        children: n,
+      })),
+      (t[3] = n),
+      (t[4] = a),
+      (t[5] = s),
+      (t[6] = c))
+    : (c = t[6]);
+  let l;
+  return (
+    t[7] !== r || t[8] !== c
+      ? ((l = (0, ZS.jsx)(BMe, { id: r, children: c })), (t[7] = r), (t[8] = c), (t[9] = l))
+      : (l = t[9]),
+    l
+  );
+}
+function aLt(e) {
+  let t = (0, YS.c)(17),
+    { children: n, placement: r } = e,
+    i = (0, XS.useId)(),
+    a = (0, XS.useContext)(QS),
+    o = ft(),
+    s = Ef(),
+    c;
+  t[0] !== r.kind || t[1] !== o || t[2] !== s
+    ? ((c =
+        r.kind === `home`
+          ? {
+              reducedMotion: o ? `always` : `never`,
+              transition: { layout: { ...TLt, type: `tween` } },
+              transformPagePoint: (e) => {
+                let { x: t, y: n } = e;
+                return { x: t / s, y: n / s };
+              },
+            }
+          : {}),
+      (t[0] = r.kind),
+      (t[1] = o),
+      (t[2] = s),
+      (t[3] = c))
+    : (c = t[3]);
+  let l;
+  t[4] !== a || t[5] !== r.kind || t[6] !== r.mode
+    ? ((l = r.kind === `home` ? { ...a, homeMode: r.mode } : a),
+      (t[4] = a),
+      (t[5] = r.kind),
+      (t[6] = r.mode),
+      (t[7] = l))
+    : (l = t[7]);
+  let u;
+  t[8] !== n || t[9] !== l
+    ? ((u = (0, ZS.jsx)(QS, { value: l, children: n })), (t[8] = n), (t[9] = l), (t[10] = u))
+    : (u = t[10]);
+  let d;
+  t[11] !== c || t[12] !== u
+    ? ((d = (0, ZS.jsx)(Ege, { ...c, children: u })), (t[11] = c), (t[12] = u), (t[13] = d))
+    : (d = t[13]);
+  let f;
+  return (
+    t[14] !== i || t[15] !== d
+      ? ((f = (0, ZS.jsx)(BMe, { id: i, children: d })), (t[14] = i), (t[15] = d), (t[16] = f))
+      : (f = t[16]),
+    f
+  );
+}
+function oLt(e) {
+  let t = (0, YS.c)(89),
+    {
+      input: n,
+      isVoiceLayout: r,
+      dictation: i,
+      dictationEnabled: a,
+      layout: o,
+      leadingControls: s,
+      ref: c,
+      spacing: l,
+      trailingControls: u,
+    } = e,
+    d = r !== void 0 && r,
+    f = a !== void 0 && a,
+    p = l === void 0 ? `default` : l,
+    m = (0, XS.useContext)(QS),
+    { animateLayout: h, canStackSingleLine: g, expansion: _, homeMode: v, isDocument: y } = m,
+    b = i == null && o === `single-line` && g && p === "default",
+    x = Qa(`(width < 40rem)`),
+    S = ft(),
+    C = i != null && !i.showTranscript,
+    w = C ? 0 : `auto`,
+    T = i != null,
+    E = i != null || o === `multiline` ? `stacked` : `inline`,
+    D = E === `stacked` || (b && x),
+    O = (0, XS.useRef)(null),
+    k = (0, XS.useRef)(C),
+    A;
+  t[0] === c ? (A = t[1]) : ((A = Fd(c, O)), (t[0] = c), (t[1] = A));
+  let j = A,
+    M = (0, XS.useContext)(BIt),
+    N;
+  t[2] === M
+    ? (N = t[3])
+    : ((N = () => {
+        M?.focus();
+      }),
+      (t[2] = M),
+      (t[3] = N));
+  let P = (0, XS.useEffectEvent)(N),
+    F;
+  t[4] !== C || t[5] !== T || t[6] !== P
+    ? ((F = () => {
+        let e = k.current && !T;
+        k.current = C;
+        let t = O.current;
+        if (!e || t == null || !t.ownerDocument.hasFocus()) return;
+        let n = t.ownerDocument.activeElement;
+        (n === t.ownerDocument.body || t.contains(n)) && P();
+      }),
+      (t[4] = C),
+      (t[5] = T),
+      (t[6] = P),
+      (t[7] = F))
+    : (F = t[7]);
+  let I;
+  (t[8] !== C || t[9] !== T ? ((I = [C, T]), (t[8] = C), (t[9] = T), (t[10] = I)) : (I = t[10]),
+    (0, XS.useEffect)(F, I));
+  let L = C ? 0.12 : 0.16,
+    R = i?.showTranscript ? `text` : `waveform`,
+    z = (h || v != null || _ != null) && `position`,
+    B = h ? o : `${v}-${_?.state === `expanded`}`;
+  if (d) {
+    let e;
+    return (
+      t[11] === n
+        ? (e = t[12])
+        : ((e = (0, ZS.jsx)(ZS.Fragment, { children: n })), (t[11] = n), (t[12] = e)),
+      e
+    );
+  }
+  if (y) {
+    let e;
+    t[13] !== s || t[14] !== c || t[15] !== u
+      ? ((e = (0, ZS.jsxs)(`div`, {
+          ref: c,
+          className: JS.DocumentComposerControls,
+          children: [s, u],
+        })),
+        (t[13] = s),
+        (t[14] = c),
+        (t[15] = u),
+        (t[16] = e))
+      : (e = t[16]);
+    let r;
+    return (
+      t[17] !== n || t[18] !== e
+        ? ((r = (0, ZS.jsxs)(ZS.Fragment, { children: [n, e] })),
+          (t[17] = n),
+          (t[18] = e),
+          (t[19] = r))
+        : (r = t[19]),
+      r
+    );
+  }
+  let V = i != null && `hidden`,
+    H = E === `stacked` && `col-start-1 row-start-2`,
+    ee = b && `max-sm:col-start-1 max-sm:row-start-2`,
+    U;
+  t[20] !== ee || t[21] !== V || t[22] !== H
+    ? ((U = ng(`min-w-0`, V, H, ee)), (t[20] = ee), (t[21] = V), (t[22] = H), (t[23] = U))
+    : (U = t[23]);
+  let te = v == null ? void 0 : `leading`,
+    ne = i == null ? s : null,
+    re;
+  t[24] !== z || t[25] !== B || t[26] !== U || t[27] !== te || t[28] !== ne
+    ? ((re = (0, ZS.jsx)(
+        Kl.div,
+        {
+          className: U,
+          layout: z,
+          layoutId: te,
+          layoutDependency: B,
+          layoutCrossfade: !1,
+          children: ne,
+        },
+        `leading`,
+      )),
+      (t[24] = z),
+      (t[25] = B),
+      (t[26] = U),
+      (t[27] = te),
+      (t[28] = ne),
+      (t[29] = re))
+    : (re = t[29]);
+  let ie = re,
+    ae = i != null && `overflow-hidden`,
+    oe = E === `stacked` && `col-span-full row-start-1`,
+    se = E === `stacked` && p === "default" && `-mx-2`,
+    ce = b && `max-sm:col-span-full max-sm:row-start-1 max-sm:-mx-2`,
+    le;
+  t[30] !== ae || t[31] !== oe || t[32] !== se || t[33] !== ce
+    ? ((le = ng(`min-w-0`, JS.AdaptiveFooterInput, ae, oe, se, ce)),
+      (t[30] = ae),
+      (t[31] = oe),
+      (t[32] = se),
+      (t[33] = ce),
+      (t[34] = le))
+    : (le = t[34]);
+  let ue = C || void 0,
+    de;
+  t[35] === w ? (de = t[36]) : ((de = { height: w }), (t[35] = w), (t[36] = de));
+  let fe = +!C,
+    pe;
+  t[37] === fe ? (pe = t[38]) : ((pe = { opacity: fe }), (t[37] = fe), (t[38] = pe));
+  let me = S ? 0 : L,
+    he = S || C ? 0 : 0.04,
+    ge;
+  t[39] !== me || t[40] !== he
+    ? ((ge = { opacity: { duration: me, delay: he } }), (t[39] = me), (t[40] = he), (t[41] = ge))
+    : (ge = t[41]);
+  let _e = v == null ? void 0 : `input`,
+    ve;
+  t[42] !== m || t[43] !== T
+    ? ((ve = { ...m, isDictating: T }), (t[42] = m), (t[43] = T), (t[44] = ve))
+    : (ve = t[44]);
+  let ye;
+  t[45] !== n || t[46] !== ve
+    ? ((ye = (0, ZS.jsx)(QS, { value: ve, children: n })), (t[45] = n), (t[46] = ve), (t[47] = ye))
+    : (ye = t[47]);
+  let be;
+  t[48] !== z ||
+  t[49] !== C ||
+  t[50] !== o ||
+  t[51] !== B ||
+  t[52] !== le ||
+  t[53] !== ue ||
+  t[54] !== de ||
+  t[55] !== pe ||
+  t[56] !== ge ||
+  t[57] !== _e ||
+  t[58] !== ye
+    ? ((be = (0, ZS.jsx)(
+        Kl.div,
+        {
+          className: le,
+          layout: z,
+          inert: C,
+          "aria-hidden": ue,
+          "data-composer-layout": o,
+          style: de,
+          initial: !1,
+          animate: pe,
+          transition: ge,
+          layoutId: _e,
+          layoutDependency: B,
+          layoutCrossfade: !1,
+          children: ye,
+        },
+        `input`,
+      )),
+      (t[48] = z),
+      (t[49] = C),
+      (t[50] = o),
+      (t[51] = B),
+      (t[52] = le),
+      (t[53] = ue),
+      (t[54] = de),
+      (t[55] = pe),
+      (t[56] = ge),
+      (t[57] = _e),
+      (t[58] = ye),
+      (t[59] = be))
+    : (be = t[59]);
+  let xe = be,
+    Se = i != null && `hidden`,
+    Ce = E === `stacked` && `col-start-3 row-start-2`,
+    we = b && `max-sm:col-start-3 max-sm:row-start-2`,
+    Te;
+  t[60] !== Se || t[61] !== Ce || t[62] !== we
+    ? ((Te = ng(`min-w-0`, Se, Ce, we)), (t[60] = Se), (t[61] = Ce), (t[62] = we), (t[63] = Te))
+    : (Te = t[63]);
+  let Ee = v == null ? void 0 : `trailing`,
+    De = v == null && !h ? void 0 : sLt,
+    Oe = i == null ? u : null,
+    ke;
+  t[64] !== z || t[65] !== B || t[66] !== Te || t[67] !== Ee || t[68] !== De || t[69] !== Oe
+    ? ((ke = (0, ZS.jsx)(
+        Kl.div,
+        {
+          className: Te,
+          layout: z,
+          layoutId: Ee,
+          layoutDependency: B,
+          layoutCrossfade: !1,
+          transformTemplate: De,
+          children: Oe,
+        },
+        `trailing`,
+      )),
+      (t[64] = z),
+      (t[65] = B),
+      (t[66] = Te),
+      (t[67] = Ee),
+      (t[68] = De),
+      (t[69] = Oe),
+      (t[70] = ke))
+    : (ke = t[70]);
+  let Ae = ke,
+    je = i == null ? void 0 : R,
+    Me = b ? `responsive` : E,
+    Ne;
+  t[71] !== xe || t[72] !== ie || t[73] !== D || t[74] !== Ae
+    ? ((Ne = D ? [xe, ie, Ae] : [ie, xe, Ae]),
+      (t[71] = xe),
+      (t[72] = ie),
+      (t[73] = D),
+      (t[74] = Ae),
+      (t[75] = Ne))
+    : (Ne = t[75]);
+  let Pe;
+  t[76] !== i || t[77] !== o || t[78] !== D
+    ? ((Pe =
+        i == null
+          ? null
+          : (0, ZS.jsx)(
+              `div`,
+              {
+                className: ng(
+                  `col-span-full min-w-0`,
+                  D && `row-start-2`,
+                  o === `single-line` && JS.SingleLineDictation,
+                ),
+                children: i.controls,
+              },
+              `dictation`,
+            )),
+      (t[76] = i),
+      (t[77] = o),
+      (t[78] = D),
+      (t[79] = Pe))
+    : (Pe = t[79]);
+  let Fe;
+  return (
+    t[80] !== f ||
+    t[81] !== o ||
+    t[82] !== j ||
+    t[83] !== p ||
+    t[84] !== je ||
+    t[85] !== Me ||
+    t[86] !== Ne ||
+    t[87] !== Pe
+      ? ((Fe = (0, ZS.jsxs)(mLt, {
+          ref: j,
+          layout: o,
+          responsive: !0,
+          dictationEnabled: f,
+          dictationView: je,
+          rows: Me,
+          spacing: p,
+          children: [Ne, Pe],
+        })),
+        (t[80] = f),
+        (t[81] = o),
+        (t[82] = j),
+        (t[83] = p),
+        (t[84] = je),
+        (t[85] = Me),
+        (t[86] = Ne),
+        (t[87] = Pe),
+        (t[88] = Fe))
+      : (Fe = t[88]),
+    Fe
+  );
+}
+function sLt(e, t) {
+  return t.replace(/translate3d\([^,]+,/u, `translate3d(0px,`);
+}
+function fLt(e) {
+  let t = (0, YS.c)(13),
+    { children: n, isHidden: r, isVisible: i, position: a, variant: o } = e,
+    s = r !== void 0 && r,
+    c = a === void 0 ? `above` : a,
+    { isHome: l } = (0, XS.useContext)(QS),
+    { activeBrowserTabId: u } = (0, XS.useContext)(KS);
+  if (o !== `home`) {
+    let e;
+    return (
+      t[0] !== n || t[1] !== s || t[2] !== i
+        ? ((e = i
+            ? (0, ZS.jsx)(`div`, {
+                "aria-hidden": s,
+                className: ng(s && `pointer-events-none opacity-0`),
+                inert: s,
+                children: n,
+              })
+            : null),
+          (t[0] = n),
+          (t[1] = s),
+          (t[2] = i),
+          (t[3] = e))
+        : (e = t[3]),
+      e
+    );
+  }
+  let d;
+  t[4] !== n || t[5] !== s || t[6] !== l || t[7] !== i || t[8] !== c
+    ? ((d = i
+        ? (0, ZS.jsx)(
+            pLt,
+            {
+              className: ng(
+                `z-0`,
+                l ? `absolute inset-x-0` : `relative -mb-2`,
+                l && (c === `above` ? `bottom-full` : `top-full`),
+              ),
+              isHidden: s,
+              position: c,
+              children: n,
+            },
+            `home-utility-bar`,
+          )
+        : null),
+      (t[4] = n),
+      (t[5] = s),
+      (t[6] = l),
+      (t[7] = i),
+      (t[8] = c),
+      (t[9] = d))
+    : (d = t[9]);
+  let f;
+  return (
+    t[10] !== u || t[11] !== d
+      ? ((f = (0, ZS.jsx)(Yp, { initial: !1, children: d }, u)),
+        (t[10] = u),
+        (t[11] = d),
+        (t[12] = f))
+      : (f = t[12]),
+    f
+  );
+}
+function pLt(e) {
+  let t = (0, YS.c)(25),
+    { children: n, className: r, isHidden: i, position: a } = e,
+    o = ft(),
+    { shouldAnimate: s } = (0, XS.useContext)(KS),
+    c = EOe() && !i,
+    l = `translateY(0)`;
+  o || (l = a === `above` ? `translateY(100%)` : `translateY(-100%)`);
+  let u = !c,
+    d = !c && `pointer-events-none`,
+    f;
+  t[0] !== r || t[1] !== d ? ((f = ng(r, d)), (t[0] = r), (t[1] = d), (t[2] = f)) : (f = t[2]);
+  let p = !c,
+    m;
+  t[3] !== l || t[4] !== s
+    ? ((m = s ? { opacity: 0, transform: l } : !1), (t[3] = l), (t[4] = s), (t[5] = m))
+    : (m = t[5]);
+  let h;
+  t[6] === Symbol.for(`react.memo_cache_sentinel`)
+    ? ((h = { opacity: 1, transform: `translateY(0)` }), (t[6] = h))
+    : (h = t[6]);
+  let g;
+  t[7] !== l || t[8] !== o
+    ? ((g = o ? { opacity: 0 } : { opacity: 0, transform: l }), (t[7] = l), (t[8] = o), (t[9] = g))
+    : (g = t[9]);
+  let _;
+  t[10] === s ? (_ = t[11]) : ((_ = s ? TLt : { duration: 0 }), (t[10] = s), (t[11] = _));
+  let v = i && `opacity-0`,
+    y;
+  t[12] === v ? (y = t[13]) : ((y = ng(v)), (t[12] = v), (t[13] = y));
+  let b;
+  t[14] !== n || t[15] !== y
+    ? ((b = (0, ZS.jsx)(`div`, { className: y, children: n })),
+      (t[14] = n),
+      (t[15] = y),
+      (t[16] = b))
+    : (b = t[16]);
+  let x;
+  return (
+    t[17] !== u ||
+    t[18] !== b ||
+    t[19] !== f ||
+    t[20] !== p ||
+    t[21] !== m ||
+    t[22] !== g ||
+    t[23] !== _
+      ? ((x = (0, ZS.jsx)(Kl.div, {
+          "aria-hidden": u,
+          className: f,
+          inert: p,
+          initial: m,
+          animate: h,
+          exit: g,
+          transition: _,
+          children: b,
+        })),
+        (t[17] = u),
+        (t[18] = b),
+        (t[19] = f),
+        (t[20] = p),
+        (t[21] = m),
+        (t[22] = g),
+        (t[23] = _),
+        (t[24] = x))
+      : (x = t[24]),
+    x
+  );
+}
 function nLt(e) {
   let t = (0, YS.c)(2),
     { children: n } = e,
@@ -802,5 +1382,5 @@ function IIt(e) {
     e.currentTarget.contains(e.target.closest(LIt)) ||
     (e.preventDefault(), t.focus());
 }
-return {ComposerLayout:Object.assign(cLt,{ModeSurface:nLt,AnimateLayout:iLt,Attachments:uLt,Body:CLt,Footer:mLt,FooterAction:hLt,FooterActions:_Lt,FooterControls:vLt,FooterDivider:xLt,FooterExpandingControls:bLt,FooterInlineControls:yLt,FooterLabel:SLt,Input:dLt,ReplyContext:lLt,Editor:ELt}),ComposerEnvironment:KS,ComposerPresentation:FIt,ComposerLayoutContext:QS};
+return {ComposerLayout:Object.assign(cLt,{LayoutTransition:rLt,ComposerTransition:aLt,AdaptiveFooter:oLt,UtilityBarSlot:fLt,ModeSurface:nLt,AnimateLayout:iLt,Attachments:uLt,Body:CLt,Footer:mLt,FooterAction:hLt,FooterActions:_Lt,FooterControls:vLt,FooterDivider:xLt,FooterExpandingControls:bLt,FooterInlineControls:yLt,FooterLabel:SLt,Input:dLt,ReplyContext:lLt,Editor:ELt}),ComposerFocusTarget:BIt,ComposerEnvironment:KS,ComposerPresentation:FIt,ComposerLayoutContext:QS};
 }

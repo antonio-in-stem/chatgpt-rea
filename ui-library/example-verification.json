@@ -191,5 +191,39 @@
       "Local textarea, not recovered ProseMirror",
       "No original matched screen comparison"
     ]
+  },
+  "adaptiveComposer": {
+    "pageErrors": [],
+    "wide": {
+      "viewportWidth": 1100,
+      "rows": "responsive",
+      "order": [
+        "leading",
+        "input",
+        "trailing"
+      ]
+    },
+    "narrow": {
+      "viewportWidth": 500,
+      "rows": "responsive",
+      "order": [
+        "input",
+        "leading",
+        "trailing"
+      ]
+    },
+    "multiline": {
+      "rows": "stacked",
+      "order": [
+        "input",
+        "leading",
+        "trailing"
+      ]
+    },
+    "submittedMessage": "Responsive composer message",
+    "limits": [
+      "Local textarea, not recovered ProseMirror",
+      "No original screenshot comparison"
+    ]
   }
 }

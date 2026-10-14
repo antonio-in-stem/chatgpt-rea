@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Fifty-one tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Fifty-four tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -163,4 +163,13 @@ The authored example uses Switch to change root theme, ShortcutBadge to describe
 
 The original function bodies are retained, including layout data attributes, dictation-related input layout, single-line/multiline variants, drag callbacks, background-click editor focus, footer pointer containment and radius clamping through ResizeObserver. CSS already exists in the recovered initial stylesheet. Reproduce with `scripts/extract-composer.mjs <recovered-initial> <recovered-shared>`; provenance and body hashes are in `composer-manifest.json`. Compiler memo caches are recreated per render, so the original memo optimization is not preserved.
 
-The demo now uses this family around a local textarea. `Editor` is the original layout wrapper, not ProseMirror itself; rich-text editing, AdaptiveFooter, UtilityBarSlot, layout transition providers and original action controls are still pending. The authored textarea handles Enter/Shift+Enter and composition-aware submission. Browser verification passed local submission, field clearing/focus and a 22px-radius multiline surface with no page errors. This does not establish whole-screen or animation parity with the original app.
+The demo now uses this family around a local textarea. `Editor` is the original layout wrapper, not ProseMirror itself; rich-text editing and original action controls are still pending. AdaptiveFooter, UtilityBarSlot and layout transition providers are covered below. The authored textarea handles Enter/Shift+Enter and composition-aware submission. Browser verification passed local submission, field clearing/focus and a 22px-radius multiline surface with no page errors. This does not establish whole-screen or animation parity with the original app.
+
+
+### Adaptive composer and transitions
+
+The composer family now also exposes `AdaptiveFooter`, `UtilityBarSlot`, `LayoutTransition` and `ComposerTransition`. Pass `MotionConfig`, `LayoutGroup`, `AnimatePresence` and `useIsPresent` from the motion runtime when using these. Optional `motionPreference` (on/off/system) and `visualScale` (default 1) replace the app-level preference/scale dependencies. The original transition is 300ms with easing [0.23, 1, 0.32, 1]; the media-query hook is retained from shared ASi/ISi, including subscription cleanup.
+
+`AdaptiveFooter` accepts input, leading/trailing controls, layout, spacing and dictation slots. It preserves the 40rem responsive boundary, document/voice branches, dictation transcript visibility, DOM order and guarded focus restoration through `ComposerFocusTarget` (provide an object with focus()). `UtilityBarSlot` preserves visible/hidden/inert states, above/below placement and AnimatePresence behavior. These are recovered presentation behaviors; dictation input and recording services are not implemented.
+
+The connected example now uses the original adaptive footer and layout transition provider. A single-line toggle exercises the responsive layout: at viewport 1100px the input sits between leading/trailing controls; at 500px it is first in the DOM and the controls move below it. Multiline uses stacked rows. Local Enter submission still succeeds with no page errors. These checks do not establish complete original screenshot parity.

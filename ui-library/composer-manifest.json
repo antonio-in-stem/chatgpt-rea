@@ -2,6 +2,12 @@
   "source": "app-initial-b8e1c8014bb4.js",
   "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
   "symbols": [
+    "rLt",
+    "aLt",
+    "oLt",
+    "sLt",
+    "fLt",
+    "pLt",
     "nLt",
     "iLt",
     "cLt",
@@ -22,12 +28,16 @@
     "ELt",
     "IIt"
   ],
-  "bodySha256": "3c80ca7ef5a9ddfa7384929eb3e33b294d6b58bdbb285ee41615f19cc184cfac",
-  "sharedHelper": "pCi/M5",
+  "bodySha256": "3edd432009a68ceb9aabf81699c29b4f7754f40466c1b84b897911eac8d20ca0",
+  "sharedHelpers": [
+    "pCi/M5",
+    "ASi",
+    "ISi"
+  ],
   "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
   "transformation": "Original function bodies with injected React/motion, original contexts and CSS map. Compiler cache recreated per render; memo optimization omitted.",
   "limits": [
-    "AdaptiveFooter, UtilityBarSlot and transition providers not yet extracted",
+    "Motion providers/useIsPresent are injected; app motion preference and visual scale are caller adapters",
     "Editor is the original layout wrapper, not the ProseMirror editor implementation",
     "Service/account state supplied by consuming application",
     "Matched original screenshot and animation comparison pending"

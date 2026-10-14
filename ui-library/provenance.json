@@ -221,15 +221,15 @@
     {
       "source": "app-initial-b8e1c8014bb4.js",
       "components": [
-        "ComposerLayout (root and 15 subcomponents)"
+        "ComposerLayout (root and 19 subcomponents)"
       ],
       "manifest": "composer-manifest.json",
       "transformation": "Generated original function bodies with explicit React/motion/theme adapters; original context defaults and CSS mapping retained. Compiler memo optimization omitted.",
-      "status": "Function-body identity, differential variants, focus and radius observer tests. Browser local submission verified; original screen/animation parity not verified.",
+      "status": "Original function identity and differential variant/focus tests; browser responsive layout at 1100/500px and local submission verified. Original screen/animation parity not verified.",
       "limitations": [
-        "ProseMirror editor not yet extracted",
-        "AdaptiveFooter, UtilityBarSlot and transition providers pending",
-        "Example composition and submission behavior authored locally"
+        "ProseMirror editor and original action controls not yet extracted",
+        "Motion runtime, app preference and visual scale are injected",
+        "Example textarea and submission behavior authored locally"
       ]
     }
   ],
