@@ -94,3 +94,6 @@ ui-library/src/SettingsSearchResults.js -text
 ui-library/src/SettingsArtwork.js -text
 
 ui-library/src/SettingsSharedArtwork.js -text
+
+ui-library/src/SettingsComponentArtwork.js -text
+ui-library/src/SettingsExtensionArtwork.js -text

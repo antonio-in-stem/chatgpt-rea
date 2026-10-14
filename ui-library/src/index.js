@@ -141,3 +141,6 @@ export {createSettingsSearchResults} from './SettingsSearchResults.js';
 export {createSettingsLocalArtwork,createSettingsArtworkRegistry} from './SettingsArtwork.js';
 
 export {createSettingsSharedArtwork} from './SettingsSharedArtwork.js';
+
+export {createSettingsComponentArtwork} from './SettingsComponentArtwork.js';
+export {createSettingsExtensionArtwork} from './SettingsExtensionArtwork.js';

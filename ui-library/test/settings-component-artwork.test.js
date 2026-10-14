@@ -1,0 +1,14 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createAssetIcon} from '../src/AssetIcon.js';
+import {createSettingsArtworkRegistry} from '../src/SettingsArtwork.js';
+import {createSettingsSharedArtwork} from '../src/SettingsSharedArtwork.js';
+import {createSettingsComponentArtwork} from '../src/SettingsComponentArtwork.js';
+import {createSettingsExtensionArtwork} from '../src/SettingsExtensionArtwork.js';
+const h=React.createElement,read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+test('every SVG expression retains its recorded original bytes and renders',()=>{const m=JSON.parse(read('../settings-component-artwork-manifest.json')),out=read('../src/SettingsComponentArtwork.js'),icons=createSettingsComponentArtwork(React);for(const r of m.records){const s=read('../../original-stack/state/recovered-all/readable/assets/'+r.module),prefix=r.symbol+' = ',i=s.indexOf(prefix)+prefix.length,start=out.indexOf('return ',out.indexOf('const '+r.alias+'='))+7,end=out.indexOf(';})();',start),expression=out.slice(start,end);assert.ok(s.slice(i).startsWith(expression),r.alias);assert.match(renderToStaticMarkup(h(icons[r.alias],{className:'icon-xs'})),/<svg/,r.alias);}});
+test('extension retains original image versus SVG fallback',()=>{const source=read('../../original-stack/state/recovered-all/readable/assets/use-visible-settings-sections-a242a425fc16.js'),i=source.indexOf('function na(');assert.ok(read('../src/SettingsExtensionArtwork.js').includes(source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1)));const Image=createSettingsExtensionArtwork({React,getBrowserMetadata:()=>({iconUrl:'data:image/svg+xml,test'})}),Fallback=createSettingsExtensionArtwork({React,getBrowserMetadata:()=>null});assert.match(renderToStaticMarkup(h(Image,{className:'custom'})),/<img[^>]+class="custom"/);assert.match(renderToStaticMarkup(h(Fallback)),/<svg/);});
+test('complete settings artwork registry renders every section on Windows',()=>{const AssetIcon=createAssetIcon(React),sharedArtwork={...createSettingsSharedArtwork(AssetIcon),...createSettingsComponentArtwork(React),na:createSettingsExtensionArtwork({React,getBrowserMetadata:()=>null})};const {sections,getSectionIcon}=createSettingsArtworkRegistry({React,sharedArtwork});for(const slug of Object.keys(sections)){const entry=getSectionIcon(slug,'windows');const C=typeof entry.component==='function'?entry.component:entry.component[16]??entry.component[20];assert.match(renderToStaticMarkup(h(C)),/<svg/,slug);}assert.ok(Object.keys(sections).length>40);});

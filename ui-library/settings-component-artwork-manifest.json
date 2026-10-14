@@ -1,0 +1,250 @@
+{
+  "sources": [
+    {
+      "file": "./app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e"
+    },
+    {
+      "file": "./app-initial-b8e1c8014bb4.js",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f"
+    },
+    {
+      "file": "./app-primary-19fe57fd8c00.js",
+      "sha256": "9533919e2059993b49fbaf5c95675fdd63cb4a96cb12ea5dcb8e70623da2a495"
+    },
+    {
+      "file": "./security-keys-78eaaec3ae09.js",
+      "sha256": "d02fe4383ecafdba8558a143c00ba638f6393e6bd98f5e957ac619acdbf36d81"
+    },
+    {
+      "file": "./shield-code-b49e1ed1532a.js",
+      "sha256": "e856f5952fc173db6aac4ac33681baad79cc54bd8973fddd45b65f21702f03d1"
+    },
+    {
+      "file": "./archive-94e85c50454d.js",
+      "sha256": "cbc106c71ffb246f6f6a4bad9ae2d009d968b1093f100938880278dc39dd592e"
+    },
+    {
+      "file": "./dock-a6c17a2977bb.js",
+      "sha256": "b2bb05121c7f10c8894776c08c5986face5825a5cf738cb009694a27098571d6"
+    },
+    {
+      "file": "./team-4797a57aee9c.js",
+      "sha256": "df51e2790aefd311af5e94974b53bd543b4946fcdc1422b7eb59278ee58f3160"
+    },
+    {
+      "file": "./browser-d7147f673b1a.js",
+      "sha256": "65f1fc44d815d0d96a949b5cd8db141c1e4c1735d7175d79b401282e7d3af9c4"
+    }
+  ],
+  "records": [
+    {
+      "alias": "Gn",
+      "symbol": "zki",
+      "module": "./app-shared-737655e1fb23.js",
+      "runtime": [
+        "Rki"
+      ],
+      "sha256": "5b9749fd2a6d6a8d2e5cf092f7fa9f658a7ddfd647913d31bd8aed2921c516c5"
+    },
+    {
+      "alias": "_r",
+      "symbol": "cZo",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "sZo"
+      ],
+      "sha256": "a160142f498e909b8e061e206a7ba8603e0a44b7609029b81244987589e166a1"
+    },
+    {
+      "alias": "Mt",
+      "symbol": "ZWi",
+      "module": "./app-shared-737655e1fb23.js",
+      "runtime": [
+        "XWi"
+      ],
+      "sha256": "8b0fa7e7b2a6ffed30de6c86d48ef8d686bfba405b57034a85e2947643e118d7"
+    },
+    {
+      "alias": "Gr",
+      "symbol": "dJ",
+      "module": "./app-primary-19fe57fd8c00.js",
+      "runtime": [
+        "uJ"
+      ],
+      "sha256": "671473846bf8205cf57f9faaf24dcb60ba9ee9e99d3cb0bd37eb0f4ad2102a77"
+    },
+    {
+      "alias": "ri",
+      "symbol": "i",
+      "module": "./security-keys-78eaaec3ae09.js",
+      "runtime": [
+        "r"
+      ],
+      "sha256": "27c4e2d6c8006ff375b14349ca81dcacc79f1652f64e85299966d3a133b9345f"
+    },
+    {
+      "alias": "nr",
+      "symbol": "DMo",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "S1"
+      ],
+      "sha256": "572e5405de22eb7ea80c33de2f79e850f26100da1661a976b078b4f3cb5edf95"
+    },
+    {
+      "alias": "qn",
+      "symbol": "U1s",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "H1s"
+      ],
+      "sha256": "ebb4761dbcc53415a52f204cf57bd5f42c137ff66aa66ca530c3c703d36ee699"
+    },
+    {
+      "alias": "kr",
+      "symbol": "D$c",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "E$c"
+      ],
+      "sha256": "119d369fbb78ed2557b6a86120cc5599336b9f66a929205b840f89327c8d48df"
+    },
+    {
+      "alias": "si",
+      "symbol": "i",
+      "module": "./shield-code-b49e1ed1532a.js",
+      "runtime": [
+        "r"
+      ],
+      "sha256": "98d30465cf5670ca8286f3dec11847a08c3a59a72bc57276bb013daf9386a90c"
+    },
+    {
+      "alias": "at",
+      "symbol": "jvr",
+      "module": "./app-shared-737655e1fb23.js",
+      "runtime": [
+        "T$"
+      ],
+      "sha256": "8efac791e72d5477342f4d101a96660775ee12e2fd8faf4edcaecda2136232bc"
+    },
+    {
+      "alias": "ti",
+      "symbol": "i",
+      "module": "./archive-94e85c50454d.js",
+      "runtime": [
+        "r"
+      ],
+      "sha256": "b680f7d28ed1b15d391e1f69697bfdb13609ee5416b697efb00775d32e99197a"
+    },
+    {
+      "alias": "Jr",
+      "symbol": "Pq",
+      "module": "./app-primary-19fe57fd8c00.js",
+      "runtime": [
+        "Nq"
+      ],
+      "sha256": "ed557b84183e1dd8b86aca68fd971b8ec0e51d4c5459c956d48ed454d0035b90"
+    },
+    {
+      "alias": "Er",
+      "symbol": "zQi",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "RQi"
+      ],
+      "sha256": "f4e82f525e3040ca455efaeacd30fcc36fdcc8681ba389cc81e9ac37e6412d35"
+    },
+    {
+      "alias": "Dr",
+      "symbol": "oqr",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "aqr"
+      ],
+      "sha256": "1482c7ad56724603b6f5d3147e1f87efcc76d734ce0f20c34f047c7af136780e"
+    },
+    {
+      "alias": "pi",
+      "symbol": "i",
+      "module": "./dock-a6c17a2977bb.js",
+      "runtime": [
+        "r"
+      ],
+      "sha256": "411812ace83903fa494c5c1d5373db50688f743b20c3db0485821de059ff73f3"
+    },
+    {
+      "alias": "ar",
+      "symbol": "wq",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "era"
+      ],
+      "sha256": "5419811c571705d57bc5a1c663eb3ab03857c827d2498ea4d146c4b262238252"
+    },
+    {
+      "alias": "Ir",
+      "symbol": "_V",
+      "module": "./app-initial-b8e1c8014bb4.js",
+      "runtime": [
+        "RKr"
+      ],
+      "sha256": "5d0505ccffdbed7d02fbd1ff8ff0d2bb650b99814de6ce2122c40c1bdd1a2275"
+    },
+    {
+      "alias": "Ie",
+      "symbol": "EEi",
+      "module": "./app-shared-737655e1fb23.js",
+      "runtime": [
+        "TEi"
+      ],
+      "sha256": "530380318deba0871238e152a97ec483af8a0ce4415df5f9fa2a6f626e1739d4"
+    },
+    {
+      "alias": "qt",
+      "symbol": "vFi",
+      "module": "./app-shared-737655e1fb23.js",
+      "runtime": [
+        "_Fi"
+      ],
+      "sha256": "bbdfd9591972b4ddcc2fdabf42738204f8e3c31b31f1a44ff145b593609b5551"
+    },
+    {
+      "alias": "Ee",
+      "symbol": "Hki",
+      "module": "./app-shared-737655e1fb23.js",
+      "runtime": [
+        "Vki"
+      ],
+      "sha256": "45707d77b09d8f7abf2b16eeba3bccd8ed652d15be288e64802264ae9f235bf3"
+    },
+    {
+      "alias": "$r",
+      "symbol": "i",
+      "module": "./team-4797a57aee9c.js",
+      "runtime": [
+        "r"
+      ],
+      "sha256": "5c4d8a9a610efa8656e72b06ebe3dec2a4dd64d6b1c3c95c75238fb74db0ba66"
+    },
+    {
+      "alias": "hi",
+      "symbol": "i",
+      "module": "./browser-d7147f673b1a.js",
+      "runtime": [
+        "r"
+      ],
+      "sha256": "b86642d38ef3ff495f2ee82c713aa2a93ed5e94222583b650ab796f52a76727a"
+    }
+  ],
+  "pending": [],
+  "extension": {
+    "symbol": "na",
+    "source": "use-visible-settings-sections-a242a425fc16.js",
+    "adapter": "getBrowserMetadata"
+  },
+  "limits": [
+    "Browser metadata remains caller-owned",
+    "SVG expression identity does not prove complete screen parity"
+  ]
+}

@@ -531,3 +531,10 @@ createSettingsSharedArtwork(AssetIcon) resolves 75 original registry aliases bac
 The generator follows original import/export aliases and preserves the asset initializer bodies. Bundle lazy initialization and preset normalization use the same explicit adapters as earlier artwork extractions. Two tests verify every initializer body and render all 75 bindings through the recovered AssetIcon; Windows asset names and paired dimensions are checked. Example build passes with the existing Lottie warning. Component-only SVG imports and extension-specific selection remain listed under pending in settings-shared-artwork-manifest.json. This does not establish complete registry integration or screenshot parity.
 
 Reproduce with `node ui-library/scripts/extract-settings-shared-artwork.mjs <readable-assets-directory>` after generating settings-artwork-manifest.json.
+
+
+### Complete settings artwork bindings
+
+createSettingsComponentArtwork(React) recovers 21 remaining registry SVG components plus the browser fallback glyph. Expressions retain original geometry, prop order and dimensions; only their JSX runtime bindings change. createSettingsExtensionArtwork({React,getBrowserMetadata}) preserves original na, including its per-mount cached browser metadata choice between an image URL and SVG fallback. Provide null for the standalone fallback or a resolved browser metadata object with iconUrl.
+
+Construct sharedArtwork by merging createSettingsSharedArtwork(AssetIcon), createSettingsComponentArtwork(React), and `{na:createSettingsExtensionArtwork({React,getBrowserMetadata})}`. This now satisfies every required binding of createSettingsArtworkRegistry without placeholder icons. Three new tests check original expression bytes, extension selection and successful rendering of every registry section on Windows. The registry can now be integrated into the search results; full settings sidebar/controller integration and installed-app visual comparison remain pending. Earlier artwork sections' pending component/extension notes are superseded by this extraction.
