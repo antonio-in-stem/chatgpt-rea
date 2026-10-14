@@ -121,5 +121,27 @@
       "Authored connected example",
       "No matched original screenshot comparison"
     ]
+  },
+  "viewerFlow": {
+    "increment": "125%",
+    "maximum": {
+      "value": "200%",
+      "incrementDisabled": true
+    },
+    "minimum": {
+      "value": "50%",
+      "decrementDisabled": true
+    },
+    "keyboardReset": "100%",
+    "capsuleHeightPx": 36,
+    "innerButtonHeightsPx": [
+      32,
+      32,
+      32
+    ],
+    "limits": [
+      "Authored zoom range and preview content",
+      "No original screenshot comparison"
+    ]
   }
 }

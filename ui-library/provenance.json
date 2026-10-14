@@ -307,5 +307,16 @@
       "Original matched screenshots pending",
       "Viewer containers do not yet include action controls or viewer content"
     ]
+  },
+  "viewerControls": {
+    "source": "app-shared-737655e1fb23.js c9/CRi/s9",
+    "file": "src/ViewerControls.js",
+    "transformation": "Compiler caches removed; original classes and shared Button prop order preserved.",
+    "verification": "Differential seven variants and uniform/override cases; browser zoom demo boundaries/reset.",
+    "limits": [
+      "Zoom demo logic authored",
+      "Full viewer and compound actions pending",
+      "Matched screenshot comparison pending"
+    ]
   }
 }

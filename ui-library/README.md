@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Forty-two tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Forty-three tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -140,3 +140,9 @@ AnimatedArtwork uses this loader. Differential tests compare success/retry/failu
 - `ViewerCapsule`, `ViewerControlGroup`, `ViewerDivider`: recovered TRi/ERi/DRi toolbar containers with default/input capsules and default/joined/zoom groups. They use the original viewer CSS module, already present in the baseline. Viewer actions and content are separate components and remain pending.
 
 The authored example uses Switch to change root theme, ShortcutBadge to describe native keyboard navigation, and Badge to show the connected confirmation result. Browser checks confirmed click/Space updates, 32×20px default switch track and the success badge after review/confirm. These checks do not claim a replica of the settings screen or complete viewer toolbar.
+
+### Viewer action controls
+
+`ViewerButton` preserves c9's default/primary/selected/dropdown/zoom/label/avatarGroup variants around the shared Button. `ViewerControl` preserves CRi's ghostActive/full-radius defaults. Shared button interaction and loading/disabled semantics remain available; caller prop precedence matches the recovered wrappers.
+
+`examples/ViewerFlow.js` connects these controls to an authored 50–200% text preview with reset. The range, step and preview content are demonstration choices, not recovered viewer business logic. Browser checks confirmed increment, both disabled boundaries, Enter reset to 100%, a 36px capsule and 32px inner buttons in the current example. Original viewer content, compound actions and matched screenshot fidelity remain pending.
