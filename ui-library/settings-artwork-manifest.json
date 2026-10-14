@@ -1,0 +1,521 @@
+{
+  "source": "use-visible-settings-sections-a242a425fc16.js",
+  "sha256": "7b4ed5160f30437f53db38db62d0e04cd3854e3b23054984b2d5a000cb20d099",
+  "initializers": [
+    "Ii",
+    "zi",
+    "Hi",
+    "Wi",
+    "qi",
+    "Xi",
+    "Qi",
+    "ta",
+    "ca"
+  ],
+  "localSymbols": [
+    "Fi",
+    "Ri",
+    "Vi",
+    "Ui",
+    "Ki",
+    "Yi",
+    "Zi",
+    "ea",
+    "sa"
+  ],
+  "requiredSharedSymbols": [
+    "Gn",
+    "k",
+    "Ae",
+    "_r",
+    "X",
+    "an",
+    "Z",
+    "L",
+    "Mt",
+    "nn",
+    "Dt",
+    "Gr",
+    "q",
+    "y",
+    "ri",
+    "Dn",
+    "te",
+    "$e",
+    "ue",
+    "Re",
+    "Gt",
+    "cn",
+    "Sn",
+    "nr",
+    "ot",
+    "Oe",
+    "qn",
+    "I",
+    "Te",
+    "kr",
+    "Vn",
+    "Wn",
+    "wn",
+    "h",
+    "In",
+    "si",
+    "p",
+    "tt",
+    "at",
+    "ye",
+    "ie",
+    "ti",
+    "de",
+    "Fn",
+    "Yt",
+    "jn",
+    "bn",
+    "he",
+    "Jr",
+    "b",
+    "T",
+    "K",
+    "Ge",
+    "Er",
+    "zn",
+    "gn",
+    "An",
+    "be",
+    "A",
+    "Dr",
+    "n",
+    "vt",
+    "na",
+    "pi",
+    "U",
+    "Vt",
+    "ar",
+    "Xe",
+    "Y",
+    "Ir",
+    "rt",
+    "ct",
+    "tn",
+    "J",
+    "Ie",
+    "i",
+    "Le",
+    "qt",
+    "St",
+    "Ee",
+    "sn",
+    "Ct",
+    "mt",
+    "V",
+    "Cn",
+    "W",
+    "It",
+    "At",
+    "pt",
+    "xn",
+    "$r",
+    "v",
+    "ze",
+    "H",
+    "lt",
+    "o",
+    "E"
+  ],
+  "requiredBindings": {
+    "Gn": {
+      "export": "zE",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "k": {
+      "export": "Pdt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Ae": {
+      "export": "Mdt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "_r": {
+      "export": "UH",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "X": {
+      "export": "gmt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "an": {
+      "export": "mmt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Z": {
+      "export": "wrt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "L": {
+      "export": "Trt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Mt": {
+      "export": "hb",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "nn": {
+      "export": "mht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Dt": {
+      "export": "fht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Gr": {
+      "export": "Pl",
+      "module": "./app-primary-19fe57fd8c00.js"
+    },
+    "q": {
+      "export": "f_",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "y": {
+      "export": "Fs",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ri": {
+      "export": "t",
+      "module": "./security-keys-78eaaec3ae09.js"
+    },
+    "Dn": {
+      "export": "tdt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "te": {
+      "export": "As",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "$e": {
+      "export": "Tet",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ue": {
+      "export": "Eet",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Re": {
+      "export": "Oit",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Gt": {
+      "export": "kit",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "cn": {
+      "export": "net",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Sn": {
+      "export": "ret",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "nr": {
+      "export": "MJ",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "ot": {
+      "export": "W_",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Oe": {
+      "export": "Ls",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "qn": {
+      "export": "AE",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "I": {
+      "export": "Ss",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Te": {
+      "export": "Ks",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "kr": {
+      "export": "hu",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "Vn": {
+      "export": "xut",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Wn": {
+      "export": "yut",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "wn": {
+      "export": "stt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "h": {
+      "export": "Es",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "In": {
+      "export": "ws",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "si": {
+      "export": "t",
+      "module": "./shield-code-b49e1ed1532a.js"
+    },
+    "p": {
+      "export": "Dst",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "tt": {
+      "export": "Tst",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "at": {
+      "export": "W5",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ye": {
+      "export": "Hpt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ie": {
+      "export": "Bpt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ti": {
+      "export": "t",
+      "module": "./archive-94e85c50454d.js"
+    },
+    "de": {
+      "export": "Eht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Fn": {
+      "export": "wht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Yt": {
+      "export": "lit",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "jn": {
+      "export": "uit",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "bn": {
+      "export": "qct",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "he": {
+      "export": "Gct",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Jr": {
+      "export": "nu",
+      "module": "./app-primary-19fe57fd8c00.js"
+    },
+    "b": {
+      "export": "Jft",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "T": {
+      "export": "Ns",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "K": {
+      "export": "el",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Ge": {
+      "export": "Rc",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Er": {
+      "export": "ewt",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "zn": {
+      "export": "xb",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "gn": {
+      "export": "pb",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "An": {
+      "export": "uet",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "be": {
+      "export": "Iht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "A": {
+      "export": "Pht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Dr": {
+      "export": "f4t",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "n": {
+      "export": "$ut",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "vt": {
+      "export": "bs",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "na": {
+      "localFunction": "na",
+      "pending": true
+    },
+    "pi": {
+      "export": "t",
+      "module": "./dock-a6c17a2977bb.js"
+    },
+    "U": {
+      "export": "ad",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Vt": {
+      "export": "js",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ar": {
+      "export": "N_t",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "Xe": {
+      "export": "Sht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Y": {
+      "export": "fv",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Ir": {
+      "export": "v4t",
+      "module": "./app-initial-b8e1c8014bb4.js"
+    },
+    "rt": {
+      "export": "Utt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ct": {
+      "export": "Wtt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "tn": {
+      "export": "mdt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "J": {
+      "export": "fdt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Ie": {
+      "export": "OD",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "i": {
+      "export": "Adt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Le": {
+      "export": "Odt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "qt": {
+      "export": "kw",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "St": {
+      "export": "dlt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Ee": {
+      "export": "LE",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "sn": {
+      "export": "nb",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Ct": {
+      "export": "eb",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "mt": {
+      "export": "Ytt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "V": {
+      "export": "Xtt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "Cn": {
+      "export": "sdt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "W": {
+      "export": "adt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "It": {
+      "export": "hot",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "At": {
+      "export": "got",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "pt": {
+      "export": "Yot",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "xn": {
+      "export": "qot",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "$r": {
+      "export": "t",
+      "module": "./team-4797a57aee9c.js"
+    },
+    "v": {
+      "export": "Flt",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "ze": {
+      "export": "Os",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "H": {
+      "export": "Y5",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "lt": {
+      "export": "X5",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "o": {
+      "export": "Aht",
+      "module": "./app-shared-737655e1fb23.js"
+    },
+    "E": {
+      "export": "Oht",
+      "module": "./app-shared-737655e1fb23.js"
+    }
+  },
+  "registrySha256": "945480cf058a09e68671af8fc183301ae9a79cf8e7c5892e64d3415e38bea6a4",
+  "limits": [
+    "Shared artwork aliases must be resolved from original imports before full registry integration",
+    "Local SVGs and registry recovered; full original settings sidebar remains pending",
+    "No screenshot parity claim"
+  ]
+}

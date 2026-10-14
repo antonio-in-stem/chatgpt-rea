@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createSettingsLocalArtwork,createSettingsArtworkRegistry} from '../src/SettingsArtwork.js';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8'),manifest=JSON.parse(read('../settings-artwork-manifest.json')),source=read('../../original-stack/state/recovered-all/readable/assets/'+manifest.source);
+function body(n){const i=source.indexOf('function '+n+'(');return source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1);}
+test('all local SVG initializer and platform selector bodies are unchanged',()=>{const out=read('../src/SettingsArtwork.js');for(const n of [...manifest.initializers,'la'])assert.ok(out.includes(body(n)),n);const start=source.indexOf('ua = {');assert.ok(out.includes(source.slice(start,source.indexOf('}));',start)+1)));});
+test('nine local SVGs render exactly as original functions with forwarded props',()=>{const h=React.createElement,context={e:fn=>fn,D:()=>{},a:()=>({jsx:(t,p,k)=>h(t,{...p,key:k}),jsxs:(t,p,k)=>h(t,{...p,key:k},...p.children)})};vm.createContext(context);vm.runInContext(manifest.initializers.map(n=>body(n)+';'+n+'();').join('\n'),context);const icons=createSettingsLocalArtwork(React);for(const name of manifest.localSymbols){const props={className:'icon-xs',width:31,'aria-hidden':true};const actual=renderToStaticMarkup(h(icons[name],props));assert.equal(actual,renderToStaticMarkup(h(context[name],props)),name);assert.match(actual,/width="31"/);assert.match(actual,/<path/);}});
+test('registry preserves platform override and cloud special case without silent fallback',()=>{assert.throws(()=>createSettingsArtworkRegistry({React,sharedArtwork:{}}),/Missing original/);const sharedArtwork=Object.fromEntries(manifest.requiredSharedSymbols.map(n=>[n,{sourceSymbol:n}]));const {sections,getSectionIcon}=createSettingsArtworkRegistry({React,sharedArtwork});assert.equal(getSectionIcon('appshots','windows').component[16],sharedArtwork.H);assert.equal(getSectionIcon('appshots','windows').navigation.assets[20],sharedArtwork.E);assert.equal(getSectionIcon('appshots','macos'),sections.appshots);assert.notEqual(getSectionIcon('cloud-environments','windows').component,sections['cloud-environments'].component);assert.equal(getSectionIcon('unknown','windows'),undefined);assert.equal(getSectionIcon('account','windows').component,sections.profile.component);});

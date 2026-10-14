@@ -137,3 +137,5 @@ export {createSettingsSearchField} from './SettingsSearchField.js';
 export {createNavigationItem,createNavigationList} from './NavigationItem.js';
 
 export {createSettingsSearchResults} from './SettingsSearchResults.js';
+
+export {createSettingsLocalArtwork,createSettingsArtworkRegistry} from './SettingsArtwork.js';

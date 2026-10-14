@@ -90,3 +90,5 @@ ui-library/src/SettingsSearchField.js -text
 ui-library/src/NavigationItem.js -text
 
 ui-library/src/SettingsSearchResults.js -text
+
+ui-library/src/SettingsArtwork.js -text
