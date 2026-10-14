@@ -150,3 +150,5 @@ export {createListNavigation} from './ListNavigation.js';
 export * from './SettingsSections.js';
 
 export {createNavigationSurfaces} from './NavigationSurfaces.js';
+
+export {createSettingsLabels} from './SettingsLabels.js';

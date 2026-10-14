@@ -1,11 +1,12 @@
-import {searchableSectionSlugs,orderSettingsSections,settingsSectionOrder,createListNavigation,classNames,createNavigationList,createSettingsSearch,settingsSearchDocuments,buildSettingsPath,getBrowserSubpage,createSettingsSearchField,createSettingsSearchResults,createSettingsArtworkRegistry,createSettingsSharedArtwork,createSettingsComponentArtwork,createSettingsExtensionArtwork} from '../src/index.js';
+import {createSettingsLabels,searchableSectionSlugs,orderSettingsSections,settingsSectionOrder,createListNavigation,classNames,createNavigationList,createSettingsSearch,settingsSearchDocuments,buildSettingsPath,getBrowserSubpage,createSettingsSearchField,createSettingsSearchResults,createSettingsArtworkRegistry,createSettingsSharedArtwork,createSettingsComponentArtwork,createSettingsExtensionArtwork} from '../src/index.js';
 // Local orchestration fixture. Recovered input, ranking, result rows and artwork are unchanged.
 export function createSettingsSearchFlow(React,ui){
  const h=React.createElement,labels={appearance:'Appearance',voice:'Voice',storage:'Storage','keyboard-shortcuts':'Keyboard shortcuts','browser-use':'Browser','local-environments':'Local environments'};
  const intl={messages:{},formatMessage:(m,v)=>m.id==='settings.search.result.ariaLabel'?`${v.destination}, ${v.panel}`:m.defaultMessage};
+ const originalLabels=createSettingsLabels({React,getBrowserMetadata:()=>null,formatMessage:intl.formatMessage});
  const sharedArtwork={...createSettingsSharedArtwork(ui.AssetIcon),...createSettingsComponentArtwork(React),na:createSettingsExtensionArtwork({React,getBrowserMetadata:()=>null})};
  const {getSectionIcon}=createSettingsArtworkRegistry({React,sharedArtwork});
- const {searchSettings}=createSettingsSearch({getSectionMessage:slug=>({defaultMessage:labels[slug]??slug}),getBrowserSubpage,buildSettingsPath,creatorMicroMessage:{defaultMessage:'Creator Micro'}});
+ const {searchSettings}=createSettingsSearch({getSectionMessage:originalLabels.getSectionMessage,getBrowserSubpage,buildSettingsPath,creatorMicroMessage:originalLabels.creatorMicroMessage});
  const sections=orderSettingsSections(Object.keys(labels).map(slug=>({slug})),settingsSectionOrder);
  const targets=Object.keys(labels).map(sectionSlug=>({sectionSlug,messages:settingsSearchDocuments[sectionSlug]??[]}));
  function useAccelerator(config){React.useEffect(()=>{const fn=e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'&&document.activeElement?.closest('[data-settings-search-demo]'))config.onKeyDown(e);};window.addEventListener('keydown',fn);return()=>window.removeEventListener('keydown',fn);},[config]);}

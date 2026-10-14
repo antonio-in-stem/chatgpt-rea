@@ -103,3 +103,5 @@ ui-library/src/ListNavigation.js -text
 ui-library/src/SettingsSections.js -text
 
 ui-library/src/NavigationSurfaces.js -text
+
+ui-library/src/SettingsLabels.js -text
