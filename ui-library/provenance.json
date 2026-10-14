@@ -261,6 +261,22 @@
         "Full original screenshot comparison pending",
         "React compiler/internal runtime dependency retained"
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "components": [
+        "ComposerContextAction",
+        "ComposerPlus16",
+        "ComposerPlus20"
+      ],
+      "manifest": "composer-context-manifest.json",
+      "transformation": "Original eIt/tIt and shared artwork initializers; compiler cache retained; localization/analytics explicit callbacks. onOpen delegated to consumer.",
+      "status": "Differential visual/state branches and event order verified. Local picker, selection/removal/submission browser flow verified.",
+      "limitations": [
+        "Original context menu and attachment cards not recovered by this component",
+        "Demo attachment flow and filename rows authored locally",
+        "Matched original screenshot pending"
+      ]
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

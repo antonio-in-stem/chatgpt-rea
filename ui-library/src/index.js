@@ -1,3 +1,4 @@
+export {createComposerContextAction} from './ComposerContextAction.js';
 export {createTooltip} from './Tooltip.js';
 export {createComposerActions} from './ComposerActions.js';
 export {createComposerLayout} from './ComposerLayout.js';

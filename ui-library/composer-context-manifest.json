@@ -1,0 +1,22 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "eIt",
+    "tIt"
+  ],
+  "bodySha256": "7ac3268bd7c0d3e8a9a11966314313ab1ea954b58a8c5c808ea2b4ea0eae8249",
+  "sharedSource": "app-shared-737655e1fb23.js",
+  "sharedSymbols": [
+    "gir",
+    "vir",
+    "hyr"
+  ],
+  "sharedBodySha256": "5fb4279c35c82e4ec00f42ae127b9a56d7e470f3460ba36cfa0f68ae3627bd9b",
+  "transformation": "Original control and artwork bodies; React compiler cache retained. App translation and analytics are explicit callbacks. Trusted fixed plus presets normalized without generic validation/freezing.",
+  "limits": [
+    "Action delegates onOpen; original context menu contents are separate",
+    "Demo file selection is authored local behavior",
+    "Original matched screen comparison pending"
+  ]
+}

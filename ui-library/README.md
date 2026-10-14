@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Sixty-two tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Sixty-five tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -193,3 +193,12 @@ Recovered bodies include the tooltip controller, shared delay/dismissal provider
 The example connects draft state to an authored empty-message reason and now supplies the recovered Tooltip to the primary action. Browser verification passed hover opening, Escape dismissal, Tab focus opening, matching aria-describedby/id, keyboard submission, closing after submission and focus restoration, with no page or console errors. The blocked action remains natively focusable and aria-disabled, matching its source contract. The observed tooltip was 30px high with a 20px radius in this demo context. Rich/coachmark/interactive configurations and zoom cases still need runtime coverage; full original-screen screenshot parity remains unverified.
 
 The JSX adapters for Tooltip, ComposerLayout and ComposerActions now preserve static child arrays through variadic createElement arguments, avoiding development key warnings introduced by the earlier adapter.
+
+
+### Context/add-files control
+
+`createComposerContextAction({React, Button, Tooltip, ShortcutBadge, ResponsiveIcon, AssetIcon, formatMessage?, onAnalytics?, compilerRuntime?})` returns `ComposerContextAction`, `ComposerPlus16` and `ComposerPlus20`. The original eIt/tIt bodies retain active/compact/disabled/highlighted-tooltip variants, aria-expanded/data-state, native button behavior, responsive plus artwork and prevention of mouse focus theft. `onOpen` is the consumer action. With no onOpen the button is disabled. Translation and analytics are optional callbacks; no telemetry service is contacted. The original compiler cache is retained.
+
+The example delegates onOpen to a local file picker. Multiple filenames appear in recovered attachment containers using Badge/Button; each can be removed. Sending a text message clears the draft attachments and preserves their names in the local message. These filename rows and the direct picker flow are authored demonstrations, not recovered attachment cards or the complete original context menu. Files are held in memory and no upload service is called. This demo requires message text for submission.
+
+Browser verification exercised picker opening by click and Enter, two generated text fixtures, removal of one file, local submission of the other, attachment clearing and input focus restoration. The control rendered the original 16px/20px SVG viewBoxes and closed/aria-expanded=false state. No console errors were observed. Original context menu contents, attachment cards and whole-screen parity remain pending.

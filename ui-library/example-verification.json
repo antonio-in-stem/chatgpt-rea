@@ -273,5 +273,32 @@
       "Advanced variants/interactive/zoom pending",
       "No matched original screenshot comparison"
     ]
+  },
+  "composerContextAction": {
+    "consoleErrors": [],
+    "pickerClickOpened": true,
+    "pickerEnterOpened": true,
+    "selected": [
+      "sample-a.txt",
+      "sample-b.txt"
+    ],
+    "afterRemoval": [
+      "sample-b.txt"
+    ],
+    "submitted": "Attachment verification \u2014 sample-b.txt",
+    "attachmentsCleared": true,
+    "inputFocused": true,
+    "button": {
+      "expanded": "false",
+      "state": "closed",
+      "viewBoxes": [
+        "0 0 16 16",
+        "0 0 20 20"
+      ]
+    },
+    "limits": [
+      "Authored picker and filename rows",
+      "Original context menu/cards and matched screenshot pending"
+    ]
   }
 }
