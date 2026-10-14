@@ -133,3 +133,5 @@ export {settingsSearchDocuments} from './SettingsSearchDocuments.js';
 
 export {getBrowserPermissionMessage,getBrowserSubpage,buildSettingsPath,browserPermissionMessages} from './SettingsRoutes.js';
 export {createSettingsSearchField} from './SettingsSearchField.js';
+
+export {createNavigationItem,createNavigationList} from './NavigationItem.js';

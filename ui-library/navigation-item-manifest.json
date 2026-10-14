@@ -1,0 +1,17 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "VF",
+    "HF"
+  ],
+  "adapters": [
+    "React/compiler runtime",
+    "Class merger",
+    "Router, responsive and animated artwork, disclosure icon",
+    "Localization"
+  ],
+  "limits": [
+    "Whole-window screenshot parity remains unverified"
+  ]
+}

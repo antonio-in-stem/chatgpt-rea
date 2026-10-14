@@ -2,10 +2,10 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {createNavigationItem} from '../src/NavigationItem.js';
+import {createNavigationItem,createNavigationList} from '../src/NavigationItem.js';
 import {classNames} from '../src/classNames.js';
 const element=(type,props)=>({type,props});
-const React={useId:()=> 'unread-id',isValidElement:value=>value!=null && typeof value==='object' && 'type' in value,Fragment:'fragment',createElement:(type,props,...children)=>element(type,{...props,...(children.length ? {children:children.length===1 ? children[0] : children} : {})})};
+const React={__COMPILER_RUNTIME:{c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},useId:()=> 'unread-id',isValidElement:value=>value!=null && typeof value==='object' && 'type' in value,Fragment:'fragment',createElement:(type,props,...children)=>element(type,{...props,...(children.length ? {children:children.length===1 ? children[0] : children} : {})})};
 const options={React,mergeClasses:classNames,Link:'link',ResponsiveIcon:'responsive',AnimatedIcon:'animated',DisclosureIcon:'disclosure'};
 const Item=createNavigationItem(options);
 const source=fs.readFileSync(new URL('../../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js',import.meta.url),'utf8');
@@ -24,3 +24,6 @@ test('specialized missing adapters fail explicitly instead of silently replacing
  assert.throws(()=>Bare({label:'Icon',iconAssetSource:{}}),/requires ResponsiveIcon/);
  assert.throws(()=>Bare({label:'Animated',icon:'svg',animatedIcon:{}}),/requires AnimatedIcon/);
 });
+
+test('navigation item and list preserve complete shipped function bodies',()=>{const output=fs.readFileSync(new URL('../src/NavigationItem.js',import.meta.url),'utf8');for(const name of ['VF','HF']){const i=source.indexOf('function '+name+'(');assert.ok(output.includes(source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1)));}});
+test('grouped and rail navigation lists preserve original layout contracts',()=>{const List=createNavigationList(options);const grouped=List({appearance:'grouped',children:'rows'});assert.equal(grouped.props['data-appearance'],'grouped');assert.match(grouped.props.className,/rounded-2xl/);assert.match(grouped.props.className,/overflow-hidden/);assert.match(grouped.props.className,/--display-icon-leading:contents/);assert.equal(grouped.props.children,'rows');const rail=List({itemSpacing:'rail'});assert.match(rail.props.className,/gap-2 browser:gap-px/);assert.equal(rail.props['data-appearance'],'plain');});

@@ -86,3 +86,5 @@ ui-library/src/SettingsSearchDocuments.js -text
 
 ui-library/src/SettingsRoutes.js -text
 ui-library/src/SettingsSearchField.js -text
+
+ui-library/src/NavigationItem.js -text
