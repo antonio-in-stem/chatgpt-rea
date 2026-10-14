@@ -43,9 +43,9 @@ Automatización: Demo-Controls añade choose-theme e inspect-theme para el input
 
 ## Próxima tarea única
 
-Pasar del ejemplo aislado de biblioteca a una pantalla reutilizable integrada de conversación, usando la ventana original verificada como referencia. Primero inspeccionar la composición existente y sus dependencias completas; fijar una pantalla destino y aceptación visible antes de cambiar código. No ampliar mocks ni extraer más iconos/funciones por cercanía.
+Puerta de integración de conversación: `ui-library/CONVERSATION-INTEGRATION.md`. La auditoría confirma que ConversationFlow usa textarea/estado local y que la galería no contiene el shell original. Los exports originales hN/gN dependen de navegación/estado y el layout GIi exige el contexto Bir. No se implementó una pantalla aproximada.
 
-Aceptación del siguiente lote: consumidor reutilizable con composición de pantalla conectada, navegación/sidebar/composer coherentes y datos/acciones demo explícitos, verificado en el mismo tema/tamaño y estados de la referencia. Si sólo puede lograrse una aproximación, reportar el bloqueo antes de implementarla. El runtime original debe seguir disponible como referencia, no sustituirse por una galería. La matriz anterior verifica la base central, no toda la app ni todas las acciones del menú.
+Experimento acotado: identificar el provider Bir y probar un límite de montaje viable con el estado original y adaptadores demo explícitos. Si al 67% usado no existe una vía viable, detener esta investigación y reportar el bloqueo; no regresar a extracción indefinida de funciones. La demo original sigue siendo referencia funcional y no se publican capturas/texto completos.
 
 ## Cuota y pendientes
 
