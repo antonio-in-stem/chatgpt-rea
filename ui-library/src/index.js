@@ -1,3 +1,4 @@
+export {createAttachmentThumbnail} from './AttachmentThumbnail.js';
 export {createResourceCards} from './ResourceCards.js';
 export {createComposerContextAction} from './ComposerContextAction.js';
 export {createTooltip} from './Tooltip.js';

@@ -15,3 +15,5 @@ ui-library/src/Tooltip.js -text
 ui-library/src/ComposerContextAction.js -text
 
 ui-library/src/ResourceCards.js -text
+
+ui-library/src/AttachmentThumbnail.js -text

@@ -209,9 +209,16 @@ ComposerLayout and ComposerActions now require the React compiler runtime (defau
 
 ### Resource and attachment surfaces
 
-`createResourceCards({React, CompactIcon: ui.CompactIcon, Link?})` exports ResourceCard, ResourceCardAction, ResourceCardIcon, ResourceCardThumbnail, ResourceCardRow, AttachmentRemoveButton, AttachmentCard, AttachmentPill, AttachmentPreviewCard and AttachmentPreviewCaption. Original compiler caches, classes, close artwork and event isolation are retained. ResourceCard accepts the original default, attachment, composer-attachment, thread-attachment, artifact-list, file-tile and link-preview variants. The href action requires an explicit Link adapter.
+`createResourceCards({React, AssetIcon: ui.AssetIcon, Link?})` exports ResourceCard, ResourceCardAction, ResourceCardIcon, ResourceCardThumbnail, ResourceCardRow, AttachmentRemoveButton, AttachmentCard, AttachmentPill, AttachmentPreviewCard and AttachmentPreviewCaption. Original compiler caches, classes, close artwork and event isolation are retained. ResourceCard accepts the original default, attachment, composer-attachment, thread-attachment, artifact-list, file-tile and link-preview variants. The href action requires an explicit Link adapter.
 
 AttachmentCard accepts title/subtitle/icon, onClick, onRemove/onRemoveAriaLabel and composer/thread variant. AttachmentPill accepts pill/card layout and preserves Enter/Space removal. AttachmentPreviewCard accepts filename/icon/preview, onClick and onRemove/removeAriaLabel; preview generation is not included. The local conversation example now uses AttachmentCard instead of generic filename rows. File type icons, thumbnail generation and upload-status controllers remain separate extraction work. No full-screen visual equivalence is claimed.
 
 
 `createResourceCards` also exports `ProgressRing` (shared aPi/iPi) and `AttachmentUploadProgress` (initial Axn). The ring retains the original 0..100 clamping, 120ms default transition, optional fill-on-mount animation/delay and reduced-motion behavior. The overlay accepts label/percentage, preserves progressbar attributes and uses the original 25% spinning arc when percentage is absent or zero. Pass motionPreference (on/off/system) through the existing preference adapter. Uploads and thumbnail generation are not implemented by these visual components. Verification: original body identity, SSR geometry/ARIA and transition branches; browser animation comparison remains pending.
+
+
+### Thumbnail presentation
+
+`createAttachmentThumbnail({React, AttachmentUploadProgress, useThumbnailQuery, useAccountId, formatMessage?})` exports the original AttachmentThumbnail view (Ixn) and thumbnailMountedAt helper. Query input is `{source, importKind}` and its result is `{data: {dataUrl, byteLength} | undefined, isError}`. File sources retain the original accountId guard. The view waits for image onLoad before revealing a preview, handles onError/query fallback, and restores loading on changed URLs. It preserves original fit classes, progress overlay and performance measurement.
+
+The example uses an authored local Blob URL provider for images, revokes URLs on replacement/unmount and retains names on local submit. It is not the portable PDF/office thumbnail worker. Browser verified valid image ready, invalid image fallback, keyboard removal, successive selection, submission and both URLs revoked. ResourceCards now correctly requires AssetIcon (original shared t5), not CompactIcon; the previous preview-only adapter crash is fixed.

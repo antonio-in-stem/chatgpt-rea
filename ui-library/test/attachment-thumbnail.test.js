@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createAttachmentThumbnail} from '../src/AttachmentThumbnail.js';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+const source=read('../../original-stack/state/recovered-all/readable/assets/app-initial-b8e1c8014bb4.js'),output=read('../src/AttachmentThumbnail.js'),manifest=JSON.parse(read('../attachment-thumbnail-manifest.json'));
+const def=(s,n)=>{let i=s.indexOf('function '+n+'(');return s.slice(i,i+s.slice(i).search(/^}\r?$/m)+1);};
+test('thumbnail view and timing helpers preserve exact recovered bodies',()=>{for(const n of manifest.symbols)assert.equal(def(output,n),def(source,n));});
+test('thumbnail waits for image load, resets on changed URL, handles failures and account mismatch',()=>{
+ let state,query={},account='local';
+ const React={createElement:(type,props,...children)=>({type,props:children.length?{...props,children}:props}),useState:()=>[state,value=>state=value]};
+ const {AttachmentThumbnail}=createAttachmentThumbnail({React,AttachmentUploadProgress:'Progress',useThumbnailQuery:()=>query,useAccountId:()=>account,compilerRuntime:{c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))}});
+ const props={source:{file:{accountId:'local'}},mountedAt:performance.now(),fallback:'Fallback',imageFit:'scale-down'};
+ let tree=AttachmentThumbnail(props);assert.equal(tree.props['data-attachment-thumbnail-state'],'loading');assert.equal(tree.props.children[1].props.label,'Loading preview');
+ query={data:{dataUrl:'blob:first',byteLength:12}};tree=AttachmentThumbnail(props);let image=tree.props.children[0];assert(image.props.className.includes('invisible'));assert(image.props.className.includes('object-scale-down'));
+ image.props.onLoad();tree=AttachmentThumbnail(props);assert.equal(tree.props['data-attachment-thumbnail-state'],'ready');assert.equal(tree.props.children[1],false);
+ tree=AttachmentThumbnail({...props,uploadingLabel:'Uploading'});assert.equal(tree.props.children[1].props.label,'Uploading');
+ query={data:{dataUrl:'blob:second'}};tree=AttachmentThumbnail(props);assert.equal(tree.props['data-attachment-thumbnail-state'],'loading');tree.props.children[0].props.onError();tree=AttachmentThumbnail(props);assert.equal(tree.props['data-attachment-thumbnail-state'],'fallback');assert.equal(tree.props.children[0],'Fallback');
+ query={isError:true};assert.equal(AttachmentThumbnail(props).props['data-attachment-thumbnail-state'],'fallback');
+ account='different';assert.equal(AttachmentThumbnail(props),'Fallback');
+});

@@ -1,0 +1,17 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "Ixn",
+    "Fxn",
+    "Lxn",
+    "Rxn"
+  ],
+  "bodySha256": "0b8b7f3d7d01e72df744d72a18e5eaf0fa1422f4423a91b52e6a717bda05f904",
+  "transformation": "Original view, image events and performance measurement bodies. React compiler cache retained. App query/account hooks and translation supplied explicitly.",
+  "limits": [
+    "Portable document worker and source-query controller not extracted",
+    "Demo uses local Blob URLs for image files only; original image presentation retained",
+    "Full-screen parity pending"
+  ]
+}

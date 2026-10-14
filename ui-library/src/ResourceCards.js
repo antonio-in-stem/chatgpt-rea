@@ -1,8 +1,8 @@
 // Generated original resource surfaces. See resource-cards-manifest.json.
 import {classNames as ng} from './classNames.js';
 import {createMotionPreference} from './motionPreference.js';
-export function createResourceCards({React,CompactIcon,Link,motionPreference,compilerRuntime=React.__COMPILER_RUNTIME}){
- if(!compilerRuntime?.c||!CompactIcon)throw new TypeError('Resource cards require React compiler runtime and original CompactIcon');
+export function createResourceCards({React,AssetIcon,Link,motionPreference,compilerRuntime=React.__COMPILER_RUNTIME}){
+ if(!compilerRuntime?.c||!AssetIcon)throw new TypeError('Resource cards require React compiler runtime and original AssetIcon');
  const uk=compilerRuntime,gxn=uk,bxn=uk,wxn=uk,Oxn=uk,jxn=uk,oPi=uk;
  const dk={jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},_xn=dk,xxn=dk,fk=dk,pk=dk,Mxn=dk,sPi=dk;
  const q=ng,ft=createMotionPreference(React,motionPreference),cPi=12,lPi=120,uPi=0,L7=100;
@@ -183,7 +183,7 @@ function aPi(e) {
     F
   );
 }
- SMi();ePi();rPi();const Zc=xMi,IPe=$Ni,cp=CompactIcon,xWe=aPi;
+ SMi();ePi();rPi();const Zc=xMi,IPe=$Ni,cp=AssetIcon,xWe=aPi;
 function nxn(e) {
   let t = (0, uk.c)(18),
     { className: n, as: r, children: i, variant: a } = e,

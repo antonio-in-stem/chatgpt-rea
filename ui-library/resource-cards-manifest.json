@@ -25,7 +25,7 @@
     "aPi"
   ],
   "sharedBodySha256": "5f7f6e97f9b0bf60e477cba30c4f63c6e99d953115b90b0e31c6f1cc518fc14a",
-  "transformation": "Literal recovered function bodies, React compiler cache retained; original JSX interop and fixed initialization adapted. Link and CompactIcon explicit adapters. Fixed asset normalization only.",
+  "transformation": "Literal recovered function bodies, React compiler cache retained; original JSX interop and fixed initialization adapted. Link and AssetIcon explicit adapters. Fixed asset normalization only.",
   "limits": [
     "Preview and icon are caller slots; thumbnail generation and upload status controller are separate",
     "Demo file selection and message submission remain authored local behavior",

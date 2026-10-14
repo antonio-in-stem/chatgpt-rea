@@ -327,5 +327,21 @@
     "observedHeight": 52,
     "pageErrors": [],
     "limits": "Preview and pill interaction tested separately in unit tests; file icon classification not connected; no original screenshot comparison"
+  },
+  "imageAttachmentFlow": {
+    "validImage": {
+      "width": 80,
+      "height": 40,
+      "fit": "scale-down",
+      "state": "ready"
+    },
+    "invalidImageState": "fallback",
+    "keyboardRemoval": true,
+    "successiveSelection": true,
+    "submitted": true,
+    "blobUrlsCreated": 2,
+    "blobUrlsRevoked": 2,
+    "pageErrors": [],
+    "scope": "Local authored Blob provider using recovered view; not portable document generation"
   }
 }

@@ -297,6 +297,16 @@
       "manifest": "resource-cards-manifest.json",
       "transformation": "Literal recovered function bodies, React compiler cache retained; original JSX interop and fixed initialization adapted. Link and CompactIcon explicit adapters. Fixed asset normalization only.",
       "status": "Original bodies verified; React SSR variants and removal keyboard/event isolation pass; local browser attachment add/remove/submit passed. Full original screenshot parity pending. Progress ring and upload overlay exact bodies verified; SSR checks cover invalid/zero/full percentage, fill-on-mount delay and reduced-motion transition branches. Browser animation comparison pending."
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "components": [
+        "AttachmentThumbnail",
+        "thumbnailMountedAt"
+      ],
+      "manifest": "attachment-thumbnail-manifest.json",
+      "transformation": "Original bodies with explicit query/account/translation hook adapters",
+      "status": "Source identity, loading/ready/error/account guard tests and local image browser flow verified. Portable document worker remains pending."
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",
