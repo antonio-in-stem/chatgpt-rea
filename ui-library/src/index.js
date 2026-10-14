@@ -108,3 +108,5 @@ export {createAccountSurfaces} from './AccountSurfaces.js';
 export {createDialogSurfaces} from './DialogSurfaces.js';
 
 export {createDialog} from './Dialog.js';
+
+export {createAccountReplacementDialog} from './AccountReplacementDialog.js';

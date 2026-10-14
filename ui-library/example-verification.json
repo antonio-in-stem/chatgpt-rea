@@ -659,5 +659,24 @@
       "Responsive/zoom/variant matrix not fully browser-verified",
       "No matched installed-app screenshot"
     ]
+  },
+  "accountReplacement": {
+    "selectedSecondAccount": true,
+    "busyControlsDisabled": [
+      "confirm",
+      "cancel",
+      "selection"
+    ],
+    "escapeIgnoredWhileBusy": true,
+    "originalFailureAlert": true,
+    "reenabledAfterFailure": true,
+    "retrySelectedUser": "demo-two",
+    "idleCancelCloses": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Fake accounts and local async operation only",
+      "Browser account session controller not recovered",
+      "No installed-app screenshot comparison"
+    ]
   }
 }

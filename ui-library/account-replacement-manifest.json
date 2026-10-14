@@ -1,0 +1,22 @@
+{
+  "source": "browser-account-switcher-menu-item-84f69449fe29.js",
+  "sha256": "ad57a40eb49d2e58793cf2db7a314172c6bcadd2563a0206040ac59d80a76e1e",
+  "shared": "app-shared-737655e1fb23.js",
+  "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "Nt",
+    "on",
+    "sn",
+    "$t"
+  ],
+  "sharedSymbols": [
+    "K6n"
+  ],
+  "bodySha256": "def415f9aa30441280a2fdae0e5172b501777aa5d94f9434f130759380a0ebdb",
+  "limits": [
+    "Ft real logout/redirect replaced by required promise-returning adapter",
+    "Caller owns successful close/navigation; original Nt stays busy after resolution",
+    "Session controller and storage not included",
+    "No full-app visual parity claim"
+  ]
+}

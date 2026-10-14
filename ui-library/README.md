@@ -393,3 +393,11 @@ Browser primitive harness verified initial input focus, Tab to close, Tab wrap, 
 The controller preserves size/surface/radius/position variants, explicit width and viewport/zoom calculations, portal containers, tooltip dismissal/overlay registration, close-button variants, outside-click cancellation, pointer isolation and ResizeObserver-driven height transitions/cleanup. Main demo DialogFlow now uses the recovered outer shell, with authored local text and expand/collapse state.
 
 Browser verified narrow width380px, computed radius25px, initial206px height changing to269px after content expansion, close-button focus return and Escape dismissal without console errors. Four focused source/variant/sizing/event tests pass. These measurements describe this local rendered case; installed-app screenshot equality, every responsive/zoom/modal combination and account replacement integration remain pending.
+
+### Account replacement dialog
+
+`createAccountReplacementDialog({React,dialog,layout,Button,AssetIcon,logoutAndContinue,formatMessage?})` exports original AccountReplacementDialog (Nt), accountDisplayName, maskedPhone and accountIdentityKey. Use createDialog/createDialogSurfaces results. Original selection/checkmark, confirmation form, disabled pending controls, close guard, error alert, name priority and phone masking are retained. The component accepts accounts, currentSessionToken, onClose, onSessionsChanged, returnHref and screenHint.
+
+`logoutAndContinue({currentSessionToken,session,returnHref,screenHint})` must return a promise. Failure refreshes the caller's session view, displays the original error and reenables controls. Success remains pending in original Nt because original Ft navigates away; the adapter owns success navigation or local unmount. The demo uses fake identifiers and a700ms local promise, fails once, then closes locally after retry. It does not access or modify actual accounts.
+
+Browser verified selecting the second account, disabled confirm/cancel/selection while waiting, Escape ignored while pending, original failure text, reenabling, successful retry with the same selected account and idle Cancel dismissal, without console errors. Four targeted source/data/initial-contract tests pass. The broader browser account session controller and full-app screenshot parity remain pending.

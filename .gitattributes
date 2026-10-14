@@ -60,3 +60,5 @@ ui-library/src/AccountSurfaces.js -text
 ui-library/src/DialogSurfaces.js -text
 
 ui-library/src/Dialog.js -text
+
+ui-library/src/AccountReplacementDialog.js -text
