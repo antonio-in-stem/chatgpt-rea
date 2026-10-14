@@ -573,3 +573,10 @@ Header variants retain original spacing tokens, surface treatment and scrolled h
 createSettingsLabels({React,getBrowserMetadata,formatMessage}) provides getSectionMessage (k6), SettingsNavigationLabel (gNs), creatorMicroMessage and the shipped descriptor map. Original initializers preserve enterprise usage, ChatGPT-specific labels, legacy cloud naming, named-browser extension formatting, special password/cloud-computer/team titles and the Creator Micro device branch. Localization remains explicit, including descriptor values.
 
 The search fixture now uses these original descriptors instead of authored labels. This corrects local-environments from the demo's Local environments to the shipped Environments. Three tests verify body identity and context/device/browser branches; browser search displays Environments without page errors. Build passes with the existing Lottie warning. Page headings have a distinct original renderer not included here; full sidebar assembly and installed-app visual parity remain pending.
+
+
+### Original settings page titles
+
+createSettingsLabels now also exposes SettingsSectionTitle, the unchanged _Ns renderer. It preserves page-specific descriptor IDs, its context-sensitive ChatGPT branch and explicit reuse of navigation labels for the original delegated cases. Unknown slugs return no content, as in the distributed function; no fallback title is invented. This supersedes the earlier note that page headings were not recovered.
+
+Five label tests now pass, including exact function identity, separate navigation/page localization IDs, context branches and rendering every original switch case without missing dependencies. These tests prove the title renderer, not implementation of all corresponding pages. Complete settings destination content and sidebar integration remain pending.

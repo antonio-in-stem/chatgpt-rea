@@ -7,11 +7,12 @@
     "fNs",
     "mNs",
     "k6",
-    "gNs"
+    "gNs",
+    "_Ns"
   ],
   "teamTitleSource": "app-shared-737655e1fb23.js",
   "limits": [
     "Localization formatter and browser metadata are caller supplied",
-    "Section page headings differ and are not recovered here"
+    "Navigation and page titles recovered; complete destination content remains pending"
   ]
 }
