@@ -130,3 +130,6 @@ export {createUnsavedSettingsDialog} from './UnsavedSettingsDialog.js';
 
 export {createSettingsSearch} from './SettingsSearch.js';
 export {settingsSearchDocuments} from './SettingsSearchDocuments.js';
+
+export {getBrowserPermissionMessage,getBrowserSubpage,buildSettingsPath,browserPermissionMessages} from './SettingsRoutes.js';
+export {createSettingsSearchField} from './SettingsSearchField.js';

@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "file": "settings-page-6c4c55bd9144.js",
+      "sha256": "5f5986604d794a5c7b9f2beacd1d63983dc7abefbc1297a77071369b4b0ad537"
+    },
+    {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f"
+    },
+    {
+      "file": "browser-site-settings-subpages-8af74e646e3e.js",
+      "sha256": "e34d08024bc3d32cf8b66024af3f71bcbddcb963142c2162bca44b233b7fa73b"
+    },
+    {
+      "file": "app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e"
+    }
+  ],
+  "symbols": {
+    "SettingsRoutes": [
+      "a",
+      "o",
+      "c",
+      "PNs",
+      "INs"
+    ],
+    "SettingsSearchField": [
+      "Ur"
+    ]
+  },
+  "adapters": [
+    "Lazy initialization and defineMessages identity",
+    "Caller supplied application accelerator hook and localization"
+  ],
+  "limits": [
+    "No Electron permissions are changed",
+    "Settings sidebar controller and visual parity remain pending"
+  ]
+}
