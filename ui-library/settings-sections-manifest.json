@@ -1,0 +1,19 @@
+{
+  "source": "settings-page-6c4c55bd9144.js",
+  "sha256": "5f5986604d794a5c7b9f2beacd1d63983dc7abefbc1297a77071369b4b0ad537",
+  "symbols": [
+    "jr",
+    "Mr",
+    "Nr",
+    "Ir",
+    "Rr",
+    "Br",
+    "Kr",
+    "qr"
+  ],
+  "constantsSha256": "8a921ce4e1aed71c5dec9ba0448bd9f9134c931e0caa2a5024c15854808270c4",
+  "limits": [
+    "Feature/auth/host visibility is resolved before these helpers",
+    "Complete sidebar renderer and query controller not included"
+  ]
+}

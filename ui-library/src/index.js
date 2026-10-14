@@ -146,3 +146,5 @@ export {createSettingsComponentArtwork} from './SettingsComponentArtwork.js';
 export {createSettingsExtensionArtwork} from './SettingsExtensionArtwork.js';
 
 export {createListNavigation} from './ListNavigation.js';
+
+export * from './SettingsSections.js';

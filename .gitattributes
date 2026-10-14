@@ -99,3 +99,5 @@ ui-library/src/SettingsComponentArtwork.js -text
 ui-library/src/SettingsExtensionArtwork.js -text
 
 ui-library/src/ListNavigation.js -text
+
+ui-library/src/SettingsSections.js -text
