@@ -135,3 +135,5 @@ export {getBrowserPermissionMessage,getBrowserSubpage,buildSettingsPath,browserP
 export {createSettingsSearchField} from './SettingsSearchField.js';
 
 export {createNavigationItem,createNavigationList} from './NavigationItem.js';
+
+export {createSettingsSearchResults} from './SettingsSearchResults.js';

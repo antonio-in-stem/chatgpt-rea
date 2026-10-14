@@ -504,3 +504,12 @@ NavigationItem now embeds the complete original VF body (155 compiler cache slot
 The original body is now checked byte-for-byte against the recovered artifact, alongside the existing 28 variant comparisons covering selection, accent/inverse tones, disabled states, descriptions, interactive trailing actions, unread markers, link semantics and artwork. New list tests verify grouped and rail contracts. All 199 library tests pass, the example builds, and a browser reload at the local demo rendered five sidebar-item elements with no page errors. The existing Lottie direct-eval warning remains. This is component integration evidence, not whole-window visual parity. Settings search result composition and the full settings sidebar controller remain pending.
 
 Reproduce with `node ui-library/scripts/extract-navigation-item.mjs <app-initial-source>`. navigation-item-manifest.json records the artifact digest and remaining adapters.
+
+
+### Original settings search result composition
+
+`createSettingsSearchResults` exposes unchanged Wr and its original rejected-prefetch handler Gr. Supply React, NavigationItem, NavigationList, usePlatform, getSectionIcon, ResponsiveIcon, prefetchSection, openExternal, ExternalLink, ExternalIcon, securityIcon and TeamList; optional formatMessage translates the empty state. Host dependencies are required rather than replaced by invented artwork or route behavior.
+
+Props are highlightedIndex, intl, listRef, onSelectResult, optional onSelectTeam and searchResults. Results retain original section/plugin/external distinctions: destination plus panel accessible labels, panel descriptions only when different, original list-navigation marker and highlight state, responsive artwork, section-only hover/focus prefetch, and nested teams when enabled. External actions pass the original event/href/initiator/openTarget contract to the caller. Ranking and keyboard handling remain separate controller responsibilities.
+
+Four new tests cover exact source identity, empty state, descriptions/selection/prefetch/teams and plugin/external action boundaries. Eight focused result/navigation tests pass and the example builds with its existing Lottie warning. This module is not yet mounted in the original complete sidebar: platform icon registry, team controller, keyboard orchestration and installed-app visual verification remain pending. Reproduce via extract-settings-search-results.mjs with the settings-page source; settings-search-results-manifest.json records provenance.
