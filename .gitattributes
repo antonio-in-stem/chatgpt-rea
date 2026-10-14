@@ -27,3 +27,5 @@ ui-library/src/fileIconSelection.js -text
 ui-library/src/ProviderArtwork.js -text
 
 ui-library/src/FileIcon.js -text
+
+ui-library/src/NavigationRail.js -text

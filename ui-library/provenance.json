@@ -360,6 +360,16 @@
       "manifest": "file-icon-manifest.json",
       "transformation": "Original renderer, SVG wrapper, 20-entry legacy artwork family and table; adapters reuse previously extracted original components.",
       "status": "Source identity, 160 format/size/variant cases, provider/artifact rendering and local browser attachment flow verified. Full app parity not implied."
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "components": [
+        "NavigationRail",
+        "ProfileFooter"
+      ],
+      "manifest": "navigation-rail-manifest.json",
+      "transformation": "D2o presentation subtree semantically extracted with exact classes; y2o footer body unchanged. Explicit content slots.",
+      "status": "Three layout/source tests pass; full rail controller, actual identity/avatar/menu and browser visual parity pending."
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

@@ -1,0 +1,24 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "footerSymbol": "y2o",
+  "footerSha256": "d05b33a6574435e19c2402ae0106185555628866b2c14b6f237fa171ba3b1e9c",
+  "layoutSymbol": "D2o",
+  "layoutSha256": "f3506ede69dd5c4c0c6388fdb43670b88bd2d6371782620c9c1d35a1a701f63b",
+  "classes": {
+    "root": "group/sidebar-rail relative flex min-h-0 shrink-0 flex-col items-center gap-2 px-2 pb-2 select-none browser:w-13 browser:gap-0 browser:px-0 browser:pt-0 browser:[--height-token-nav-row:36px] browser:[--height-token-row:36px] browser:[--padding-row-cell-x:8px] browser:[--padding-row-x:8px] browser:max-md:border-e browser:max-md:border-subtle browser:max-md:dark:border-default",
+    "codexSurface": "bg-surface-secondary electron:bg-transparent browser:[--control-radius-md:var(--radius-token-row)] browser:[--radius-token-row:10px]",
+    "surface": "bg-surface-secondary electron:bg-transparent",
+    "top": "pt-[calc((var(--sidebar-navigation-header-height,calc(var(--spacing)*10))-var(--spacing)*9)/2)]",
+    "bottom": "[[data-app-shell-page-surface=true]_&]:pb-1",
+    "border": "pointer-events-none absolute inset-y-0 end-0 z-10 border-e-hairline border-default",
+    "list": "vertical-scroll-fade-mask hide-scrollbar -m-0.5 min-h-0 flex-1 scroll-py-0.5 items-center overflow-y-auto p-0.5 browser:m-0 browser:mt-2 browser:w-full browser:items-stretch browser:px-row-x browser:pt-0"
+  },
+  "transformation": "Footer function body unchanged. Rail presentation subtree semantically extracted: original classes, DOM order, landmark and list spacing; destinations/header/footer explicit slots.",
+  "limits": [
+    "Not complete D2o controller: drag sensors, destination visibility, menu actions and width-store reporting are not extracted here",
+    "ProfileFooter arranges supplied identity and controls; avatar/menu component still separate",
+    "No fallback settings glyph is inserted for missing identity",
+    "Full window shell and visual comparison pending"
+  ]
+}
