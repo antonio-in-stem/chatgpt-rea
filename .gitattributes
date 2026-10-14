@@ -107,3 +107,5 @@ ui-library/src/NavigationSurfaces.js -text
 ui-library/src/SettingsLabels.js -text
 
 ui-library/src/SettingsSidebar.js -text
+
+ui-library/src/SettingsSidebarIcons.js -text

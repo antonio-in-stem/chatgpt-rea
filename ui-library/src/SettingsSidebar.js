@@ -1,8 +1,8 @@
 // Original complete sidebar controller body. Service and host operations are explicit adapters.
 import {settingsSectionGroups,settingsSectionOrder} from './SettingsSections.js';
 import {shortcutMatchScore as It} from './ShortcutMatching.js';
-export function createSettingsSidebar({React,components,labels,search,useListNavigation,useSnapshot,usePluginViews,useQuery,useSearchTargets,pluginRoutes,prefetchSection,openExternal,openExternalEvent,securitySettings,icons,mergeClasses,formatMessage,defaultHostId,compilerRuntime=React.__COMPILER_RUNTIME}){
-const h=React.createElement,Jr=compilerRuntime,Xr=React,Q={jsx:(type,props,key)=>h(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>h(type,key===undefined?props:{...props,key},...props.children)},B=props=>formatMessage(props,props.values),intl={formatMessage},ye=()=>intl;
+export function createSettingsSidebar({React,components,labels,search,useListNavigation,useSnapshot,usePluginViews,useQuery,useSearchTargets,pluginRoutes,prefetchSection,openExternal,openExternalEvent,securitySettings,icons,mergeClasses,formatMessage,messages={},defaultHostId,compilerRuntime=React.__COMPILER_RUNTIME}){
+const h=React.createElement,Jr=compilerRuntime,Xr=React,Q={jsx:(type,props,key)=>h(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>h(type,key===undefined?props:{...props,key},...props.children)},B=props=>formatMessage(props,props.values),intl={formatMessage,messages},ye=()=>intl;
 const ee=()=>useSnapshot().store,te=null,c=()=>useSnapshot().embedded,se=null,Ae=()=>({platform:useSnapshot().platform}),Te=()=>({authMethod:useSnapshot().authMethod}),ie=(_,host)=>usePluginViews(host),mt=null,re=defaultHostId,Ee=useQuery,yr=useSearchTargets;
 const {hosted:Ye,plugin:Ge,isRemoteServer:pe,resolveSource:kt,source:Yt,resolved:zt}=pluginRoutes;
 const {searchSettings:Qn,resolveSettingsDestination:lr}=search,{getSectionMessage:et,SettingsNavigationLabel:ut,creatorMicroMessage}=labels,Tt={creatorMicro:creatorMicroMessage};

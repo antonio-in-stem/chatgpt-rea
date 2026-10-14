@@ -4,8 +4,8 @@ const names=['Or','kr','Ar','jr','Mr','Nr','Pr','Fr','Ir','Lr','Rr','zr','Br','G
 fs.writeFileSync(path.join(root,'src/SettingsSidebar.js'),`// Original complete sidebar controller body. Service and host operations are explicit adapters.
 import {settingsSectionGroups,settingsSectionOrder} from './SettingsSections.js';
 import {shortcutMatchScore as It} from './ShortcutMatching.js';
-export function createSettingsSidebar({React,components,labels,search,useListNavigation,useSnapshot,usePluginViews,useQuery,useSearchTargets,pluginRoutes,prefetchSection,openExternal,openExternalEvent,securitySettings,icons,mergeClasses,formatMessage,defaultHostId,compilerRuntime=React.__COMPILER_RUNTIME}){
-const h=React.createElement,Jr=compilerRuntime,Xr=React,Q={jsx:(type,props,key)=>h(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>h(type,key===undefined?props:{...props,key},...props.children)},B=props=>formatMessage(props,props.values),intl={formatMessage},ye=()=>intl;
+export function createSettingsSidebar({React,components,labels,search,useListNavigation,useSnapshot,usePluginViews,useQuery,useSearchTargets,pluginRoutes,prefetchSection,openExternal,openExternalEvent,securitySettings,icons,mergeClasses,formatMessage,messages={},defaultHostId,compilerRuntime=React.__COMPILER_RUNTIME}){
+const h=React.createElement,Jr=compilerRuntime,Xr=React,Q={jsx:(type,props,key)=>h(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>h(type,key===undefined?props:{...props,key},...props.children)},B=props=>formatMessage(props,props.values),intl={formatMessage,messages},ye=()=>intl;
 const ee=()=>useSnapshot().store,te=null,c=()=>useSnapshot().embedded,se=null,Ae=()=>({platform:useSnapshot().platform}),Te=()=>({authMethod:useSnapshot().authMethod}),ie=(_,host)=>usePluginViews(host),mt=null,re=defaultHostId,Ee=useQuery,yr=useSearchTargets;
 const {hosted:Ye,plugin:Ge,isRemoteServer:pe,resolveSource:kt,source:Yt,resolved:zt}=pluginRoutes;
 const {searchSettings:Qn,resolveSettingsDestination:lr}=search,{getSectionMessage:et,SettingsNavigationLabel:ut,creatorMicroMessage}=labels,Tt={creatorMicro:creatorMicroMessage};
@@ -20,3 +20,11 @@ return Or;
 }
 `);
 fs.writeFileSync(path.join(root,'settings-sidebar-manifest.json'),JSON.stringify({source:path.basename(input),sha256:createHash('sha256').update(source).digest('hex'),symbols:names,adapters:['Resolved host state and plugin views','Query/search-target hooks and plugin route resolution','Original recovered components labels artwork and list controller','Prefetch and external navigation','Localization and uniqBy'],limits:['Factory extraction needs host adapter integration','Original visibility provider runs upstream','Full installed-window visual parity remains unverified']},null,2)+'\n');
+
+const iconNames=['Bn','Un','Kn'],iconBodies=iconNames.map(n=>{const i=source.indexOf('function '+n+'(');return source.slice(i,i+source.slice(i).search(/^}\r?$/m)+1);});
+fs.writeFileSync(path.join(root,'src/SettingsSidebarIcons.js'),`// Original active-pet and sidebar expand/collapse SVGs.
+export function createSettingsSidebarIcons(React){const e=fn=>fn,S=()=>{},h=React.createElement,a=()=>({jsx:(t,p)=>h(t,p),jsxs:(t,p)=>h(t,p,...p.children)});let Rn,zn,Vn,Hn,Wn,Gn;
+${iconBodies.join('\n')}
+Bn();Un();Kn();return {ActivePet:zn,Collapse:Hn,Expand:Gn};
+}
+`);

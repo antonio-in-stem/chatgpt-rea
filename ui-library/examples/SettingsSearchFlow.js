@@ -1,4 +1,6 @@
-import {createSettingsLabels,searchableSectionSlugs,orderSettingsSections,settingsSectionOrder,createListNavigation,classNames,createNavigationList,createSettingsSearch,settingsSearchDocuments,buildSettingsPath,getBrowserSubpage,createSettingsSearchField,createSettingsSearchResults,createSettingsArtworkRegistry,createSettingsSharedArtwork,createSettingsComponentArtwork,createSettingsExtensionArtwork} from '../src/index.js';
+import {motion,AnimatePresence,MotionConfig,useReducedMotion} from 'framer-motion';
+import {createSettingsSidebarIcons} from '../src/SettingsSidebarIcons.js';
+import {createSettingsSidebar,createNavigationSurfaces,createSettingsLabels,searchableSectionSlugs,orderSettingsSections,settingsSectionOrder,createListNavigation,classNames,createNavigationList,createSettingsSearch,settingsSearchDocuments,buildSettingsPath,getBrowserSubpage,createSettingsSearchField,createSettingsSearchResults,createSettingsArtworkRegistry,createSettingsSharedArtwork,createSettingsComponentArtwork,createSettingsExtensionArtwork} from '../src/index.js';
 // Local orchestration fixture. Recovered input, ranking, result rows and artwork are unchanged.
 export function createSettingsSearchFlow(React,ui){
  const h=React.createElement,labels={appearance:'Appearance',voice:'Voice',storage:'Storage','keyboard-shortcuts':'Keyboard shortcuts','browser-use':'Browser','local-environments':'Local environments'};
@@ -6,7 +8,7 @@ export function createSettingsSearchFlow(React,ui){
  const originalLabels=createSettingsLabels({React,getBrowserMetadata:()=>null,formatMessage:intl.formatMessage});
  const sharedArtwork={...createSettingsSharedArtwork(ui.AssetIcon),...createSettingsComponentArtwork(React),na:createSettingsExtensionArtwork({React,getBrowserMetadata:()=>null})};
  const {getSectionIcon}=createSettingsArtworkRegistry({React,sharedArtwork});
- const {searchSettings}=createSettingsSearch({getSectionMessage:originalLabels.getSectionMessage,getBrowserSubpage,buildSettingsPath,creatorMicroMessage:originalLabels.creatorMicroMessage});
+ const search=createSettingsSearch({getSectionMessage:originalLabels.getSectionMessage,getBrowserSubpage,buildSettingsPath,creatorMicroMessage:originalLabels.creatorMicroMessage});
  const sections=orderSettingsSections(Object.keys(labels).map(slug=>({slug})),settingsSectionOrder);
  const targets=Object.keys(labels).map(sectionSlug=>({sectionSlug,messages:settingsSearchDocuments[sectionSlug]??[]}));
  function useAccelerator(config){React.useEffect(()=>{const fn=e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='f'&&document.activeElement?.closest('[data-settings-search-demo]'))config.onKeyDown(e);};window.addEventListener('keydown',fn);return()=>window.removeEventListener('keydown',fn);},[config]);}
@@ -15,12 +17,8 @@ export function createSettingsSearchFlow(React,ui){
  const Results=createSettingsSearchResults({React,NavigationItem:ui.NavigationItem,NavigationList:createNavigationList({React,mergeClasses:classNames}),usePlatform:()=> 'windows',getSectionIcon,ResponsiveIcon:ui.ResponsiveIcon,prefetchSection:()=>Promise.resolve(),openExternal:unsupported,ExternalLink:unsupported,ExternalIcon:unsupported,securityIcon:sharedArtwork.ri,TeamList:unsupported,formatMessage:intl.formatMessage});
  function useStableCallback(fn){const ref=React.useRef(fn);React.useLayoutEffect(()=>{ref.current=fn;},[fn]);return React.useCallback((...args)=>ref.current(...args),[]);}
  const useListNavigation=createListNavigation({React,isMac:()=>false,useStableCallback});
- return function SettingsSearchFlow(){const [query,setQuery]=React.useState(''),[selected,setSelected]=React.useState(null);
- const results=searchSettings({intl,query,targets,visibleSectionSlugs:sections.flatMap(searchableSectionSlugs)}).map(r=>({...r,id:r.sectionSlug,kind:'section',panelSlug:r.sectionSlug}));
- const select=r=>setSelected({label:r.label,path:r.path??buildSettingsPath(r.sectionSlug)});
- const ids=React.useMemo(()=>results.map(r=>r.id),[results.map(r=>r.id).join('\0')]);
- const nav=useListNavigation({items:ids,isActive:query.length>0,autoHighlightFirst:false,onSelect:(_,i)=>select(results[i]),onEscape:()=>setQuery('')});
-
- return h('section',{'data-settings-search-demo':true,'aria-label':'Recovered settings search',className:'mt-6'},h('h2',{className:'text-lg font-medium'},'Settings search'),h('p',{className:'text-secondary text-sm'},'Original search and artwork; six local destinations. Original list keyboard controller; local destinations.'),h(Input,{searchQuery:query,onQueryChange:setQuery,onKeyDown:nav.handleKeyDown}),h(Results,{searchResults:results,highlightedIndex:nav.highlightedIndex,intl,listRef:nav.listRef,onSelectResult:select}),selected?h('p',{role:'status','data-settings-search-selection':true},selected.label+' — '+selected.path):null);
- };
+ const surfaces=createNavigationSurfaces({React,mergeClasses:classNames,motion,AnimatePresence,MotionConfig,useReducedMotion,useVisualScale:()=>1});
+ const snapshot={store:{},embedded:true,platform:'windows',authMethod:'local'},empty=[];
+ const Sidebar=createSettingsSidebar({React,components:{...surfaces,NavigationItem:ui.NavigationItem,ResponsiveIcon:ui.ResponsiveIcon,Tooltip:ui.Tooltip,SettingsSearchField:Input,SettingsSearchResults:Results,SecuritySettingsItem:unsupported,TeamList:unsupported,Button:ui.Button},labels:originalLabels,search,useListNavigation,useSnapshot:()=>snapshot,usePluginViews:()=>empty,useQuery:()=>({data:empty}),useSearchTargets:()=>targets,pluginRoutes:{},prefetchSection:()=>Promise.resolve(),openExternal:unsupported,openExternalEvent:unsupported,securitySettings:{message:{id:'settings.nav.securitySettings',defaultMessage:'Security Settings'}},icons:{...createSettingsSidebarIcons(React),getSectionIcon},mergeClasses:classNames,formatMessage:intl.formatMessage,defaultHostId:'local'});
+ return function SettingsSearchFlow(){const [selected,setSelected]=React.useState('appearance');return h('section',{'data-settings-search-demo':true,'aria-label':'Recovered settings sidebar',className:'mt-6'},h('p',{className:'text-secondary text-sm'},'Original settings sidebar; local section destinations and empty service queries.'),h('div',{style:{height:440,width:300,display:'flex'}},h(Sidebar,{settingsSections:sections,searchTargets:targets,activeSection:selected,canCollapse:true,groupSettingsSections:true,onSelect:slug=>setSelected(slug)})),h('p',{role:'status','data-settings-search-selection':true},h(originalLabels.SettingsSectionTitle,{slug:selected}),' — '+buildSettingsPath(selected)));};
 }

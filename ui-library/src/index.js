@@ -154,3 +154,5 @@ export {createNavigationSurfaces} from './NavigationSurfaces.js';
 export {createSettingsLabels} from './SettingsLabels.js';
 
 export {createSettingsSidebar} from './SettingsSidebar.js';
+
+export {createSettingsSidebarIcons} from './SettingsSidebarIcons.js';
