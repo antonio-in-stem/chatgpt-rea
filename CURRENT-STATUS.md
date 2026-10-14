@@ -33,7 +33,7 @@ El launcher verifica el inventario dos veces y resultó lento en el disco actual
 | New chat y regreso desde sidebar | Verificado | Ida y vuelta comprobadas. |
 | Perfil → Settings → Appearance | Verificado | Controles originales operados en la instancia actual. |
 | Cambio de tema y persistencia tras recarga | Verificado | System/dark → Light; tras recarga, root light y radio Light seleccionado. Restaurado System y observado root dark/radio System seleccionado. |
-| Adjuntar/quitar/enviar | Pendiente en esta fase | Evidencia histórica no sustituye nueva comprobación integrada. |
+| Imagen demo: adjuntar/quitar/enviar/visor | Verificado | Pegado sintético manejado; quitar elimina el control; reenviar produce miniatura 78x78 cargada; visor 100x100, zoom 110x110 y cierre comprobados. No cubre picker nativo ni todos los formatos. |
 | Menús de conversación y regreso desde Ajustes | Pendiente en esta fase | No inferir del funcionamiento del menú de perfil. |
 
 Captura de Apariencia conservada localmente en `original-stack/state/demo-profile-host-v1/method-settings-light.png`, inspeccionada. No publicada. La primera captura con ese nombre se tomó antes del cambio por fallo del selector; fue reemplazada por la captura Light realmente verificada.
@@ -42,10 +42,14 @@ Automatización: Demo-Controls añade choose-theme e inspect-theme para el input
 
 ## Próxima tarea única
 
-Verificar adjunto demo desde composer hasta conversación y quitarlo antes de enviar en un segundo intento. Mantener esta instancia; no volver a validar todo el paquete. Después cerrar menús/regreso desde Ajustes. No reanudar extracción aislada; METHOD.md y AGENTS.md conservan secuencia y límites.
+Cerrar los menús de conversación y verificar persistencia del adjunto tras recarga. El regreso de Ajustes a Home/composer se observó en esta fase, aunque el comando de navegación agotó su tiempo de respuesta; la inspección posterior confirmó la transición. Mantener esta instancia; no volver a validar todo el paquete. No reanudar extracción aislada; METHOD.md y AGENTS.md conservan secuencia y límites.
 
 ## Cuota y pendientes
 
 Baseline 64%; última consulta 65%; máximo 74%. A 72% no empezar implementación nueva. La cuota es compartida; comprobar antes de lotes sustantivos. No usar reset credits. El hito temprano quedó verificado antes de 66%.
 
 Pendientes globales: comparar visualmente estados equivalentes con la referencia del usuario, matriz completa de pantallas/estados y biblioteca integrada de flujos reutilizables. Avatar/cuenta/datos son sintéticos y la variante de navegación no representa necesariamente el perfil del usuario. No hay porcentaje global de finalización defendible.
+
+## Evidencia de adjuntos de esta fase
+
+Captura local inspeccionada: `original-stack/state/demo-profile-host-v1/method-attachment-conversation.png`. No publicada. Se utilizó únicamente el PNG empaquetado sintético de 100x100. Los controles originales realizaron pegado/quitar/envío/visor/zoom/cierre. Demo-Controls añade una operación limitada a esa conversación de verificación, una sola imagen cargada, dimensiones esperadas y hit-test del elemento imagen. No se modificó el renderer. Node --check pasó. Persistencia tras recarga todavía pendiente en esta fase.
