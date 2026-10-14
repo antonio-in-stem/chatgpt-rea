@@ -97,3 +97,5 @@ ui-library/src/SettingsSharedArtwork.js -text
 
 ui-library/src/SettingsComponentArtwork.js -text
 ui-library/src/SettingsExtensionArtwork.js -text
+
+ui-library/src/ListNavigation.js -text

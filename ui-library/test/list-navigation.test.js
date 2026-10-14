@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createListNavigation} from '../src/ListNavigation.js';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
+function setup(options={}){const calls=[],state=[];const React={__COMPILER_RUNTIME:{c:n=>Array(n).fill(Symbol.for('react.memo_cache_sentinel'))},useRef:value=>({current:value}),useState:value=>[value,next=>state.push(typeof next==='function'?next(value):next)],useEffect:()=>{},useEffectEvent:fn=>fn};const use=createListNavigation({React,isMac:()=>false,useStableCallback:fn=>fn});const nav=use({items:['a','b'],isActive:true,onSelect:(...args)=>calls.push(args),onEscape:()=>calls.push('escape'),...options});const key=(key,extra={})=>nav.handleKeyDown({key,preventDefault(){},stopPropagation(){},...extra});return {nav,key,calls,state};}
+test('list controller and event helpers retain original bodies',()=>{const m=JSON.parse(read('../list-navigation-manifest.json')),s=read('../../original-stack/state/recovered-all/readable/assets/'+m.source),out=read('../src/ListNavigation.js');for(const n of m.symbols){const i=s.indexOf('function '+n+'(');assert.ok(out.includes(s.slice(i,i+s.slice(i).search(/^}\r?$/m)+1)));}});
+test('settings-style navigation starts unselected and arrows wrap',()=>{const a=setup({autoHighlightFirst:false});assert.equal(a.nav.highlightedIndex,-1);assert.equal(a.key('Enter'),false);assert.deepEqual(a.calls,[]);a.key('ArrowDown');a.key('ArrowUp');assert.deepEqual(a.state,[0,1]);});
+test('composition and modified selection are ignored; default enter selects',()=>{const a=setup();assert.equal(a.key('Enter',{isComposing:true}),false);assert.equal(a.key('Enter',{keyCode:229}),false);assert.equal(a.key('Enter',{ctrlKey:true}),false);assert.deepEqual(a.calls,[]);assert.equal(a.key('Enter'),true);assert.deepEqual(a.calls,[['a',0]]);});
+test('escape works on empty active lists and inactive controller ignores it',()=>{const a=setup({items:[]});assert.equal(a.key('Escape'),true);assert.deepEqual(a.calls,['escape']);const b=setup({isActive:false});assert.equal(b.key('Escape'),false);assert.deepEqual(b.calls,[]);});

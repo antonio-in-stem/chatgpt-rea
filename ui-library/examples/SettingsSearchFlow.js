@@ -1,4 +1,4 @@
-import {classNames,createNavigationList,createSettingsSearch,settingsSearchDocuments,buildSettingsPath,getBrowserSubpage,createSettingsSearchField,createSettingsSearchResults,createSettingsArtworkRegistry,createSettingsSharedArtwork,createSettingsComponentArtwork,createSettingsExtensionArtwork} from '../src/index.js';
+import {createListNavigation,classNames,createNavigationList,createSettingsSearch,settingsSearchDocuments,buildSettingsPath,getBrowserSubpage,createSettingsSearchField,createSettingsSearchResults,createSettingsArtworkRegistry,createSettingsSharedArtwork,createSettingsComponentArtwork,createSettingsExtensionArtwork} from '../src/index.js';
 // Local orchestration fixture. Recovered input, ranking, result rows and artwork are unchanged.
 export function createSettingsSearchFlow(React,ui){
  const h=React.createElement,labels={appearance:'Appearance',voice:'Voice',storage:'Storage','keyboard-shortcuts':'Keyboard shortcuts','browser-use':'Browser','local-environments':'Local environments'};
@@ -11,10 +11,14 @@ export function createSettingsSearchFlow(React,ui){
  const Input=createSettingsSearchField({React,SearchField:ui.SearchField,useAccelerator});
  const unsupported=()=>{throw Error('This local fixture contains no external or team destinations');};
  const Results=createSettingsSearchResults({React,NavigationItem:ui.NavigationItem,NavigationList:createNavigationList({React,mergeClasses:classNames}),usePlatform:()=> 'windows',getSectionIcon,ResponsiveIcon:ui.ResponsiveIcon,prefetchSection:()=>Promise.resolve(),openExternal:unsupported,ExternalLink:unsupported,ExternalIcon:unsupported,securityIcon:sharedArtwork.ri,TeamList:unsupported,formatMessage:intl.formatMessage});
- return function SettingsSearchFlow(){const [query,setQuery]=React.useState(''),[highlight,setHighlight]=React.useState(0),[selected,setSelected]=React.useState(null),listRef=React.useRef(null);
+ function useStableCallback(fn){const ref=React.useRef(fn);React.useLayoutEffect(()=>{ref.current=fn;},[fn]);return React.useCallback((...args)=>ref.current(...args),[]);}
+ const useListNavigation=createListNavigation({React,isMac:()=>false,useStableCallback});
+ return function SettingsSearchFlow(){const [query,setQuery]=React.useState(''),[selected,setSelected]=React.useState(null);
  const results=searchSettings({intl,query,targets,visibleSectionSlugs:Object.keys(labels)}).map(r=>({...r,id:r.sectionSlug,kind:'section',panelSlug:r.sectionSlug}));
  const select=r=>setSelected({label:r.label,path:r.path??buildSettingsPath(r.sectionSlug)});
- const keydown=e=>{if(!results.length)return;if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();setHighlight(i=>(i+(e.key==='ArrowDown'?1:-1)+results.length)%results.length);}else if(e.key==='Enter'){e.preventDefault();select(results[Math.min(highlight,results.length-1)]);}};
- return h('section',{'data-settings-search-demo':true,'aria-label':'Recovered settings search',className:'mt-6'},h('h2',{className:'text-lg font-medium'},'Settings search'),h('p',{className:'text-secondary text-sm'},'Original search and artwork; six local destinations. Keyboard orchestration is demo glue.'),h(Input,{searchQuery:query,onQueryChange:value=>{setQuery(value);setHighlight(0);},onKeyDown:keydown}),h(Results,{searchResults:results,highlightedIndex:highlight,intl,listRef,onSelectResult:select}),selected?h('p',{role:'status','data-settings-search-selection':true},selected.label+' — '+selected.path):null);
+ const ids=React.useMemo(()=>results.map(r=>r.id),[results.map(r=>r.id).join('\0')]);
+ const nav=useListNavigation({items:ids,isActive:query.length>0,autoHighlightFirst:false,onSelect:(_,i)=>select(results[i]),onEscape:()=>setQuery('')});
+
+ return h('section',{'data-settings-search-demo':true,'aria-label':'Recovered settings search',className:'mt-6'},h('h2',{className:'text-lg font-medium'},'Settings search'),h('p',{className:'text-secondary text-sm'},'Original search and artwork; six local destinations. Original list keyboard controller; local destinations.'),h(Input,{searchQuery:query,onQueryChange:setQuery,onKeyDown:nav.handleKeyDown}),h(Results,{searchResults:results,highlightedIndex:nav.highlightedIndex,intl,listRef:nav.listRef,onSelectResult:select}),selected?h('p',{role:'status','data-settings-search-selection':true},selected.label+' — '+selected.path):null);
  };
 }
