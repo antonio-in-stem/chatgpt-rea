@@ -1,0 +1,85 @@
+{
+  "source": "profile-dropdown-items-a9739dde34e4.js",
+  "sha256": "0e76ab4388ebbc2aa7464956f7fd7a0644e051fc7a0edfdac6871322b0cb0914",
+  "shared": "app-shared-737655e1fb23.js",
+  "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "ki",
+    "Ai",
+    "Pi",
+    "si",
+    "wi",
+    "Ti"
+  ],
+  "artwork": [
+    {
+      "alias": "st",
+      "asset": "Ana",
+      "function": "jna",
+      "preset": false
+    },
+    {
+      "alias": "At",
+      "asset": "Mna",
+      "function": "Nna",
+      "preset": false
+    },
+    {
+      "alias": "ut",
+      "asset": "Kar",
+      "function": "qar",
+      "preset": false
+    },
+    {
+      "alias": "lt",
+      "asset": "A3i",
+      "function": "j3i",
+      "preset": false
+    },
+    {
+      "alias": "et",
+      "asset": "Ina",
+      "function": "Lna",
+      "preset": false
+    },
+    {
+      "alias": "U",
+      "asset": "F3n",
+      "function": "I3n",
+      "preset": false
+    },
+    {
+      "alias": "St",
+      "asset": "Pna",
+      "function": "Fna",
+      "preset": false
+    },
+    {
+      "alias": "t",
+      "asset": "der",
+      "function": "fer",
+      "preset": false
+    },
+    {
+      "alias": "E",
+      "asset": "z4n",
+      "function": "B4n",
+      "preset": false
+    },
+    {
+      "alias": "u",
+      "asset": "KBi",
+      "function": "qBi",
+      "preset": false
+    }
+  ],
+  "bodySha256": "486f4ba91953d55e4a6d87dc4e9aede5d9ecc402130e63d8ab4afdef5eaf4dc7",
+  "artworkSha256": "3ea15ac5cdbca4046340288c75758f1b257165d67140cbb9546b4893140a240a",
+  "limits": [
+    "Fi link/telemetry wrapper replaced by explicit link callbacks",
+    "Demo-build, external-link-indicator, skeleton and row renderers are required dependencies",
+    "Feed eligibility/version helpers are explicit caller dependencies",
+    "Feature/capability/query inputs are resolved snapshots",
+    "Destination screens not part of this extraction"
+  ]
+}

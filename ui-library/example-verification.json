@@ -582,5 +582,25 @@
       "Actual floating overlay pending",
       "Full-window visual parity unverified"
     ]
+  },
+  "profileHelpMenu": {
+    "keyboardOpensFlyout": true,
+    "visibleItems": [
+      "What's new",
+      "Set up mobile",
+      "Set up Chrome extension",
+      "Keyboard shortcuts",
+      "User guide"
+    ],
+    "mobileRoute": "/codex-mobile",
+    "keyboardCommand": "showKeyboardShortcuts",
+    "selectionCloses": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Rich feed tested at adapter boundary, not browser-rendered",
+      "Destination screens pending",
+      "Feed skeleton/row, demo-build and external-link indicator remain required dependencies",
+      "Full-window parity pending"
+    ]
   }
 }

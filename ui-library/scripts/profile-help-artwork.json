@@ -1,0 +1,68 @@
+[
+  {
+    "alias": "st",
+    "asset": "Ana",
+    "function": "jna",
+    "preset": false
+  },
+  {
+    "alias": "At",
+    "asset": "Mna",
+    "function": "Nna",
+    "preset": false
+  },
+  {
+    "alias": "ut",
+    "asset": "Kar",
+    "function": "qar",
+    "preset": false
+  },
+  {
+    "alias": "lt",
+    "asset": "A3i",
+    "function": "j3i",
+    "preset": false
+  },
+  {
+    "alias": "et",
+    "asset": "Ina",
+    "function": "Lna",
+    "preset": false
+  },
+  {
+    "alias": "U",
+    "asset": "F3n",
+    "function": "I3n",
+    "preset": false
+  },
+  {
+    "alias": "St",
+    "asset": "Pna",
+    "function": "Fna",
+    "preset": false
+  },
+  {
+    "alias": "t",
+    "asset": "der",
+    "function": "fer",
+    "preset": false
+  },
+  {
+    "alias": "G",
+    "asset": "z4n",
+    "function": "B4n",
+    "preset": true
+  },
+  {
+    "alias": "u",
+    "asset": "KBi",
+    "function": "qBi",
+    "preset": false
+  },
+  {
+    "alias": "E",
+    "asset": "z4n",
+    "function": "B4n",
+    "preset": false
+  }
+]

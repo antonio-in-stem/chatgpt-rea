@@ -1,3 +1,5 @@
+import {createProfileHelpMenu} from '../src/ProfileHelpMenu.js';
+import {motion,AnimatePresence} from 'framer-motion';
 import {createProfilePetMenuItem} from '../src/ProfilePetMenuItem.js';
 import {createProfileMenuLayout} from '../src/ProfileMenuLayout.js';
 // Local demo actions; profile trigger, placement and menu surfaces are recovered.
@@ -6,7 +8,9 @@ import {createProfileControl} from '../src/ProfileControl.js';
 export function createProfileMenuFlow(React,{menu,Tooltip,Button,LegacyButton,Avatar,AssetIcon,ResponsiveIcon,ProfileFooter}){
  const h=React.createElement,Actions=React.createContext(null);
  const {ProfilePetMenuItem}=createProfilePetMenuItem({React,MenuItem:menu.MenuItem,useStateSnapshot:()=>React.useContext(Actions).petState});
- const {ProfileMenuLayout}=createProfileMenuLayout({React,menu,AssetIcon,ResponsiveIcon,HelpMenu:()=>null,PetMenuItem:ProfilePetMenuItem,useProviderQuery:()=>({data:{model_provider:'openai'}}),providerDisplayName:()=>null,parseProviderInfo:()=>({success:false})});
+ const unavailable=()=>{throw Error('This demo has not integrated this recovered dependency yet');};
+ function HelpMenu(){const actions=React.useContext(Actions);const help=React.useMemo(()=>createProfileHelpMenu({React,menu,AssetIcon,ResponsiveIcon,motion,AnimatePresence,DemoBuildItem:unavailable,ExternalLinkIndicator:unavailable,Skeleton:unavailable,Row:unavailable,useStateSnapshot:()=>React.useContext(Actions).helpState,isFeedEnabled:()=>false,parseVersion:unavailable,isNewVersion:unavailable,onSelectPost:unavailable,navigate:path=>actions.setStatus('Local route selected: '+path),dispatchCommand:command=>actions.setStatus('Local command selected: '+command),openDebug:unavailable}),[actions.setStatus]);return h(help.ProfileHelpMenu,{onOpenDocs:()=>actions.setStatus('User guide selected (local demo)'),onOpenWhatsNew:()=>actions.setStatus('Changelog selected (local demo)'),onOpenPrivacyCenter:unavailable,privacyCenterHref:'https://chatgpt.com/privacy-center'});}
+ const {ProfileMenuLayout}=createProfileMenuLayout({React,menu,AssetIcon,ResponsiveIcon,HelpMenu,PetMenuItem:ProfilePetMenuItem,useProviderQuery:()=>({data:{model_provider:'openai'}}),providerDisplayName:()=>null,parseProviderInfo:()=>({success:false})});
  function LocalItems(){const {compact,setCompact,selectPhoto,removePhoto,hasPhoto,setStatus,petState,setMini,overlayOpen,setOverlayOpen}=React.useContext(Actions);return h(ProfileMenuLayout,{displayName:'Local Profile',isOverlayOpen:overlayOpen,onTogglePet:()=>{setOverlayOpen(!overlayOpen);setStatus('Overlay action toggled (local state; floating window pending)');},onOpenProfile:selectPhoto,onCopyUserId:()=>setStatus('Local user ID: demo'),onOpenSettings:()=>setStatus('Settings action selected (local demo)'),onLogOut:()=>setStatus('Log out action selected (local demo; no account session)'),additionalItems:h(React.Fragment,null,
   h(menu.MenuSectionLabel,null,'Local demo actions'),
   h(menu.MenuItem,{onSelect:selectPhoto},'Choose profile photo'),
@@ -21,9 +25,9 @@ export function createProfileMenuFlow(React,{menu,Tooltip,Button,LegacyButton,Av
   const snapshot={enabled:true,ambientUsageEnabled:true,sidebarWidth:308,auth:{authMethod:'chatgpt',accountId:'demo',userId:'demo',nameAtLogin:'Local Profile'},accountQuery:{data:{id:'demo',structure:'personal',profile_picture_url:url}}};
   return h('section',{'aria-label':'Recovered profile menu example',className:'mt-6'},
    h('h2',{className:'text-lg font-medium'},'Profile menu'),
-   h('p',{className:'text-sm text-secondary'},'Recovered profile trigger and dropdown with local demo actions. Original composition with local actions; account gating and Help are still being extracted.'),
+   h('p',{className:'text-sm text-secondary'},'Recovered profile trigger and dropdown with local demo actions. Original composition with local actions; account gating and destination screens are still being extracted.'),
    h('input',{ref:input,type:'file',accept:'image/*',hidden:true,onChange:event=>{setFile(event.target.files[0]??null);event.target.value='';}}),
-   h(Actions.Provider,{value:{compact,setCompact,setStatus,setMini,overlayOpen,setOverlayOpen,petState:{petVisible:false,miniFeatureEnabled:mini,miniOverrideEnabled:false,hasOrbitAgent:false},hasPhoto:!!file,selectPhoto:()=>input.current.click(),removePhoto:()=>setFile(null)}},
+   h(Actions.Provider,{value:{helpState:{auth:{authMethod:'chatgpt'},mobileSetupAvailable:true,mobileSetupQuery:{data:false,isLoading:false},features:{'410065390':true},localeQuery:{data:{}},postsQuery:{data:{items:[]},isPending:false},intl:{locale:'en-US'}},compact,setCompact,setStatus,setMini,overlayOpen,setOverlayOpen,petState:{petVisible:false,miniFeatureEnabled:mini,miniOverrideEnabled:false,hasOrbitAgent:false},hasPhoto:!!file,selectPhoto:()=>input.current.click(),removePhoto:()=>setFile(null)}},
     h(profile.ProfileMenuProvider,{snapshot},h('div',{style:{width:compact?36:308}},h(ProfileFooter,{compact,leading:h(ProfileControl,{snapshot,compact})})))),status?h('p',{role:'status'},status):null);
  };
 }
