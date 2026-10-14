@@ -370,6 +370,20 @@
       "manifest": "navigation-rail-manifest.json",
       "transformation": "D2o presentation subtree semantically extracted with exact classes; y2o footer body unchanged. Explicit content slots.",
       "status": "Three layout/source tests pass; full rail controller, actual identity/avatar/menu and browser visual parity pending."
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "components": [
+        "Avatar",
+        "AvatarImage",
+        "AvatarFallback",
+        "AvatarShape",
+        "avatarInitials",
+        "avatarColorKey"
+      ],
+      "manifest": "avatar-manifest.json",
+      "transformation": "Original bodies and constants; explicit React/motion/preference adapters",
+      "status": "Three source/state/SSR tests pass. Browser animations and profile-menu integration pending."
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

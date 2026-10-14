@@ -1,3 +1,4 @@
+export {createAvatar} from './Avatar.js';
 export {createNavigationRail,navigationRailClasses} from './NavigationRail.js';
 export {createFileIcon} from './FileIcon.js';
 export {createProviderArtwork} from './ProviderArtwork.js';

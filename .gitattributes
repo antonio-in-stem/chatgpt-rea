@@ -29,3 +29,5 @@ ui-library/src/ProviderArtwork.js -text
 ui-library/src/FileIcon.js -text
 
 ui-library/src/NavigationRail.js -text
+
+ui-library/src/Avatar.js -text

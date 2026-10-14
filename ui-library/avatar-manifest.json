@@ -1,0 +1,29 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "M9i",
+    "t9i",
+    "FMo",
+    "IMo",
+    "LMo",
+    "HMo",
+    "UMo",
+    "VMo",
+    "KMo",
+    "qMo",
+    "YMo",
+    "QMo",
+    "$Mo",
+    "eNo",
+    "tNo",
+    "D1"
+  ],
+  "bodySha256": "b62989a2106d81eedc2de021fc9560770b2044e593ad0f1d9932a04dd5b85b2b",
+  "transformation": "Original avatar, image state, initials/color, shapes, sampling, easing and initializer bodies; React/motion/preference imports adapted; compiler cache retained.",
+  "limits": [
+    "Identity queries and profile menu not included",
+    "Browser shape-animation comparison against original pending",
+    "Avatar CSS uses existing original initial stylesheet"
+  ]
+}
