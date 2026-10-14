@@ -1,0 +1,26 @@
+{
+  "source": "profile-dropdown-items-a9739dde34e4.js",
+  "sha256": "0e76ab4388ebbc2aa7464956f7fd7a0644e051fc7a0edfdac6871322b0cb0914",
+  "shared": "app-shared-737655e1fb23.js",
+  "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "Gi",
+    "vi"
+  ],
+  "sharedSymbols": [
+    "h6i"
+  ],
+  "bodySha256": "25e8173ed30efd67bd5b209206666281d14ecf3206640126b07df23ffa385766",
+  "artworkSha256": "a44f5170319057298c70dc27000227db6a5e37b189f0a30a9fa373f74f3dd694",
+  "stateMapping": {
+    "petVisible": "at(F.petVisible)",
+    "miniFeatureEnabled": "ce(1532120159)",
+    "miniOverrideEnabled": "s(Cr) / CWs",
+    "hasOrbitAgent": "s(Ln) / PEs"
+  },
+  "limits": [
+    "Inputs are resolved states; feature/atom derivation not reproduced",
+    "Overlay and pet rendering are not part of this menu item",
+    "Full-window screenshot parity unverified"
+  ]
+}

@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createProfilePetMenuItem} from '../src/ProfilePetMenuItem.js';
+const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8'),manifest=JSON.parse(read('../profile-pet-item-manifest.json')),source=read('../../original-stack/state/recovered-all/readable/assets/'+manifest.source),shared=read('../../original-stack/state/recovered-all/readable/assets/'+manifest.shared),output=read('../src/ProfilePetMenuItem.js');
+const def=(s,n)=>{const i=s.indexOf('function '+n+'(');return s.slice(i,i+s.slice(i).search(/^}\r?$/m)+1);},h=React.createElement;
+function inspect(state,props={}){let item;const ui=createProfilePetMenuItem({React,MenuItem:p=>{item=p;return p.children;},useStateSnapshot:()=>state});const text=renderToStaticMarkup(h(ui.ProfilePetMenuItem,props));return {text,item,ui};}
+test('Pet/Mini branch and both icon bodies match distributed source',()=>{for(const n of manifest.symbols)assert.equal(def(output,n),def(source,n));for(const n of manifest.sharedSymbols)assert.equal(def(output,n),def(shared,n));});
+test('Pet branch preserves label, asset, shortcut visibility and caller action',()=>{let count=0;const closed=inspect({petVisible:false,miniFeatureEnabled:false,miniOverrideEnabled:false,hasOrbitAgent:false},{petShortcut:'Ctrl+M',onTogglePet:()=>count++});assert.equal(closed.text,'Show Pet');assert.equal(closed.item.leftIconAsset.name,'pet-egg-light-16');assert.equal(closed.item.LeftIcon,undefined);assert.equal(closed.item.keyboardShortcut,'Ctrl+M');closed.item.onClick();assert.equal(count,1);const open=inspect({miniFeatureEnabled:false,miniOverrideEnabled:false},{isOverlayOpen:true,petShortcut:'Ctrl+M'});assert.equal(open.text,'Hide Pet');assert.equal(open.item.keyboardShortcut,null);});
+test('Mini feature/override and existing pet/orbit states retain original branch precedence',()=>{for(const state of [{miniFeatureEnabled:true},{miniOverrideEnabled:true},{miniFeatureEnabled:true,petVisible:true,hasOrbitAgent:true}]){const result=inspect(state);assert.equal(result.text,'Show Mini');assert.equal(result.item.leftIconAsset,undefined);assert.match(renderToStaticMarkup(h(result.item.LeftIcon)),/window-mini/);}const pet=inspect({miniFeatureEnabled:true,petVisible:true,hasOrbitAgent:false});assert.equal(pet.text,'Show Pet');const hidden=inspect({miniFeatureEnabled:true},{isOverlayOpen:true});assert.equal(hidden.text,'Hide Mini');});

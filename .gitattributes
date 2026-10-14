@@ -48,3 +48,5 @@ ui-library/src/MenuInfrastructure.js -text
 ui-library/src/ProfileMenu.js -text
 
 ui-library/src/ProfileMenuLayout.js -text
+
+ui-library/src/ProfilePetMenuItem.js -text

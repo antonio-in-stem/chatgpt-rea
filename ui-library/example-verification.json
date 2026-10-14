@@ -564,5 +564,23 @@
       "Settings/logout are callbacks, not implemented screens",
       "Full-window comparison pending"
     ]
+  },
+  "profilePetItem": {
+    "originalSymbols": [
+      "Gi",
+      "vi",
+      "h6i"
+    ],
+    "showPetIcon": true,
+    "hidePetAfterLocalToggle": true,
+    "hideMiniIcon": true,
+    "showMiniAfterLocalToggle": true,
+    "escapeCloses": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Local resolved state adapter",
+      "Actual floating overlay pending",
+      "Full-window visual parity unverified"
+    ]
   }
 }
