@@ -10,3 +10,4 @@ ui-library/src/NavigationFallbackIcons.js -text
 ui-library/src/AssetIcon.js -text
 
 ui-library/src/ComposerLayout.js -text
+ui-library/src/ComposerActions.js -text

@@ -1,0 +1,34 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "symbols": [
+    "NLt",
+    "PLt",
+    "RLt",
+    "zLt",
+    "BLt",
+    "VLt",
+    "HLt",
+    "ULt",
+    "WLt",
+    "XLt",
+    "ZLt",
+    "QLt",
+    "nRt"
+  ],
+  "bodySha256": "286cd508c737148153c3aa85e4156f3d78a8ec65a3cc878fe5a45aa8597cc740",
+  "sharedSource": "app-shared-737655e1fb23.js",
+  "sharedSha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "sharedSymbols": [
+    "gCi",
+    "QSi",
+    "Ecr"
+  ],
+  "sharedBodySha256": "ba21f93aa3041c97fd2aa04080fc0b2e7114cc53b724c52253517a079f3a6a77",
+  "transformation": "Original function bodies; compiler memo optimization removed. Runtime feature flag becomes explicit morphingEnabled. Shipped voice preset uses trusted static normalization without generic validator/freezing; no gradients in this preset. Tooltip integration is explicit.",
+  "limits": [
+    "Tooltip implementation not included; required for tooltip/blocked/morphing wrapper branches",
+    "Matched original screenshot and animation timing comparison pending",
+    "No dictation or generation backend"
+  ]
+}

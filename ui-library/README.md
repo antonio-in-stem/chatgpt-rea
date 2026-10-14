@@ -60,7 +60,7 @@ React.createElement(Button, {
 }, saving ? 'Saving' : 'Save');
 ```
 
-The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Fifty-four tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
+The connected example now uses this shared Button. Its primary pill resolves to the original CSS colors and 36px dialog-action height in the Windows style scenario. Fifty-nine tests pass, including differential execution against the shipped Jbi function for variant classes, loading, sizing labels and focus contracts. This is functional and structural evidence, not proof of pixel parity for every variant. Source-comparison tests require the local recovered source tree; `npm run build:example` does not.
 
 `examples/SearchFlow.js` demonstrates filtering, empty results, clearing and choosing a result using the recovered SearchField and Button. It is an authored integration example, not an original project screen. SearchField does not implement filtering or fetch data itself.
 
@@ -173,3 +173,12 @@ The composer family now also exposes `AdaptiveFooter`, `UtilityBarSlot`, `Layout
 `AdaptiveFooter` accepts input, leading/trailing controls, layout, spacing and dictation slots. It preserves the 40rem responsive boundary, document/voice branches, dictation transcript visibility, DOM order and guarded focus restoration through `ComposerFocusTarget` (provide an object with focus()). `UtilityBarSlot` preserves visible/hidden/inert states, above/below placement and AnimatePresence behavior. These are recovered presentation behaviors; dictation input and recording services are not implemented.
 
 The connected example now uses the original adaptive footer and layout transition provider. A single-line toggle exercises the responsive layout: at viewport 1100px the input sits between leading/trailing controls; at 500px it is first in the DOM and the controls move below it. Multiline uses stacked rows. Local Enter submission still succeeds with no page errors. These checks do not establish complete original screenshot parity.
+
+
+### Composer primary action and icon morphing
+
+`createComposerActions({React, motion, Spinner, ResponsiveIcon, AssetIcon, Tooltip?, morphingEnabled?, motionPreference?})` returns `ComposerPrimaryAction`, `ComposerSendIcon`, `ComposerStopIcon`, `ComposerVoiceIcon` and `ComposerMorphingIcon`. The action retains nRt's button/submit variants, busy/disabled states, keyboard label, icon source, blocked-reason behavior and tooltip contracts. In particular, blocked reasons can keep a disabled action focusable while its click handler prevents submission; native disabled and aria-disabled are distinct in the original implementation.
+
+The shipped send/stop SVGs, voice preset, morph geometry and transition presets are preserved. `ComposerMorphingIcon` accepts state send/stop/voice, isLoading and className. The runtime feature flag is an explicit `morphingEnabled` option; motion preference uses the library adapter. Tooltip-bearing branches (including the morph-enabled action wrapper) require a compatible Tooltip implementation. They fail explicitly if none is supplied; no native-title substitute is introduced. Tooltip implementation remains a separate extraction task.
+
+The example uses the original static send action for local submission. Browser verification observed its 28×28px button and 16px displayed icon (20×20 viewBox) in the current theme, successful click submission and restored input focus, without page errors. These measurements describe this example's token context, not a universal size or verified original-screen match. Unit checks compare disabled/blocked/tooltip branches and exact morph path/transition output, including reduced motion. Real animation timing and full screen parity remain pending.

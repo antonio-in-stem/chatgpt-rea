@@ -231,6 +231,19 @@
         "Motion runtime, app preference and visual scale are injected",
         "Example textarea and submission behavior authored locally"
       ]
+    },
+    {
+      "source": "app-initial-b8e1c8014bb4.js",
+      "components": [
+        "ComposerPrimaryAction",
+        "ComposerSendIcon",
+        "ComposerStopIcon",
+        "ComposerVoiceIcon",
+        "ComposerMorphingIcon"
+      ],
+      "manifest": "composer-actions-manifest.json",
+      "transformation": "Original action and morph function bodies with explicit runtime dependencies. Source feature flag exposed as morphingEnabled; tooltip implementation remains an adapter.",
+      "status": "Differential branches and SVG/path/transition checks; browser click submission verified. Real morph animation and matched screenshot parity pending."
     }
   ],
   "authoredExample": "examples/DecisionFlow.js is a new composition, not original source",

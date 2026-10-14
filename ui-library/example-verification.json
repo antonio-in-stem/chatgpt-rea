@@ -225,5 +225,24 @@
       "Local textarea, not recovered ProseMirror",
       "No original screenshot comparison"
     ]
+  },
+  "composerPrimaryAction": {
+    "pageErrors": [],
+    "message": "Sent with recovered action",
+    "input": "",
+    "focusRestored": true,
+    "button": {
+      "width": 28,
+      "height": 28,
+      "radius": "9999px",
+      "background": "rgb(223, 223, 223)",
+      "iconViewBox": "0 0 20 20",
+      "iconWidth": 16,
+      "pathCount": 1
+    },
+    "limits": [
+      "Current demo token context only",
+      "Real morph animation and matched original screenshot pending"
+    ]
   }
 }
