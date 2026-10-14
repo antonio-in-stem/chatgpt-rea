@@ -13,9 +13,9 @@ export function createMenuEngine({React,ReactDOM}){
  const o=()=>React,ph=()=>ReactDOM;
  const runtime={Fragment:React.Fragment,jsx:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key}),jsxs:(type,props,key)=>React.createElement(type,key===undefined?props:{...props,key},...props.children)},K=()=>runtime;
 ${body}
- wb();
- return {Root:pb,Trigger:mb,Portal:hb,Content:gb,Group:fNe,Label:pNe,Item:_b,CheckboxItem:vb,RadioGroup:yb,RadioItem:bb,ItemIndicator:xb,Separator:mNe,Arrow:hNe,Sub:gNe,SubTrigger:Sb,SubContent:Cb};
+ wb();JDe();
+ return {Root:pb,Trigger:mb,Portal:hb,Content:gb,Group:fNe,Label:pNe,Item:_b,CheckboxItem:vb,RadioGroup:yb,RadioItem:bb,ItemIndicator:xb,Separator:mNe,Arrow:hNe,Sub:gNe,SubTrigger:Sb,SubContent:Cb,Dialog:EDe};
 }
 `;
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');fs.writeFileSync(path.join(root,'src/MenuEngine.js'),output);fs.writeFileSync(path.join(root,'src/BundleRuntime.js'),runtime);
-fs.writeFileSync(path.join(root,'menu-engine-manifest.json'),JSON.stringify({source:path.basename(process.argv[2]),sourceSha256:createHash('sha256').update(source).digest('hex'),startSymbol:'zCe',endSymbol:'wb',bodySha256:createHash('sha256').update(body).digest('hex'),bodyLength:body.length,runtimeSha256:createHash('sha256').update(runtime).digest('hex'),transformation:'Contiguous original source segment retained unchanged. React and ReactDOM module imports adapted; original Rolldown runtime retained.',limits:['Integration with menu surfaces pending','Basic keyboard/select/Escape/outside-click browser paths verified; checkbox/radio/submenu/modal paths pending','No screenshot parity claim']},null,2)+'\n');
+fs.writeFileSync(path.join(root,'menu-engine-manifest.json'),JSON.stringify({source:path.basename(process.argv[2]),sourceSha256:createHash('sha256').update(source).digest('hex'),startSymbol:'zCe',endSymbol:'wb',bodySha256:createHash('sha256').update(body).digest('hex'),bodyLength:body.length,runtimeSha256:createHash('sha256').update(runtime).digest('hex'),transformation:'Contiguous original source segment retained unchanged. React and ReactDOM module imports adapted; original Rolldown runtime retained.',limits:['Engine API; styled menu composition is supplied by createMenu','Dialog primitives are exposed; XMi/tNi styled dialog controller pending','No screenshot parity claim']},null,2)+'\n');

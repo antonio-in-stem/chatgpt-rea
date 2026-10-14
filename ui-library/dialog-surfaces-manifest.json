@@ -1,0 +1,21 @@
+{
+  "source": "app-shared-737655e1fb23.js",
+  "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e",
+  "symbols": [
+    "mNi",
+    "hNi",
+    "j7",
+    "M7",
+    "_Ni",
+    "gNi",
+    "bNi",
+    "vNi",
+    "yNi"
+  ],
+  "bodySha256": "32fece359febb4f2c73e2cea09ce2bc9ea5d6340a20bb8aca79d4032bf958259",
+  "limits": [
+    "Dialog layout only; XMi/tNi styled content controller pending",
+    "Use engine.Dialog for original modal primitives; layout alone does not manage focus",
+    "Full-window visual parity unverified"
+  ]
+}

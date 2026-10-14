@@ -632,5 +632,17 @@
       "Profile Yi accountSwitcher stays null in this build",
       "No whole-window visual comparison"
     ]
+  },
+  "dialogPrimitives": {
+    "initialFocus": true,
+    "tabToClose": true,
+    "tabWraps": true,
+    "escapeReturnsFocus": true,
+    "outsideCloses": true,
+    "consoleErrors": 0,
+    "limits": [
+      "Test-only outer placement; styled XMi/tNi wrapper pending",
+      "Not a screenshot parity check"
+    ]
   }
 }

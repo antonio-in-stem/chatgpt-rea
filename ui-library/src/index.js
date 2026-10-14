@@ -104,3 +104,5 @@ export {createProfileHelpMenu} from './ProfileHelpMenu.js';
 export {createLoadingSurfaces} from './LoadingSurfaces.js';
 
 export {createAccountSurfaces} from './AccountSurfaces.js';
+
+export {createDialogSurfaces} from './DialogSurfaces.js';

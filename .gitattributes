@@ -56,3 +56,5 @@ ui-library/src/ProfileHelpMenu.js -text
 ui-library/src/LoadingSurfaces.js -text
 
 ui-library/src/AccountSurfaces.js -text
+
+ui-library/src/DialogSurfaces.js -text

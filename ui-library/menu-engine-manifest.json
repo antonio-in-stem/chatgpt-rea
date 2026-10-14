@@ -8,8 +8,8 @@
   "runtimeSha256": "6186fe4d07e4a4a9ea060111ca4693787e0dc5d24e019db5cb7a32695ef398ad",
   "transformation": "Contiguous original source segment retained unchanged. React and ReactDOM module imports adapted; original Rolldown runtime retained.",
   "limits": [
-    "Integration with menu surfaces pending",
-    "Basic keyboard/select/Escape/outside-click browser paths verified; checkbox/radio/submenu/modal paths pending",
+    "Engine API; styled menu composition is supplied by createMenu",
+    "Dialog primitives are exposed; XMi/tNi styled dialog controller pending",
     "No screenshot parity claim"
   ]
 }
