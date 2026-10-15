@@ -41,13 +41,13 @@ Captura de Apariencia conservada localmente en `original-stack/state/demo-profil
 
 Automatización: Demo-Controls añade choose-theme e inspect-theme para el input radio original. choose-theme solicita el cambio; su resultado no prueba que haya terminado. inspect-theme confirma el estado después. Durante recarga, ready=false no es fallo del frontend. La prueba no cambió renderer ni adapters de backend. Sintaxis Node comprobada.
 
-## Decisión de empaquetado pendiente
+## Trabajo retomado por el usuario
 
-La revisión de Ajustes invalida el supuesto de que SettingsWorkspace permite una pantalla independiente con las piezas actuales: su WorkspaceShell es sDs, el mismo shell de conversación todavía sin separar. SettingsFlow es una composición local declarada; SettingsPageFlow tiene filas demo y no es la pantalla original. No se modificó su presentación ni se declaró el hito completado.
+El usuario confirmó que acepta conservar las dependencias originales y después ordenó continuar todos los flujos del frontend. Ya no hay una decisión de empaquetado pendiente ni autorización para detener por ese motivo. Prioridad: flujos y pantallas originales con datos demo; no separar providers ni portar Rust.
 
-Pregunta enviada al usuario: si la biblioteca puede incluir las dependencias originales de estado/servicios y sus bundles, o si los componentes deben ser independientes de la app. La primera opción conserva el acoplamiento y exige un contrato consumidor real; no se debe vender un launcher como biblioteca. La segunda mantiene la separación como trabajo obligatorio. No implementar la opción dependiente de esta respuesta hasta recibirla, ni gastar la cuota restante en una nueva cadena de providers. Rust sigue diferido.
+Siguiente lote: Code Review → conexiones GitHub y preferencias personales, seguido de Controles parentales. Preferencias cloud ya tiene el flujo verificado indicado abajo. La antigua demo y adaptador terminaron (PIDs ausentes, puerto CDP no responde); Start-Demo fue relanzado sobre el mismo perfil, sesión exec 11311. No lanzar otra instancia mientras esa sesión esté viva.
 
-La separación de conversación sigue pendiente. Su investigación acotada se cerró en 67% sin frontera de montaje independiente demostrada; véase ui-library/CONVERSATION-INTEGRATION.md. La demo original y su prueba integrada son referencia, no sustituyen la biblioteca.
+Inventario disponible: 145 entradas léxicas del router en original-stack/evidence/frontend-route-inventory.json; incluye expresiones sin resolver, rutas condicionales y rutas anidadas. No equivale a 145 flujos operativos ni sirve todavía para dar porcentaje global. El primer recorrido se centrará en destinos visibles, conservando las rutas restantes como pendientes.
 
 ## Cuota y pendientes
 
@@ -66,3 +66,19 @@ Pantalla: conversación original. Problema corregido: los escenarios integrados 
 La búsqueda de montaje independiente se cierra por ahora sin una frontera viable demostrada: GPc monta hidratación persistente Gkc, $Nc y la cadena de providers; ZPc consume rutas y notifica servicios globales. El arranque OFc/UFc tiene efectos globales. No se probará ejecutarlo dos veces sobre la instancia de referencia. Esto no demuestra que la separación sea imposible.
 
 Resultado: Verify-ConversationFlow.cjs final ejecutado en la instancia existente, exit 0, 13 observaciones aprobadas. Comprueba el mensaje dentro de thread-scroll-container para no confundir el título de sidebar con el turno. Se observó un fallo transitorio de lectura durante reload; ahora sólo las consultas reintentan dentro de 20 segundos, sin repetir acciones. Node --check pasó para runner y controles. Reporte local: state/demo-profile-host-v1/conversation-flow-check.json. No se publican capturas ni texto de renderer. La prueba deja conversaciones sintéticas con prefijo REA flow. Cuota de este lote: 66% → 67% compartida de cuenta.
+
+## Reanudación 2026-10-15
+
+Prosigue autorizado. Skills REA y architect-mode continúan aplicándose. Fallo observado: Preferencias cloud muestra Unable to load porque faltan GET /wham/settings/user y GET /wham/settings/configs/user-preferences. Se añadió demo_cloud_preferences.cjs a la frontera HTTP del host, con PATCH local/persistente, sin tocar renderer. Cuatro pruebas de contrato pasan; ocho comprobaciones de interfaz pasaron, incluidas recarga y restauración de valores. Configuración y valores son sintéticos explícitos.
+
+La ventana de cuota ahora informa 0% usado; esto no amplía el presupuesto humano. Se conserva un tope adicional conservador de 7 puntos desde esta lectura (resto nominal de 67 a 74), con cierre de implementación a los 5 puntos. No se consumieron créditos de reset.
+
+El recorrido anterior de Ajustes no equivale a flujos completos: errores de carga en Parental controls, Cloud preferences y Code Review; fallos de automatización en General/Notifications y observación de Profile insuficiente. Corrección del auditor: filtrar elementos de navegación visibles y rechazar alertas; no interpretar headings de otra superficie oculta como evidencia de éxito.
+
+## Resultado verificado: Preferencias cloud
+
+2026-10-15: paquete demo 39a30d970689473f6ff807d0a364e6008ba8aecc6175ddd6bdc8d76ba57afccd instalado y arrancado. Runtime 92572, adaptador 154176, launcher exec 11311 (revalidar antes de usar). Se preservaron renderer y avatar demo. Verify-CloudPreferences.cjs terminó exit 0 con ocho comprobaciones: patrón inválido bloqueado, borrador válido habilitado, guardado terminado, cambio de diff, persistencia de patrón y diff tras reload, restauración de patrón y diff previos. Reporte local cloud-preferences-ui-check.json; no publicado. El primer selector de menú tras reload corrió antes de que apareciera el menú: el runner final espera estados y no reintenta escrituras.
+
+Code Review sigue mostrando Unable to load GitHub connections; corresponde a sus conexiones/repositorios, no a las gráficas de uso. Consultas fuente en app-initial: gBt obtiene GET /aip/connectors/{connector_id} y /ps/connectors/by-template; uKt obtiene /aip/connectors/{connector_id}/link. Falta resolver el contrato completo de la conexión sintética y preferencias personales. No implementar una respuesta vacía como prueba de todos los flujos. Controles parentales sigue pendiente.
+
+Última cuota consultada: 1% en la nueva ventana. El resto conservador continúa limitado a 7 puntos desde el reinicio observado. No tocar Rust.

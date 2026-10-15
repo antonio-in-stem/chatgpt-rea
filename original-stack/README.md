@@ -468,3 +468,17 @@ After restarting only the isolated demo runtime/adapter, a new synthetic convers
 At 1090x760 / DPR 1, image decode reports complete=true and naturalWidth/naturalHeight=100. The initial 100% image rectangle measures 102x102; choosing 200% through the original menu doubles it to 204x204. Cerrar visualizador removes the viewer image while retaining the history thumbnail. image-preview-{open,zoom,closed}-metrics.json and image-preview-observation.json retain those assertions. Screenshots original-image-preview.png and original-image-zoom-retained.png come from content HWND 9373858; sorted window indices changed during capture and are not stable identities. A helper-window black capture was replaced.
 
 A post-close PrintWindow capture retained the 200% viewer frame even though a repeated DOM inspection had no close control and only the thumbnail image. The zoom-retained screenshot is stale-frame evidence, not visual proof of dismissal. This verifies seeded history display, viewer open/scale and DOM dismissal for a data URI. Composer file selection/upload, localImage loading, fileId resolution, keyboard behavior, downloads and editing tools remain unverified. Renderer/CSS/runtime binaries remain unchanged. Demo-Controls adds a read-only inspect-images operation that records decode state, geometry and source scheme without recording full image URLs.
+
+## Cloud preferences flow (2026-10-15)
+
+The original Cloud preferences screen now uses a profile-local HTTP adapter for GET /wham/settings/user, GET /wham/settings/configs/user-preferences, and PATCH /wham/settings/user. Only git_diff_mode and branch_format are supported here; broader settings fields remain separate work. The server configuration is explicitly synthetic ({task}, maximum expanded length 120). The original renderer supplies validation messages, previews, controls and toasts. No cloud account is modified.
+
+From this worktree, against the already running isolated English demo:
+
+```powershell
+node original-stack/Verify-CloudPreferences.cjs demo-profile-host-v1
+```
+
+Verified eight UI observations including persistence after reload and restoration of prior values; four contract tests pass. The runner changes only demo preferences. A failure is reported and may leave the last demo draft or saved value for inspection. It does not claim full settings or frontend coverage.
+
+Audit-SettingsRoutes.cjs opens the 25 previously observed settings destinations when the demo is already in Settings. Its output is a local route-opening smoke report, not complete flow acceptance. Hidden navigation/surfaces are filtered; alerts fail the audit. Some destinations remain unverified or fail.
