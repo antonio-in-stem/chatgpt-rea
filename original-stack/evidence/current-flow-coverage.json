@@ -1,8 +1,8 @@
 {
   "scope": "Original settings screen openings only; no global completion percentage",
   "counts": {
-    "opened": 22,
-    "error": 3
+    "opened": 23,
+    "error": 2
   },
   "screens": [
     {
@@ -37,9 +37,10 @@
     },
     {
       "screen": "Archived chats",
-      "opening": "error",
-      "visibleControls": 1,
-      "fullFlowVerified": false
+      "opening": "opened",
+      "visibleControls": null,
+      "fullFlowVerified": false,
+      "openingEvidence": "Verify-ArchivedTasks.cjs: actual original UI list and restore verified after the initial audit"
     },
     {
       "screen": "Parental controls",
@@ -186,6 +187,11 @@
       "screen": "Parental controls",
       "runner": "Verify-FamilyInvitations.cjs",
       "scope": "synthetic invitation create/list/reload/resend/cancel"
+    },
+    {
+      "screen": "Archived chats",
+      "runner": "Verify-ArchivedTasks.cjs",
+      "scope": "two demo cloud archive summaries, restore one, preserve the other, reload persistence; cloud viewer remains pending"
     }
   ]
 }
