@@ -82,3 +82,13 @@ El recorrido anterior de Ajustes no equivale a flujos completos: errores de carg
 Code Review sigue mostrando Unable to load GitHub connections; corresponde a sus conexiones/repositorios, no a las gráficas de uso. Consultas fuente en app-initial: gBt obtiene GET /aip/connectors/{connector_id} y /ps/connectors/by-template; uKt obtiene /aip/connectors/{connector_id}/link. Falta resolver el contrato completo de la conexión sintética y preferencias personales. No implementar una respuesta vacía como prueba de todos los flujos. Controles parentales sigue pendiente.
 
 Última cuota consultada: 1% en la nueva ventana. El resto conservador continúa limitado a 7 puntos desde el reinicio observado. No tocar Rust.
+
+## Resultado verificado: Code Review (2026-10-15)
+
+Conexión GitHub sintética y listado de dos repositorios cargan en el renderer original sin Unable to load. El adaptador implementa búsqueda/detalle y ajustes básicos de revisión; las preferencias personales comparten el almacenamiento cloud existente con migración compatible. Nueve pruebas de contrato pasan.
+
+Verify-CodeReview.cjs pasó diez observaciones de interfaz: listado, detalle, cambio de revisión automática personal y del repositorio, persistencia de ambos tras recarga y restauración de ambos valores previos. Incluye dos observaciones repetidas de navegación; no son diez features independientes. El primer runner no volvía del detalle al listado; se corrigió usando el botón original Code review. Reporte local code-review-ui-check.json, no publicado.
+
+Paquete instalado ec6cc5c5d0ae40ac78d056a4843d0ca217d4478f8fb1b80b919aeaeb11da53d0. Renderer intacto. Launcher exec 76235, runtime 124952, adaptador 66244: revalidar antes de operar. La inspección de procesos sin elevación omitía procesos existentes; se verificó la ruta con elevación y se detuvo sólo la copia demo antes de instalar.
+
+Límites: trigger y exhaustive tienen contratos probados pero falta recorrer sus selectores en UI; GitLab, configuración security review, funding, instalaciones y enlace externo AGENTS.md no están cubiertos. Controles parentales sigue pendiente. No se afirma frontend completo. Rust no se ha retomado. Última consulta de cuota compartida: 1% en la ventana nueva; se conserva el límite conservador documentado.
