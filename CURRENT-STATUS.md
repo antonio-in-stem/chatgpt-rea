@@ -142,3 +142,11 @@ Se añadió demo_archived_tasks_http.cjs con dos resúmenes sintéticos para GET
 Queda una fila demo archivada; el runner consume una por ejecución y no recrea silenciosamente fixtures agotados. ARCHIVED-TASKS-CONTRACT.md distingue listado/restauración de visor cloud, búsqueda, eliminación ChatGPT y ciclo local aún pendientes. No se probó View now. La matriz saneada actualiza sólo la evidencia de Archived chats: 23 aperturas observadas, 2 errores (Notifications/Account); no es porcentaje global.
 
 Paquete ec680680c75a71b7b81874f783d8b51c54faa7f33f7d5d71ef8c0dcda0e3bfa4. Launcher exec 75598, runtime 25480, adaptador 16428; revalidar. Renderer sin cambios. Cuota consultada: 4%, cierre de implementaciones nuevas a 5%, máximo conservador 7%. Rust sigue diferido.
+
+## Cuenta: fallo de apertura corregido (2026-10-15)
+
+El renderer reportó TypeError leyendo can_edit. gn en account-settings-f8f02db10301.js usa m?.viewer_access.can_edit del GET /profiles/me. Se completó el fixture con viewer_access:{can_edit:true}, coherente con el perfil demo propio; no se alteró el componente. Tres pruebas de perfil pasan y cubren el campo requerido.
+
+Verificación UI real: Account -> General -> Account; ambas aperturas muestran Account, cuatro controles, cero alerts/failures y loadingText=false. Reporte local account-opening-check.json. No se probaron mutaciones de Cuenta. Su nombre usa PATCH /accounts/users/name (distinto de editar nombre de perfil); correo/reautenticación/eliminación siguen pendientes. La matriz actual tiene 24 aperturas observadas de 25 destinos de Ajustes, con Notifications todavía en error; esto no mide finalización global.
+
+Paquete 52a4248b9c56ea9c7969f8476f5669b5b0ef96ce88ff4ee2d60eddbfcb3622dc. Launcher exec 72991, runtime 167648, adaptador 177564; revalidar. Renderer intacto. Última cuota observada 4%; cierre de implementación a 5%, máximo conservador 7%, sin reset credits. Rust continúa diferido.

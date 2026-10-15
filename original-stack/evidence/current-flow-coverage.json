@@ -1,8 +1,8 @@
 {
   "scope": "Original settings screen openings only; no global completion percentage",
   "counts": {
-    "opened": 23,
-    "error": 2
+    "opened": 24,
+    "error": 1
   },
   "screens": [
     {
@@ -31,9 +31,10 @@
     },
     {
       "screen": "Account",
-      "opening": "error",
-      "visibleControls": 2,
-      "fullFlowVerified": false
+      "opening": "opened",
+      "visibleControls": 4,
+      "fullFlowVerified": false,
+      "openingEvidence": "Original UI Account -> General -> Account; no alerts/error boundary; account mutations not tested"
     },
     {
       "screen": "Archived chats",

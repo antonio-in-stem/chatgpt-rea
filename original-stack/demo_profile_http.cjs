@@ -13,7 +13,7 @@ function demoProfileHttp(method,url,body,settingsPath,fs,picture){
   try{fs.writeFileSync(pending,JSON.stringify(profile)+'\n',{flag:'wx'});created=true;fs.renameSync(pending,file);}catch(error){if(created){try{fs.unlinkSync(pending);}catch{}}throw error;}
  }else if(method!=='GET')throw Error('Unsupported profile operation');
  const details={...profile,profile_picture_url:picture};
- if(url.pathname==='/profiles/me')return {is_self:true,user_id:'rea-demo-user',profile_details:details};
+ if(url.pathname==='/profiles/me')return {is_self:true,user_id:'rea-demo-user',viewer_access:{can_edit:true},profile_details:details};
  return {profile:details,metadata:{stats_error:null},stats:{fast_mode_usage_percentage:0,top_invocations:[],most_used_reasoning_effort:null,most_used_reasoning_effort_percentage:0,unique_skills_used:0,total_skills_used:0,total_threads:0,daily_usage_buckets:[],current_streak_days:0,longest_streak_days:0,longest_running_turn_sec:0,peak_daily_tokens:0,lifetime_tokens:0}};
 }
 module.exports={demoProfileHttp};
