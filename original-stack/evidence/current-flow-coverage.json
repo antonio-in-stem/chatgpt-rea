@@ -1,0 +1,191 @@
+{
+  "scope": "Original settings screen openings only; no global completion percentage",
+  "counts": {
+    "opened": 22,
+    "error": 3
+  },
+  "screens": [
+    {
+      "screen": "General",
+      "opening": "opened",
+      "visibleControls": 22,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Notifications",
+      "opening": "error",
+      "visibleControls": 1,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Profile",
+      "opening": "opened",
+      "visibleControls": 6,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Appearance",
+      "opening": "opened",
+      "visibleControls": 14,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Account",
+      "opening": "error",
+      "visibleControls": 2,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Archived chats",
+      "opening": "error",
+      "visibleControls": 1,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Parental controls",
+      "opening": "opened",
+      "visibleControls": 4,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Voice",
+      "opening": "opened",
+      "visibleControls": 0,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Storage",
+      "opening": "opened",
+      "visibleControls": 4,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Configuration",
+      "opening": "opened",
+      "visibleControls": 7,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Personalization",
+      "opening": "opened",
+      "visibleControls": 2,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Mini & Pets",
+      "opening": "opened",
+      "visibleControls": 14,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Keyboard shortcuts",
+      "opening": "opened",
+      "visibleControls": 290,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Usage & billing",
+      "opening": "opened",
+      "visibleControls": 4,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Data controls",
+      "opening": "opened",
+      "visibleControls": 7,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Plugins",
+      "opening": "opened",
+      "visibleControls": 9,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Computer use",
+      "opening": "opened",
+      "visibleControls": 1,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Browser",
+      "opening": "opened",
+      "visibleControls": 14,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Cloud computer",
+      "opening": "opened",
+      "visibleControls": 4,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Hooks",
+      "opening": "opened",
+      "visibleControls": 1,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Cloud preferences",
+      "opening": "opened",
+      "visibleControls": 4,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Code Review",
+      "opening": "opened",
+      "visibleControls": 7,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Git",
+      "opening": "opened",
+      "visibleControls": 11,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Environments",
+      "opening": "opened",
+      "visibleControls": 2,
+      "fullFlowVerified": false
+    },
+    {
+      "screen": "Worktrees",
+      "opening": "opened",
+      "visibleControls": 5,
+      "fullFlowVerified": false
+    }
+  ],
+  "verifiedScenarios": [
+    {
+      "screen": "Conversation",
+      "runner": "Verify-ConversationFlow.cjs",
+      "scope": "send, image, navigation, rename and reload"
+    },
+    {
+      "screen": "General",
+      "runner": "Verify-GeneralSettings.cjs",
+      "scope": "four preference changes, reload and restoration"
+    },
+    {
+      "screen": "Profile",
+      "runner": "Verify-Profile.cjs",
+      "scope": "rail avatar, display name validation/save/reload/restoration"
+    },
+    {
+      "screen": "Cloud preferences",
+      "runner": "Verify-CloudPreferences.cjs",
+      "scope": "branch pattern, diff mode, validation, reload and restoration"
+    },
+    {
+      "screen": "Code Review",
+      "runner": "Verify-CodeReview.cjs",
+      "scope": "demo repositories, automatic review, personal trigger/exhaustive, reload and restoration"
+    },
+    {
+      "screen": "Parental controls",
+      "runner": "Verify-FamilyInvitations.cjs",
+      "scope": "synthetic invitation create/list/reload/resend/cancel"
+    }
+  ]
+}

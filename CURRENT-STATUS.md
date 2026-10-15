@@ -128,3 +128,9 @@ La búsqueda inicial de /celsius/ws/user resultó ser el websocket, no la consul
 Paquete instalado 016c7548f27841ad7445e6ce8d71d99c508d7f9b7f72db2404c4c99294a4498b. Launcher exec 92360; runtime 18348; adaptador 39904; revalidar antes de operar. Última cuota 3%; límites conservadores siguen vigentes.
 
 La revisión de ui-library no reabre el trazado recursivo de providers cerrado. El usuario acepta dependencias originales, pero un lanzador no se contará como biblioteca de componentes independiente. Los ejemplos aislados siguen siendo parciales y no reemplazan la ventana original.
+
+## Recorrido consolidado de Ajustes (2026-10-15)
+
+Audit-SettingsRoutes.cjs ahora espera estado estable hasta 10s, detecta texto Loading y comprueba el encabezado solicitado (Profile usa el nombre demo). Resultado real: 22 destinos abiertos y 3 con error, de 25 visibles. No es porcentaje de finalización; no prueba acciones, variantes ni pantallas fuera de Ajustes. Errores: Notifications, Account, Archived chats. La pantalla Voice abrió con cero controles; no contar funcionalidad de voz comprobada. Se publicó sólo resumen saneado en original-stack/evidence/current-flow-coverage.json, sin texto de usuario, rutas locales ni perfiles.
+
+Siguiente fallo priorizado: Archived chats. data-controls-8b478162a0ba.js compone archivos locales vía thread/list archived=true y dos fuentes cloud (Vt/Tt). Se reproduce Retry en UI; el log del host señala /wham/tasks/list sin implementar. Trazar Vt (alias qB en app-initial) antes de implementar listado/restore; no sustituir todo por un array vacío ni contar el mock como flujo completo. El runtime actual queda en Archived chats.
