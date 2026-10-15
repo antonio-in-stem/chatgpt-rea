@@ -116,3 +116,15 @@ Verify-GeneralSettings.cjs pasó 12 observaciones reales: cambio, persistencia t
 Notifications es una pantalla distinta del bloque Notifications dentro de General. Se observó Loading ChatGPT notification settings, sin controles: no contar el heading como flujo completo. Su contrato fuente es GET /notifications/settings => {settings:[{category,name,description,options:[{channel,name,enabled}]}]}; PATCH al mismo endpoint recibe {updates:{[category]:{[channel]:boolean}}} y retorna el mismo formato. El renderer implementa actualización optimista/rollback y menú checkbox. Los nombres, descripciones y categorías son datos servidos, no constantes completas del bundle. teen_safety además consulta métodos de contacto; tasks añade Manage tasks. Sigue pendiente implementar/validar esta pantalla sin atribuir exactitud a etiquetas inventadas.
 
 Cuota consultada al empezar este lote: 3% en la ventana nueva. Se mantiene cierre de implementación a 5% y máximo conservador 7% desde el reinicio observado. El objetivo global sigue activo/incompleto; Rust sigue diferido.
+
+## Perfil y avatar del rail corregidos (2026-10-15)
+
+El perfil del rail esperaba GET /profiles/me, y la pantalla editable GET/PATCH /wham/profiles/me; ambos faltaban. demo_profile_http.cjs comparte un perfil sintético persistente entre profile_details y profile, conservando el PNG demo existente. Stats son datos demo vacíos, no actividad real. Soporta nombre/username y datos de perfil básicos; carga de foto nueva, showcase/stickers y variantes sociales no están implementadas.
+
+Tres pruebas de contrato pasan. Verify-Profile.cjs pasó siete observaciones en la app original: desaparece el status Loading profile, imagen del botón Open profile menu cargada (complete/naturalWidth), nombre vacío bloqueado, nombre válido habilitado, guardado visible, persistencia tras reload, avatar aún cargado y nombre restaurado (la primera observación combina status e imagen). Reporte local profile-ui-check.json. No se cambia renderer, tipografía ni iconos.
+
+La búsqueda inicial de /celsius/ws/user resultó ser el websocket, no la consulta de identidad; no se implementó un websocket ficticio para ocultar el fallo. El error real se rastreó a Q7i/J9i/vea y al selector del footer.
+
+Paquete instalado 016c7548f27841ad7445e6ce8d71d99c508d7f9b7f72db2404c4c99294a4498b. Launcher exec 92360; runtime 18348; adaptador 39904; revalidar antes de operar. Última cuota 3%; límites conservadores siguen vigentes.
+
+La revisión de ui-library no reabre el trazado recursivo de providers cerrado. El usuario acepta dependencias originales, pero un lanzador no se contará como biblioteca de componentes independiente. Los ejemplos aislados siguen siendo parciales y no reemplazan la ventana original.
