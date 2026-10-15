@@ -1,0 +1,7 @@
+# Notifications: original controls with explicit demo categories
+
+Source: `notifications-settings-5f0e05f81547.js`, functions Ye, Xe and Qe. GET `/notifications/settings` supplies `{settings:[{category,name,description,options:[{channel,name,enabled}]}]}`. PATCH supplies `{updates:{[category]:{[channel]:boolean}}}` and returns the current settings. The original renderer renders category rows, checkbox menus, joined enabled-channel labels and the localized Off state. It performs optimistic updates with rollback.
+
+`demo_notifications_http.cjs` implements persistent, validated local GET/PATCH. One synthetic tasks category with Push/Email options exercises those original controls. Its description explicitly identifies demo data. This is not a recovered production category inventory: category names, descriptions and available channels are server-provided. The renderer/CSS remain unmodified. No actual emails or OS notifications are sent by this adapter.
+
+Three contract tests cover independent channel changes, all-off, invalid updates, failed writes, and origin/profile isolation. `Verify-Notifications.cjs` exercises the menu in the original application; latest results are recorded in CURRENT-STATUS.md. Teen-safety/contact-method variations, complete production categories, actual delivery and error-toast rollback UI remain pending. The demo does not establish that every notification flow is complete.

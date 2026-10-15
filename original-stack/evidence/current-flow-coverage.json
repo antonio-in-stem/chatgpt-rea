@@ -1,8 +1,8 @@
 {
   "scope": "Original settings screen openings only; no global completion percentage",
   "counts": {
-    "opened": 24,
-    "error": 1
+    "opened": 25,
+    "error": 0
   },
   "screens": [
     {
@@ -13,9 +13,10 @@
     },
     {
       "screen": "Notifications",
-      "opening": "error",
-      "visibleControls": 1,
-      "fullFlowVerified": false
+      "opening": "opened",
+      "visibleControls": null,
+      "fullFlowVerified": false,
+      "openingEvidence": "Verify-Notifications.cjs: seven original UI checks with one synthetic tasks category; not a complete production category inventory"
     },
     {
       "screen": "Profile",
@@ -193,6 +194,11 @@
       "screen": "Archived chats",
       "runner": "Verify-ArchivedTasks.cjs",
       "scope": "two demo cloud archive summaries, restore one, preserve the other, reload persistence; cloud viewer remains pending"
+    },
+    {
+      "screen": "Notifications",
+      "runner": "Verify-Notifications.cjs",
+      "scope": "synthetic tasks category: independent email/push toggles, all off, reload persistence and restoration; delivery and teen safety remain pending"
     }
   ]
 }

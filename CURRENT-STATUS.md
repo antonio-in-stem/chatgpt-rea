@@ -150,3 +150,14 @@ El renderer reportó TypeError leyendo can_edit. gn en account-settings-f8f02db1
 Verificación UI real: Account -> General -> Account; ambas aperturas muestran Account, cuatro controles, cero alerts/failures y loadingText=false. Reporte local account-opening-check.json. No se probaron mutaciones de Cuenta. Su nombre usa PATCH /accounts/users/name (distinto de editar nombre de perfil); correo/reautenticación/eliminación siguen pendientes. La matriz actual tiene 24 aperturas observadas de 25 destinos de Ajustes, con Notifications todavía en error; esto no mide finalización global.
 
 Paquete 52a4248b9c56ea9c7969f8476f5669b5b0ef96ce88ff4ee2d60eddbfcb3622dc. Launcher exec 72991, runtime 167648, adaptador 177564; revalidar. Renderer intacto. Última cuota observada 4%; cierre de implementación a 5%, máximo conservador 7%, sin reset credits. Rust continúa diferido.
+
+
+## Notificaciones verificadas y cierre por cuota (2026-10-15)
+
+Se añadió demo_notifications_http.cjs para GET/PATCH /notifications/settings, con una categoría tasks sintética y canales push/email persistentes. Los controles, menú checkbox y actualización optimista son del renderer original, sin modificaciones. Los nombres, descripciones e inventario de categorías llegan del servidor: el fixture no representa todo el inventario de producción. Entrega real, teen_safety y rollback visual siguen pendientes; ver NOTIFICATIONS-CONTRACT.md.
+
+Tres pruebas de contrato pasaron. Verify-Notifications.cjs terminó exit 0 con siete comprobaciones reales: email habilitado, canal email independiente, todos desactivados, Off persistido tras reload, push habilitado, Push persistido tras reload y canales iniciales restaurados. Reporte local notifications-ui-check.json, no publicado. La matriz ahora registra apertura observada de los 25 destinos de Ajustes; no significa todos sus flujos terminados ni un porcentaje global de frontend.
+
+Paquete instalado 5d4a106d254e34406b807d794a3b58a0172624665c194cfd8ce2ebba1ea3b36f. Launcher exec 34457, runtime 156880, adaptador 176452; revalidar antes de operar. La cuota compartida alcanzó 5% de la ventana nueva: cierre de implementaciones nuevas; el margen hasta 7% se reserva únicamente a verificar/guardar. No iniciar otra feature con esta autorización.
+
+Pendientes principales: operaciones de Cuenta; visor de tareas cloud y ciclo completo de archivados; variantes y configuración parental definidas por servidor; variantes de perfil/carga de foto; integración de componentes reutilizables todavía parcial; pantallas y estados fuera de los escenarios verificados. La extracción distribuida y la ejecución del renderer original no equivalen a una biblioteca completa ni a todos los flujos funcionales. Rust sigue expresamente diferido.
