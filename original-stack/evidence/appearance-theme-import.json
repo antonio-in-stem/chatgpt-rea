@@ -1,0 +1,12 @@
+{
+  "status": "verified",
+  "runner": "Verify-AppearanceThemeImport.cjs",
+  "uiChecksPassed": 6,
+  "source": "general-settings-161845fad443.js:2733 exampleValue=exportThemeString(); original import validator and handler",
+  "rendererModified": false,
+  "adapterModified": false,
+  "installedFrontendConsumer": true,
+  "verified": ["empty import disabled", "malformed import disabled", "valid edited export applies surface and ink", "import persists reload", "original colors restored", "entire original exported string matches after restoration and reload"],
+  "clipboardDeliveryVerified": false,
+  "remaining": ["theme presets", "reset confirmation/cancel/apply", "advanced motion/font style/split modes/contrast", "copy-to-clipboard delivery"]
+}
