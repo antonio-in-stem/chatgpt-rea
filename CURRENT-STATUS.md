@@ -531,3 +531,12 @@ Existing evidence/windows-capture-contract.json already diagnoses identical whit
 
 ## Consumer rail anomaly resolved as surface capture artifact — 2026-10-15
 Reused existing windows-capture-contract.json instead of native capture fallback or CSS changes. capture-demo-window now explicitly uses fromSurface:false and reports captureMode:view. Same runtime159248 and same synthetic thread/state recaptured at1280x820. Visual inspection confirms dark-blue rail/titlebar, translucent selected Home and normal icons; prior surface capture showed black background/opaque white Home. Original renderer/package untouched. This resolves that specific visual discrepancy, not full matched-state parity against every original screen. Prior surface image preserved locally as consumer-window-surface.png; view image consumer-window.png remains ignored. No screenshot uploaded. Next consumer improvement is avoiding duplicate full hash verification on startup, followed by broader screen consumption/remaining flows. Quota last14%, cap50%, Rust deferred.
+
+
+## Active acceptance: installed consumer Appearance modes
+Original Appearance loaded with System checked and effective data-theme dark. Existing General runner covers other preferences, not Appearance persistence. Add bounded UI-only runner: Light/Dark radios update effective theme, Light persists after reload, capture both modes using view capture, restore original radio and verify persistence. No renderer/adapter/style changes. Guard settings readiness before clicking (initial manual actions were attempted during Loading settings and were retried after observed navigation).
+
+
+## Appearance mode and persistence verified in installed consumer — 2026-10-15
+Verify-Appearance.cjs passed6 checks using original appearance-theme radios (general-settings:7940): Light/Dark effective theme, Light before reload, persisted Light, restore original System/effective dark, persisted restoration. Original screenshot view captures appearance-light.png and appearance-dark.png inspected locally at1280x820; original layout, rail, theme selection and color fields visible in both. No CSS/renderer/adapter changes, no screenshot publication. Existing installed consumer runtime159248/adapter171924 retained. Initial preference restored via original UI and verified after reload.
+Aperture remains bounded: accent, custom colors/font, advanced appearance and reset/import/export not verified by this runner. Wider Settings destination opening is not interaction completion. Rust deferred; last quota14%, cap50%.

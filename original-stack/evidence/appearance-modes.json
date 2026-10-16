@@ -1,0 +1,22 @@
+{
+  "status": "mode-flow-verified",
+  "runner": "Verify-Appearance.cjs",
+  "checksPassed": 6,
+  "source": "general-settings-161845fad443.js:7940 appearance-theme",
+  "installedFrontendConsumer": true,
+  "initialPreference": "System",
+  "initialPreferenceRestoredAfterReload": true,
+  "captureMode": "view",
+  "capturesInspected": [
+    "appearance-light.png",
+    "appearance-dark.png"
+  ],
+  "rendererModified": false,
+  "remaining": [
+    "accent",
+    "custom background and foreground",
+    "font",
+    "advanced controls",
+    "reset and theme import/export"
+  ]
+}
