@@ -1,0 +1,15 @@
+{
+  "status": "partial",
+  "settingsSearchRunner": "Verify-ArchiveSearch.cjs",
+  "settingsSearchChecks": 4,
+  "settingsRowOpensViewer": false,
+  "archiveSidebar": {
+    "source": "app-initial-b8e1c8014bb4.js:294286-294327,383407-383522,383844-383854",
+    "gate": "3500066563",
+    "route": "/archive",
+    "cloudDestination": "/remote/:id",
+    "currentDemoGateConfigured": false,
+    "viewerRuntimeVerified": false
+  },
+  "rendererModified": false
+}
