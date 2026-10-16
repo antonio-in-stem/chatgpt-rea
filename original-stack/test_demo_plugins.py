@@ -21,7 +21,7 @@ class PluginTests(unittest.TestCase):
             params={'pluginName':'rea-demo','marketplacePath':MARKETPLACE}
             self.assertFalse(store.handle('plugin/read',params)['plugin']['summary']['installed'])
             self.assertEqual(store.handle('plugin/install',params),{'authPolicy':'ON_USE','appsNeedingAuth':[]})
-            config.handle('config/batchWrite',{'edits':[{'keyPath':'plugins."'+PLUGIN_ID+'".enabled','value':False,'mergeStrategy':'upsert'}]})
+            config.handle('config/batchWrite',{'edits':[{'keyPath':'plugins.'+PLUGIN_ID+'.enabled','value':False,'mergeStrategy':'upsert'}]})
             reloaded=PluginStore(ConfigStore(config.path,{}))
             summary=reloaded.handle('plugin/installed',{})['marketplaces'][0]['plugins'][0]
             self.assertTrue(summary['installed']);self.assertFalse(summary['enabled'])

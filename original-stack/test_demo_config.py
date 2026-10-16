@@ -37,6 +37,19 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(before,self.path.read_bytes())
         self.assertEqual(self.store.values["model"],"demo")
 
+    def test_literal_plugin_enablement_path_matches_quoted_storage(self):
+        plugin_id = 'rea-demo@rea-local'
+        self.write(f'plugins.{plugin_id}.enabled', False)
+        restored = ConfigStore(self.path, {})
+        self.assertIs(restored.values['plugins'][plugin_id]['enabled'], False)
+        self.write(f'plugins."{plugin_id}".enabled', True)
+        self.assertEqual(self.store.values['plugins'], {plugin_id: {'enabled': True}})
+        before = self.path.read_bytes()
+        for invalid in ['plugins.rea-demo@@rea-local.enabled', 'plugins.rea-demo@rea-local.enabled.extra', 'plugins.rea-demo@rea-local.enabled # ignored']:
+            with self.assertRaises(ConfigError):
+                self.write(invalid, False)
+        self.assertEqual(self.path.read_bytes(), before)
+
     def test_merge_delete_and_empty_reload(self):
         self.write("features",{"a":True,"b":False})
         self.store.handle("config/value/write",{"keyPath":"features","value":{"b":True},"mergeStrategy":"upsert"})

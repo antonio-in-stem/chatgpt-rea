@@ -1,0 +1,15 @@
+{
+  "status": "verified-with-boundaries",
+  "runner": "Verify-PluginWorkflow.cjs",
+  "uiChecksPassed": 7,
+  "adapterTestsPassed": 7,
+  "source": "app-initial-b8e1c8014bb4.js:112994 jOn emits literal plugins.<id>.enabled; plugin-detail-page-fadbbdbd4e39.js:1695 original composer prefill",
+  "failure": "Strict TOML parser rejected original unquoted name@marketplace keyPath",
+  "repair": "Scoped literal plugin enabled-path support, retaining TOML parser and write restrictions",
+  "rendererModified": false,
+  "verified": ["disable through original switch", "disabled reload persistence", "disabled detail offers Enable", "re-enable through switch", "enabled reload persistence", "enabled detail offers Try now", "Try now opens fresh composer with plugin://rea-demo@rea-local token"],
+  "finalPluginEnabled": true,
+  "pluginCodeExecuted": false,
+  "messageSent": false,
+  "remaining": ["nonempty remote catalog", "save failure variants", "conditional policy/eligibility variants"]
+}

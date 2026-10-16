@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import re
 import tomllib
 from pathlib import Path
 
@@ -23,6 +24,10 @@ class ConfigStore:
     def key_parts(key):
         if not isinstance(key, str) or not key or "\n" in key or "\r" in key:
             raise ConfigError("Invalid keyPath")
+        # Shipped jOn emits the plugin ID literally, including @, in this path.
+        plugin = re.fullmatch(r'plugins\.([A-Za-z0-9][A-Za-z0-9_-]*@[A-Za-z0-9][A-Za-z0-9_-]*)\.enabled', key)
+        if plugin:
+            return ['plugins', plugin.group(1), 'enabled']
         try:
             tree = tomllib.loads(key + " = 0")
         except tomllib.TOMLDecodeError as error:
