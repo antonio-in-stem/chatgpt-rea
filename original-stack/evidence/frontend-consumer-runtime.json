@@ -1,0 +1,18 @@
+{
+  "status": "functional-original-host-consumer-verified-visual-parity-pending",
+  "frontendFilesVerified": 20119,
+  "hostPackageSha256": "0a2ee2d30ebc3d2df4661bd03b138842537b4d7e973996ecffb4c3c2f4fd17c0",
+  "originalProtocolRootOverridden": true,
+  "rendererAssetsModified": false,
+  "conversationRunner": "Verify-ConversationFlow.cjs",
+  "conversationScenariosPassed": 13,
+  "validationTestsPassed": 2,
+  "viewport": {
+    "width": 1280,
+    "height": 820
+  },
+  "visualParityVerified": false,
+  "visualObservation": "CDP screenshot rail/titlebar black with white Home control, unchanged after bringToFront; compositor versus host baseline requires comparison",
+  "independentReactMountVerified": false,
+  "startupLimitation": "Original root invoked twice; full synchronous file validation repeats"
+}

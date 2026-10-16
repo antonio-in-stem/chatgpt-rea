@@ -5,7 +5,8 @@ param(
  [switch]$InspectRuntime,
  [switch]$DemoHost,
  [switch]$DemoPagesTls,
- [switch]$DryRun
+ [switch]$DryRun,
+ [string]$FrontendPackageRoot
 )
 $ErrorActionPreference='Stop'
 if($DemoPagesTls -and -not $DemoHost){throw 'TLS Pages requires demo host'}
@@ -14,7 +15,7 @@ $runtime=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'pristine')).Path
 $python=(Get-Command python -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 $stores=@{project=Join-Path $state 'demo-projects.json';config=Join-Path $state 'demo-config.json';thread=Join-Path $state 'demo-threads.json'}
 # Preflight uses the same integrity/profile checks as the actual launcher.
-$preflight=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl 'ws://127.0.0.1:1' -DemoHost:$DemoHost -DryRun | ConvertFrom-Json
+$preflight=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl 'ws://127.0.0.1:1' -DemoHost:$DemoHost -FrontendPackageRoot $FrontendPackageRoot -DryRun | ConvertFrom-Json
 $runtime=Split-Path -Parent $preflight.executable
 if($DryRun){
  [pscustomobject]@{python=$python;executable=$preflight.executable;profile=$preflight.profile;stores=$stores;simulatedWindowsReadiness=$WindowsScenario;executesTools=$false;startsProcesses=$false} | ConvertTo-Json -Depth 4
@@ -54,7 +55,7 @@ try{
  foreach($name in @('runtime-stdout.log','runtime-stderr.log')){
   $runtimeLogs+= [IO.FileStream]::new((Join-Path $state $name),[IO.FileMode]::Create,[IO.FileAccess]::Write,[IO.FileShare]::Read,4096,$true)
  }
- $app=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -DemoHost:$DemoHost -DemoPagesTls:$DemoPagesTls -Visible -PassThru
+ $app=& (Join-Path $PSScriptRoot 'Start-Original.ps1') -StateName $StateName -DemoTransportUrl $announcement.endpoint -InspectRuntime:$InspectRuntime -DemoHost:$DemoHost -DemoPagesTls:$DemoPagesTls -FrontendPackageRoot $FrontendPackageRoot -Visible -PassThru
  # Drain both pipes concurrently; never accumulate unbounded runtime logs in memory.
  $runtimeCopies+= $app.StandardOutput.BaseStream.CopyToAsync($runtimeLogs[0])
  $runtimeCopies+= $app.StandardError.BaseStream.CopyToAsync($runtimeLogs[1])

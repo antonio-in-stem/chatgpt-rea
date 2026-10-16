@@ -22,3 +22,15 @@ import { frontendRoot, entryHtml, detachedEntryHtml, manifestUrl } from '@rea/or
 These are file URLs for integration code running in Node/Electron. Preserve the entire tree and relative paths when serving it through the original app protocol. The HTML still needs original bootstrap, host bridge, router, state and service contracts. Merely opening it through `file:` or a generic static server does not prove an operational screen.
 
 The next integration acceptance remains a separate consumer that actually opens the original shell, rail/sidebar, conversation and composer with working demo navigation. Payload identity and successful installation are necessary packaging evidence, not that acceptance or visual parity. Rust remains deferred.
+
+## Run with the original demo host
+
+After building/installing the demo host that supports the external package root:
+
+```powershell
+./original-stack/Start-Demo.ps1 -StateName demo-consumer -DemoHost -InspectRuntime -DemoPagesTls -FrontendPackageRoot C:/path/to/consumer/node_modules/@rea/original-frontend
+```
+
+The host verifies the package manifest and every listed resource before giving its `webview` directory to the original `app://` protocol. Original routing, bootstrap, preload and demo services remain supplied by the host. Missing or altered resources fail startup. Omit `FrontendPackageRoot` to use the bundled resources as before.
+
+This is an original-host consumer, not an independent React mount or a portable replacement for the required Electron runtime. A fresh profile has different demo state; do not claim every historical fixture/scenario is reproduced merely by starting it.

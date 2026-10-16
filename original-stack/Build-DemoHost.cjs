@@ -18,6 +18,7 @@ const {demoFamilyHttp}=require('./demo_family_http.cjs');
 const {demoProfileHttp}=require('./demo_profile_http.cjs');
 const {demoArchivedTasksHttp}=require('./demo_archived_tasks_http.cjs');
 const {demoDurableTransport}=require('./demo_durable_transport.cjs');
+const {demoFrontendRoot}=require('./demo_frontend_package.cjs');
 const {demoNotificationsHttp}=require('./demo_notifications_http.cjs');
 const {demoPageExport}=require('./demo_page_export.cjs');
 const {demoPageCsp}=require('./demo_page_csp.cjs');
@@ -85,6 +86,9 @@ const protocolEntry=header.files['.vite'].files.build.files['browser-background-
 const protocolOriginal=raw.subarray(dataStart+Number(protocolEntry.offset),dataStart+Number(protocolEntry.offset)+protocolEntry.size);
 const protocolNeedle='let e=new Headers(i.headers);';
 let protocolSource=protocolOriginal.toString('utf8');
+const frontendRootNeedle='function C(e){';
+if(protocolSource.split(frontendRootNeedle).length!==2)throw Error('Frontend root seam is not unique');
+protocolSource=demoFrontendRoot.toString()+'\n'+protocolSource.replace(frontendRootNeedle,'function C(e){const demoRoot=demoFrontendRoot(process.env,require(`node:fs`),require(`node:path`),require(`node:crypto`));if(demoRoot!==null)return demoRoot;');
 if(protocolSource.split(protocolNeedle).length!==2)throw Error('Protocol seam is not unique');
 protocolSource=demoPageCsp.toString()+'\n'+protocolSource.replace(protocolNeedle,'i=await demoPageCsp(t.url,i,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'+protocolNeedle);
 new vm.Script(protocolSource);

@@ -8,7 +8,8 @@ param(
  [switch]$DemoHost,
  [switch]$DemoPagesTls,
  [ValidatePattern('^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$')][string]$StateName,
- [string]$DemoTransportUrl
+ [string]$DemoTransportUrl,
+ [string]$FrontendPackageRoot
 )
 $ErrorActionPreference='Stop'
 if($PassThru -and $WaitForExit){throw 'PassThru and WaitForExit are mutually exclusive'}
@@ -58,6 +59,11 @@ foreach($key in @($start.Environment.Keys)){
 # Child-only product configuration; never changes this shell or the user's environment.
 $start.Environment['CODEX_ELECTRON_USER_DATA_PATH']=Join-Path $state 'profile'
 $start.Environment['CODEX_HOME']=Join-Path $state 'codex-home'
+$start.Environment.Remove('REA_DEMO_FRONTEND_PACKAGE') | Out-Null
+if($FrontendPackageRoot){
+ if(-not $DemoHost){throw 'Frontend package is demo-host-only'}
+ $start.Environment['REA_DEMO_FRONTEND_PACKAGE']=(Resolve-Path -LiteralPath $FrontendPackageRoot).Path
+}
 $start.Environment.Remove('REA_DEMO_SETTINGS_PATH') | Out-Null
 if($DemoHost){$start.Environment['REA_DEMO_SETTINGS_PATH']=Join-Path $state 'demo-sidebar-settings.json'}
 if($DemoTransportUrl){$start.Environment['CODEX_APP_SERVER_WS_URL']=$DemoTransportUrl}
