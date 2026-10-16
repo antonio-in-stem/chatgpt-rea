@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-16",
+  "scope": "Run now static acceptance gap audit, no UI execution",
+  "runtimeMainMember": ".vite/build/main-BklS_2Y2.js",
+  "runtimeMainSha256": "a6c11dc029d7348041b4a1ee191b50b84f4b2fea647358720d58f9c945821efa",
+  "localRunExplicitlyRejectedInDeliveredHost": true,
+  "localContract": "run-now-7626163a4476.js:276 calls automation-run-now with params id/collaborationMode/permissions; success false or rejection produces original error toast",
+  "personalCloudContract": "conversation-actions-81bac06eff4b.js:71 K rejects unmanaged/completed/trigger tasks, submits prompt with runNowAutomationId, run-now:178 onward navigates returned conversation with Scheduled sidebar state",
+  "teamContract": "app-shared:254349 I_i posts /automation/{automation_id}/run with idempotency_key; run-now:159 stores run_id destination",
+  "demoSupport": {
+    "local": "explicitly rejected",
+    "team": "route absent from demoAutomationHttp allowed routes",
+    "personal": "UI path unverified; normal conversation test does not prove scheduled submission"
+  },
+  "implementationChanged": false,
+  "remaining": "Inert run result and original navigation/error states must be supported and verified; actual model execution not required",
+  "budgetGate": "42% used, new implementation stopped40%, remaining reserve verification/integration/delivery; Rust deferred"
+}

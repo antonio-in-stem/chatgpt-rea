@@ -12,6 +12,10 @@ Extract project/ and runtime-bundle/ together and follow LEEME.md. Prior v2 extr
 
 No demo is currently running from this task: runtime105364 was deliberately stopped to free memory; launcher26897 terminated and disposed its adapter. Do not use historical PIDs as live targets. Profiles preserved. Last tested consumer is original-stack/state/archive-consumer-v2/project; activate its .venv and follow its LEEME only when another runtime launch is justified. Current quota42%, cap50%; integration/verification/delivery only. Rust deferred. Remaining full-app gaps: FRONTEND-CLOSURE.md. Do not keep repackaging merely to include new status documents.
 
+## Verified remaining task-flow gap
+
+Task Run now is NOT covered by create/edit/pause tests. Focused source trace found three distinct routes: local automation-run-now, personal cloud conversation submission with runNowAutomationId, team POST /automation/{automation_id}/run. Direct read of delivered ASAR main confirms explicit local rejection REA demo does not execute scheduled tasks. Team endpoint is absent from demoAutomationHttp; personal scheduled submission remains unverified. Evidence task-run-now-gap.json; matrix updated. No UI or host changes. A frontend demo needs inert result/navigation states here even though real execution is excluded. Do not claim task flows complete or repeat existing lifecycle checks as a substitute. New implementation gate remains40%, current42%; Rust deferred.
+
 ## Renderer fidelity evidence
 
 Direct comparison against pinned pristine ASAR passed for the ENTIRE packed webview subtree:20119 members,545939185 bytes, identical membership/sizes/content. Streamed byte comparison, not just trusting rendererFilesModified:false. Includes317 CSS,67 font files,2367 SVG and14771 JS files. Original archive c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038; delivery runtime archive29d686ec32eecddd8f425b9fc02ec58cdba82ce461d988683767c3a65463577b. Bound to ZIP v3r1 through packaging inventory hashes. Evidence original-stack/evidence/delivered-renderer-identity.json.
