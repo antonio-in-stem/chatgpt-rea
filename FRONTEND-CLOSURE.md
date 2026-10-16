@@ -37,7 +37,7 @@ Next bounded work: resolve the 60 router expressions from the existing readable 
 
 ## Budget
 
-Latest human authorization: 45 additional percentage points, baseline 6% used, absolute maximum 51% used in the current shared account window. Inventory allocation at most 3 points (stop at 9%); implementation allocation up to 32 more (stop new changes at 41%); reserve remaining 10 points for integration, visual verification and delivery. These are ceilings, not a guaranteed completion estimate. Do not consume resets. Reassess feasibility after the inventory; stop an unproductive approach after two failed hypotheses.
+Latest human authorization: 45 additional percentage points, baseline 6% used, absolute maximum 50% used in the current shared account window. Inventory allocation at most 3 points (stop at 9%); implementation allocation up to 32 more (stop new changes at 40%); reserve remaining 10 points for integration, visual verification and delivery. These are ceilings, not a guaranteed completion estimate. Do not consume resets. Reassess feasibility after the inventory; stop an unproductive approach after two failed hypotheses.
 
 ## First bounded route pass
 
@@ -48,3 +48,11 @@ route-literal-bindings.json records 13 unique literal assignments with source ha
 Resolve-RouteCandidates.py reads the existing bundles without executing them and writes route-path-candidates.json with source hashes and symbol/import trails. Result: 130 candidate values, 15 unresolved entries of the 145 lexical entries. This is textual resolution, not scope-resolved AST proof, nested path composition, eligibility or runtime evidence. Ambiguous short names are intentionally retained. The unresolved entries include scheduled/space object paths, a mapped array variable, a function call and shared constants with textual collisions.
 
 Platform evidence: app-initial lines 299811-299813, QYa({browser=false,chromeExtension=false,extension=false,electron=false}) returns electron && true in this shipped build. jZ lines 299817 onward renders children only if QYa succeeds. Router lines 444472 onward wrap business profiles with jZ browser:true only, so that branch renders no content on this Windows build; Health and Finances explicitly include electron:true. Do not enable browser-only branches to inflate Windows coverage. Router /explore redirects to /, /inbox redirects to /automations, and sites/library redirects to /library. Hotkey-window is an auxiliary window family rather than an additional primary navigation screen. No current runtime execution is claimed by this source inspection.
+
+## Inventory lookup closed; Security acceptance active
+
+Bounded reviewed initializers/object constants resolve the remaining candidates. Final lookup: 145 entries, 144 single path candidates and one mapped pair (/share/:sharedConversationId and /share/e/:sharedConversationId), zero entries without a candidate. Corrected import/export token matching to retain leading dollar signs (notably the pull-request binding). This does not close nested composition, eligibility, modal/state coverage or runtime acceptance; no completion percentage follows. Further global inventory expansion is deferred to screen-specific work rather than spending the implementation budget on a full JavaScript analyzer.
+
+Next visible milestone: Security repositories/scans/findings and detail navigation in original UI. Existing demo_security.py already supplies read fixtures, but prior evidence never validated the screen. First verify the current host package/provider before changing it; preserve the original renderer. Acceptance: synthetic repository/report/finding visible, filters give populated and empty results, detail and back navigation work, reload returns stable content; record unsupported mutations separately. No actual scanning or remediation.
+
+Latest human correction: 50% total used is the absolute cap, with new implementation stopping at 40%. Runtime and adapter from the previous handoff were absent on an elevated process check; one guarded Start-Demo was launched for this milestone, session 61526. Never launch another while that handle is live.

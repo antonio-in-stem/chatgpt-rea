@@ -31,7 +31,7 @@ Anotar brevemente en CURRENT-STATUS: pantalla destino; fallo observable; archivo
 
 ## Presupuesto y parada
 
-La autorización nueva y la distribución vigente están en FRONTEND-CLOSURE.md: baseline 6%, máximo 51%, inventario hasta 9%, implementación hasta 41%, reserva de cierre hasta 51%. Sustituye los límites históricos 64/74 y 5/7. No es una promesa de finalización ni una orden de consumir todo. Dos hipótesis fallidas obligan a revisar el enfoque. Sin créditos de reset.
+La autorización nueva y la distribución vigente están en FRONTEND-CLOSURE.md: baseline 6%, máximo 50%, inventario hasta 9%, implementación hasta 40%, reserva de cierre hasta 50%. Sustituye los límites históricos 64/74 y 5/7. No es una promesa de finalización ni una orden de consumir todo. Dos hipótesis fallidas obligan a revisar el enfoque. Sin créditos de reset.
 
 ## Qué se conserva
 

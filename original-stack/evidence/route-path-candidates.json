@@ -14,12 +14,13 @@
     {
       "routeLine": 444270,
       "expression": "SXe",
-      "candidatePath": null,
+      "candidatePath": "/dots",
       "evidence": [
         {
-          "import": "SXe",
-          "export": "v3",
-          "binding": "h1"
+          "module": "shared",
+          "reviewedStartLine": 213720,
+          "reviewedEndLine": 213735,
+          "method": "bounded manually reviewed initializer/object/function"
         }
       ],
       "runtimeVerified": false
@@ -67,17 +68,13 @@
     {
       "routeLine": 444286,
       "expression": "og",
-      "candidatePath": null,
+      "candidatePath": "/dots/home",
       "evidence": [
         {
-          "import": "og",
-          "export": "w3",
-          "binding": "YTr"
-        },
-        {
           "module": "shared",
-          "symbol": "YTr",
-          "line": 213727
+          "reviewedStartLine": 213720,
+          "reviewedEndLine": 213735,
+          "method": "bounded manually reviewed initializer/object/function"
         }
       ],
       "runtimeVerified": false
@@ -85,17 +82,13 @@
     {
       "routeLine": 444287,
       "expression": "wr",
-      "candidatePath": null,
+      "candidatePath": "/dots/new",
       "evidence": [
         {
-          "import": "wr",
-          "export": "C3",
-          "binding": "XTr"
-        },
-        {
           "module": "shared",
-          "symbol": "XTr",
-          "line": 213728
+          "reviewedStartLine": 213720,
+          "reviewedEndLine": 213735,
+          "method": "bounded manually reviewed initializer/object/function"
         }
       ],
       "runtimeVerified": false
@@ -103,17 +96,13 @@
     {
       "routeLine": 444289,
       "expression": "ove",
-      "candidatePath": null,
+      "candidatePath": "/dots/:conversationId",
       "evidence": [
         {
-          "import": "ove",
-          "export": "S3",
-          "binding": "ZTr"
-        },
-        {
           "module": "shared",
-          "symbol": "ZTr",
-          "line": 213729
+          "reviewedStartLine": 213720,
+          "reviewedEndLine": 213735,
+          "method": "bounded manually reviewed initializer/object/function"
         }
       ],
       "runtimeVerified": false
@@ -128,8 +117,15 @@
     {
       "routeLine": 444298,
       "expression": "YA.scheduled.path",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/scheduled",
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 119138,
+          "reviewedEndLine": 119150,
+          "method": "bounded manually reviewed initializer/object/function"
+        }
+      ],
       "runtimeVerified": false
     },
     {
@@ -648,14 +644,62 @@
       "routeLine": 444448,
       "expression": "e",
       "candidatePath": null,
-      "evidence": [],
-      "runtimeVerified": false
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 444444,
+          "reviewedEndLine": 444451,
+          "method": "two-element map expansion"
+        },
+        {
+          "import": "z_e",
+          "export": "Rnn",
+          "binding": "wgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "wgt",
+          "line": 98196
+        },
+        {
+          "module": "shared",
+          "symbol": "Cgt",
+          "line": 98195
+        },
+        {
+          "import": "D0e",
+          "export": "znn",
+          "binding": "Tgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Tgt",
+          "line": 98197
+        },
+        {
+          "module": "shared",
+          "symbol": "Cgt",
+          "line": 98195
+        }
+      ],
+      "runtimeVerified": false,
+      "candidateVariants": [
+        "/share/:sharedConversationId",
+        "/share/e/:sharedConversationId"
+      ]
     },
     {
       "routeLine": 444455,
       "expression": "ER.home.path",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/space",
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 162088,
+          "reviewedEndLine": 162102,
+          "method": "bounded manually reviewed initializer/object/function"
+        }
+      ],
       "runtimeVerified": false
     },
     {
@@ -668,22 +712,43 @@
     {
       "routeLine": 444457,
       "expression": "ER.directory.path",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/space/d/:directoryId",
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 162088,
+          "reviewedEndLine": 162102,
+          "method": "bounded manually reviewed initializer/object/function"
+        }
+      ],
       "runtimeVerified": false
     },
     {
       "routeLine": 444458,
       "expression": "ER.files.path",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/space/files",
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 162088,
+          "reviewedEndLine": 162102,
+          "method": "bounded manually reviewed initializer/object/function"
+        }
+      ],
       "runtimeVerified": false
     },
     {
       "routeLine": 444459,
       "expression": "ER.filesDirectory.path",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/space/files/d/:directoryId",
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 162088,
+          "reviewedEndLine": 162102,
+          "method": "bounded manually reviewed initializer/object/function"
+        }
+      ],
       "runtimeVerified": false
     },
     {
@@ -703,8 +768,15 @@
     {
       "routeLine": 444465,
       "expression": "ER.personal.path",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/space/personal",
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 162088,
+          "reviewedEndLine": 162102,
+          "method": "bounded manually reviewed initializer/object/function"
+        }
+      ],
       "runtimeVerified": false
     },
     {
@@ -894,17 +966,13 @@
     {
       "routeLine": 444545,
       "expression": "exe",
-      "candidatePath": null,
+      "candidatePath": "/hotkey-window",
       "evidence": [
         {
-          "import": "exe",
-          "export": "Unn",
-          "binding": "vgt"
-        },
-        {
           "module": "shared",
-          "symbol": "vgt",
-          "line": 98190
+          "reviewedStartLine": 98180,
+          "reviewedEndLine": 98200,
+          "method": "bounded manually reviewed initializer/object/function"
         }
       ],
       "runtimeVerified": false
@@ -933,8 +1001,15 @@
     {
       "routeLine": 444566,
       "expression": "Lzt()",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/automations",
+      "evidence": [
+        {
+          "module": "initial",
+          "reviewedStartLine": 69335,
+          "reviewedEndLine": 69338,
+          "method": "bounded manually reviewed initializer/object/function"
+        }
+      ],
       "runtimeVerified": false
     },
     {
@@ -992,8 +1067,19 @@
     {
       "routeLine": 444596,
       "expression": "s",
-      "candidatePath": null,
-      "evidence": [],
+      "candidatePath": "/checkout/web",
+      "evidence": [
+        {
+          "import": "s",
+          "export": "$1t",
+          "binding": "bLt"
+        },
+        {
+          "module": "shared",
+          "symbol": "bLt",
+          "line": 111713
+        }
+      ],
       "runtimeVerified": false
     },
     {
@@ -1125,12 +1211,17 @@
     {
       "routeLine": 444645,
       "expression": "Aee",
-      "candidatePath": null,
+      "candidatePath": "/pull-requests/:githubHost/:owner/:repository/:pullRequestNumber",
       "evidence": [
         {
           "import": "Aee",
           "export": "CTt",
-          "binding": "Rn"
+          "binding": "$Rn"
+        },
+        {
+          "module": "shared",
+          "symbol": "$Rn",
+          "line": 179197
         }
       ],
       "runtimeVerified": false
@@ -1565,7 +1656,7 @@
   ],
   "counts": {
     "entries": 145,
-    "candidatePaths": 130,
-    "unresolved": 15
+    "candidatePaths": 144,
+    "unresolved": 0
   }
 }
