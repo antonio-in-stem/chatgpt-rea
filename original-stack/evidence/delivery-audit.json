@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-16",
+  "componentSubset": {
+    "exitCode": 0,
+    "browserInteractionTested": false,
+    "packageFiles": 245,
+    "passed": true,
+    "fullConversationScreen": false,
+    "stylesheets": 5,
+    "resourceReferences": 66,
+    "package": "@rea/ui",
+    "tarballBytes": 1900357,
+    "install": "offline,ignore-scripts",
+    "runner": 82722,
+    "buttonServerRendered": true,
+    "publicImports": true
+  },
+  "originalRuntime": {
+    "evidence": "exported-consumer-v2.json",
+    "fullFrontendComplete": false,
+    "freshProfileChecks": 20
+  },
+  "coverageCorrections": {
+    "remoteCatalog": "remote-plugin-catalog.json:8checks",
+    "queueRemoval": "queue-removal.json:4checks",
+    "remoteLifecycle": "remote-plugin-lifecycle.json:6checks"
+  },
+  "remainingRequirements": "DELIVERY-AUDIT.md and FRONTEND-CLOSURE.md",
+  "quotaUsedPercent": 40
+}

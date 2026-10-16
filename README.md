@@ -5,7 +5,7 @@
 
 Proyecto de investigación y reconstrucción del frontend de escritorio de ChatGPT/Codex para Windows. Incluye análisis del paquete distribuido, contratos recuperados, adaptadores locales con datos demo y el trabajo previo de interfaz nativa.
 
-**Para continuar en otra sesión: [HANDOFF.md](HANDOFF.md).** La prioridad actual es completar y verificar el frontend original con su runtime. **El port a Rust está pausado por indicación del propietario.** El proyecto no está terminado y no es el repositorio TypeScript original de OpenAI.
+**Para continuar en otra sesión: [CURRENT-STATUS.md](CURRENT-STATUS.md).** Entrega y límites verificados: [DELIVERY-AUDIT.md](DELIVERY-AUDIT.md). La prioridad actual es completar y verificar el frontend original con su runtime. **El port a Rust está pausado por indicación del propietario.** El proyecto no está terminado y no es el repositorio TypeScript original de OpenAI.
 
 Este repositorio conserva código, herramientas, informes y evidencias seleccionadas. Los directorios locales `extracted/`, `original-stack/pristine/`, `original-stack/state/`, los perfiles y los builds no se publican. Por ello, clonar el repo no proporciona por sí solo un ejecutable listo para arrancar. Consulte la guía de continuidad para recuperar el entorno.
 
