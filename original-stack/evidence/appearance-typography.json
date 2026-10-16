@@ -1,0 +1,12 @@
+{
+  "status": "verified",
+  "runner": "Verify-AppearanceTypography.cjs",
+  "uiChecksPassed": 9,
+  "source": "general-settings-161845fad443.js da:611, Cc:8016 and wc",
+  "rendererModified": false,
+  "adapterModified": false,
+  "installedFrontendConsumer": true,
+  "verified": ["three size inputs reject out-of-range values on Enter", "three size inputs accept valid values", "all persist after reload", "original values restored", "restoration persists after reload"],
+  "initialAndRestored": {"sans": 14, "content": 14, "code": 13},
+  "limitations": ["first automation attempt using programmatic focus change did not trigger expected rejection; no app defect established", "font rendering in Pages and code views not asserted by this settings runner", "font styles, reduced motion, split modes, contrast, theme presets and reset/import/export remain pending"]
+}
