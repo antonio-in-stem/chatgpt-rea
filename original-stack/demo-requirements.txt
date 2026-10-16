@@ -1,0 +1,4 @@
+# Versions observed in the verified Windows demo environment.
+websockets==16.0
+cryptography==49.0.0
+-r page-sync-requirements.txt

@@ -63,3 +63,27 @@ The profile and demo stores remain under `original-stack/state/<StateName>`. Pow
 `Test-DemoRelocation.ps1` passes6 preflight checks against inert temporary fixtures: initial location, relocation into a path with spaces, legacy absolute paths, non-demo rejection, modified-runtime rejection and malformed-location rejection. No executable is launched by that test. A real fresh-machine launch remains unverified. `Test-RuntimeIntegrity.ps1` separately exercises the full-file integrity guard.
 
 Before UI verification, run `node original-stack/Demo-Controls.cjs demo-PROFILE show-demo-window`. It validates the demo process path and profile, restores it if Windows reports it minimized, then brings the renderer forward. A minimized Electron window can yield blank captures and unavailable composer commands; `Page.bringToFront` alone did not restore it in the observed case. This helper does not change original styles or capability guards.
+
+## Export the existing runtime without profiles
+
+Use the existing verified demo runtime location and a new output directory. The export requires Python3.12+ (the tested version), at least the inventory byte total plus64MiB free, and no re-extraction or build:
+
+```powershell
+python original-stack/Export-DemoRuntime.py original-stack/state/instrumented-profile-host/runtime-location.json 'D:/new-rea-runtime-bundle'
+```
+
+The exporter streams each inventoried file through SHA-256 into `runtime/`. It rejects unsafe/duplicate inventory paths, links, unexpected or missing runtime members, changed file bytes, altered renderer metadata and existing destinations. The relative `runtime-location.json` appears only after every file passes. Failed partial output remains for inspection and cannot be launched through an export manifest; choose another new destination for a later attempt.
+
+The result contains the runtime, sanitized integrity metadata and an export report. Profiles, credentials, conversations and fixture stores are outside the runtime and are not exported. Keep this original binary bundle local/private; it is not included in Git commits. The minimized patch metadata supports launching; it is not a replacement for the full local host-build manifest used by Install-DemoHost.py.
+
+Alongside the bundle, keep a checkout of this repository for the launchers and demo adapters. The tested environment uses PowerShell7 and Python3.12. Install adapter dependencies in a chosen virtual environment, then activate it so the launcher's `python` command selects that interpreter:
+
+```powershell
+python -m venv .venv-demo
+. ./.venv-demo/Scripts/Activate.ps1
+python -m pip install -r original-stack/demo-requirements.txt
+./original-stack/Start-Demo.ps1 -StateName demo-portable -DemoHost -RuntimeLocationPath 'D:/new-rea-runtime-bundle/runtime-location.json' -DryRun
+./original-stack/Start-Demo.ps1 -StateName demo-portable -DemoHost -RuntimeLocationPath 'D:/new-rea-runtime-bundle/runtime-location.json' -DemoPagesTls -InspectRuntime
+```
+
+The runtime already contains the original frontend; omit FrontendPackageRoot to use it. To test the separate installed `@rea/original-frontend` package, pass its path as described earlier. A fresh profile needs its own demo scenario data. Export verification and launcher preflight do not prove every screen works on a second machine; that UI validation remains pending. No new app instance was launched as part of the recorded export verification.

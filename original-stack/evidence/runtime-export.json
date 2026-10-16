@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "files": 3594,
+  "bytes": 2322551186,
+  "profilesCopied": false,
+  "rendererModified": false,
+  "sourceAsarSha256": "c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038",
+  "demoAsarSha256": "9fdb8c746a5b351ca68955bdd6fd9fb61cd9d082a7a01bbbf0a40600dc78378d",
+  "runtimeExecutableSha256": "3959ddb454231daf749fb485d00dc1fa795465569d3c55a73cb53f50e52ed03c",
+  "exporterTests": 6,
+  "originalLauncherDryRunPassed": true,
+  "appStartedFromExport": false,
+  "profileStateCopied": false,
+  "binaryPayloadPublished": false,
+  "relativeLaunchManifest": true,
+  "quotaUsedPercent": 37,
+  "limitations": [
+    "Real exported runtime hashes and launcher preflight verified on this machine only",
+    "Fresh-machine UI and clean dependency installation not verified",
+    "Fresh profiles do not include historical demo scenarios",
+    "Full frontend feature/state coverage remains incomplete"
+  ]
+}
