@@ -1,6 +1,7 @@
 """Synthetic Security workbench state. No scanner or repository access."""
 import json
 import demo_security_setup
+import demo_security_remediation
 from copy import deepcopy
 
 METHODS = {'mcpServerStatus/list', 'mcpServer/tool/call'}
@@ -40,11 +41,12 @@ def handle(method, params, config=None):
     summary, finding=deepcopy(SUMMARY),deepcopy(FINDING)
     summary['name']=state.get('name',summary['name'])
     finding['triage']=state.get('triage',finding['triage'])
+    if 'remediation' in state:finding['remediationState']=deepcopy(state['remediation'])
     if state.get('recoveryPending'):
         summary['progress'].update(status='failed')
         summary.update(resultsRecoveryNeeded=True,failureMessage='Demo interrupted report with retained results')
     elif state.get('recoveryCompleted'):summary['resultsRecoveryNeeded']=False
-    tools=TOOLS+MUTATIONS+demo_security_setup.TOOLS if config is not None else TOOLS
+    tools=TOOLS+MUTATIONS+demo_security_setup.TOOLS+demo_security_remediation.TOOLS if config is not None else TOOLS
     params = {} if params is None else params
     if not isinstance(params, dict): raise SecurityError('Expected provider parameters')
     if method == 'mcpServerStatus/list':
@@ -53,7 +55,7 @@ def handle(method, params, config=None):
                 'runtimeStatus': 'connected', 'resources': [], 'resourceTemplates': [],
                 'serverInfo': {'name': 'rea-security-demo', 'version': '1.0.0', 'title': 'Synthetic Security demo'},
                 'tools': {name: {'name': name, 'description': 'Synthetic demo UI state only',
-                           'inputSchema': {'type': 'object'}, 'annotations': {'readOnlyHint': name not in MUTATIONS and name not in demo_security_setup.TOOLS[2:]}}
+                           'inputSchema': {'type': 'object'}, 'annotations': {'readOnlyHint': name not in MUTATIONS and name not in demo_security_setup.TOOLS[2:] and name not in demo_security_remediation.TOOLS}}
                           for name in tools}}], 'nextCursor': None}
     if method != 'mcpServer/tool/call' or params.get('server') != 'codex-security':
         raise SecurityError('Unknown demo provider')
@@ -64,6 +66,12 @@ def handle(method, params, config=None):
         data,changed=demo_security_setup.handle(name,args,state)
         if changed:save_state(path,state)
         return {'content':[],'isError':False,'structuredContent':data}
+    if name in demo_security_remediation.TOOLS:
+        demo_security_remediation.handle(name,args,state,SecurityError)
+        save_state(path,state)
+        response=handle('mcpServer/tool/call',{'server':'codex-security','tool':'get_codex_security_scan','arguments':{'scanId':SCAN_ID}},config)
+        if name==demo_security_remediation.TOOLS[2]:response['structuredContent']['actionToken']=args['actionToken']
+        return response
     runs=state.get('runs',{})
     if args.get('scanId') in runs:
         run=runs[args['scanId']]
@@ -114,8 +122,8 @@ def handle(method, params, config=None):
                 'latestScan': summary, 'openFindingsCount': int(finding['triage']['status']=='open'), 'scanCount': 1+len(runs)}]}
     elif name == 'get_codex_security_scan':
         data = {'scan': {**summary, 'findings': [finding], 'findingsTruncated': False,
-                'severityCounts': {'low': 1}, 'remediationAvailable': False,
-                'remediationUnavailableReason': 'Synthetic read-only report'}}
+                'severityCounts': {'low': 1}, 'remediationAvailable': config is not None,
+                'remediationUnavailableReason': None if config is not None else 'Synthetic read-only report'}}
     else:
         offset, limit = args.get('offset', 0), args.get('limit', 20)
         if type(offset) is not int or offset < 0 or type(limit) is not int or not 1 <= limit <= 100:
