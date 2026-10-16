@@ -19,7 +19,7 @@ Arranque y requisitos actuales: [FRONTEND-PACKAGE.md](original-stack/FRONTEND-PA
 - Quedan tipos/estados de artefactos, edición de hojas/formatos Office, acceso compartido entrante y variantes de colaboración, actividad y Sketch.
 - Quedan acciones/errores de ajustes, cuenta, archivo, Family, notificaciones y Code Review. Algunos contenidos/configuraciones los suministra un servicio y no están definidos por completo en el ejecutable.
 - No existe auditoría visual completa con el mismo tamaño, DPI, tema, idioma, contenido y estado. Mantener bytes originales no demuestra que todos los estados demo sean equivalentes a la app instalada.
-- Falta instalación limpia de dependencias y ejecución en un segundo equipo. El Git clone no incluye el runtime, el payload original ni los perfiles.
+- Instalación limpia de dependencias y arranque desde copia de fuentes sin estado histórico ya verificados en esta máquina (clean-delivery.json,7 comprobaciones UI). Sigue pendiente otro equipo. El Git clone no incluye el runtime, el payload original ni los perfiles.
 
 La matriz detallada es [FRONTEND-CLOSURE.md](FRONTEND-CLOSURE.md). No se asigna un porcentaje de avance: todavía no hay un denominador completo de flujos/estados aceptado y comprobado.
 

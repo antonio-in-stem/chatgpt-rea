@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-16",
+  "initialFailure": "demo-profile-identity depended on ignored state/instrumented-profile-host/demo-account-read.json; reproduced in isolated source copy",
+  "fix": "Read tracked fixtures/demo-account-read.json; retain exact synthetic identity validation",
+  "dependencies": {
+    "cffi": "2.1.1",
+    "websockets": "16.0",
+    "pycparser": "3.11",
+    "cryptography": "49.0.0",
+    "python": "3.12.6",
+    "y-py": "0.6.2"
+  },
+  "cleanAdapter": {
+    "dependenciesFromVenv": true,
+    "passed": true,
+    "ignoredStateCopied": false,
+    "pagesTlsStarted": true,
+    "accountReadRpc": true
+  },
+  "desktop": {
+    "sourceCopy": "original-stack/state/clean-source-v1",
+    "ui": {
+      "passed": true,
+      "results": [
+        "original create form defaults to local execution",
+        "original local switch selects cloud and loads model catalog",
+        "original Create persists selected cloud model and effort",
+        "created task appears in original task UI",
+        "created task and model/effort survive reload and Edit",
+        "original deletion removes newly created cloud task",
+        "cloud flow leaves local tasks untouched"
+      ],
+      "rendererModified": false,
+      "realScheduling": false,
+      "fixtureSeeded": false
+    },
+    "adapterPid": 69216,
+    "oldPageSyncDependenciesAbsent": true,
+    "runtimePid": 159864,
+    "oldIdentityStagingAbsent": true,
+    "sourceFilesCopied": 180,
+    "visual": "Original Scheduled window captured and inspected at1280x820 after synthetic task deletion",
+    "adapterExecutableFromNewVenv": true,
+    "profile": "demo-clean-delivery",
+    "launcherSession": 82588
+  },
+  "runtimeExport": "portable-runtime-v2; unchanged ASAR/EXE",
+  "limitations": [
+    "Same Windows host, not second machine or operating system",
+    "Seven cloud-create UI scenarios only; not every frontend family",
+    "Venv and copied source/profile remain local ignored artifacts"
+  ]
+}

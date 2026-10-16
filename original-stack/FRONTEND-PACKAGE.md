@@ -16,6 +16,22 @@ The manifest paths are relative. Moving the bundle requires only updating `-Runt
 
 Actual v2 acceptance on this Windows machine with new profile `demo-export-consumer-v2`:7 cloud-create scenarios and13 conversation/image/history/persistence scenarios passed. The conversation runner requires Home to be visible first (use the original Home rail action when starting from Scheduled). Original full-window capture inspected. See `evidence/exported-consumer-v2.json`. No second-machine or complete frontend coverage claim. Per-screen historical fixtures are not automatically migrated into new profiles.
 
+## Clean dependency and source-copy acceptance
+
+A new Python3.12.6 virtual environment installed `demo-requirements.txt` successfully. `Verify-CleanAdapter.py`, run with that environment's Python, copies only adapter source and versioned synthetic fixtures into a temporary directory, confirms dependencies resolve inside the venv, starts the actual loopback/TLS services, and checks account/read. No original profile, `state/page-sync-deps` or `state/instrumented-profile-host` is copied.
+
+This test exposed an ignored-file dependency in `--demo-profile-identity`. The adapter now reads the versioned `fixtures/demo-account-read.json` and retains its exact synthetic-value validation. Updating repository code fixes this; no runtime/ASAR rebuild is needed.
+
+Actual desktop acceptance also passed from `state/clean-source-v1`, a fresh180-file source copy with a new profile and the installed venv. The exported v2 runtime passed7 cloud-create/model/effort/reload/delete checks. The adapter executable was confirmed inside the new venv, and both historical state directories were absent. See `evidence/clean-delivery.json`. This verifies clean dependencies/source state on this host; another Windows machine and complete frontend coverage remain unverified.
+
+```powershell
+python -m venv .venv
+./.venv/Scripts/python.exe -m pip install -r original-stack/demo-requirements.txt
+./.venv/Scripts/python.exe original-stack/Verify-CleanAdapter.py
+./.venv/Scripts/Activate.ps1
+./original-stack/Start-Demo.ps1 -StateName demo-consumer -DemoHost -RuntimeLocationPath ./original-stack/state/portable-runtime-v2/runtime-location.json -InspectRuntime -DemoPagesTls
+```
+
 ## Reproduce locally
 
 Use the already extracted `webview` directory and the pinned pristine ASAR. No app account, profile, network download, formatter or re-extraction is involved. Choose new output directories with at least 2 GB available for package, tarball and isolated consumer.

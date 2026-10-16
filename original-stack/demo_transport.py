@@ -220,7 +220,7 @@ if __name__ == "__main__":
     parser.add_argument("--demo-profile-identity", action="store_true", help="Synthetic account state for the separately instrumented demo host; no token")
     args = parser.parse_args()
     if args.demo_profile_identity:
-        account_file = Path(__file__).parent / "state/instrumented-profile-host/demo-account-read.json"
+        account_file = Path(__file__).parent / "fixtures/demo-account-read.json"
         demo_account = json.loads(account_file.read_text(encoding="utf-8"))
         expected = {"account": {"type": "chatgpt", "email": "demo@example.invalid", "planType": "free"}, "requiresOpenaiAuth": False, "workspaceRouting": None}
         if demo_account != expected:

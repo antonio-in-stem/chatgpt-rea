@@ -1,0 +1,5 @@
+{
+  "account": {"type": "chatgpt", "email": "demo@example.invalid", "planType": "free"},
+  "requiresOpenaiAuth": false,
+  "workspaceRouting": null
+}
