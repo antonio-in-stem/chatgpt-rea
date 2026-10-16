@@ -185,3 +185,10 @@ Added source-shaped rename_codex_security_scan and set_codex_security_finding_tr
 35 targeted tests pass. Verify-SecurityMutations.cjs passed 14 UI observations including repeated navigation: Escape cancels inline rename; Enter saves; reload retains name; name restored; finding detail, close cancel, missing context disables confirmation, submit closes, reopen works, reload keeps reopened finding. UI checks use original double-click/name input and close dialog. The previous eight read checks also passed against this adapter. Closed-state reload itself is not separately verified. Runner leaves original name/open state.
 
 Runtime 47608, adapter 159828, launcher session 82108; revalidate. Remaining Security work: scan creation/form lifecycle, other report/remediation states and error UI; do not count this as all Security complete. Limit 50%, stop new changes at 40%, last quota observed 9%. Rust deferred.
+
+
+## Security setup controls verified — 2026-10-15
+
+Verify-SecurityScanForm.cjs passed eight observations: list baseline, new scan requires repository, deep mode disables scope selection, extra context fields appear/hide, standard mode re-enables scope, Single folder selected, leave setup returns to list. Original menu uses menuitem rather than option/radio; corrected the test selector after first timeout without changing renderer. No scan submitted. New code is verification only.
+
+Remaining creation seam is concrete: no eligible demo project in selector; inspect_codex_security_target returns target.targetMetadata. Source _c prepares scan/handoff, creates original security_scan thread, attaches continuation, then navigates. Do not claim submission or introduce an executor. Existing read and rename/triage workflows remain verified. Runtime 47608/adapter159828, session82108 unchanged; revalidate. Limit50%, last read9%, Rust deferred.

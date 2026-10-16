@@ -151,5 +151,16 @@
     "state": "Explicit demo configuration sibling demo-security.json; atomic replace; no repository files read or written. Discovery exposes mutations only with demo config.",
     "scope": "Rename and open/closed triage with close reason/note; no scan or remediation executor. UI context length 2400 and required wont_fix rationale traced from original dialog; scan name 200 character bound is a demo policy.",
     "validation": "35 targeted tests pass, including failed writes preserving previous bytes. Verify-SecurityMutations.cjs passes 14 original UI observations. Original name/open state restored. Closed-state reload separately is not claimed; reopened state and renamed state reload verified."
+  },
+  "scanSetup": {
+    "sources": [
+      "security-route-feb1afe59e86.js:676-685",
+      "security-route-feb1afe59e86.js:6062-6130",
+      "security-route-feb1afe59e86.js:7690-7735",
+      "security-route-feb1afe59e86.js:7990-8090"
+    ],
+    "verification": "Verify-SecurityScanForm.cjs passed eight original UI observations. No renderer modifications. The runner returns to reports without submitting.",
+    "gap": "Project selector has no eligible synthetic project. Target inspection uses inspect_codex_security_target({targetPath}) -> target.targetMetadata. Submission prepares a scan with a handoff token, creates a security_scan conversation and attaches it to the scan. These demo transitions remain unimplemented, not successful by merely opening the setup screen.",
+    "limits": "No real scanner, repository reads or remediation executor required. Deep mode disables folder scope in original UI. Standard enables it. Changes remains disabled without inspected revision capability."
   }
 }

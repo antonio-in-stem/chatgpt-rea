@@ -17,7 +17,7 @@ Scope: original shipped Windows renderer, demo data and reusable packaging with 
 | Library | library-file-lifecycle-contract.json, library-nontext-preview-contract.json, library-csv-preview-contract.json | Spreadsheet editing/office formats and browse variants; old non-text-preview pending entry is superseded by later preview evidence |
 | Sketch | sketch-runtime-contract.json: pen, rectangle, erasure, text, undo/redo, export/reopen observed | Other shapes, transforms, text editing/resize/formatting, thickness, cancel and editable restart persistence |
 | Activity | mentions-inbox-contract.json | Deep block/comment targets, incoming events, loading/error states |
-| Security | security-provider-contract.json; Verify-Security.cjs: lists, filters, detail, back and reload verified | Scan form lifecycle, remediation variants and error UI; rename/triage cancel/save/reload verified by Verify-SecurityMutations.cjs |
+| Security | security-provider-contract.json; Verify-Security.cjs: lists, filters, detail, back and reload verified | Scan submission/target selection, remediation variants and error UI; setup controls verified with Verify-SecurityScanForm.cjs; rename/triage cancel/save/reload verified by Verify-SecurityMutations.cjs |
 | Settings | current-flow-coverage.json: 25 destinations opened | Opening is not interaction coverage; each destination needs its own scenario inventory |
 | Profile/Account | Verify-Profile.cjs and account opening evidence | Photo upload, profile variants, account form confirmations and demo outcomes |
 | Archived | Verify-ArchivedTasks.cjs | Cloud viewer/search, ChatGPT deletion, reconcile existing local archive/restore captures before retesting local lifecycle |
