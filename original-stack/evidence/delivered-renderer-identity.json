@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-16",
+  "originalAsarSha256": "c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038",
+  "deliveredAsarSha256": "29d686ec32eecddd8f425b9fc02ec58cdba82ce461d988683767c3a65463577b",
+  "scope": "Every packed webview member, exact membership and streamed byte equality against pristine ASAR",
+  "filesCompared": 20119,
+  "bytesCompared": 545939185,
+  "extensions": {
+    ".avif": 1,
+    ".css": 317,
+    ".data": 2,
+    ".docx": 3,
+    ".html": 3,
+    ".jpg": 3,
+    ".js": 14771,
+    ".json": 871,
+    ".license": 1,
+    ".mjs": 11,
+    ".mp4": 3,
+    ".mts": 5,
+    ".ogg": 6,
+    ".png": 692,
+    ".pptx": 3,
+    ".svg": 2367,
+    ".ttf": 20,
+    ".txt": 1,
+    ".wasm": 33,
+    ".wav": 19,
+    ".webp": 937,
+    ".woff": 22,
+    ".woff2": 25,
+    ".xlsx": 3
+  },
+  "allRendererMembersByteIdentical": true,
+  "deliveryArchive": "chatgpt-rea-delivery-v3r1.zip",
+  "archiveRuntimeBinding": "delivery-archive-v3.json verifies runtime inventory hashes during packaging",
+  "limitations": [
+    "Byte identity does not prove feature eligibility, host contracts, all flows or matched-state visual parity",
+    "Only packed webview subtree compared; main process is instrumented for demo",
+    "Not original TypeScript and not independent components",
+    "Rust deferred"
+  ]
+}

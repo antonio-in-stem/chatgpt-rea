@@ -20,6 +20,10 @@ Extract project/ and runtime-bundle/ together and follow LEEME.md. Prior v2 extr
 
 No demo is currently running from this task: runtime105364 was deliberately stopped to free memory; launcher26897 terminated and disposed its adapter. Do not use historical PIDs as live targets. Profiles preserved. Last tested consumer is original-stack/state/archive-consumer-v2/project; activate its .venv and follow its LEEME only when another runtime launch is justified. Current quota42%, cap50%; integration/verification/delivery only. Rust deferred. Remaining full-app gaps: FRONTEND-CLOSURE.md. Do not keep repackaging merely to include new status documents.
 
+## Fidelidad del renderer entregado
+
+Comparados directamente contra el ASAR pristino:20119 archivos del arbol webview,545939185 bytes; todos coinciden byte por byte y no falta ni sobra ningun miembro. Incluye CSS, fuentes, iconos y JavaScript. Evidencia: `original-stack/evidence/delivered-renderer-identity.json`. Esto comprueba la conservacion de los archivos originales, no que todas las pantallas/estados esten habilitados ni que sus contratos demo esten resueltos. El proceso principal conserva adaptaciones demo.
+
 ## Qué impide afirmar que está terminado
 
 - Falta cobertura exhaustiva de estados/flujos. El inventario textual de rutas no equivale a ejecutar todas las pantallas.

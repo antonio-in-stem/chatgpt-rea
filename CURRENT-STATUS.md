@@ -12,6 +12,12 @@ Extract project/ and runtime-bundle/ together and follow LEEME.md. Prior v2 extr
 
 No demo is currently running from this task: runtime105364 was deliberately stopped to free memory; launcher26897 terminated and disposed its adapter. Do not use historical PIDs as live targets. Profiles preserved. Last tested consumer is original-stack/state/archive-consumer-v2/project; activate its .venv and follow its LEEME only when another runtime launch is justified. Current quota42%, cap50%; integration/verification/delivery only. Rust deferred. Remaining full-app gaps: FRONTEND-CLOSURE.md. Do not keep repackaging merely to include new status documents.
 
+## Renderer fidelity evidence
+
+Direct comparison against pinned pristine ASAR passed for the ENTIRE packed webview subtree:20119 members,545939185 bytes, identical membership/sizes/content. Streamed byte comparison, not just trusting rendererFilesModified:false. Includes317 CSS,67 font files,2367 SVG and14771 JS files. Original archive c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038; delivery runtime archive29d686ec32eecddd8f425b9fc02ec58cdba82ce461d988683767c3a65463577b. Bound to ZIP v3r1 through packaging inventory hashes. Evidence original-stack/evidence/delivered-renderer-identity.json.
+
+This proves shipped renderer bytes were retained; it does not prove feature eligibility, demo host contracts, complete flow coverage, identical populated visual states, original TSX or independent components. Main process remains instrumented. No runtime launch or new implementation was needed; Rust deferred.
+
 ## Delivered package boundary
 Package-Frontend.cjs preserves exact original webview members from pristine ASAR hash c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038.20119 files/545939185 bytes; private npm @rea/original-frontend in S:/rea-original-frontend-package-v1. Verify-FrontendPackage.cjs packed, offline-installed and checked every installed hash. Tarball217050853 bytes remains local.
 Original protocol root optionally selects that verified installed tree; original host/bootstrap still required. Verify-ConversationFlow.cjs passed13 scenarios against installed consumer. FRONTEND-PACKAGE.md documents consumption. Not original TypeScript, independent React API, or fresh-machine portable delivery. Partial @rea/ui package remains a subset, not the full original app.
