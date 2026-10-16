@@ -1,0 +1,1571 @@
+{
+  "scope": "Static textual candidates with import/export alias tracing. Not lexical-scope AST analysis, effective parent composition, gate eligibility or UI verification. Ambiguous and short local bindings stay unresolved.",
+  "sources": {
+    "initial": {
+      "file": "app-initial-b8e1c8014bb4.js",
+      "sha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f"
+    },
+    "shared": {
+      "file": "app-shared-737655e1fb23.js",
+      "sha256": "536ae26183650bc595a9cd3d43d3a68a4e82328e31cd36942ef59c4fcecded4e"
+    }
+  },
+  "entries": [
+    {
+      "routeLine": 444270,
+      "expression": "SXe",
+      "candidatePath": null,
+      "evidence": [
+        {
+          "import": "SXe",
+          "export": "v3",
+          "binding": "h1"
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444271,
+      "expression": "lWa",
+      "candidatePath": "/browser/handoff",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "lWa",
+          "line": 294074
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444272,
+      "expression": "`/cloud-environments/new`",
+      "candidatePath": "/cloud-environments/new",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444273,
+      "expression": "`/refer/:linkId`",
+      "candidatePath": "/refer/:linkId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444279,
+      "expression": "LWa",
+      "candidatePath": "/archive",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "LWa",
+          "line": 294301
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444286,
+      "expression": "og",
+      "candidatePath": null,
+      "evidence": [
+        {
+          "import": "og",
+          "export": "w3",
+          "binding": "YTr"
+        },
+        {
+          "module": "shared",
+          "symbol": "YTr",
+          "line": 213727
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444287,
+      "expression": "wr",
+      "candidatePath": null,
+      "evidence": [
+        {
+          "import": "wr",
+          "export": "C3",
+          "binding": "XTr"
+        },
+        {
+          "module": "shared",
+          "symbol": "XTr",
+          "line": 213728
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444289,
+      "expression": "ove",
+      "candidatePath": null,
+      "evidence": [
+        {
+          "import": "ove",
+          "export": "S3",
+          "binding": "ZTr"
+        },
+        {
+          "module": "shared",
+          "symbol": "ZTr",
+          "line": 213729
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444295,
+      "expression": "`/explore`",
+      "candidatePath": "/explore",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444298,
+      "expression": "YA.scheduled.path",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444303,
+      "expression": "yWa",
+      "candidatePath": "/onboarding",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "yWa",
+          "line": 294175
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444310,
+      "expression": "`/workspace/deactivated`",
+      "candidatePath": "/workspace/deactivated",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444314,
+      "expression": "`/`",
+      "candidatePath": "/",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444316,
+      "expression": "`/projects`",
+      "candidatePath": "/projects",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444321,
+      "expression": "`/work`",
+      "candidatePath": "/work",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444324,
+      "expression": "DRe",
+      "candidatePath": "/g/:projectId/project",
+      "evidence": [
+        {
+          "import": "DRe",
+          "export": "k3",
+          "binding": "VTr"
+        },
+        {
+          "module": "shared",
+          "symbol": "VTr",
+          "line": 213692
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444325,
+      "expression": "tWa",
+      "candidatePath": "/merchants/settings",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "tWa",
+          "line": 294034
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444327,
+      "expression": "`/verify_age`",
+      "candidatePath": "/verify_age",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444331,
+      "expression": "`/verify_guardian`",
+      "candidatePath": "/verify_guardian",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444335,
+      "expression": "`/mission-control`",
+      "candidatePath": "/mission-control",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444339,
+      "expression": "`${$Ua}/:entityId?`",
+      "candidatePath": "/maps/:entityId?",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "$Ua",
+          "line": 294028
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444343,
+      "expression": "`/products/:entityShareId`",
+      "candidatePath": "/products/:entityShareId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444347,
+      "expression": "`/shopping`",
+      "candidatePath": "/shopping",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444352,
+      "expression": "`/cme`",
+      "candidatePath": "/cme",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444355,
+      "expression": "ZUa",
+      "candidatePath": "/images",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "ZUa",
+          "line": 294022
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444358,
+      "expression": "fue",
+      "candidatePath": "/gpts/mine",
+      "evidence": [
+        {
+          "import": "fue",
+          "export": "L3",
+          "binding": "FTr"
+        },
+        {
+          "module": "shared",
+          "symbol": "FTr",
+          "line": 213675
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444362,
+      "expression": "jre",
+      "candidatePath": "/gpts",
+      "evidence": [
+        {
+          "import": "jre",
+          "export": "F3",
+          "binding": "PTr"
+        },
+        {
+          "module": "shared",
+          "symbol": "PTr",
+          "line": 213675
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444366,
+      "expression": "Goe",
+      "candidatePath": "/g/:gizmoId",
+      "evidence": [
+        {
+          "import": "Goe",
+          "export": "I3",
+          "binding": "ITr"
+        },
+        {
+          "module": "shared",
+          "symbol": "ITr",
+          "line": 213675
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444370,
+      "expression": "YUa",
+      "candidatePath": "/gpts/create",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "YUa",
+          "line": 294016
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444373,
+      "expression": "ORt",
+      "candidatePath": "/codex-access",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "ORt",
+          "line": 68969
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444374,
+      "expression": "Eoe",
+      "candidatePath": "/global-dictation",
+      "evidence": [
+        {
+          "import": "Eoe",
+          "export": "Hnn",
+          "binding": "Sgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Sgt",
+          "line": 98194
+        },
+        {
+          "module": "shared",
+          "symbol": "xgt",
+          "line": 98193
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444375,
+      "expression": "ur",
+      "candidatePath": "/debug",
+      "evidence": [
+        {
+          "import": "ur",
+          "export": "Bnn",
+          "binding": "bgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "bgt",
+          "line": 98192
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444376,
+      "expression": "`/extension/panel/new`",
+      "candidatePath": "/extension/panel/new",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444377,
+      "expression": "`/first-run`",
+      "candidatePath": "/first-run",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444390,
+      "expression": "NKe",
+      "candidatePath": "/mcp-app/plugins/:pluginId/:toolName",
+      "evidence": [
+        {
+          "import": "NKe",
+          "export": "rrn",
+          "binding": "Rgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Rgt",
+          "line": 98210
+        },
+        {
+          "module": "shared",
+          "symbol": "Lgt",
+          "line": 98209
+        },
+        {
+          "module": "shared",
+          "symbol": "Ngt",
+          "line": 98205
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444392,
+      "expression": "`/plugins/:pluginId/app/:toolName`",
+      "candidatePath": "/plugins/:pluginId/app/:toolName",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444395,
+      "expression": "mTe",
+      "candidatePath": "/mcp-app/:server/:toolName",
+      "evidence": [
+        {
+          "import": "mTe",
+          "export": "Ynn",
+          "binding": "Pgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Pgt",
+          "line": 98206
+        },
+        {
+          "module": "shared",
+          "symbol": "Ngt",
+          "line": 98205
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444399,
+      "expression": "kGe",
+      "candidatePath": "/local/:conversationId",
+      "evidence": [
+        {
+          "import": "kGe",
+          "export": "qnn",
+          "binding": "Ygt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Ygt",
+          "line": 98224
+        },
+        {
+          "module": "shared",
+          "symbol": "Jgt",
+          "line": 98223
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444416,
+      "expression": "eVe",
+      "candidatePath": "/c/:conversationId",
+      "evidence": [
+        {
+          "import": "eVe",
+          "export": "mMt",
+          "binding": "LDn"
+        },
+        {
+          "module": "shared",
+          "symbol": "LDn",
+          "line": 171127
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444423,
+      "expression": "`/branch/:conversationId/:messageId`",
+      "candidatePath": "/branch/:conversationId/:messageId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444427,
+      "expression": "Be",
+      "candidatePath": "/g/:projectId/shared/c/:conversationId",
+      "evidence": [
+        {
+          "import": "Be",
+          "export": "A3",
+          "binding": "HTr"
+        },
+        {
+          "module": "shared",
+          "symbol": "HTr",
+          "line": 213692
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444431,
+      "expression": "MFe",
+      "candidatePath": "/g/:gizmoId/c/:conversationId",
+      "evidence": [
+        {
+          "import": "MFe",
+          "export": "hMt",
+          "binding": "RDn"
+        },
+        {
+          "module": "shared",
+          "symbol": "RDn",
+          "line": 171128
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444437,
+      "expression": "Zke",
+      "candidatePath": "/agents",
+      "evidence": [
+        {
+          "import": "Zke",
+          "export": "c3",
+          "binding": "oEr"
+        },
+        {
+          "module": "shared",
+          "symbol": "oEr",
+          "line": 213750
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444438,
+      "expression": "nYe",
+      "candidatePath": "/agents/a/:agentId",
+      "evidence": [
+        {
+          "import": "nYe",
+          "export": "u3",
+          "binding": "sEr"
+        },
+        {
+          "module": "shared",
+          "symbol": "sEr",
+          "line": 213751
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444439,
+      "expression": "jze",
+      "candidatePath": "/agents/studio/new",
+      "evidence": [
+        {
+          "import": "jze",
+          "export": "l3",
+          "binding": "cEr"
+        },
+        {
+          "module": "shared",
+          "symbol": "cEr",
+          "line": 213752
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444441,
+      "expression": "YAe",
+      "candidatePath": "/agents/studio/edit/:agentId",
+      "evidence": [
+        {
+          "import": "YAe",
+          "export": "d3",
+          "binding": "lEr"
+        },
+        {
+          "module": "shared",
+          "symbol": "lEr",
+          "line": 213753
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444443,
+      "expression": "aNe",
+      "candidatePath": "/agents/studio/edit/:agentId/channels/slack/setup",
+      "evidence": [
+        {
+          "import": "aNe",
+          "export": "f3",
+          "binding": "uEr"
+        },
+        {
+          "module": "shared",
+          "symbol": "uEr",
+          "line": 213754
+        },
+        {
+          "module": "shared",
+          "symbol": "lEr",
+          "line": 213753
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444448,
+      "expression": "e",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444455,
+      "expression": "ER.home.path",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444456,
+      "expression": "`/space/sites/*`",
+      "candidatePath": "/space/sites/*",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444457,
+      "expression": "ER.directory.path",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444458,
+      "expression": "ER.files.path",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444459,
+      "expression": "ER.filesDirectory.path",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444461,
+      "expression": "`/space/file/:libraryFileId`",
+      "candidatePath": "/space/file/:libraryFileId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444464,
+      "expression": "`/space/browser/:url`",
+      "candidatePath": "/space/browser/:url",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444465,
+      "expression": "ER.personal.path",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444466,
+      "expression": "`/space/:pageId`",
+      "candidatePath": "/space/:pageId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444467,
+      "expression": "`/spaces/new`",
+      "candidatePath": "/spaces/new",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444468,
+      "expression": "`/spaces/:spaceId`",
+      "candidatePath": "/spaces/:spaceId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444472,
+      "expression": "KUa",
+      "candidatePath": "/business-profiles",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "KUa",
+          "line": 294010
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444480,
+      "expression": "`:profileId`",
+      "candidatePath": ":profileId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444483,
+      "expression": "`dashboard`",
+      "candidatePath": "dashboard",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444484,
+      "expression": "`chats`",
+      "candidatePath": "chats",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444485,
+      "expression": "`chats/:conversationId`",
+      "candidatePath": "chats/:conversationId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444486,
+      "expression": "`insights`",
+      "candidatePath": "insights",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444487,
+      "expression": "`products`",
+      "candidatePath": "products",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444488,
+      "expression": "`edit/:section`",
+      "candidatePath": "edit/:section",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444489,
+      "expression": "`verification/:flowId`",
+      "candidatePath": "verification/:flowId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444495,
+      "expression": "Wln",
+      "candidatePath": "/health",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "Wln",
+          "line": 95906
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444504,
+      "expression": "kne",
+      "candidatePath": "/finances",
+      "evidence": [
+        {
+          "import": "kne",
+          "export": "EEt",
+          "binding": "YLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "YLn",
+          "line": 178685
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444512,
+      "expression": "`accounts`",
+      "candidatePath": "accounts",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444513,
+      "expression": "`chats`",
+      "candidatePath": "chats",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444514,
+      "expression": "`transactions`",
+      "candidatePath": "transactions",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444518,
+      "expression": "`/ledger/plaid/web/oauth_redirect`",
+      "candidatePath": "/ledger/plaid/web/oauth_redirect",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444521,
+      "expression": "`/connector/oauth_callback`",
+      "candidatePath": "/connector/oauth_callback",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444524,
+      "expression": "`/chatgpt_health_oauth_redirect`",
+      "candidatePath": "/chatgpt_health_oauth_redirect",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444536,
+      "expression": "`/library/*`",
+      "candidatePath": "/library/*",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444537,
+      "expression": "`/library/share/*`",
+      "candidatePath": "/library/share/*",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444539,
+      "expression": "`/library/file/:libraryFileId`",
+      "candidatePath": "/library/file/:libraryFileId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444545,
+      "expression": "exe",
+      "candidatePath": null,
+      "evidence": [
+        {
+          "import": "exe",
+          "export": "Unn",
+          "binding": "vgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "vgt",
+          "line": 98190
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444552,
+      "expression": "`new-thread`",
+      "candidatePath": "new-thread",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444554,
+      "expression": "`thread/:conversationId`",
+      "candidatePath": "thread/:conversationId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444558,
+      "expression": "`remote/:taskId`",
+      "candidatePath": "remote/:taskId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444566,
+      "expression": "Lzt()",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444575,
+      "expression": "`/inbox`",
+      "candidatePath": "/inbox",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444584,
+      "expression": "`/internal/demo-tools`",
+      "candidatePath": "/internal/demo-tools",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444588,
+      "expression": "`/security/*`",
+      "candidatePath": "/security/*",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444590,
+      "expression": "wxe",
+      "candidatePath": "/sites/library",
+      "evidence": [
+        {
+          "import": "wxe",
+          "export": "VEt",
+          "binding": "RLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "RLn",
+          "line": 178633
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444595,
+      "expression": "AOi",
+      "candidatePath": "/pricing-plan",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "AOi",
+          "line": 221118
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444596,
+      "expression": "s",
+      "candidatePath": null,
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444597,
+      "expression": "jTe",
+      "candidatePath": "/workspace-settings/web",
+      "evidence": [
+        {
+          "import": "jTe",
+          "export": "Z1t",
+          "binding": "SLt"
+        },
+        {
+          "module": "shared",
+          "symbol": "SLt",
+          "line": 111719
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444606,
+      "expression": "`/skills`",
+      "candidatePath": "/skills",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444610,
+      "expression": "`${Gle}/:pluginId`",
+      "candidatePath": "/skills/plugins/:pluginId",
+      "evidence": [
+        {
+          "import": "Gle",
+          "export": "Knn",
+          "binding": "Agt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Agt",
+          "line": 98202
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444612,
+      "expression": "UMe",
+      "candidatePath": "/skills/manage",
+      "evidence": [
+        {
+          "import": "UMe",
+          "export": "ern",
+          "binding": "zgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "zgt",
+          "line": 98211
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444615,
+      "expression": "Vce",
+      "candidatePath": "/skills/manage/plugins/:pluginId",
+      "evidence": [
+        {
+          "import": "Vce",
+          "export": "Jnn",
+          "binding": "Vgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Vgt",
+          "line": 98213
+        },
+        {
+          "module": "shared",
+          "symbol": "Bgt",
+          "line": 98212
+        },
+        {
+          "module": "shared",
+          "symbol": "zgt",
+          "line": 98211
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444622,
+      "expression": "`/plugins`",
+      "candidatePath": "/plugins",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444626,
+      "expression": "HJe",
+      "candidatePath": "/plugins/:pluginId",
+      "evidence": [
+        {
+          "import": "HJe",
+          "export": "trn",
+          "binding": "Mgt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Mgt",
+          "line": 98204
+        },
+        {
+          "module": "shared",
+          "symbol": "jgt",
+          "line": 98203
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444638,
+      "expression": "`/pull-requests`",
+      "candidatePath": "/pull-requests",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444645,
+      "expression": "Aee",
+      "candidatePath": null,
+      "evidence": [
+        {
+          "import": "Aee",
+          "export": "CTt",
+          "binding": "Rn"
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444654,
+      "expression": "`/sites`",
+      "candidatePath": "/sites",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444665,
+      "expression": "Sn",
+      "candidatePath": "/sites/:projectId/edit",
+      "evidence": [
+        {
+          "import": "Sn",
+          "export": "BEt",
+          "binding": "jLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "jLn",
+          "line": 178626
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444667,
+      "expression": "`/sites/:projectId`",
+      "candidatePath": "/sites/:projectId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444672,
+      "expression": "bbe",
+      "candidatePath": "/sites/:projectId/settings",
+      "evidence": [
+        {
+          "import": "bbe",
+          "export": "UEt",
+          "binding": "LLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "LLn",
+          "line": 178632
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444674,
+      "expression": "Tue",
+      "candidatePath": "/sites/:projectId/analytics",
+      "evidence": [
+        {
+          "import": "Tue",
+          "export": "LEt",
+          "binding": "MLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "MLn",
+          "line": 178627
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444680,
+      "expression": "rse",
+      "candidatePath": "/sites/:projectId/analytics/events",
+      "evidence": [
+        {
+          "import": "rse",
+          "export": "IEt",
+          "binding": "NLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "NLn",
+          "line": 178628
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444687,
+      "expression": "$ae",
+      "candidatePath": "/sites/:projectId/plugins",
+      "evidence": [
+        {
+          "import": "$ae",
+          "export": "HEt",
+          "binding": "ILn"
+        },
+        {
+          "module": "shared",
+          "symbol": "ILn",
+          "line": 178631
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444688,
+      "expression": "a_e",
+      "candidatePath": "/sites/:projectId/automations",
+      "evidence": [
+        {
+          "import": "a_e",
+          "export": "REt",
+          "binding": "PLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "PLn",
+          "line": 178629
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444689,
+      "expression": "Z1e",
+      "candidatePath": "/sites/:projectId/database",
+      "evidence": [
+        {
+          "import": "Z1e",
+          "export": "zEt",
+          "binding": "FLn"
+        },
+        {
+          "module": "shared",
+          "symbol": "FLn",
+          "line": 178630
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444694,
+      "expression": "`/remote/:taskId`",
+      "candidatePath": "/remote/:taskId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444696,
+      "expression": "`/codex-mobile`",
+      "candidatePath": "/codex-mobile",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444697,
+      "expression": "`/remote-connections`",
+      "candidatePath": "/remote-connections",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444701,
+      "expression": "`/profile`",
+      "candidatePath": "/profile",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444702,
+      "expression": "`/u/:username`",
+      "candidatePath": "/u/:username",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444713,
+      "expression": "`/settings/profile`",
+      "candidatePath": "/settings/profile",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444720,
+      "expression": "`/settings`",
+      "candidatePath": "/settings",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444731,
+      "expression": "cwe",
+      "candidatePath": "/settings/plugins/:server/:toolName",
+      "evidence": [
+        {
+          "import": "cwe",
+          "export": "Xnn",
+          "binding": "Igt"
+        },
+        {
+          "module": "shared",
+          "symbol": "Igt",
+          "line": 98208
+        },
+        {
+          "module": "shared",
+          "symbol": "Fgt",
+          "line": 98207
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444742,
+      "expression": "$Za",
+      "candidatePath": "computer-use/:browserFamily",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "$Za",
+          "line": 301831
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444744,
+      "expression": "`computer-use/messages`",
+      "candidatePath": "computer-use/messages",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444748,
+      "expression": "`browser-use/extensions`",
+      "candidatePath": "browser-use/extensions",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444752,
+      "expression": "`browser-use/downloads`",
+      "candidatePath": "browser-use/downloads",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444756,
+      "expression": "`browser-use/history`",
+      "candidatePath": "browser-use/history",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444760,
+      "expression": "`browser-use/contact-info`",
+      "candidatePath": "browser-use/contact-info",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444764,
+      "expression": "`browser-use/passwords`",
+      "candidatePath": "browser-use/passwords",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444768,
+      "expression": "`browser-use/site-settings/*`",
+      "candidatePath": "browser-use/site-settings/*",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444772,
+      "expression": "`connections/:connectionsTab/:connectionsAction`",
+      "candidatePath": "connections/:connectionsTab/:connectionsAction",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444776,
+      "expression": "`connections/:connectionsTab`",
+      "candidatePath": "connections/:connectionsTab",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444780,
+      "expression": "`cloud-environments/*`",
+      "candidatePath": "cloud-environments/*",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444784,
+      "expression": "`code-review/repositories/:repositoryId`",
+      "candidatePath": "code-review/repositories/:repositoryId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444788,
+      "expression": "DWa",
+      "candidatePath": "local-environments/create",
+      "evidence": [
+        {
+          "module": "initial",
+          "symbol": "DWa",
+          "line": 294234
+        }
+      ],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444794,
+      "expression": "`teams/:teamId`",
+      "candidatePath": "teams/:teamId",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444798,
+      "expression": "`teams/:teamId/join`",
+      "candidatePath": "teams/:teamId/join",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444818,
+      "expression": "`open-source-licenses`",
+      "candidatePath": "open-source-licenses",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444820,
+      "expression": "`*`",
+      "candidatePath": "*",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444835,
+      "expression": "`/trusted-contact/nominee`",
+      "candidatePath": "/trusted-contact/nominee",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444839,
+      "expression": "`/trusted-contact/decline`",
+      "candidatePath": "/trusted-contact/decline",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444843,
+      "expression": "`/trusted-contact/remove`",
+      "candidatePath": "/trusted-contact/remove",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444849,
+      "expression": "`/spotlight`",
+      "candidatePath": "/spotlight",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444851,
+      "expression": "`/avatar-overlay`",
+      "candidatePath": "/avatar-overlay",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444868,
+      "expression": "`/login`",
+      "candidatePath": "/login",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444869,
+      "expression": "`/welcome`",
+      "candidatePath": "/welcome",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444870,
+      "expression": "`/select-workspace`",
+      "candidatePath": "/select-workspace",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444871,
+      "expression": "`/diff`",
+      "candidatePath": "/diff",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444872,
+      "expression": "`/plan-summary`",
+      "candidatePath": "/plan-summary",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444874,
+      "expression": "`/o`",
+      "candidatePath": "/o",
+      "evidence": [],
+      "runtimeVerified": false
+    },
+    {
+      "routeLine": 444875,
+      "expression": "`/o/*`",
+      "candidatePath": "/o/*",
+      "evidence": [],
+      "runtimeVerified": false
+    }
+  ],
+  "counts": {
+    "entries": 145,
+    "candidatePaths": 130,
+    "unresolved": 15
+  }
+}
