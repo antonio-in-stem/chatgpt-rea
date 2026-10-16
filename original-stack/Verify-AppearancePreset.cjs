@@ -1,0 +1,26 @@
+// Verify original preset keyboard selection, persistence and full theme/account-accent restoration.
+const {execFile}=require('node:child_process'),{promisify}=require('node:util'),path=require('node:path'),fs=require('node:fs');
+const exec=promisify(execFile),profile=process.argv[2],results=[];
+if(!/^demo-[a-zA-Z0-9_-]+$/.test(profile||''))throw Error('Explicit demo profile required');
+async function control(op,...args){const {stdout}=await exec(process.execPath,[path.join(__dirname,'Demo-Controls.cjs'),profile,op,...args],{windowsHide:true,timeout:20000,maxBuffer:1048576});return JSON.parse(stdout);}
+const items=()=>control('inspect'),values=()=>control('inspect-appearance-values');
+async function wait(read,predicate){const deadline=Date.now()+60000;do{try{const x=await read();if(predicate(x))return x;}catch(e){if(!String(e.stderr||e.message).includes('Original renderer missing'))throw e;}await new Promise(r=>setTimeout(r,400));}while(Date.now()<deadline);throw Error('Theme import state timed out');}
+async function open(){const ready=await wait(items,x=>x.some(e=>e.label==='Appearance'||e.label==='Open profile menu'));if(!ready.some(e=>e.label==='Appearance')){await control('click','Open profile menu');await wait(items,x=>x.some(e=>e.role==='menuitem'&&e.text==='Settings\nCtrl+,'));await control('activate-popup-item','Settings\nCtrl+,');await wait(items,x=>x.some(e=>e.label==='Appearance'));}await control('activate-settings-section','Appearance');return wait(values,x=>x.pickers.length>0);}
+let label,trigger;
+async function form(){if(!(await items()).some(e=>e.label===label))await control('click',trigger);return wait(items,x=>x.some(e=>e.label===label));}
+async function importString(s){await form();await control('fill',label,s);await wait(items,x=>x.some(e=>e.text==='Import theme'&&e.type==='submit'&&!e.disabled));await control('click','Import theme');await wait(items,x=>!x.some(e=>e.label===label));}
+const field=(x,label)=>x.fields.find(f=>f.label===label)?.value;
+async function check(name,read,predicate){await wait(read,predicate);results.push(name);console.log('PASS '+name);}
+(async()=>{
+const initial=await open(),bg=initial.fields.find(f=>f.label.endsWith('background color'));if(!bg)throw Error('Theme fields missing');const variant=bg.label.split(' ')[0];label=variant+' theme share string';trigger='Import '+variant+' theme';const picker=variant+' code theme',accent=initial.pickers.find(p=>p.label===variant+' accent color');if(!accent)throw Error('Original account accent missing');
+const original=(await form()).find(e=>e.label===label).placeholder;await control('click','Cancel');const prefix='codex-theme-v1:',baseline=JSON.parse(original.slice(prefix.length));
+try{
+await control('click',picker);await wait(items,x=>x.some(e=>e.text==='Aa\nCodex themes'));await control('hover','Aa\nCodex themes');const menu=await wait(items,x=>x.some(e=>e.text==='Aa\nDracula'));const options=menu.filter(e=>e.role==='menuitemradio').map(e=>e.text.replace(/^Aa\n/,''));if(options.length<2)throw Error('Preset submenu absent');results.push('original preset submenu opens');
+await control('appearance-preset-key','ArrowRight');await wait(()=>control('inspect-focus'),x=>x.role==='menuitemradio');for(let i=0;i<options.length;i++){const focus=await control('inspect-focus');if(focus.text==='Aa\nDracula')break;await control('appearance-preset-key','ArrowDown');}if((await control('inspect-focus')).text!=='Aa\nDracula')throw Error('Keyboard did not reach Dracula');await control('appearance-preset-key','Enter');await check('Dracula selected in original picker',items,x=>x.some(e=>e.label===picker&&e.text.endsWith('Dracula')));
+const exported=(await form()).find(e=>e.label===label).placeholder;await control('click','Cancel');const selected=JSON.parse(exported.slice(prefix.length));if(selected.codeThemeId===baseline.codeThemeId)throw Error('Preset did not change serialized identity');results.push('preset changes original serialized theme identity');
+await control('reload-demo');await open();await check('preset selection persists reload',items,x=>x.some(e=>e.label===picker&&e.text.endsWith('Dracula')));
+const persisted=(await form()).find(e=>e.label===label).placeholder;await control('click','Cancel');if(persisted!==exported)throw Error('Preset export differs after reload');results.push('entire preset export persists');
+}finally{await importString(original);if((await values()).pickers.find(p=>p.label===accent.label)?.text!==accent.text){await control('click',accent.label);await wait(items,x=>x.some(e=>e.role==='menuitemradio'&&e.text===accent.text));await control('click',accent.text);await wait(values,x=>x.pickers.some(p=>p.label===accent.label&&p.text===accent.text));}}
+await control('reload-demo');await open();const restored=(await form()).find(e=>e.label===label).placeholder;await control('click','Cancel');if(restored!==original)throw Error('Original export not restored');results.push('original theme exactly restored after reload');
+fs.writeFileSync(path.join(__dirname,'state',profile,'appearance-preset-ui-check.json'),JSON.stringify({passed:true,results,rendererModified:false},null,2)+'\n');console.log(JSON.stringify({passed:true,checks:results.length}));
+})().catch(e=>{console.error(e.message);process.exitCode=1});

@@ -1,0 +1,11 @@
+{
+  "status": "verified-with-boundaries",
+  "runner": "Verify-AppearancePreset.cjs",
+  "uiChecksPassed": 6,
+  "source": ["general-settings-161845fad443.js:3100 preset picker", "app-initial-b8e1c8014bb4.js:460950-461050 account accent, preset and import operations", "general-settings-161845fad443.js:4479 immediate advanced reset"],
+  "rendererModified": false,
+  "adapterModified": false,
+  "verified": ["original nested preset submenu", "Dracula selection through native keyboard", "serialized theme identity changed", "picker persists reload", "entire selected export persists reload", "initial export exactly restored after reload, including separately restored account accent"],
+  "observations": ["submenu displays27 presets plus ChatGPT", "two automated pointer selections failed; local view capture shows left-opening submenu", "restoring import alone left account accent Pink; restoring original Default account accent fixes complete round trip"],
+  "notVerified": ["all27 presets individually", "submenu pointer selection", "syntax highlighting in code viewers", "advanced reset runtime acceptance"]
+}

@@ -2,11 +2,11 @@
 
 ## Scope and budget
 Original shipped Windows frontend, original renderer/CSS/assets, navigable demo flows and reusable delivery with original internal dependencies retained. Rust is deferred by the human. Real generation, speech processing, authentication and production services are excluded; their frontend flows remain in scope. Full completion is NOT established.
-Quota last verified16% used; absolute ceiling50%. Stop new implementation40%, reserve through50% for verification/delivery. No reset credits. AGENTS.md, METHOD.md and FRONTEND-CLOSURE.md apply. Historical states are available in Git history, not active instructions.
+Quota last verified17% used; absolute ceiling50%. Stop new implementation40%, reserve through50% for verification/delivery. No reset credits. AGENTS.md, METHOD.md and FRONTEND-CLOSURE.md apply. Historical states are available in Git history, not active instructions.
 
 ## Current milestone and next action
 Appearance theme serialization/import round trip verified in installed original frontend consumer. Verify-AppearanceThemeImport.cjs passed6 checks: empty and malformed values disable submit; valid edited original export applies surface/ink; persists reload; original colors restored; entire exported theme string exactly restored after another reload. UI uses original general-settings:2733 exampleValue=exportThemeString(), and its original validator/submit handler. No clipboard read or renderer/adapter change. Copy-to-clipboard delivery is NOT verified by this test.
-Next bounded acceptance: original theme preset submenu and reset confirmation/cancel/apply/restore. Inspect existing source and actual UI before modifying anything. Remaining advanced appearance controls include font styles, motion, split modes and contrast. Do not interpret completed Appearance checks as completion of all Settings or frontend flows.
+Next bounded acceptance: original immediate advanced-appearance reset and restoration. Source Jo:4479 applies immediately; there is no reset confirmation/cancel flow. Inspect existing source and actual UI before modifying anything. Remaining advanced appearance controls include font styles, motion, split modes and contrast. Do not interpret completed Appearance checks as completion of all Settings or frontend flows.
 
 ## Live demo / reproducible launch
 Process check this turn confirmed demo169216 (S:/rea-profile-runtime-v1/ChatGPT.exe) and adapter138336; launcher session95146 from preceding work. Revalidate before using IDs; never start another instance based only on an observation timeout.
@@ -39,3 +39,5 @@ Archive /archive read/filter acceptance already passed6 checks with demo-only du
 
 ## Repository
 Branch codex/native-windows; authorized push HEAD:main to antonio-in-stem/chatgpt-rea. Publish only source/adapters/docs/sanitized evidence. Existing extraction stays local and reused. No new subagents by default; at most one bounded read-only audit if directly needed.
+
+Preset lifecycle verified: Verify-AppearancePreset.cjs passed6 checks: submenu opens, Dracula selected through native keyboard, serialized identity changes, picker and entire export persist reload, original export restored exactly after reload. Original account accent also restored to Default. Two pointer attempts failed (obscured/moved then missing item); local view capture showed left-opening submenu. Native ArrowRight/ArrowDown/Enter entered and selected successfully; pointer path remains unverified. First keyboard run caught incomplete restoration: import restored codex identity/colors but account accent remained Pink. Source app-initial:460950-461050 separates account accent from theme import. Extended restoration through original accent picker; rerun passed. Renderer/adapter unchanged. Quota17%, Rust deferred.
