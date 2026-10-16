@@ -17,6 +17,7 @@ const {demoCodeReviewHttp}=require('./demo_code_review_http.cjs');
 const {demoFamilyHttp}=require('./demo_family_http.cjs');
 const {demoProfileHttp}=require('./demo_profile_http.cjs');
 const {demoArchivedTasksHttp}=require('./demo_archived_tasks_http.cjs');
+const {demoDurableTransport}=require('./demo_durable_transport.cjs');
 const {demoNotificationsHttp}=require('./demo_notifications_http.cjs');
 const {demoPageExport}=require('./demo_page_export.cjs');
 const {demoPageCsp}=require('./demo_page_csp.cjs');
@@ -50,6 +51,7 @@ values.http={
  '/wham/onboarding/context':{role:null,desktop_onboarding_completed_at:'2026-10-13T00:00:00Z'}
 };
 const replacements=[
+ ['function j5(e){','function j5(e){const demoTransport=demoDurableTransport(e,process.env,c.E);if(demoTransport!==null)return demoTransport;'],
  ['pagesRealtime:s.pagesRealtime','pagesRealtime:process.env.REA_DEMO_PAGES_TLS===`1`?s.pagesRealtime:void 0'],
  ['async downloadCheckpoint(e,t){','async downloadCheckpoint(e,t){return demoCheckpointDownload(e,process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
  ['"list-automations":async()=>{','"list-automations":async()=>{return demoLocalAutomations(`list`,{},process.env.REA_DEMO_SETTINGS_PATH,require(`node:fs`),require(`node:path`));'],
@@ -73,7 +75,7 @@ for(const [needle,replacement] of replacements){
  if(patched.split(needle).length!==2)throw Error('Host seam is not unique: '+needle);
  patched=patched.replace(needle,replacement);
 }
-patched=demoNotificationsHttp.toString()+'\n'+demoArchivedTasksHttp.toString()+'\n'+demoProfileHttp.toString()+'\n'+demoFamilyHttp.toString()+'\n'+demoCodeReviewHttp.toString()+'\n'+demoCloudPreferences.toString()+'\n'+demoLibraryFileHttp.toString()+'\n'+demoDirectorySharing.toString()+'\n'+demoUsageHttp.toString()+'\n'+demoPageExport.toString()+'\n'+demoCheckpointDownload.toString()+'\n'+demoPagesHttp.toString()+'\n'+demoSpaceHttp.toString()+'\n'+demoMentionsHttp.toString()+'\n'+demoLocalAutomations.toString()+'\n'+demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\n'+demoStatsigHttp.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
+patched=demoDurableTransport.toString()+'\n'+demoNotificationsHttp.toString()+'\n'+demoArchivedTasksHttp.toString()+'\n'+demoProfileHttp.toString()+'\n'+demoFamilyHttp.toString()+'\n'+demoCodeReviewHttp.toString()+'\n'+demoCloudPreferences.toString()+'\n'+demoLibraryFileHttp.toString()+'\n'+demoDirectorySharing.toString()+'\n'+demoUsageHttp.toString()+'\n'+demoPageExport.toString()+'\n'+demoCheckpointDownload.toString()+'\n'+demoPagesHttp.toString()+'\n'+demoSpaceHttp.toString()+'\n'+demoMentionsHttp.toString()+'\n'+demoLocalAutomations.toString()+'\n'+demoAutomationHttp.toString()+'\n'+demoSkillLifecycle.toString()+'\n'+demoSkillFile.toString()+'\n'+demoPluginHttp.toString()+'\n'+demoSidebarSettings.toString()+'\n'+demoStatsigBootstrap.toString()+'\n'+demoStatsigHttp.toString()+'\nconst __reaDemoIdentity='+JSON.stringify(values)+';\n'+patched;
 new vm.Script(patched,{filename:'demo-main.js'});
 const bytes=Buffer.from(patched);
 entry.offset=String(raw.length-dataStart);entry.size=bytes.length;

@@ -20,7 +20,7 @@ MAX_FRAME_BYTES = 1024 * 1024
 FIXTURES = json.loads((Path(__file__).parent / "demo-fixtures.json").read_text(encoding="utf-8"))
 
 
-def handle_message(raw, projects=None, notifications=None, config=None, threads=None, demo_sandbox_state="notConfigured"):
+def handle_message(raw, projects=None, notifications=None, config=None, threads=None, demo_sandbox_state="notConfigured", durable=False):
     """Return an optional RPC reply and a value-free method/shape observation."""
     try:
         message = json.loads(raw)
@@ -37,6 +37,18 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
                    "paramsType": type(params).__name__}
     if "id" not in message:
         return None, observation
+    if durable:
+        observation["demoHost"] = "durable"
+        method = message["method"]
+        if method == "thread/list":
+            try:
+                if params is not None and not isinstance(params, dict):raise demo_threads.ThreadError("Expected object parameters")
+                result = demo_threads.page([], params or {}, "demo-durable:")
+                return {"id":request_id,"result":result}, observation
+            except demo_threads.ThreadError as error:
+                return {"id":request_id,"error":{"code":-32602,"message":str(error)}}, observation
+        if method not in {"initialize", "account/read", "getAuthStatus", "configRequirements/read", "config/read", "experimentalFeature/list"}:
+            return {"id":request_id,"error":{"code":-32601,"message":"Read-only durable demo contract not implemented"}}, observation
     if config is not None and message["method"] in demo_security.METHODS:
         try:
             return {"id":request_id,"result":demo_security.handle(message["method"],params,config)},observation
@@ -156,6 +168,14 @@ async def run(port, output, project_state, config_state, thread_state, demo_sand
             if demo_pages_tls:
                 await socket.close(1008,"Demo Pages requires the TLS listener");return
             await pages.connection(socket)
+            return
+        if socket.request.path == "/demo-durable":
+            try:
+                async for raw in socket:
+                    reply, observation = handle_message(raw, durable=True)
+                    with output.open("a", encoding="utf-8") as stream:stream.write(json.dumps(observation)+"\n")
+                    if reply is not None:await socket.send(json.dumps(reply))
+            except ConnectionClosed:pass
             return
         clients.add(socket)
         try:

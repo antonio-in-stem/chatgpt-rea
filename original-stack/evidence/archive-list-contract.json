@@ -2,13 +2,20 @@
   "status": "partial",
   "unitTestsPassed": 4,
   "uiRunner": "Verify-ArchiveRoute.cjs",
-  "uiPassed": false,
-  "failedAcceptance": "original archive route loads without list error",
+  "uiPassed": true,
+  "failedAcceptance": null,
   "chatGptArchivedListScenario": "empty synthetic list",
   "httpListErrorObservedAfterRestart": false,
-  "remainingError": "durable host thread/list requires authentication; original error remains visible",
+  "remainingError": null,
   "source": "data-controls-8b478162a0ba.js:760-775",
   "rendererModified": false,
-  "packageSha256": "6744a2e284ed6a3839e526ca128ca2fc9462def7f778efe5af34d482c8b07ab2",
-  "viewerVerified": false
+  "packageSha256": "1544357ff5e4a2f93381420d7e1caa8aa59e0647e00a0b389a0fd099df077068",
+  "viewerVerified": false,
+  "uiChecks": 6,
+  "durableDemo": "isolated read-only loopback catalog; no local-state/event alias",
+  "transportTestsPassed": 9,
+  "limitations": [
+    "Empty ChatGPT and durable catalogs do not verify row actions",
+    "Separate archived conversation preview remains unverified"
+  ]
 }
