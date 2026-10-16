@@ -214,6 +214,11 @@
       "screen": "Security scan setup",
       "runner": "Verify-SecurityScanForm.cjs",
       "scope": "8 observations: required repository, deep/standard scope, context visibility, single-folder selection and return to reports; submission not verified"
+    },
+    {
+      "screen": "Security scan submission",
+      "runner": "Verify-SecuritySubmission.cjs",
+      "scope": "10 UI/state checks: repository detail to enabled setup, submit, distinct report and linked thread, list/reload/detail, View activity with original prompt and fixed demo reply. Standard mode only; no real scanning."
     }
   ]
 }

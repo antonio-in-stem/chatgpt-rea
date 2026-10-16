@@ -160,7 +160,13 @@
       "security-route-feb1afe59e86.js:7990-8090"
     ],
     "verification": "Verify-SecurityScanForm.cjs passed eight original UI observations. No renderer modifications. The runner returns to reports without submitting.",
-    "gap": "Project selector has no eligible synthetic project. Target inspection uses inspect_codex_security_target({targetPath}) -> target.targetMetadata. Submission prepares a scan with a handoff token, creates a security_scan conversation and attaches it to the scan. These demo transitions remain unimplemented, not successful by merely opening the setup screen.",
+    "gap": "Basic standard-mode submission now verified by Verify-SecuritySubmission.cjs. Diff/deep submissions, failure/recovery variants and remediation remain pending.",
     "limits": "No real scanner, repository reads or remediation executor required. Deep mode disables folder scope in original UI. Standard enables it. Changes remains disabled without inspected revision capability."
+  },
+  "scanSubmission": {
+    "module": "demo_security_setup.py",
+    "scope": "Original inspect/open/submit/start/claim/attach protocol with persistent synthetic workspaces and distinct scan IDs. Only C:/REA-Demo/security accepted; no file or scanner access. Completion with zero findings is explicit demo behavior after attaching the conversation.",
+    "verification": "36 targeted tests pass. Verify-SecuritySubmission.cjs passes 10 combined UI/state observations, including new report persisted after reload and View activity displaying original scan prompt plus fixed demo response.",
+    "limits": "Standard scan only verified in UI. Diff/deep metadata supported by adapter but unverified through submission UI. No scheduler, real scan, repository checkout or remediation executor. Created reports remain as local demo fixtures."
   }
 }

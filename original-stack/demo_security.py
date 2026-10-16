@@ -1,5 +1,6 @@
 """Synthetic Security workbench state. No scanner or repository access."""
 import json
+import demo_security_setup
 from copy import deepcopy
 
 METHODS = {'mcpServerStatus/list', 'mcpServer/tool/call'}
@@ -39,7 +40,7 @@ def handle(method, params, config=None):
     summary, finding=deepcopy(SUMMARY),deepcopy(FINDING)
     summary['name']=state.get('name',summary['name'])
     finding['triage']=state.get('triage',finding['triage'])
-    tools=TOOLS+MUTATIONS if config is not None else TOOLS
+    tools=TOOLS+MUTATIONS+demo_security_setup.TOOLS if config is not None else TOOLS
     params = {} if params is None else params
     if not isinstance(params, dict): raise SecurityError('Expected provider parameters')
     if method == 'mcpServerStatus/list':
@@ -48,13 +49,29 @@ def handle(method, params, config=None):
                 'runtimeStatus': 'connected', 'resources': [], 'resourceTemplates': [],
                 'serverInfo': {'name': 'rea-security-demo', 'version': '1.0.0', 'title': 'Synthetic Security demo'},
                 'tools': {name: {'name': name, 'description': 'Synthetic demo UI state only',
-                           'inputSchema': {'type': 'object'}, 'annotations': {'readOnlyHint': name not in MUTATIONS}}
+                           'inputSchema': {'type': 'object'}, 'annotations': {'readOnlyHint': name not in MUTATIONS and name not in demo_security_setup.TOOLS[2:]}}
                           for name in tools}}], 'nextCursor': None}
     if method != 'mcpServer/tool/call' or params.get('server') != 'codex-security':
         raise SecurityError('Unknown demo provider')
     name, args = params.get('tool'), params.get('arguments') or {}
     if name not in tools: raise SecurityError('Only synthetic read tools are available')
     if not isinstance(args, dict): raise SecurityError('Expected tool arguments')
+    if name in demo_security_setup.TOOLS:
+        data,changed=demo_security_setup.handle(name,args,state)
+        if changed:save_state(path,state)
+        return {'content':[],'isError':False,'structuredContent':data}
+    runs=state.get('runs',{})
+    if args.get('scanId') in runs:
+        run=runs[args['scanId']]
+        if name=='get_codex_security_scan':
+            data={'scan':{**run,'findings':[],'findingsTruncated':False,'severityCounts':{},'remediationAvailable':False,'remediationUnavailableReason':'Simulated scan; no repository inspected'}}
+        elif name=='list_codex_security_findings':data={'findingsPage':{'scanId':run['scanId'],'offset':args.get('offset',0),'findings':[],'nextOffset':None}}
+        elif name=='rename_codex_security_scan':
+            value=args.get('name')
+            if not isinstance(value,str) or not value.strip() or len(value)>200:raise SecurityError('Invalid demo scan name')
+            run['name']=value.strip();save_state(path,state);data={'scanId':run['scanId'],'name':run['name']}
+        else:raise SecurityError('Unsupported demo scan operation')
+        return {'content':[],'isError':False,'structuredContent':deepcopy(data)}
     if name in ('get_codex_security_scan', 'list_codex_security_findings') and args.get('scanId') != SCAN_ID:
         raise SecurityError('Unknown synthetic scan')
     if args.get('occurrenceId') not in (None, finding['occurrenceId']): raise SecurityError('Unknown synthetic finding')
@@ -79,11 +96,11 @@ def handle(method, params, config=None):
         save_state(path,state)
         return handle('mcpServer/tool/call',{'server':'codex-security','tool':'get_codex_security_scan','arguments':{'scanId':SCAN_ID}},config)
     if name == 'list_codex_security_scans':
-        data = {'scans': [summary] if args.get('targetId') in (None, TARGET_ID) else []}
+        data = {'scans': [summary,*runs.values()] if args.get('targetId') in (None, TARGET_ID) else []}
     elif name == 'list_codex_security_repositories':
         data = {'repositories': [{'targetId': TARGET_ID, 'targetPath': summary['targetPath'],
-                'checkoutAvailable': False, 'displayName': 'REA synthetic repository',
-                'latestScan': summary, 'openFindingsCount': int(finding['triage']['status']=='open'), 'scanCount': 1}]}
+                'checkoutAvailable': config is not None, 'displayName': 'REA synthetic repository',
+                'latestScan': summary, 'openFindingsCount': int(finding['triage']['status']=='open'), 'scanCount': 1+len(runs)}]}
     elif name == 'get_codex_security_scan':
         data = {'scan': {**summary, 'findings': [finding], 'findingsTruncated': False,
                 'severityCounts': {'low': 1}, 'remediationAvailable': False,
