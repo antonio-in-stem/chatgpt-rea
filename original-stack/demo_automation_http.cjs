@@ -2,6 +2,11 @@
 function demoAutomationHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
+ // automation-dialog Ye -> Ge/Je uses the distributed cloud catalog schema.
+ if(method==='GET'&&route==='/wham/models')return {models:[
+  {slug:'rea-demo',display_name:'Demo',description:'Inert frontend scenario',visibility:'list',priority:0,default_reasoning_level:'medium',supported_reasoning_levels:[{effort:'low',description:'Demo low effort'},{effort:'medium',description:'Demo medium effort'},{effort:'high',description:'Demo high effort'}]},
+  {slug:'rea-demo-alternate',display_name:'Demo alternate',description:'Alternate inert frontend scenario',visibility:'list',priority:1,default_reasoning_level:'low',supported_reasoning_levels:[{effort:'low',description:'Demo low effort'},{effort:'high',description:'Demo high effort'}]}
+ ]};
  // configuration-schedule ai/ti consumes this policy; deterministic demo allowance only.
  if(method==='GET'&&route==='/automations/schedule_policy'){
   if(url.searchParams.has('service_account_id'))throw Error('Demo team schedule policy unsupported');

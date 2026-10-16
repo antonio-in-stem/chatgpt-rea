@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-16",
+  "runtimePid": 139364,
+  "adapterPid": 100880,
+  "launcherSession": 7421,
+  "profile": "demo-export-consumer-v1",
+  "runtime": "S:/rea-profile-runtime-v1",
+  "packageSha256": "29d686ec32eecddd8f425b9fc02ec58cdba82ce461d988683767c3a65463577b",
+  "executableSha256": "18db84254ac9016084295286994533df08a07909c5a0011fe41096cf762eba29",
+  "sources": {
+    "models": "automation-dialog-77e1b4cfd596.js:Ye GET /wham/models; Ge/Je validate/map catalog",
+    "cloudSwitch": "configuration-schedule-3024a2685e19.js:automations.configuration.local",
+    "create": "app-shared-737655e1fb23.js:Ogi:253171"
+  },
+  "ui": {
+    "passed": true,
+    "results": [
+      "original create form defaults to local execution",
+      "original local switch selects cloud and loads model catalog",
+      "original Create persists selected cloud model and effort",
+      "created task appears in original task UI",
+      "created task and model/effort survive reload and Edit",
+      "original deletion removes newly created cloud task",
+      "cloud flow leaves local tasks untouched"
+    ],
+    "rendererModified": false,
+    "realScheduling": false,
+    "fixtureSeeded": false
+  },
+  "httpTests": 5,
+  "visual": "Original create dialog and open Model menu with Demo/Demo alternate captured and inspected at1280x820; no renderer modification",
+  "observerCorrections": [
+    "Await mounted Close dialog text rather than absent aria-label",
+    "Reveal offscreen Model/Reasoning within original scrollable dialog before native hit-checked clicks",
+    "Fixed syntactic brace in observation helper before successful run"
+  ],
+  "remaining": [
+    "Sharing and advanced task variants",
+    "Latest host still needs consumer export; portable-runtime-v1 remains older baseline"
+  ],
+  "quotaUsedPercent": 39
+}

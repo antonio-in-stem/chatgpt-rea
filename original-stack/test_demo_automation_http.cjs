@@ -45,3 +45,10 @@ test('finished classification preserves original cloud, local and condition-watc
  try{fs.writeFileSync(file,JSON.stringify({items,sequence:0}));assert.deepEqual(list('finished'),['exhausted-active','exhausted-paused']);assert.deepEqual(list('scheduled'),['active','local-active']);assert.deepEqual(list('paused'),['paused','watch-paused']);}
  finally{fs.unlinkSync(file);fs.rmdirSync(dir);}
 });
+test('cloud task catalog returns synthetic original-schema choices only',()=>{
+ const response=call('GET',new URL('https://chatgpt.com/wham/models?client_version=0.162.0-alpha.17.2'));
+ assert.deepEqual(response.models.map(x=>x.slug),['rea-demo','rea-demo-alternate']);
+ for(const row of response.models){assert.equal(row.visibility,'list');assert.ok(row.supported_reasoning_levels.some(x=>x.effort===row.default_reasoning_level));assert.ok(row.supported_reasoning_levels.every(x=>typeof x.description==='string'));}
+ assert.equal(call('POST',new URL('https://chatgpt.com/wham/models')),null);
+ assert.equal(call('GET',new URL('https://example.invalid/wham/models')),null);
+});
