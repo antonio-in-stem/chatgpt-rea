@@ -12,7 +12,8 @@
   "scripts": {
     "test": "node --test test/*.test.js",
     "build:example": "esbuild examples/main.js --bundle --format=esm --outfile=dist/example.js",
-    "dev": "node scripts/serve.mjs"
+    "dev": "node scripts/serve.mjs",
+    "verify:package": "node scripts/verify-package.mjs"
   },
   "description": "Source-traced reusable frontend components; extraction in progress",
   "dependencies": {
@@ -20,5 +21,15 @@
     "framer-motion": "12.43.0",
     "react": "19.2.7",
     "react-dom": "19.2.7"
-  }
+  },
+  "files": [
+    "src/",
+    "styles/",
+    "animations/",
+    "provenance.json",
+    "*-manifest.json",
+    "*-contract.json",
+    "CONSUMING.md",
+    "CONVERSATION-INTEGRATION.md"
+  ]
 }

@@ -24,7 +24,7 @@ Scope: original shipped Windows renderer, demo data and reusable packaging with 
 | Family | Verify-FamilyInvitations.cjs | Incoming/accepted members and settings layout supplied by server; exact server labels are not recovered from executable |
 | Notifications | Verify-Notifications.cjs | Rollback/error UI, safety/contact variants; category inventory is server supplied |
 | Code Review | Verify-CodeReview.cjs | Repository trigger variants, security/funding/GitLab UI; actual review service excluded |
-| Reusable delivery | ui-library/CONVERSATION-INTEGRATION.md | Original-dependency package, documented consumer and reproducible launch; isolated authored gallery is not full original screen |
+| Reusable delivery | ui-library/CONVERSATION-INTEGRATION.md; component subset tarball consumption verified by ui-library/scripts/verify-package.mjs | Original-dependency package, documented consumer and reproducible launch; isolated authored gallery is not full original screen |
 | Visual fidelity | windows-capture-contract.json plus original renderer preservation | Same viewport/DPI/theme/data/state comparisons of integrated surfaces; unchanged CSS alone does not prove parity |
 
 All evidence names above are relative to original-stack/evidence unless they name a runner in original-stack or an explicit path. Historical observations are evidence, not a claim that all scenarios pass on the current package. No private screenshots/profile data are republished by this ledger.

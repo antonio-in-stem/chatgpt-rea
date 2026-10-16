@@ -60,3 +60,9 @@ Inspected the existing SettingsWorkspace factory: its sDs WorkspaceShell depende
 The original lazy route points to appearance-settings-8556dce50ba2.js (readable artifact 1109 bytes; SHA256 e3ec9c088d7d77b7d0b0f5881af82313b84c9046668b04c68ff4e12fb424f782). Its exported AppearanceSettings body f consumes navigation context, SettingsContent and the imported general-settings export n. That resolves to qs in general-settings-161845fad443.js (257530 bytes; SHA256 9e97b011b119f981263eb586b633bcafd94441586a02b662b5c505cfe2edd897). qs composes mode, visual preferences, reset and advanced controls and reads shared state. These hashes identify the readable files inspected, not pristine ASAR members.
 
 No consumer mount or visual comparison was executed in this review. Before another separation attempt, the user was asked whether packaging may retain original internal bundles/state/services or must produce app-independent components. This is a packaging choice, not permission to approximate the UI or claim that a launcher is a component library.
+
+
+## Current packaging decision and consumption evidence — 2026-10-15
+The user accepted retaining original internal dependencies rather than requiring app-independent components. This resolves the historical packaging question above, but no full-screen provider integration is proven. Historical 67% stops are superseded by the current budget in FRONTEND-CLOSURE.md; they are not permission to resume recursive tracing.
+
+The existing component subset now has a payload allowlist and `scripts/verify-package.mjs`: a packed tarball installed offline in a separate temporary consumer successfully imports all public JS exports, server-renders a Button and resolves 5 CSS files / 66 local resource references. This is package consumption evidence only. It does not replace the missing integrated screen, verify browser behavior or turn authored examples into original controllers. See CONSUMING.md.
