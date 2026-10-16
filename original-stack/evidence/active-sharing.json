@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "results": [
+    "active collaborator shows name and email without pending invitation",
+    "role change remains a draft",
+    "Cancel restores active Viewer",
+    "saved active Editor survives reload",
+    "Remove access clears collaborator and preserves owner",
+    "removal survives reload with owner retained"
+  ],
+  "rendererModified": false,
+  "simulatedCounterpartyAcceptance": true,
+  "realInvitationsSent": false,
+  "finalShares": 0,
+  "sourceReferences": [
+    "sharing-dialog-140e897982a2.js:2076",
+    "sharing-dialog-140e897982a2.js:2089",
+    "sharing-dialog-140e897982a2.js:2111",
+    "sharing-dialog-140e897982a2.js:2147"
+  ],
+  "entry": "Space rail -> original Space table link -> page Share button",
+  "visualInspection": {
+    "viewport": [
+      1280,
+      820
+    ],
+    "finalState": "Original dialog shows only Demo owner; collaborator removed",
+    "capturePublished": false
+  },
+  "quotaUsedPercent": 31,
+  "limitations": [
+    "Synthetic counterparty acceptance is seeded, not a real delivered invitation",
+    "Incoming collaborator sessions and effective inherited-access variants not verified",
+    "Sidebar Space actions entry after reload not verified",
+    "Failure/retry variants and global visual parity remain pending"
+  ]
+}
