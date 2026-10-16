@@ -43,3 +43,7 @@ npm run verify:package
 The verifier packs this directory, installs the tarball into a fresh temporary consumer using npm offline mode, imports the public JavaScript exports, server-renders an existing Button and follows local stylesheet/font references. Dependency tarballs must already be available in the npm cache for the offline install. It preserves the temporary consumer and prints its path for inspection; it never uploads artifacts. The verification does not open a browser, test interaction or establish full-window visual fidelity. Source-tracing tests remain separate and can require the ignored recovered artifacts.
 
 Observed on Windows: 244 package files, 5 stylesheets and 66 local resource references resolved. The original demo app continues to use `original-stack/Start-Demo.ps1`; it is not launched by this package.
+
+## Complete original dependency payload
+
+For integration that retains the original internal bundles, see [original-stack/FRONTEND-PACKAGE.md](../original-stack/FRONTEND-PACKAGE.md). The separate private `@rea/original-frontend` payload preserves the entire original webview tree. It is not included in this component tarball and does not by itself provide an independent React screen.

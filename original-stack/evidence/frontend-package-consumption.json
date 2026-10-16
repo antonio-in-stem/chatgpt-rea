@@ -1,0 +1,14 @@
+{
+  "filesVerified": 20119,
+  "sourceArchiveSha256": "c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038",
+  "standaloneMountVerified": false,
+  "tarball": "rea-original-frontend-0.1.0.tgz",
+  "packageIntegrity": "sha512-3gFzUycPJWeTeFUv7FRggQxDuhKVB9DFki1/rnxJWmWwuHta4Rsxb4J+Hc1srm4W59CvK4mUTmQmCwDvZIp5Vg==",
+  "status": "static-payload-consumption-verified",
+  "originalBytes": 545939185,
+  "tarballBytes": 217050853,
+  "rendererModified": false,
+  "profileDataIncluded": false,
+  "componentLibraryComplete": false,
+  "runtimeConsumerVerified": false
+}
