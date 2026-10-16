@@ -1,0 +1,22 @@
+{
+  "status": "partial",
+  "entry": "simulated original host navigate-to-route message",
+  "route": "/archive",
+  "rendererModified": false,
+  "observed": [
+    "Archived chats screen",
+    "synthetic archived task row",
+    "search and type/project filters",
+    "Cloud filter selection",
+    "Unarchive action",
+    "Could not load archived chats error"
+  ],
+  "source": {
+    "router": "app-initial-b8e1c8014bb4.js:441822",
+    "destination": "app-initial-b8e1c8014bb4.js:442519 DataControlsSettings",
+    "bridge": "app-shared-737655e1fb23.js:13399"
+  },
+  "missingContract": "/conversations",
+  "viewerVerified": false,
+  "limitation": "Route opens DataControlsSettings; separate archive sidebar preview variant remains unverified."
+}
