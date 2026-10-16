@@ -12,7 +12,9 @@
     "height": 820
   },
   "visualParityVerified": false,
-  "visualObservation": "CDP screenshot rail/titlebar black with white Home control, unchanged after bringToFront; compositor versus host baseline requires comparison",
+  "visualObservation": "Same-window view capture (fromSurface:false) restores dark-blue rail/titlebar, translucent Home and normal icons; surface capture anomaly resolved without renderer changes.",
   "independentReactMountVerified": false,
-  "startupLimitation": "Original root invoked twice; full synchronous file validation repeats"
+  "startupLimitation": "Original root invoked twice; full synchronous file validation repeats",
+  "captureMode": "view",
+  "surfaceCaptureAnomalyResolved": true
 }

@@ -34,3 +34,7 @@ After building/installing the demo host that supports the external package root:
 The host verifies the package manifest and every listed resource before giving its `webview` directory to the original `app://` protocol. Original routing, bootstrap, preload and demo services remain supplied by the host. Missing or altered resources fail startup. Omit `FrontendPackageRoot` to use the bundled resources as before.
 
 This is an original-host consumer, not an independent React mount or a portable replacement for the required Electron runtime. A fresh profile has different demo state; do not claim every historical fixture/scenario is reproduced merely by starting it.
+
+## Capture the transparent Windows shell
+
+Use `node original-stack/Demo-Controls.cjs demo-PROFILE capture-demo-window`. This records a local PNG with CDP `fromSurface:false` and returns `captureMode: view`. Default surface capture can incorrectly make the transparent titlebar/rail black and Home opaque white in this runtime. A screenshot artifact is not a reason to alter original CSS. The same-window comparison resolved this anomaly; full matched-state visual parity remains a separate requirement.
