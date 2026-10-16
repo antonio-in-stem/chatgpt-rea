@@ -12,6 +12,12 @@
 
 Arranque y requisitos actuales: [FRONTEND-PACKAGE.md](original-stack/FRONTEND-PACKAGE.md). Consumo del subconjunto independiente: [CONSUMING.md](ui-library/CONSUMING.md). Para otra sesión, comenzar por [CURRENT-STATUS.md](CURRENT-STATUS.md), no por instrucciones cronológicas antiguas de HANDOFF.
 
+## Verified delivery archive
+
+Local package: `original-stack/state/chatgpt-rea-delivery-v2.zip` (1019526579 bytes). SHA256: `1319b2332bb363234aec4799d322651b65376b99c597745577c3ed0f184cc196`. Includes2332 versioned source files at d438e960a968712a995b4501a962ade70ca14aff,3594 runtime files, relative metadata and LEEME.md. Runtime hashes checked during packing; full ZIP CRC readback passed. Additional layout/path checks and semantic identity-fixture comparison passed (line endings differ from checkout; byte equality is not claimed). Evidence: original-stack/evidence/delivery-archive.json. Profiles excluded; original renderer unchanged. Archive remains local, not GitHub; later documentation commits are not inside it.
+
+Extract project/ and runtime-bundle/ together and follow LEEME.md from project/. Python dependencies require installation. Clean-source/runtime acceptance on this host preceded packaging. Launch from an extraction of this ZIP and another-machine acceptance remain unverified. Full frontend remains incomplete; Rust deferred. Next delivery verification is extracted-consumer preflight/launch, after closing the existing demo if needed. Budget41%, cap50%, verification/integration/delivery only.
+
 ## Qué impide afirmar que está terminado
 
 - Falta cobertura exhaustiva de estados/flujos. El inventario textual de rutas no equivale a ejecutar todas las pantallas.

@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "archive": "chatgpt-rea-delivery-v2.zip",
+  "bytes": 1019526579,
+  "sha256": "1319b2332bb363234aec4799d322651b65376b99c597745577c3ed0f184cc196",
+  "gitCommit": "d438e960a968712a995b4501a962ade70ca14aff",
+  "sourceFiles": 2332,
+  "runtimeFiles": 3594,
+  "zipEntries": 5932,
+  "crcReadbackPassed": true,
+  "runtimeHashesVerified": true,
+  "profilesIncluded": false,
+  "rendererModified": false,
+  "secondMachineTested": false,
+  "date": "2026-10-16",
+  "quotaUsedPercent": 41,
+  "layoutReadbackPassed": true,
+  "identityFixtureJsonMatches": true,
+  "limitations": [
+    "Local archive only",
+    "Not launched from this ZIP extraction or on another machine",
+    "Full frontend and visual coverage incomplete",
+    "Rust deferred"
+  ]
+}
