@@ -1,0 +1,102 @@
+{
+  "date": "2026-10-16",
+  "export": {
+    "passed": true,
+    "files": 3594,
+    "bytes": 2322552442,
+    "profilesCopied": false,
+    "rendererModified": false,
+    "sourceAsarSha256": "c5fdef328cfa2ad9095786f9c3a7aaa447e68834d31299d6ef2592da02029038",
+    "demoAsarSha256": "29d686ec32eecddd8f425b9fc02ec58cdba82ce461d988683767c3a65463577b",
+    "runtimeExecutableSha256": "18db84254ac9016084295286994533df08a07909c5a0011fe41096cf762eba29"
+  },
+  "runtimePid": 181132,
+  "adapterPid": 177084,
+  "launcherSession": 70687,
+  "profile": "demo-export-consumer-v2",
+  "runtimeLocation": "original-stack/state/portable-runtime-v2/runtime-location.json",
+  "freshProfile": true,
+  "externalFrontendPackage": false,
+  "cloudCreation": {
+    "passed": true,
+    "results": [
+      "original create form defaults to local execution",
+      "original local switch selects cloud and loads model catalog",
+      "original Create persists selected cloud model and effort",
+      "created task appears in original task UI",
+      "created task and model/effort survive reload and Edit",
+      "original deletion removes newly created cloud task",
+      "cloud flow leaves local tasks untouched"
+    ],
+    "rendererModified": false,
+    "realScheduling": false,
+    "fixtureSeeded": false
+  },
+  "conversation": {
+    "checkedAt": "2026-10-16T07:59:58.419Z",
+    "passed": true,
+    "results": [
+      {
+        "scenario": "new-chat landing",
+        "passed": true
+      },
+      {
+        "scenario": "attachment chip",
+        "passed": true
+      },
+      {
+        "scenario": "attachment removal",
+        "passed": true
+      },
+      {
+        "scenario": "attachment restored",
+        "passed": true
+      },
+      {
+        "scenario": "message and fixed reply",
+        "passed": true
+      },
+      {
+        "scenario": "loaded sent image",
+        "passed": true
+      },
+      {
+        "scenario": "return to landing",
+        "passed": true
+      },
+      {
+        "scenario": "reopened conversation",
+        "passed": true
+      },
+      {
+        "scenario": "rename dialog",
+        "passed": true
+      },
+      {
+        "scenario": "renamed sidebar row",
+        "passed": true
+      },
+      {
+        "scenario": "persisted sidebar title",
+        "passed": true
+      },
+      {
+        "scenario": "persisted message and reply",
+        "passed": true
+      },
+      {
+        "scenario": "persisted image",
+        "passed": true
+      }
+    ]
+  },
+  "visual": "Captured original full1280x820 window after renamed conversation reopened: rail/avatar/sidebar/message/image/reply/composer inspected.",
+  "observerPrecondition": "Conversation runner starts from Home; initial attempt on Scheduled failed before mutation. Original Home navigation then all13 scenarios passed.",
+  "limitations": [
+    "Same Windows machine and existing Python dependencies, not clean second machine",
+    "Original dependency bundles retained; not independent React source library",
+    "Other frontend families/variants remain incomplete",
+    "Runtime binary export is local ignored artifact, not in GitHub"
+  ],
+  "quotaUsedPercent": 40
+}

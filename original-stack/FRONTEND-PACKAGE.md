@@ -2,6 +2,20 @@
 
 `@rea/ui` remains the partial component library. `@rea/original-frontend` is a separate local dependency containing the entire original `webview` tree. It retains internal bundles and assets as accepted by the owner. It does not expose independent React screens. The original-host consumer integration is verified separately as described below.
 
+## Current runnable delivery — v2
+
+Latest local bundle: `original-stack/state/portable-runtime-v2` (3594 files,2322552442bytes). This includes the original bundled frontend and the verified demo host with cloud task model selection, schedule policy and completed-state filters. Previous v1 is preserved but lacks these fixes. Runtime binaries are ignored and are not in GitHub; copy this bundle separately along with this repository and install `original-stack/demo-requirements.txt` in Python as described below. This is a demo host around the original dependency bundles, not independent component source or a standalone Rust port.
+
+From the repository root, after closing the already running demo:
+
+```powershell
+./original-stack/Start-Demo.ps1 -StateName demo-consumer -DemoHost -RuntimeLocationPath ./original-stack/state/portable-runtime-v2/runtime-location.json -InspectRuntime -DemoPagesTls
+```
+
+The manifest paths are relative. Moving the bundle requires only updating `-RuntimeLocationPath`; the copied EXE alone is not the demo entry point. Keep runtime, inventory and patch metadata together. Do not copy user profiles into the export.
+
+Actual v2 acceptance on this Windows machine with new profile `demo-export-consumer-v2`:7 cloud-create scenarios and13 conversation/image/history/persistence scenarios passed. The conversation runner requires Home to be visible first (use the original Home rail action when starting from Scheduled). Original full-window capture inspected. See `evidence/exported-consumer-v2.json`. No second-machine or complete frontend coverage claim. Per-screen historical fixtures are not automatically migrated into new profiles.
+
 ## Reproduce locally
 
 Use the already extracted `webview` directory and the pinned pristine ASAR. No app account, profile, network download, formatter or re-extraction is involved. Choose new output directories with at least 2 GB available for package, tarball and isolated consumer.
