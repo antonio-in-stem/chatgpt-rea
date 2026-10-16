@@ -7,6 +7,21 @@ from demo_config import ConfigStore
 from demo_transport import handle_message
 
 class SecurityTests(unittest.TestCase):
+    def test_recovery_failure_retry_and_persistence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config=ConfigStore(Path(directory)/'config.json',{})
+            path=Path(directory)/'demo-security.json'
+            path.write_text(json.dumps({'recoveryPending':True,'recoveryFailOnce':True,'name':'Keep my name'}))
+            def call(tool):return handle('mcpServer/tool/call',{'server':'codex-security','tool':tool,'arguments':{'scanId':SCAN_ID}},config)
+            self.assertTrue(call('get_codex_security_scan')['structuredContent']['scan']['resultsRecoveryNeeded'])
+            self.assertTrue(call('recover_codex_security_scan_results')['isError'])
+            self.assertTrue(call('get_codex_security_scan')['structuredContent']['scan']['resultsRecoveryNeeded'])
+            response=call('recover_codex_security_scan_results')
+            self.assertFalse(response['isError'])
+            self.assertEqual(response['structuredContent']['scan']['progress']['status'],'complete')
+            self.assertEqual(response['structuredContent']['scan']['name'],'Keep my name')
+            self.assertFalse(call('get_codex_security_scan')['structuredContent']['scan']['resultsRecoveryNeeded'])
+
     def test_persistent_rename_triage_and_failed_write(self):
         from unittest.mock import patch
         with tempfile.TemporaryDirectory() as directory:

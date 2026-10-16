@@ -402,3 +402,10 @@ Runtime56660, adapter34288, launcher8995; revalidate before reuse. Next remainin
 Extended existing Verify-SecuritySubmission.cjs without changing renderer or demo provider. Deep passed 11 checks, working-tree diff 11, specific revisions range 14, specific commit 12. Range empty and base-only states disable Start scan; valid head enables it. Each case creates a distinct report/conversation, survives reload, opens report detail and View activity with original matching prompt/fixed reply. Saved mode and diff kind checked; saved base/head and commit values also inspected in completed local state and now enforced by runner. These are synthetic revisions, not Git resolution. Four further local demo reports retained.
 
 Runtime56660/adapter34288 remains same; no restart. Last quota10%, cap50%, new implementation stop40%. Next Security gaps are arbitrary target picker, error/recovery and remediation flows. Mode-submission gap is closed for the described cases, not every possible combination. Rust deferred.
+
+
+## Security recovery error and retry verified — 2026-10-15
+
+Added original recover_codex_security_scan_results contract. Set-SecurityScenario.py selects a credential-free demo recovery case, preserving all unrelated state: original report becomes failed with retained results; first recovery fails with explicit synthetic error; retry returns recovered findings. The original renderer owns message/button/loading transitions. 37 targeted tests pass. Verify-SecurityRecovery.cjs passed six UI observations including repeated navigation: retained error/action, first recovery error visible, retry removes error and returns findings, recovery persists after reload. Normal scenario restored afterward; no screenshots or raw content published.
+
+Runtime139928, adapter173492, launcher73965; revalidate. Original host package unchanged. Remaining Security gaps: remediation presentation/actions, arbitrary target picker and additional partial/truncated/failure variants. This is one recovered error/retry flow, not all error states. Last quota10%; cap50%, stop new implementation40%; Rust deferred.

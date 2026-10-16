@@ -6,7 +6,7 @@ from copy import deepcopy
 METHODS = {'mcpServerStatus/list', 'mcpServer/tool/call'}
 TOOLS = ('list_codex_security_scans', 'list_codex_security_repositories',
          'list_codex_security_global_findings', 'get_codex_security_scan', 'list_codex_security_findings')
-MUTATIONS = ('rename_codex_security_scan', 'set_codex_security_finding_triage')
+MUTATIONS = ('recover_codex_security_scan_results', 'rename_codex_security_scan', 'set_codex_security_finding_triage')
 SCAN_ID = '11111111-1111-4111-8111-111111111111'
 TARGET_ID = 'rea-security-demo'
 STAMP = '2026-10-13T00:00:00Z'
@@ -40,6 +40,10 @@ def handle(method, params, config=None):
     summary, finding=deepcopy(SUMMARY),deepcopy(FINDING)
     summary['name']=state.get('name',summary['name'])
     finding['triage']=state.get('triage',finding['triage'])
+    if state.get('recoveryPending'):
+        summary['progress'].update(status='failed')
+        summary.update(resultsRecoveryNeeded=True,failureMessage='Demo interrupted report with retained results')
+    elif state.get('recoveryCompleted'):summary['resultsRecoveryNeeded']=False
     tools=TOOLS+MUTATIONS+demo_security_setup.TOOLS if config is not None else TOOLS
     params = {} if params is None else params
     if not isinstance(params, dict): raise SecurityError('Expected provider parameters')
@@ -76,6 +80,13 @@ def handle(method, params, config=None):
         raise SecurityError('Unknown synthetic scan')
     if args.get('occurrenceId') not in (None, finding['occurrenceId']): raise SecurityError('Unknown synthetic finding')
     if name in MUTATIONS:
+        if name=='recover_codex_security_scan_results':
+            if args != {'scanId':SCAN_ID}:raise SecurityError('Only the synthetic retained report can be recovered')
+            if state.get('recoveryFailOnce'):
+                state['recoveryFailOnce']=False;save_state(path,state)
+                return {'content':[{'type':'text','text':'Demo recovery failed; retry.'}],'isError':True,'structuredContent':{'error':'Demo recovery failed; retry.'}}
+            state['recoveryPending']=False;state['recoveryCompleted']=True;save_state(path,state)
+            return handle('mcpServer/tool/call',{'server':'codex-security','tool':'get_codex_security_scan','arguments':{'scanId':SCAN_ID}},config)
         if name == 'rename_codex_security_scan':
             if set(args) != {'scanId','name'} or args['scanId'] != SCAN_ID:raise SecurityError('Unknown synthetic scan')
             value=args['name']

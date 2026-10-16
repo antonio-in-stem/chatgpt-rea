@@ -168,5 +168,16 @@
     "scope": "Original inspect/open/submit/start/claim/attach protocol with persistent synthetic workspaces and distinct scan IDs. Only C:/REA-Demo/security accepted; no file or scanner access. Completion with zero findings is explicit demo behavior after attaching the conversation.",
     "verification": "36 targeted tests pass. Verify-SecuritySubmission.cjs passes 10 combined UI/state observations, including new report persisted after reload and View activity displaying original scan prompt plus fixed demo response.",
     "limits": "Standard, deep and diff working-tree/commit/range submissions verified through original UI; error/recovery and remediation remain pending. No real revision resolution, scanner or repository access."
+  },
+  "recovery": {
+    "sources": [
+      "security-route-feb1afe59e86.js:704-713",
+      "security-route-feb1afe59e86.js:4948-4949",
+      "security-route-feb1afe59e86.js:5913-5990"
+    ],
+    "contract": "recover_codex_security_scan_results({scanId}) returns {scan}; original uc renders Recover results, recovering and actionable error with retry.",
+    "fixture": "Explicit demo scenario marks base report failed/resultsRecoveryNeeded; first recovery returns isError with demo error text, second restores retained synthetic findings. Names, triage and other runs preserved. No actual interrupted scan.",
+    "verified": "37 targeted tests pass; Verify-SecurityRecovery.cjs six UI observations pass including reload. Normal scenario restored afterward.",
+    "limits": "Other failures, partial/truncated report recovery and remediation still unverified."
   }
 }

@@ -230,6 +230,11 @@
         "demo-profile-host-v1 diff commit"
       ],
       "scope": "Deep 11 checks; working-tree diff 11; range 14 including empty/partial disabled submit; commit 12. Each submitted through original UI, linked conversation, report reload/detail/activity; synthetic revisions only."
+    },
+    {
+      "screen": "Security recovery",
+      "runner": "Verify-SecurityRecovery.cjs",
+      "scope": "6 observations including navigation: retained-results failure, original error on first recovery, successful retry, persisted recovery after reload. Fixture setup via Set-SecurityScenario.py PROFILE recovery; restore with normal."
     }
   ]
 }

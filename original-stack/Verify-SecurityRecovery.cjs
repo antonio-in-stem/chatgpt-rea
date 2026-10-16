@@ -1,0 +1,13 @@
+const {execFile}=require('node:child_process'),{promisify}=require('node:util'),path=require('node:path'),fs=require('node:fs');
+const exec=promisify(execFile),profile=process.argv[2],results=[];
+if(!/^demo-[a-zA-Z0-9_-]+$/.test(profile||''))throw Error('Explicit demo profile required');
+async function control(op,...args){const {stdout}=await exec(process.execPath,[path.join(__dirname,'Demo-Controls.cjs'),profile,op,...args],{windowsHide:true,timeout:15000,maxBuffer:1048576});return JSON.parse(stdout);}
+const read=()=>control('inspect-security-flow');
+async function wait(fn,predicate,ms=45000){const until=Date.now()+ms;do{try{const x=await fn();if(predicate(x))return x;}catch{}await new Promise(r=>setTimeout(r,750));}while(Date.now()<until);throw Error('Expected Security UI state did not arrive');}
+async function check(name,predicate){await wait(read,x=>x.ready&&!x.errors.length&&predicate(x));results.push(name);console.log('PASS '+name);}
+async function open(){await wait(()=>control('inspect'),x=>x.some(e=>e.text==='Explore'),180000);await control('click','Explore');await wait(()=>control('inspect'),x=>x.some(e=>e.text==='Security'));await control('click','Security');await wait(read,x=>x.ready&&x.controls.some(c=>c.text==='Scans'));await control('click','Scans');await check('scan list',x=>x.scan);}
+
+const canRecover=x=>x.controls.some(c=>c.text==='Recover results'&&!c.disabled);
+(async()=>{await open();await control('click','Synthetic UI report');await check('retained failure and recovery action',x=>x.retainedFailure&&canRecover(x));await control('click','Recover results');await check('original recovery error visible',x=>x.recoveryFailure&&x.retainedFailure&&canRecover(x));await control('click','Recover results');await check('retry recovers findings',x=>x.finding&&!x.recoveryFailure&&!x.retainedFailure&&!canRecover(x));await control('reload-demo');await open();await control('click','Synthetic UI report');await check('recovery persists after reload',x=>x.finding&&!x.retainedFailure&&!canRecover(x));
+fs.writeFileSync(path.join(__dirname,'state',profile,'security-recovery-ui-check.json'),JSON.stringify({passed:true,results,rendererModified:false,scenario:'synthetic recovery failure once then success'},null,2)+'\n');console.log(JSON.stringify({passed:true,checks:results.length}));
+})().catch(e=>{fs.writeFileSync(path.join(__dirname,'state',profile,'security-recovery-ui-check.json'),JSON.stringify({passed:false,results,error:e.message},null,2)+'\n');console.error(e.message);process.exitCode=1;});
