@@ -1,0 +1,11 @@
+{
+  "status": "verified-with-boundaries",
+  "runner": "Verify-AppearanceAdvanced.cjs",
+  "uiChecksPassed": 8,
+  "source": ["general-settings-161845fad443.js:2375 enumerated faces", "general-settings-161845fad443.js:2825 font pairs", "general-settings-161845fad443.js:2845 opacity", "general-settings-161845fad443.js:2870 contrast"],
+  "rendererModified": false,
+  "adapterModified": false,
+  "verified": ["UI Arial Bold", "content Arial Bold", "code Consolas Bold", "native contrast range60 to61", "translucency toggle", "face IDs contrast and opacity serialized", "full selected theme persists reload", "exact original theme and advanced control states restored"],
+  "automationCorrection": "Generic Arial text matched a trigger and a menu option; scoped to open original font menu while preserving real pointer hit-test.",
+  "notVerified": ["Pages/code rendered typography", "all enumerated font faces", "platform backdrop fidelity", "missing font enumeration fallback", "save failure variants"]
+}
