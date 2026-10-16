@@ -1,0 +1,11 @@
+{
+  "status": "verified-with-boundaries",
+  "runner": "Verify-AppearanceReset.cjs",
+  "uiChecksPassed": 7,
+  "source": ["general-settings-161845fad443.js:4479 Jo immediate advanced reset", "app-shared-737655e1fb23.js:105440 codeFontSize default12", "app-initial-b8e1c8014bb4.js:461050 resetAdvancedThemeSettings"],
+  "rendererModified": false,
+  "adapterModified": false,
+  "verified": ["three sizes, motion, markers and cursor changed together", "reset restores sizes14/14/12", "reset restores System motion, color markers and default cursor", "basic colors preserved", "preferences persist reload", "sizes persist reload", "baseline sizes14/14/13, exact Light/Dark exports and inspected advanced states restored"],
+  "correction": "First run expected baseline code size13 after reset; original default is12. Expectation corrected and baseline still restored13.",
+  "notVerified": ["animation playback", "rendered pointer cursor and diff markers", "split mode editing", "all advanced font-style/contrast variants", "reset failure and partial-write variants"]
+}
