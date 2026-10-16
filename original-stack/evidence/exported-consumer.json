@@ -1,0 +1,78 @@
+{
+  "checkedAt": "2026-10-16T07:23:54.332Z",
+  "passed": true,
+  "results": [
+    {
+      "scenario": "new-chat landing",
+      "passed": true
+    },
+    {
+      "scenario": "attachment chip",
+      "passed": true
+    },
+    {
+      "scenario": "attachment removal",
+      "passed": true
+    },
+    {
+      "scenario": "attachment restored",
+      "passed": true
+    },
+    {
+      "scenario": "message and fixed reply",
+      "passed": true
+    },
+    {
+      "scenario": "loaded sent image",
+      "passed": true
+    },
+    {
+      "scenario": "return to landing",
+      "passed": true
+    },
+    {
+      "scenario": "reopened conversation",
+      "passed": true
+    },
+    {
+      "scenario": "rename dialog",
+      "passed": true
+    },
+    {
+      "scenario": "renamed sidebar row",
+      "passed": true
+    },
+    {
+      "scenario": "persisted sidebar title",
+      "passed": true
+    },
+    {
+      "scenario": "persisted message and reply",
+      "passed": true
+    },
+    {
+      "scenario": "persisted image",
+      "passed": true
+    }
+  ],
+  "runtime": "exported-relative-manifest",
+  "profile": "fresh-demo-export-consumer-v1",
+  "originalFrontendSource": "bundled-original-webview",
+  "rendererModified": false,
+  "profileStateMigrated": false,
+  "visualInspection": {
+    "viewport": [
+      1280,
+      820
+    ],
+    "originalRailAvatarSidebarConversationComposerVisible": true,
+    "capturePublished": false
+  },
+  "quotaUsedPercent": 37,
+  "limitations": [
+    "Relocated runtime on the same Windows machine, not another machine",
+    "Existing Python dependencies reused; clean installation unverified",
+    "Core conversation13 scenarios only; other screen families require fresh scenario data",
+    "No global matched-state visual parity claim"
+  ]
+}

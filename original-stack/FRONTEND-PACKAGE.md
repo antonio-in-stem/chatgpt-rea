@@ -87,3 +87,9 @@ python -m pip install -r original-stack/demo-requirements.txt
 ```
 
 The runtime already contains the original frontend; omit FrontendPackageRoot to use it. To test the separate installed `@rea/original-frontend` package, pass its path as described earlier. A fresh profile needs its own demo scenario data. Export verification and launcher preflight do not prove every screen works on a second machine; that UI validation remains pending. No new app instance was launched as part of the recorded export verification.
+
+## Real exported-consumer acceptance
+
+The exported runtime was subsequently launched on this Windows machine with a new `demo-export-consumer-v1` profile, using the relative manifest and its bundled original frontend. `Verify-ConversationFlow.cjs` passed13 UI scenarios, including image attachment/removal, fixed demo reply, history navigation, rename and reload persistence. The original rail, avatar, sidebar, conversation and composer were visually inspected. See `evidence/exported-consumer.json`.
+
+This reuses the installed Python dependencies and proves relocation on this machine; a clean second machine remains unverified. Other historical screen fixtures were not migrated into the fresh profile. Keep the old profile separately if you need those scenarios.

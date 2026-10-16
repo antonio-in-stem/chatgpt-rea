@@ -39,6 +39,7 @@ const hasTurn=value=>value.ready&&value.messageVisible&&value.replyVisible;
 const labelled=(items,label)=>items.some(item=>item.label===label);
 const imageLoaded=items=>items.some(item=>item.alt==='User attachment'&&item.complete&&item.naturalWidth===100&&item.naturalHeight===100);
 (async()=>{
+  await control('show-demo-window'); // Restores only the verified isolated demo if minimized.
   await control('inspect-theme'); // Connects only to the explicitly selected demo.
   await control('activate-navigation-button','New chat');
   await until('new-chat landing',content,text=>text.includes('What should we build?'));
