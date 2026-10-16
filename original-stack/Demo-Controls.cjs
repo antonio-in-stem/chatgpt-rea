@@ -101,8 +101,7 @@ const fs=require('node:fs'),path=require('node:path');
    expression=`(()=>{const e=document.activeElement;if(!e?.matches('[contenteditable="true"]')||document.querySelector('[role="dialog"]'))throw Error('Focused unobscured composer required');const transfer=new DataTransfer();transfer.items.add(new File(['REA synthetic text attachment. No private content.'],'rea-demo-note.txt',{type:'text/plain'}));const event=new ClipboardEvent('paste',{bubbles:true,cancelable:true,clipboardData:transfer});e.dispatchEvent(event);return {syntheticPaste:true,handled:event.defaultPrevented}})()`;
   }
   else if(operation==='paste-demo-image'){
-   const imagePath=path.resolve(__dirname,'../../../extracted/webview/assets/atlas-app-5b67bfaeebb3.png');
-   const bytes=fs.readFileSync(imagePath);if(bytes.length>1024*1024||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('Expected packaged demo PNG');
+   const bytes=require('./demo_library_fixtures.cjs').libraryFixture('png').bytes;if(bytes.length>1024*1024||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('Expected packaged demo PNG');
    expression=`(()=>{const e=document.activeElement;if(!e?.matches('[contenteditable="true"]')||document.querySelector('[role="dialog"]'))throw Error('Focused unobscured composer required');const bytes=Uint8Array.from(atob(${JSON.stringify(bytes.toString('base64'))}),c=>c.charCodeAt(0));const transfer=new DataTransfer();transfer.items.add(new File([bytes],'rea-demo-image.png',{type:'image/png'}));const event=new ClipboardEvent('paste',{bubbles:true,cancelable:true,clipboardData:transfer});e.dispatchEvent(event);return {syntheticPaste:true,handled:event.defaultPrevented}})()`;
   }
   else if(operation==='opposite-follow-up')expression=`(()=>{if(!document.activeElement?.matches('[contenteditable="true"]'))throw Error('Focused original composer required');return {focused:true}})()`;

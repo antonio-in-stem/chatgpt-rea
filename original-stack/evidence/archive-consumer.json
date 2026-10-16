@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-16",
+  "archive": "chatgpt-rea-delivery-v2.zip",
+  "documentedLaunchPassed": true,
+  "newVenv": true,
+  "newProfile": true,
+  "runtimePid": 105364,
+  "adapterPid": 159052,
+  "launcherSession": 26897,
+  "rendererModified": false,
+  "runtimeModified": false,
+  "verificationScriptsPatched": [
+    "Demo-Controls.cjs",
+    "Verify-ConversationFlow.cjs"
+  ],
+  "reason": "Test PNG depended on historical extraction; now uses existing synthetic PNG96x64. No app change.",
+  "results": [
+    {
+      "scenario": "new-chat landing",
+      "passed": true
+    },
+    {
+      "scenario": "attachment chip",
+      "passed": true
+    },
+    {
+      "scenario": "attachment removal",
+      "passed": true
+    },
+    {
+      "scenario": "attachment restored",
+      "passed": true
+    },
+    {
+      "scenario": "message and fixed reply",
+      "passed": true
+    },
+    {
+      "scenario": "loaded sent image",
+      "passed": true
+    },
+    {
+      "scenario": "return to landing",
+      "passed": true
+    },
+    {
+      "scenario": "reopened conversation",
+      "passed": true
+    },
+    {
+      "scenario": "rename dialog",
+      "passed": true
+    },
+    {
+      "scenario": "renamed sidebar row",
+      "passed": true
+    },
+    {
+      "scenario": "persisted sidebar title",
+      "passed": true
+    },
+    {
+      "scenario": "persisted message and reply",
+      "passed": true
+    },
+    {
+      "scenario": "persisted image",
+      "passed": true
+    }
+  ],
+  "screenshotInspected": "1280x820 original rail/avatar/sidebar/conversation/composer",
+  "limitations": [
+    "Immutable ZIP v2 still has old verifier scripts",
+    "Same machine only",
+    "Full frontend incomplete",
+    "Rust deferred"
+  ]
+}
