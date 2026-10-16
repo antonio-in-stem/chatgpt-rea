@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "results": [
+    "Unicode text commits to original text layer",
+    "Double click reopens text and edits Unicode content",
+    "Undo restores original text",
+    "Redo restores edited text",
+    "Text size keyboard control increases rendered text geometry",
+    "Undo restores rendered text size",
+    "Redo restores rendered text size",
+    "Stroke width keyboard control visibly thickens selected line",
+    "Undo restores original stroke pixels",
+    "Redo restores thick stroke pixels"
+  ],
+  "textSize": {
+    "before": 24,
+    "after": 25,
+    "beforeHeight": 60,
+    "afterHeight": 62.5
+  },
+  "strokeWidth": {
+    "before": 12,
+    "after": 48,
+    "beforePixels": 4458,
+    "afterPixels": 19302
+  },
+  "rendererModified": false,
+  "canvasStateInjected": false,
+  "messageSent": false,
+  "attachmentExported": false,
+  "sourceReferences": [
+    "editor-27822fba15f5.js:194",
+    "drawing-size-slider-91df6f8be577.js:309",
+    "sketch-d706a5709dee.js:15520"
+  ],
+  "visualInspection": {
+    "viewport": [
+      1280,
+      820
+    ],
+    "editedUnicodeTextAndOriginalSelectionVisible": true,
+    "capturePublished": false
+  },
+  "quotaUsedPercent": 35,
+  "limitations": [
+    "Text size verified through slider and rendered bounds; base font-size CSS remains24px while geometry scales",
+    "One text object and one line style; rich formatting, text resize handles and partially-erased stroke disabled state not verified",
+    "Editable cross-process persistence and global visual parity remain pending"
+  ]
+}
