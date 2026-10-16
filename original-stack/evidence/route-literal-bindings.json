@@ -1,0 +1,98 @@
+{
+  "source": "app-initial-b8e1c8014bb4.js",
+  "sourceSha256": "4da35757315518a7adc6a332403859e41d7079fd85b12f7e496be9f3e1022c8f",
+  "scope": "Bounded static literal assignment lookup. Not scope-resolved AST, initializer reachability, composed route graph or runtime verification. Short reused symbols deliberately excluded.",
+  "bindings": [
+    {
+      "symbol": "lWa",
+      "literal": "/browser/handoff",
+      "assignmentLine": 294074,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "LWa",
+      "literal": "/archive",
+      "assignmentLine": 294301,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "yWa",
+      "literal": "/onboarding",
+      "assignmentLine": 294175,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "tWa",
+      "literal": "/merchants/settings",
+      "assignmentLine": 294034,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "ZUa",
+      "literal": "/images",
+      "assignmentLine": 294022,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "YUa",
+      "literal": "/gpts/create",
+      "assignmentLine": 294016,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "ORt",
+      "literal": "/codex-access",
+      "assignmentLine": 68969,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "KUa",
+      "literal": "/business-profiles",
+      "assignmentLine": 294010,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "Wln",
+      "literal": "/health",
+      "assignmentLine": 95906,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "AOi",
+      "literal": "/pricing-plan",
+      "assignmentLine": 221118,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "$Za",
+      "literal": "computer-use/:browserFamily",
+      "assignmentLine": 301831,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "DWa",
+      "literal": "local-environments/create",
+      "assignmentLine": 294234,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    },
+    {
+      "symbol": "$Ua",
+      "literal": "/maps",
+      "assignmentLine": 294028,
+      "status": "literal-assignment-observed",
+      "effectiveRouteVerified": false
+    }
+  ]
+}

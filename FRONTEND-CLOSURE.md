@@ -38,3 +38,7 @@ Next bounded work: resolve the 60 router expressions from the existing readable 
 ## Budget
 
 Latest human authorization: 45 additional percentage points, baseline 6% used, absolute maximum 51% used in the current shared account window. Inventory allocation at most 3 points (stop at 9%); implementation allocation up to 32 more (stop new changes at 41%); reserve remaining 10 points for integration, visual verification and delivery. These are ceilings, not a guaranteed completion estimate. Do not consume resets. Reassess feasibility after the inventory; stop an unproductive approach after two failed hypotheses.
+
+## First bounded route pass
+
+route-literal-bindings.json records 13 unique literal assignments with source hash/lines, including maps for a composed route. These identify candidate destinations for 12 direct expressions plus one composed prefix. Short reused symbols (e, s, Be, wr, ur, Sn) were excluded because global text matches do not establish lexical binding. Parent routes, imported symbols and initializer reachability remain unresolved; the original 60 unresolved-expression count is not reduced by this non-AST lookup. Newly identified candidate families include Images, GPT creation, Maps, Health, business profiles and browser handoff, which were missing from the settings-focused checklist. They require source/eligibility and UI coverage classification, not automatic gate enabling.
