@@ -60,7 +60,7 @@ try{
  $runtimeCopies+= $app.StandardOutput.BaseStream.CopyToAsync($runtimeLogs[0])
  $runtimeCopies+= $app.StandardError.BaseStream.CopyToAsync($runtimeLogs[1])
  Write-Host ('Demo runtime process started; UI readiness is not yet verified. Windows readiness is simulated: '+$WindowsScenario+'. No tools are executed.')
- [pscustomobject]@{runtimePid=$app.Id;adapterPid=$adapter.Id;endpoint=$announcement.endpoint;profile=$preflight.profile;stores=$stores} | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath (Join-Path $state 'demo-session.json') -Encoding utf8
+ [pscustomobject]@{runtimePid=$app.Id;runtimeExecutable=$preflight.executable;adapterPid=$adapter.Id;endpoint=$announcement.endpoint;profile=$preflight.profile;stores=$stores} | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath (Join-Path $state 'demo-session.json') -Encoding utf8
  while(-not $app.WaitForExit(500)){
   foreach($copy in $runtimeCopies){if($copy.IsFaulted){$copy.GetAwaiter().GetResult()}}
   if($adapter.HasExited){throw 'Demo adapter exited while the frontend was open. See adapter-error.log in this profile.'}

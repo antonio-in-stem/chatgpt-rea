@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "results": [
+    "Line draws a distinct visible shape and Undo restores empty canvas",
+    "Arrow draws a distinct visible shape and Undo restores empty canvas",
+    "Rectangle draws a distinct visible shape and Undo restores empty canvas",
+    "Ellipse draws a distinct visible shape and Undo restores empty canvas",
+    "Triangle draws a distinct visible shape and Undo restores empty canvas",
+    "Diamond draws a distinct visible shape and Undo restores empty canvas",
+    "Star draws a distinct visible shape and Undo restores empty canvas",
+    "Heart draws a distinct visible shape and Undo restores empty canvas",
+    "Closing unsaved sketch opens original discard confirmation",
+    "Keep editing preserves rendered drawing",
+    "Discard changes closes editor",
+    "Reopening after discard starts empty"
+  ],
+  "shapes": [
+    {
+      "name": "Line",
+      "redPixels": 4458,
+      "redMaskFingerprint": "e4d39ffd",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 302,
+        "height": 229
+      }
+    },
+    {
+      "name": "Arrow",
+      "redPixels": 4600,
+      "redMaskFingerprint": "3c95b535",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 295,
+        "height": 223
+      }
+    },
+    {
+      "name": "Rectangle",
+      "redPixels": 12340,
+      "redMaskFingerprint": "1e769c95",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 302,
+        "height": 229
+      }
+    },
+    {
+      "name": "Ellipse",
+      "redPixels": 9790,
+      "redMaskFingerprint": "fc5d3499",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 302,
+        "height": 229
+      }
+    },
+    {
+      "name": "Triangle",
+      "redPixels": 9704,
+      "redMaskFingerprint": "97edd495",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 302,
+        "height": 229
+      }
+    },
+    {
+      "name": "Diamond",
+      "redPixels": 8797,
+      "redMaskFingerprint": "38cc0887",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 302,
+        "height": 229
+      }
+    },
+    {
+      "name": "Star",
+      "redPixels": 11214,
+      "redMaskFingerprint": "6997aa8d",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 302,
+        "height": 229
+      }
+    },
+    {
+      "name": "Heart",
+      "redPixels": 9921,
+      "redMaskFingerprint": "eaf0ea4f",
+      "bounds": {
+        "x": 453,
+        "y": 223,
+        "width": 302,
+        "height": 230
+      }
+    }
+  ],
+  "rendererModified": false,
+  "canvasStateInjected": false,
+  "messageSent": false,
+  "attachmentExported": false,
+  "sourceReferences": [
+    "editor-27822fba15f5.js:151",
+    "composer-state-2b66230076b6.js:94",
+    "composer-host-4dcabd6e5506.js:370"
+  ],
+  "visualInspection": {
+    "viewport": [
+      1280,
+      820
+    ],
+    "distinctOriginalShapesObserved": true,
+    "capturesPublished": false
+  },
+  "entryBlockerResolved": "Windows IsIconic confirmed demo minimized; restoring the same process restored Sketch menu without capability/renderer changes",
+  "windowRestoreVerified": true,
+  "quotaUsedPercent": 34,
+  "limitations": [
+    "One drag direction and default style per shape",
+    "Text editing/formatting, thickness, other resize handles and cross-process editable persistence remain pending",
+    "No global matched-state visual parity claim"
+  ]
+}

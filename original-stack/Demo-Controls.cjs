@@ -146,7 +146,7 @@ const fs=require('node:fs'),path=require('node:path');
    const {x,y}=result.result.value;const data={items:[],files:[file],dragOperationsMask:1};
    for(const type of ['dragEnter','dragOver','drop'])await send('Input.dispatchDragEvent',{type,x,y,data});
    console.log(JSON.stringify({dropped:path.basename(file),synthetic:true}));
-  }else if(operation==='show-demo-window'){await send('Page.bringToFront');console.log(JSON.stringify({requestedOriginalWindow:true}));
+  }else if(operation==='show-demo-window'){const {execFileSync}=require('node:child_process');const windowState=JSON.parse(execFileSync('pwsh.exe',['-NoProfile','-File',path.join(__dirname,'Show-DemoWindow.ps1'),'-StateName',stateName],{encoding:'utf8',windowsHide:true,timeout:8000}));await send('Page.bringToFront');console.log(JSON.stringify({requestedOriginalWindow:true,...windowState}));
   }else if(operation==='reload-demo'){await send('Page.reload',{ignoreCache:false});console.log(JSON.stringify({reloaded:true}));
   }else if(operation==='scroll-code'){
    const {x,y}=result.result.value;await send('Input.dispatchMouseEvent',{type:'mouseWheel',x,y,deltaX:Number(label),deltaY:0});console.log(JSON.stringify({operation,deltaX:Number(label),before:result.result.value}));

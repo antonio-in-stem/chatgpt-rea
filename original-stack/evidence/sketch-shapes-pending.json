@@ -15,5 +15,7 @@
   "rendererModified": false,
   "eligibilityOverridden": false,
   "quotaUsedPercent": 33,
-  "nextAction": "Revalidate actual demo window and composer eligibility before repeating shape/discard runner"
+  "nextAction": "Revalidate actual demo window and composer eligibility before repeating shape/discard runner",
+  "supersededBy": "sketch-shapes.json",
+  "resolution": "Original demo window was minimized; restore made Sketch available and all12 checks passed"
 }
