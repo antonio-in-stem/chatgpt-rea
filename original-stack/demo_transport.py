@@ -39,9 +39,11 @@ def handle_message(raw, projects=None, notifications=None, config=None, threads=
         return None, observation
     if config is not None and message["method"] in demo_security.METHODS:
         try:
-            return {"id":request_id,"result":demo_security.handle(message["method"],params)},observation
+            return {"id":request_id,"result":demo_security.handle(message["method"],params,config)},observation
         except demo_security.SecurityError as error:
             return {"id":request_id,"error":{"code":-32602,"message":str(error)}},observation
+        except OSError:
+            return {"id":request_id,"error":{"code":-32603,"message":"Demo Security state could not be saved"}},observation
     if config is not None and message["method"] in demo_skills.METHODS:
         try:
             return {"id":request_id,"result":demo_skills.SkillStore(config).handle(message["method"],params,demo_threads.THREAD["cwd"])},observation

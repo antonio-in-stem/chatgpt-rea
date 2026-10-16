@@ -136,5 +136,20 @@
     },
     "implementation": "ThreadStore returns source-shaped temporary thread/start result without disk persistence or thread/started history notification. Other ephemeral shapes remain rejected.",
     "verification": "34 targeted thread/security tests pass; original UI reaches provider and renders original detail. No scan executor or renderer modification."
+  },
+  "mutations": {
+    "source": [
+      "security-route-feb1afe59e86.js:714-721",
+      "security-route-feb1afe59e86.js:815-823",
+      "security-route-feb1afe59e86.js:343-566",
+      "security-route-feb1afe59e86.js:11247-11420"
+    ],
+    "tools": [
+      "rename_codex_security_scan",
+      "set_codex_security_finding_triage"
+    ],
+    "state": "Explicit demo configuration sibling demo-security.json; atomic replace; no repository files read or written. Discovery exposes mutations only with demo config.",
+    "scope": "Rename and open/closed triage with close reason/note; no scan or remediation executor. UI context length 2400 and required wont_fix rationale traced from original dialog; scan name 200 character bound is a demo policy.",
+    "validation": "35 targeted tests pass, including failed writes preserving previous bytes. Verify-SecurityMutations.cjs passes 14 original UI observations. Original name/open state restored. Closed-state reload separately is not claimed; reopened state and renamed state reload verified."
   }
 }

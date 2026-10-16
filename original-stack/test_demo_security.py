@@ -7,6 +7,29 @@ from demo_config import ConfigStore
 from demo_transport import handle_message
 
 class SecurityTests(unittest.TestCase):
+    def test_persistent_rename_triage_and_failed_write(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as directory:
+            config=ConfigStore(Path(directory)/'config.json',{})
+            def call(tool,args):return handle('mcpServer/tool/call',{'server':'codex-security','tool':tool,'arguments':args},config)['structuredContent']
+            call('rename_codex_security_scan',{'scanId':SCAN_ID,'name':'Renamed demo'})
+            result=call('set_codex_security_finding_triage',{'occurrenceId':'rea-occurrence-1','status':'closed','closeReason':'false_positive','note':'Demo note'})
+            self.assertEqual(result['scan']['name'],'Renamed demo')
+            self.assertEqual(result['scan']['findings'][0]['triage']['status'],'closed')
+            self.assertEqual(call('list_codex_security_global_findings',{'status':'open'})['findings'],[])
+            self.assertEqual(len(call('list_codex_security_global_findings',{'status':'closed'})['findings']),1)
+            self.assertEqual(call('list_codex_security_repositories',{})['repositories'][0]['openFindingsCount'],0)
+            path=Path(directory)/'demo-security.json';before=path.read_bytes()
+            with self.assertRaises(SecurityError):call('set_codex_security_finding_triage',{'occurrenceId':'rea-occurrence-1','status':'closed'})
+            with self.assertRaises(SecurityError):call('set_codex_security_finding_triage',{'occurrenceId':'rea-occurrence-1','status':'closed','closeReason':'wont_fix'})
+            with patch.object(Path,'replace',side_effect=OSError('disk failure')):
+                with self.assertRaises(OSError):call('rename_codex_security_scan',{'scanId':SCAN_ID,'name':'Not saved'})
+            self.assertEqual(path.read_bytes(),before)
+            self.assertFalse(path.with_suffix('.pending').exists())
+            result=call('set_codex_security_finding_triage',{'occurrenceId':'rea-occurrence-1','status':'open'})
+            self.assertEqual(result['scan']['findings'][0]['triage']['status'],'open')
+            self.assertIsNone(result['scan']['findings'][0]['triage']['closeReason'])
+
     def call(self, tool, args=None):
         return handle('mcpServer/tool/call', {'server':'codex-security','threadId':'demo','tool':tool,'arguments':args or {}})
 
@@ -46,7 +69,7 @@ class SecurityTests(unittest.TestCase):
         self.assertEqual(handle_message(raw)[0]['result']['data'],[])
         with tempfile.TemporaryDirectory() as directory:
             config=ConfigStore(Path(directory)/'config.json',{})
-            self.assertEqual(handle_message(raw,config=config)[0]['result'],discovery)
+            self.assertEqual(handle_message(raw,config=config)[0]['result'],handle('mcpServerStatus/list',{},config))
 
     def test_original_plugin_eligibility_identity(self):
         from demo_plugins import PluginStore

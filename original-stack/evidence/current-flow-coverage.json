@@ -204,6 +204,11 @@
       "screen": "Security",
       "runner": "Verify-Security.cjs",
       "scope": "synthetic scan/repository/findings lists, search empty/populated, finding detail, back and reload; mutation states remain pending"
+    },
+    {
+      "screen": "Security",
+      "runner": "Verify-SecurityMutations.cjs",
+      "scope": "14 UI observations including repeated navigation: rename cancel/save/reload/restore, close cancel, required context, close/reopen and reload; real scan/remediation excluded"
     }
   ]
 }
