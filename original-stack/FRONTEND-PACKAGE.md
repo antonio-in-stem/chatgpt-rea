@@ -32,7 +32,7 @@ python -m venv .venv
 ./original-stack/Start-Demo.ps1 -StateName demo-consumer -DemoHost -RuntimeLocationPath ./original-stack/state/portable-runtime-v2/runtime-location.json -InspectRuntime -DemoPagesTls
 ```
 
-The clean-source consumer also passed original personal Pages creation, Unicode title/body persistence, reopening/editability and a second saved edit. The local Yjs document advanced to sequence2; a new original editor capture was inspected. See evidence/clean-pages-delivery.json. This does not cover all block types or collaboration states.
+The clean-source consumer also passed original personal Pages creation, Unicode title/body persistence, reopening/editability and a second saved edit. The local Yjs document advanced to sequence2; after fully restarting both app and adapter, the original editor recovered the same document and another edit persisted as sequence3. Fresh original editor captures were inspected. See evidence/clean-pages-delivery.json. This does not cover all block types or collaboration states.
 
 ## Reproduce locally
 

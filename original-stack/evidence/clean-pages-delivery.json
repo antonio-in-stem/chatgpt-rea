@@ -35,9 +35,26 @@
   },
   "retainedSyntheticPage": true,
   "limitations": [
-    "Only personal plain-text page lifecycle in this clean consumer",
-    "No cross-process restart tested in this batch",
-    "Rich block variants, collaboration, other artifact types and second machine remain outside this verification"
+    "Personal plain-text Pages only; rich block variants and collaboration remain unverified in this consumer",
+    "No operating-system reboot or second-machine test"
   ],
-  "quotaUsedPercent": 41
+  "quotaUsedPercent": 41,
+  "processRestartVerification": {
+    "passed": true,
+    "previousRuntime": 159864,
+    "previousAdapter": 69216,
+    "previousLauncher": 82588,
+    "previousLauncherTerminal": true,
+    "runtime": 38436,
+    "adapter": 19760,
+    "launcher": 52802,
+    "profile": "demo-clean-delivery",
+    "samePersistedDocument": true,
+    "sequenceBefore": 2,
+    "sequenceAfter": 3,
+    "originalEditorReopened": true,
+    "priorUnicodePreserved": true,
+    "postRestartEditPersisted": true,
+    "freshCaptureInspected": true
+  }
 }
