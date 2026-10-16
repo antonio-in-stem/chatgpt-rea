@@ -1,5 +1,5 @@
 {
-  "status": "partial-runtime-verification",
+  "status": "verified-described-scenarios",
   "rendererModified": false,
   "runner": "Verify-RailCustomization.cjs",
   "verified": [
@@ -8,14 +8,16 @@
     "unpin survives renderer reload",
     "Sites repinned through original Explore control",
     "original drag gesture changes order",
-    "changed order survives renderer reload"
+    "changed order survives renderer reload",
+    "inverse drag moves item before target",
+    "original visible order restored through original drag",
+    "restored order and avatar survive reload"
   ],
-  "runnerFailure": "Automatic inverse drag after reload does not restore baseline in two runs. Extra 2s stability delay did not resolve it; no further timing retries.",
-  "separateRestoration": "After runner terminated, explicit Sites -> Pull requests drag restored visible baseline; reload and inspect-rail confirmed Sites, Pull requests, Projects and avatar image.",
   "unverified": [
-    "deterministic inverse drag in runner",
     "all destinations and conditional plan variants",
     "same-viewport visual parity"
   ],
-  "quotaUsedPercent": 10
+  "quotaUsedPercent": 11,
+  "checks": 10,
+  "previousRunnerFailure": "Resolved: repinning Sites appends it to the rail. The previous inverse-drag assertion incorrectly compared against the pre-unpin baseline. Tracing demonstrated both gestures worked; no renderer or adapter change was required."
 }

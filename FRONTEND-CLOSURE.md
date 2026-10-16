@@ -6,7 +6,7 @@ Scope: original shipped Windows renderer, demo data and reusable packaging with 
 
 | Surface | Established evidence | Remaining acceptance |
 | --- | --- | --- |
-| Shell/conversation | Verify-ConversationFlow.cjs; sidebar-persistence-runtime.json; Verify-Profile.cjs | Rail unpin/repin/reorder persistence observed in rail-customization-acceptance.json; inverse-drag automation unresolved; conditional destinations, integrated menu/state coverage and matched visual audit pending |
+| Shell/conversation | Verify-ConversationFlow.cjs; sidebar-persistence-runtime.json; Verify-Profile.cjs | Rail unpin/repin/bidirectional drag/restore and reload verified by Verify-RailCustomization.cjs; conditional destinations, integrated menu/state coverage and matched visual audit pending |
 | Queue | queue-v7-runtime.json: enqueue, steer, edit and interruption observed | Automatic advance, resume and reorder through UI; source guard/gate eligibility unresolved; do not bypass renderer |
 | Attachments | attachment-native-picker-runtime.json; text-attachment-runtime.json | Folder/images-only selection, duplicates, stale/error states |
 | Plugins | plugin-catalog-progress.json: original install/uninstall/reinstall/reload observed | Try now, toggles, remote catalog and error states |
