@@ -1,0 +1,28 @@
+{
+  "status": "verified",
+  "runner": "Verify-AppearanceColors.cjs",
+  "uiChecksPassed": 8,
+  "source": "general-settings-161845fad443.js:1799-1890 (Ta color draft)",
+  "rendererModified": false,
+  "adapterModified": false,
+  "installedFrontendConsumer": true,
+  "verified": [
+    "incomplete color draft",
+    "invalid draft discarded on blur",
+    "valid background and ink",
+    "interface font computed as Arial",
+    "persistence after reload",
+    "original values restored and persisted"
+  ],
+  "initialAndRestored": {
+    "background": "#181818",
+    "ink": "#FFFFFF",
+    "font": "System"
+  },
+  "fontBoundary": "UI font changes interface text; heading remained OpenAI Sans",
+  "remaining": [
+    "advanced typography",
+    "theme presets/custom creation",
+    "reset/import/export"
+  ]
+}
