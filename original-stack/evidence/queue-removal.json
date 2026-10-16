@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "results": [
+    "Original queued message exposes removal and actions",
+    "Original Delete removes pending entry from UI and durable queue",
+    "Delete does not submit the pending message",
+    "Reload and reopen retain empty queue with no sent pending turn"
+  ],
+  "turnCountBefore": 4,
+  "turnCountAfter": 4,
+  "queueCountAfter": 0,
+  "rendererModified": false,
+  "queuedMessageSubmitted": false,
+  "automaticAdvanceVerified": false,
+  "entry": {
+    "threadTitle": "REA queue deletion demo",
+    "pendingText": "REA pending delete only",
+    "setup": "Original Queue button during synthetic streaming; desktop.followUpQueueMode=queue",
+    "shortcutLimitation": "Ctrl+Enter is the opposite action and was not appropriate for this active queue preference"
+  },
+  "sourceReferences": [
+    "app-primary-19fe57fd8c00.js:46425",
+    "queue-v7-runtime.json",
+    "queue-resume-guard.json"
+  ],
+  "visualInspection": {
+    "viewport": [
+      1280,
+      820
+    ],
+    "originalPendingRowVisible": true,
+    "capturePublished": false
+  },
+  "limitations": [
+    "Verifier requires one exact synthetic pending item prepared through original UI",
+    "Automatic advance/resume eligibility remains unresolved; no guard overridden",
+    "Reorder and other queue states not verified"
+  ],
+  "quotaUsedPercent": 36
+}
