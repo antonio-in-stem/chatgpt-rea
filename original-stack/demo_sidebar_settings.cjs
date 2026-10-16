@@ -19,11 +19,12 @@ function demoSidebarSettings(method, url, file, fs) {
   }
   const preferenceFile = file + '.preferences.json';
   const booleanFeatures = ['training_allowed','precise_location_allowed'];
+  const accentValues = ['default','blue','green','yellow','pink','orange','purple','black'];
   function preferences() {
     if (!fs.existsSync(preferenceFile)) return {};
     const record = JSON.parse(fs.readFileSync(preferenceFile,'utf8'));
     if (!record || typeof record !== 'object' || Array.isArray(record) ||
-        Object.entries(record).some(([key,value]) => !booleanFeatures.includes(key) || typeof value !== 'boolean'))
+        Object.entries(record).some(([key,value]) => key === 'chat_theme' ? !accentValues.includes(value) : !booleanFeatures.includes(key) || typeof value !== 'boolean'))
       throw Error('Invalid demo boolean preferences');
     return record;
   }
@@ -33,12 +34,16 @@ function demoSidebarSettings(method, url, file, fs) {
     return {settings};
   }
   const feature = url.searchParams.get('feature');
-  if (feature !== 'sidebar_customization' && !booleanFeatures.includes(feature)) throw Error('Unsupported demo setting');
+  if (feature !== 'sidebar_customization' && feature !== 'chat_theme' && !booleanFeatures.includes(feature)) throw Error('Unsupported demo setting');
   const serialized = url.searchParams.get('value');
   if (!serialized || serialized.length > 65536) throw Error('Invalid demo setting size');
   let value;
   if (feature === 'sidebar_customization') value = validate(JSON.parse(serialized));
-  else {
+  else if (feature === 'chat_theme') {
+    if (!accentValues.includes(serialized)) throw Error('Invalid demo accent');
+    value = {...preferences(),chat_theme:serialized};
+    file = preferenceFile;
+  } else {
     if (!['true','false'].includes(serialized)) throw Error('Invalid demo boolean preference');
     value = {...preferences(),[feature]:serialized === 'true'};
     file = preferenceFile;
@@ -55,6 +60,6 @@ function demoSidebarSettings(method, url, file, fs) {
     if (created) { try { fs.unlinkSync(temporary); } catch {} }
     throw error;
   }
-  return {};
+  return feature === 'chat_theme' ? value : {};
 }
 module.exports={demoSidebarSettings};

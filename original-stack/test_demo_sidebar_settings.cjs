@@ -54,3 +54,16 @@ test('observed boolean preferences survive fresh host instances without replacin
   assert.throws(()=>route('GET',readUrl,file,fs),/Invalid demo boolean/);
  }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
+
+test('account accent confirms saved value and preserves other preferences on failure',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-accent-')),file=path.join(dir,'settings.json');
+ const change=(feature,value)=>{const u=new URL('https://chatgpt.com/settings/account_user_setting');u.searchParams.set('feature',feature);u.searchParams.set('value',value);return u;};
+ try{
+  route('PATCH',patch(settings),file,fs);route('PATCH',change('training_allowed','false'),file,fs);
+  for(const color of ['default','blue','green','yellow','pink','orange','purple','black']){const reply=route('PATCH',change('chat_theme',color),file,fs);assert.equal(reply.chat_theme,color);assert.equal(reply.training_allowed,false);assert.equal(route('GET',readUrl,file,fs).settings.chat_theme,color);}
+  assert.throws(()=>route('PATCH',change('chat_theme','white'),file,fs),/Invalid demo accent/);
+  const failing={...fs,renameSync(){throw Error('accent disk failure');}};
+  assert.throws(()=>route('PATCH',change('chat_theme','blue'),file,failing),/accent disk failure/);
+  const saved=route('GET',readUrl,file,fs).settings;assert.equal(saved.chat_theme,'black');assert.equal(saved.training_allowed,false);assert.deepEqual(saved.sidebar_customization,settings);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
