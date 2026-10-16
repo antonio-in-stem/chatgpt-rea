@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "results": [
+    "original empty editor has no drawing to attach",
+    "red rectangle drawn and automatically selected",
+    "native move translates rectangle without resizing",
+    "Undo restores pre-move rectangle",
+    "Redo restores moved rectangle",
+    "native corner resize increases both dimensions and preserves opposite corner",
+    "Undo restores pre-resize rectangle",
+    "Redo restores resized rectangle",
+    "drawing history returns to empty before closing"
+  ],
+  "initial": {
+    "x": 453,
+    "y": 223,
+    "width": 302,
+    "height": 229
+  },
+  "moved": {
+    "x": 493,
+    "y": 253,
+    "width": 302,
+    "height": 229
+  },
+  "resized": {
+    "x": 493,
+    "y": 253,
+    "width": 342,
+    "height": 259
+  },
+  "rendererModified": false,
+  "canvasStateInjected": false,
+  "messageSent": false,
+  "attachmentExported": false,
+  "sourceReferences": [
+    "sketch-d706a5709dee.js:15520",
+    "sketch-d706a5709dee.js:18162",
+    "sketch-d706a5709dee.js:18187"
+  ],
+  "observation": "Rendered red pixels on original committed canvas; no internal editor state access",
+  "visualInspection": {
+    "viewport": [
+      1280,
+      820
+    ],
+    "originalSelectionHandlesVisible": true,
+    "capturePublished": false
+  },
+  "quotaUsedPercent": 32,
+  "limitations": [
+    "One rectangle and bottom-right resize handle; other shapes and handles not verified",
+    "Text editing/resize, thickness and editable cross-process persistence remain pending",
+    "Does not establish global visual parity"
+  ]
+}
