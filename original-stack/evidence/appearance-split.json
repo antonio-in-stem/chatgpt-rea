@@ -1,0 +1,11 @@
+{
+  "status": "verified-with-boundaries",
+  "runner": "Verify-AppearanceSplit.cjs",
+  "uiChecksPassed": 5,
+  "source": ["general-settings-161845fad443.js:2445 Ya renders both saved variants", "general-settings-161845fad443.js:5832 split state initializes false"],
+  "rendererModified": false,
+  "adapterModified": false,
+  "verified": ["independent light/dark colors and UI fonts", "light mode computed interface font Arial", "dark mode computed interface font Calibri", "both variants persist reload", "exact original exports and original System mode restored"],
+  "observations": ["split switch is transient by original design", "switch uses aria-labelledby", "font menu requires pointer interaction", "Calibri initially clipped below menu viewport; original menu scrolled before real hit-checked click"],
+  "notVerified": ["content/code font styles", "all system font variants", "contrast rendering", "full matched-state visual parity"]
+}
