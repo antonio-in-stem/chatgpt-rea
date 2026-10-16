@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "archive": "chatgpt-rea-delivery-v3r1.zip",
+  "bytes": 1019520761,
+  "sha256": "eb7272da51bb8daacb286d58033a05086f8971f683d750e07f6032724f2b158c",
+  "gitCommit": "f75a65509c9f976d429fd511d81574674afa97e2",
+  "sourceFiles": 2334,
+  "runtimeFiles": 3594,
+  "zipEntries": 5934,
+  "crcReadbackPassed": true,
+  "runtimeHashesVerified": true,
+  "profilesIncluded": false,
+  "rendererModified": false,
+  "secondMachineTested": false,
+  "date": "2026-10-16",
+  "quotaUsedPercent": 42,
+  "verifiersMatchTestedConsumerAfterEolNormalization": true,
+  "previousAttempt": "v3 failed with MemoryError; incomplete ZIP retained, not a delivery",
+  "retry": "v3r1 used64KiB blocks after stopping only verified demo",
+  "limitations": [
+    "Same-machine runtime acceptance only",
+    "v3r1 archive validated, not independently relaunched",
+    "Full frontend incomplete",
+    "Rust deferred"
+  ]
+}
