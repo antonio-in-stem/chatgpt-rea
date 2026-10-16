@@ -32,6 +32,8 @@ python -m venv .venv
 ./original-stack/Start-Demo.ps1 -StateName demo-consumer -DemoHost -RuntimeLocationPath ./original-stack/state/portable-runtime-v2/runtime-location.json -InspectRuntime -DemoPagesTls
 ```
 
+The clean-source consumer also passed original personal Pages creation, Unicode title/body persistence, reopening/editability and a second saved edit. The local Yjs document advanced to sequence2; a new original editor capture was inspected. See evidence/clean-pages-delivery.json. This does not cover all block types or collaboration states.
+
 ## Reproduce locally
 
 Use the already extracted `webview` directory and the pinned pristine ASAR. No app account, profile, network download, formatter or re-extraction is involved. Choose new output directories with at least 2 GB available for package, tarball and isolated consumer.

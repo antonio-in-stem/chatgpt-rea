@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-16",
+  "profile": "demo-clean-delivery",
+  "sourceCopy": "original-stack/state/clean-source-v1",
+  "runtimePid": 159864,
+  "adapterPid": 69216,
+  "rendererModified": false,
+  "adapterModified": false,
+  "verification": "Original UI operations and persisted document assertions; no new unit-test runner",
+  "results": [
+    "Original New page creates personal page in fresh consumer",
+    "Original title/body fields accept synthetic Unicode text",
+    "First reload exposes saved title in original table/sidebar",
+    "Reopened original editor restores text and remains editable",
+    "Second edit persists with Unicode and survives another reload"
+  ],
+  "canonicalDocument": {
+    "nonemptyYjsUpdate": true,
+    "secondEditAssertionsPassed": true,
+    "title": "REA clean Pages verification",
+    "secondSequence": 2,
+    "pageId": "rea-page-1",
+    "unicodeAssertionsPassed": true,
+    "firstSequence": 1
+  },
+  "visual": {
+    "note": "First screenshot attempt did not update file while window minimized; discarded stale image, restored verified demo, captured new image successfully",
+    "originalSidebar": true,
+    "freshCaptureInspected": true,
+    "originalPageEditor": true,
+    "viewport": [
+      1280,
+      820
+    ]
+  },
+  "retainedSyntheticPage": true,
+  "limitations": [
+    "Only personal plain-text page lifecycle in this clean consumer",
+    "No cross-process restart tested in this batch",
+    "Rich block variants, collaboration, other artifact types and second machine remain outside this verification"
+  ],
+  "quotaUsedPercent": 41
+}
