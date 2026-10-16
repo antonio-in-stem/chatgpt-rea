@@ -1,0 +1,21 @@
+{
+  "status": "partial-runtime-verification",
+  "rendererModified": false,
+  "runner": "Verify-RailCustomization.cjs",
+  "verified": [
+    "original profile image present",
+    "Sites unpinned through original Explore control",
+    "unpin survives renderer reload",
+    "Sites repinned through original Explore control",
+    "original drag gesture changes order",
+    "changed order survives renderer reload"
+  ],
+  "runnerFailure": "Automatic inverse drag after reload does not restore baseline in two runs. Extra 2s stability delay did not resolve it; no further timing retries.",
+  "separateRestoration": "After runner terminated, explicit Sites -> Pull requests drag restored visible baseline; reload and inspect-rail confirmed Sites, Pull requests, Projects and avatar image.",
+  "unverified": [
+    "deterministic inverse drag in runner",
+    "all destinations and conditional plan variants",
+    "same-viewport visual parity"
+  ],
+  "quotaUsedPercent": 10
+}
