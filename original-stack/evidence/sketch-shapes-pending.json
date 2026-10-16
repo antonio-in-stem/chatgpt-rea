@@ -1,0 +1,19 @@
+{
+  "passed": false,
+  "stage": "original Sketch entry",
+  "checksCompleted": 0,
+  "runner": "Verify-SketchShapes.cjs",
+  "sourceReferences": [
+    "editor-27822fba15f5.js:151",
+    "composer-state-2b66230076b6.js:94",
+    "composer-host-4dcabd6e5506.js:370",
+    "app-primary-19fe57fd8c00.js:75414",
+    "app-initial-b8e1c8014bb4.js:515238"
+  ],
+  "observed": "Original attachment menu did not expose Sketch; slash-command attempt also did not expose its action",
+  "catalogImageCapability": true,
+  "rendererModified": false,
+  "eligibilityOverridden": false,
+  "quotaUsedPercent": 33,
+  "nextAction": "Revalidate actual demo window and composer eligibility before repeating shape/discard runner"
+}
