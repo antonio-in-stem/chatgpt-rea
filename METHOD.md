@@ -31,14 +31,7 @@ Anotar brevemente en CURRENT-STATUS: pantalla destino; fallo observable; archivo
 
 ## Presupuesto y parada
 
-Autorización vigente: baseline observado 64% usado; máximo 74%. Los porcentajes son de la ventana compartida de la cuenta, no dólares ni consumo atribuible exclusivamente a este chat; otros chats pueden adelantar el tope.
-
-- La reorganización no requiere agotar los diez puntos.
-- Primer hito: si se llega a 66% sin referencia ejecutable capturada, detener y entregar diagnóstico. No gastar el resto en hipótesis indefinidas.
-- Tras superar ese hito, cada lote debe acabar en una mejora visible y verificable antes de iniciar otro.
-- A 72%, no empezar implementación nueva. Sólo cerrar verificación/guardado de lo ya hecho.
-- A 74%, detener todo trabajo sustantivo. No usar créditos de reset.
-- Dos intentos fallidos de la misma hipótesis obligan a abandonarla y revisar el bloqueo; una espera de proceso vivo se comprueba sobre ese mismo proceso.
+La autorización nueva y la distribución vigente están en FRONTEND-CLOSURE.md: baseline 6%, máximo 51%, inventario hasta 9%, implementación hasta 41%, reserva de cierre hasta 51%. Sustituye los límites históricos 64/74 y 5/7. No es una promesa de finalización ni una orden de consumir todo. Dos hipótesis fallidas obligan a revisar el enfoque. Sin créditos de reset.
 
 ## Qué se conserva
 

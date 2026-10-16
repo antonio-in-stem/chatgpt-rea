@@ -11,7 +11,7 @@ Use architect-mode and reverse-engineer-anything for their applicable tasks. Reu
 - Reusable library remains a required deliverable. Integrate complete screen/flow slices; isolated exports, hashes, tests and counts do not establish delivery.
 - Use minimum synthetic host responses needed for the active screen. No backend fidelity project or unrelated service expansion.
 - No new subagents by default. At most one bounded read-only audit if it directly unblocks the active milestone. All apply REA; parent integrates.
-- Read actual account quota before substantive batches. Current authorization is 74% used maximum (64% baseline plus 10 percentage points). Stop new implementation at 72%; reserve the remainder for verification/handoff. Initial runtime milestone has an earlier stop at 66% if its evidence is still absent. Never spend to a cap merely because it is available. Do not use reset credits.
+- Read actual account quota before substantive batches. Current human authorization: baseline 6%, maximum 51% used; inventory stop 9%, stop new implementation 41%, reserve to 51% for integration/verification/delivery. See FRONTEND-CLOSURE.md. No reset credits.
 - No percent-complete claims without an agreed inventory and verified acceptance evidence. Quota used is not project progress.
 - At every milestone, report visible outcome, evidence, remaining gap and quota. Commit coherent milestones, not each function. Keep CURRENT-STATUS.md current rather than appending conflicting status streams.
 - On repeated failure of the same hypothesis (two attempts) stop that approach; inspect evidence and report the blocker. Do not bypass renderer guards or fabricate success.

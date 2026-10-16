@@ -1,3 +1,9 @@
+# Current handoff — 2026-10-15 resumed
+
+Human authorized continuation with 45 additional quota points; baseline 6%, max 51%, inventory cap 9%. Rust remains deferred. FRONTEND-CLOSURE.md is the current consolidated closure ledger; older quota stops below are historical and superseded. Active milestone: reconcile route/state inventory, not another small backend feature. Identified 145 lexical router entries (85 literals, 60 unresolved expressions). Reconciled later plugin/skill/automation/Pages/Spaces evidence against obsolete pending notes. Full route mapping and acceptance-state inventory remain unfinished. Latest saved implementation: 76deb48.
+
+---
+
 # Estado vigente — 2026-10-14
 
 ## Hito actual
