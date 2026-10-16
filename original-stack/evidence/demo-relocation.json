@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "preflightChecks": 6,
+  "runtimeIntegrityChecks": 10,
+  "rendererModified": false,
+  "actualExecutableLaunchedByTest": false,
+  "relativePathsBasedOn": "selected runtime manifest directory",
+  "legacyAbsolutePathsSupported": true,
+  "limitations": [
+    "Inert fixture relocation only, not a real fresh-machine launch",
+    "Profiles remain under original-stack/state",
+    "Runtime export and dependency installation not included",
+    "Install-DemoHost.py still uses its existing local manifest"
+  ],
+  "quotaUsedPercent": 32
+}

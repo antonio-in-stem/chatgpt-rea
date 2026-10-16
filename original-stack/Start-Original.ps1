@@ -9,18 +9,29 @@ param(
  [switch]$DemoPagesTls,
  [ValidatePattern('^[a-zA-Z0-9][a-zA-Z0-9_-]{0,63}$')][string]$StateName,
  [string]$DemoTransportUrl,
- [string]$FrontendPackageRoot
+ [string]$FrontendPackageRoot,
+ [string]$RuntimeLocationPath
 )
 $ErrorActionPreference='Stop'
 if($PassThru -and $WaitForExit){throw 'PassThru and WaitForExit are mutually exclusive'}
+if($RuntimeLocationPath -and -not $DemoHost){throw 'RuntimeLocationPath requires DemoHost'}
 $runtime=Join-Path $PSScriptRoot 'pristine'
 $inventoryPath=Join-Path $PSScriptRoot 'runtime-inventory.json'
 if($DemoHost){
  if(-not $DemoTransportUrl -or $StateName -notlike 'demo-*'){throw 'Instrumented host requires a named demo and loopback adapter'}
- $location=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'state/instrumented-profile-host/runtime-location.json') -Raw | ConvertFrom-Json
- $runtime=$location.runtimeRoot
- $inventoryPath=$location.inventoryPath
- $patch=Get-Content -LiteralPath $location.patchManifestPath -Raw | ConvertFrom-Json
+ if(-not $RuntimeLocationPath){$RuntimeLocationPath=Join-Path $PSScriptRoot 'state/instrumented-profile-host/runtime-location.json'}
+ $locationFile=(Resolve-Path -LiteralPath $RuntimeLocationPath).Path
+ $location=Get-Content -LiteralPath $locationFile -Raw | ConvertFrom-Json
+ $locationBase=Split-Path -Parent $locationFile
+ $resolved=@{}
+ foreach($field in @('runtimeRoot','inventoryPath','patchManifestPath')){
+  $entry=$location.$field
+  if($entry -isnot [string] -or [string]::IsNullOrWhiteSpace($entry)){throw "Invalid runtime location field: $field"}
+  $resolved[$field]=[IO.Path]::GetFullPath($entry,$locationBase)
+ }
+ $runtime=$resolved.runtimeRoot
+ $inventoryPath=$resolved.inventoryPath
+ $patch=Get-Content -LiteralPath $resolved.patchManifestPath -Raw | ConvertFrom-Json
  if($patch.mode -ne 'instrumented-demo-host' -or $patch.rendererFilesModified){throw 'Unexpected host patch manifest'}
  $asar=Join-Path $runtime 'resources/app.asar'
  if((Get-FileHash -LiteralPath $asar -Algorithm SHA256).Hash.ToLowerInvariant() -ne $patch.outputSha256){throw 'Demo host package differs from manifest'}
