@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-16",
+  "runtimePid": 173428,
+  "adapterPid": 149764,
+  "launcherSession": 55794,
+  "profile": "demo-export-consumer-v1",
+  "runtime": "S:/rea-profile-runtime-v1",
+  "packageSha256": "34ff659bb4a4806270898286a526f9235612dc036b4541ea1a139b8cbf592f60",
+  "executableSha256": "586c1c7ad8b600d0b6fd8f51d1bad6c939baa27d02d71a926552909b7614e07e",
+  "rendererModified": false,
+  "sources": {
+    "policy": "configuration-schedule-3024a2685e19.js:ai/ti/ri/oi (distributed minified)",
+    "status": "app-shared-737655e1fb23.js:253092",
+    "filterMapping": "app-shared-737655e1fb23.js:254170"
+  },
+  "policyTests": {
+    "passed": true,
+    "results": [
+      "15-minute selection survives reload in original editor without policy error",
+      "original minute menu enforces15-minute minimum",
+      "original minute selection saves30-minute RRULE",
+      "30-minute choice persists reload",
+      "original selector returns task to daily schedule"
+    ],
+    "rendererModified": false,
+    "policy": {
+      "minute_schedule_available": true,
+      "max_iterations_per_hour": 4
+    },
+    "realScheduling": false
+  },
+  "completedTests": {
+    "passed": true,
+    "results": [
+      "Active filter excludes exhausted cloud task even when is_enabled is true",
+      "Completed filter shows original completed row",
+      "Paused filter excludes completed task",
+      "completed task deletes through original confirmation; all filters restored"
+    ],
+    "rendererModified": false,
+    "realScheduling": false
+  },
+  "regression": {
+    "passed": true,
+    "cloudLifecycleChecks": 7,
+    "scheduleOptionsUnavailable": false
+  },
+  "httpTests": 4,
+  "visual": "Original30-minute edit dialog and Completed sidebar inspected at1280x820. No matched-reference pixel comparison claimed.",
+  "observerCorrections": [
+    "Minutes uses a select button, unlike hours text input; initial attempt saved1hour, then corrected through actual15/30 menu",
+    "Filters are persistent multi-select checkboxes, not single-choice",
+    "Synthetic completed fixture newline corrected before successful test"
+  ],
+  "limitations": [
+    "Policy is deterministic demo allowance, not account entitlement",
+    "No scheduler or real task execution",
+    "Cloud create UI, sharing/run-now/advanced variants remain unverified",
+    "Existing portable-runtime-v1 export remains previous baseline without these two host fixes"
+  ],
+  "quotaUsedPercent": 38
+}

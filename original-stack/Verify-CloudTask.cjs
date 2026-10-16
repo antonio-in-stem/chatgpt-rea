@@ -16,6 +16,7 @@ async function menu(label){await control('click','More task actions');await wait
 (async()=>{
  await open();await wait(body,x=>x.includes(initial[0].title));pass('cloud fixture appears in original scheduled sidebar');
  await menu('Edit');await wait(body,x=>x.includes('Edit task'));const editor=await body();const scheduleOptionsUnavailable=editor.includes("Couldn't load schedule options");
+ if(process.argv.includes('--require-schedule-policy')&&scheduleOptionsUnavailable)throw Error('Original schedule policy still fails');
  await control('focus-dialog-field','Name');await control('replace-focused','REA cloud lifecycle verified');await control('click-dialog','Save');
  await wait(async()=>items(),x=>x.length===1&&x[0].id===id&&x[0].title==='REA cloud lifecycle verified'&&x[0].schedule===originalSchedule);
  await wait(body,x=>x.includes('REA cloud lifecycle verified')&&!x.includes('Edit task'));pass('original Edit saves cloud name without changing schedule');
@@ -25,6 +26,6 @@ async function menu(label){await control('click','More task actions');await wait
  await menu('Delete');await wait(body,x=>x.includes('Delete scheduled task'));await control('click-dialog','Delete scheduled task');
  await wait(async()=>items(),x=>x.length===0);await wait(body,x=>x.includes('No scheduled tasks'));pass('original delete confirmation removes only the synthetic cloud task');
  await control('reload-demo');await open();await wait(body,x=>x.includes('No scheduled tasks'));pass('cloud removal survives reload');
- const report={passed:true,results,rendererModified:false,schedulerRegistered:false,cloudCreationObserved:false,scheduleOptionsUnavailable,limitations:['Cloud task initially supplied through demo fixture, not original create flow','Schedule policy endpoint remains unsupported; editor displays schedule-options error','Run now, sharing and advanced states not covered']};
+ const report={passed:true,results,rendererModified:false,schedulerRegistered:false,cloudCreationObserved:false,scheduleOptionsUnavailable,limitations:['Cloud task initially supplied through demo fixture, not original create flow',...(scheduleOptionsUnavailable?['Schedule policy endpoint unsupported in this runtime']:[]),'Run now, sharing and advanced states not covered']};
  fs.writeFileSync(path.join(root,'cloud-task-ui-check.json'),JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify({passed:true,checks:results.length,scheduleOptionsUnavailable}));
 })().catch(e=>{console.error(e.stderr||e.message);process.exitCode=1});

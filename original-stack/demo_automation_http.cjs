@@ -2,6 +2,11 @@
 function demoAutomationHttp(method,url,body,settingsPath,fs,path){
  if(url.origin!=='https://chatgpt.com')return null;
  const route=url.pathname;
+ // configuration-schedule ai/ti consumes this policy; deterministic demo allowance only.
+ if(method==='GET'&&route==='/automations/schedule_policy'){
+  if(url.searchParams.has('service_account_id'))throw Error('Demo team schedule policy unsupported');
+  return {minute_schedule_available:true,max_iterations_per_hour:4};
+ }
  if(!((method==='GET'&&route==='/automations')||(method==='POST'&&['/automations/save','/automations/set_status','/automations/remove'].includes(route))))return null;
  let file=null;
  if(settingsPath){if(path.basename(settingsPath)!=='demo-sidebar-settings.json')throw Error('Explicit demo settings required');file=path.join(path.dirname(settingsPath),'demo-automations.json');}
@@ -12,7 +17,9 @@ function demoAutomationHttp(method,url,body,settingsPath,fs,path){
   if(raw!==null&&(!/^[1-9][0-9]*$/.test(raw)||Number(raw)>100))throw Error('Invalid automation page size');
   const cursor=url.searchParams.get('cursor'),offset=cursor===null?0:Number(cursor);
   if(cursor!==null&&!/^(0|[1-9][0-9]*)$/.test(cursor))throw Error('Unknown demo automation cursor');
-  const items=state.items.filter(x=>!filter||(filter==='scheduled'?x.is_enabled:filter==='paused'?!x.is_enabled:false));
+  // Mirror original M8 and T_i: completed outranks enabled/paused for exhausted cloud tasks.
+  const status=x=>x.executor!=='local'&&x.timing_mode!=='condition_watch'&&x.next_run_times.length===0?'finished':x.is_enabled?'scheduled':'paused';
+  const items=state.items.filter(x=>!filter||status(x)===filter);
   const limit=raw===null?25:Number(raw);
   if(!Number.isSafeInteger(offset)||offset>items.length)throw Error('Unknown demo automation cursor');
   return {items:items.slice(offset,offset+limit),cursor:offset+limit<items.length?String(offset+limit):null};

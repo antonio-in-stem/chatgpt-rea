@@ -31,3 +31,17 @@ test('demo tasks persist edits, filtering, pagination and removal without schedu
   assert.deepEqual(fs.readdirSync(dir),['demo-automations.json']);
  }finally{for(const name of fs.readdirSync(dir))fs.unlinkSync(path.join(dir,name));fs.rmdirSync(dir);}
 });
+test('original personal schedule policy allows bounded demo intervals and rejects team scope',()=>{
+ assert.deepEqual(call('GET',new URL('https://chatgpt.com/automations/schedule_policy')),{minute_schedule_available:true,max_iterations_per_hour:4});
+ assert.throws(()=>call('GET',new URL('https://chatgpt.com/automations/schedule_policy?service_account_id=real-team')));
+ assert.equal(call('POST',new URL('https://chatgpt.com/automations/schedule_policy')),null);
+ assert.equal(call('GET',new URL('https://example.invalid/automations/schedule_policy')),null);
+});
+test('finished classification preserves original cloud, local and condition-watch distinctions',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-task-status-')),settings=path.join(dir,'demo-sidebar-settings.json'),file=path.join(dir,'demo-automations.json');
+ const task=(id,enabled,next,extra={})=>({id,is_enabled:enabled,next_run_times:next,timing_mode:'exact_schedule',...extra});
+ const items=[task('exhausted-active',true,[]),task('exhausted-paused',false,[]),task('active',true,['2099-01-01']),task('paused',false,['2099-01-01']),task('local-active',true,[],{executor:'local'}),task('watch-paused',false,[],{timing_mode:'condition_watch'})];
+ const list=filter=>call('GET',new URL('https://chatgpt.com/automations?filter='+filter),undefined,settings,fs,path).items.map(x=>x.id);
+ try{fs.writeFileSync(file,JSON.stringify({items,sequence:0}));assert.deepEqual(list('finished'),['exhausted-active','exhausted-paused']);assert.deepEqual(list('scheduled'),['active','local-active']);assert.deepEqual(list('paused'),['paused','watch-paused']);}
+ finally{fs.unlinkSync(file);fs.rmdirSync(dir);}
+});
