@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "results": [
+    "Personal renders original remote catalog card",
+    "original remote detail displays fixture title and description",
+    "uninstalled remote detail offers Install instead of Try now",
+    "remote detail can be reopened after reload",
+    "original breadcrumb returns to populated Personal catalog",
+    "unmatched search renders original empty state",
+    "desktop search returns remote catalog fixture after empty state",
+    "clearing search restores populated Personal catalog"
+  ],
+  "rendererModified": false,
+  "pluginCodeExecuted": false,
+  "remoteMutationTested": false,
+  "searchTested": true,
+  "scope": "Original remote Personal plugin catalog, read detail and desktop search using inert fixtures",
+  "sourceReferences": [
+    "plugins-query-7732c01b28d6.js:59",
+    "app-initial-b8e1c8014bb4.js:347070",
+    "app-shared-737655e1fb23.js:232555",
+    "use-search-plugins-c67f03cc67e0.js:299"
+  ],
+  "adapterTests": {
+    "http": 3,
+    "plugins": 4
+  },
+  "limitations": [
+    "Remote installation and uninstall not implemented",
+    "Failure/retry variants pending",
+    "Reload returns Home; detail verified by reopening",
+    "Not full frontend completion or global visual parity"
+  ],
+  "quotaUsedPercent": 24
+}

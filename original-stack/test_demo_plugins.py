@@ -8,6 +8,30 @@ from demo_plugins import PluginStore, PluginError, PLUGIN_ID, MARKETPLACE
 from demo_transport import handle_message
 
 class PluginTests(unittest.TestCase):
+    def test_remote_catalog_read_search_and_rejected_mutations(self):
+        with tempfile.TemporaryDirectory() as directory:
+            store=PluginStore(ConfigStore(Path(directory)/'config.json',{}))
+            params={'pluginName':'plugin_rea_catalog_demo','remoteMarketplaceName':'chatgpt-workspace'}
+            detail=store.handle('plugin/read',params)['plugin']
+            self.assertFalse(detail['summary']['installed'])
+            self.assertEqual(detail['summary']['remotePluginId'],'plugin_rea_catalog_demo')
+            for key in ('skills','hooks','apps','mcpServers'):self.assertEqual(detail[key],[])
+            result=store.handle('plugin/search',{'searchTerm':'CATALOG','scope':'personal','limit':50})
+            self.assertEqual([e['plugin'] for e in result['data']],[detail['summary']])
+            self.assertIsNone(result['nextCursor'])
+            first=store.handle('plugin/search',{'searchTerm':'rea','limit':1})
+            second=store.handle('plugin/search',{'searchTerm':'rea','limit':1,'cursor':first['nextCursor']})
+            self.assertEqual(len(first['data'])+len(second['data']),2)
+            self.assertNotEqual(first['data'][0]['plugin']['id'],second['data'][0]['plugin']['id'])
+            self.assertIsNone(second['nextCursor'])
+            self.assertEqual(store.handle('plugin/search',{'searchTerm':'no-such-demo'})['data'],[])
+            self.assertEqual(store.handle('plugin/search',{'searchTerm':'catalog','scope':'workspace'})['data'],[])
+            for method in ('plugin/install','plugin/uninstall'):
+                with self.assertRaises(PluginError):store.handle(method,params)
+            for params in ({'searchTerm':5},{'searchTerm':'x','cursor':'unknown'},{'searchTerm':'x','limit':0}):
+                with self.assertRaises(PluginError):store.handle('plugin/search',params)
+            self.assertEqual(list(Path(directory).iterdir()),[])
+
     def test_skill_refresh_after_inert_install_is_empty_and_scoped(self):
         reply,_=handle_message(json.dumps({'id':1,'method':'skills/list','params':{'cwds':['C:/demo/one','C:/demo/two'],'forceReload':True}}))
         self.assertEqual(reply['result']['data'],[{'cwd':p,'skills':[],'errors':[]} for p in ['C:/demo/one','C:/demo/two']])

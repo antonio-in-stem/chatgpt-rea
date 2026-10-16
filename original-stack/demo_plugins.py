@@ -4,7 +4,7 @@ from pathlib import Path
 
 PLUGIN_ID = 'rea-demo@rea-local'
 MARKETPLACE = 'C:/REA-Demo/marketplace.json'
-METHODS = {'plugin/list', 'plugin/installed', 'plugin/read', 'plugin/install', 'plugin/uninstall'}
+METHODS = {'plugin/list', 'plugin/installed', 'plugin/read', 'plugin/install', 'plugin/uninstall', 'plugin/search'}
 
 class PluginError(ValueError):
     pass
@@ -25,10 +25,40 @@ class PluginStore:
             'authPolicy':'ON_USE','availability':'AVAILABLE','disabledReason':None,
             'eligiblePlanTypes':None,'interface':None,'keywords':[]}
 
+    def remote_summary(self):
+        # Same inert service entry as demo_plugin_http; desktop details use plugin/read.
+        return {**self.summary(), 'id':'rea-catalog-demo@chatgpt-workspace',
+            'name':'rea-catalog-demo','remotePluginId':'plugin_rea_catalog_demo',
+            'source':{'type':'remote'},'installed':False,'enabled':False,'localVersion':None,
+            'interface':{'displayName':'REA Catalog Demo',
+                'shortDescription':'Explore the original remote plugin detail.',
+                'longDescription':'A synthetic plugin used to verify the original catalog and detail screens. No executable capabilities.',
+                'developerName':'REA Demo','capabilities':[],'category':None,'defaultPrompt':[],
+                'logo':None,'logoDark':None,'logoUrl':None,'logoUrlDark':None,'screenshots':[],
+                'screenshotUrls':[],'composerIcon':None,'composerIconUrl':None},
+            'keywords':['demo','catalog']}
+
     def handle(self, method, params):
         params = {} if params is None else params
         if not isinstance(params, dict): raise PluginError('Expected plugin parameters')
         if method not in METHODS: raise PluginError('Unknown plugin method')
+        if method == 'plugin/search':
+            query=params.get('searchTerm');scope=params.get('scope');limit=params.get('limit',50);cursor=params.get('cursor')
+            if not isinstance(query,str) or scope not in (None,'personal','global','workspace') or type(limit) is not int or not 1 <= limit <= 100 or cursor not in (None,'1'):
+                raise PluginError('Invalid demo plugin search')
+            entries=[{'marketplaceName':'rea-local','marketplacePath':MARKETPLACE,'plugin':self.summary()},
+                     {'marketplaceName':'chatgpt-workspace','marketplacePath':None,'plugin':self.remote_summary()}] if scope in (None,'personal') else []
+            terms=query.casefold().split()
+            data=[e for e in entries if all(t in (e['plugin']['name']+' '+str(e['plugin']['interface'] or '')).casefold() for t in terms)]
+            offset=0 if cursor is None else 1
+            end=offset+limit
+            return {'data':data[offset:end],'nextCursor':str(end) if end < len(data) else None}
+        if method == 'plugin/read' and params.get('pluginName') == 'plugin_rea_catalog_demo' and params.get('remoteMarketplaceName') == 'chatgpt-workspace' and not params.get('marketplacePath'):
+            summary=self.remote_summary()
+            return {'plugin':{'marketplaceName':'chatgpt-workspace','marketplacePath':None,
+                'summary':summary,'shareUrl':None,'description':summary['interface']['longDescription'],
+                'skills':[],'onboardingSkill':None,'hooks':[],'apps':[],'appTemplates':[],
+                'mcpServers':[],'scheduledTasks':None}}
         if method in {'plugin/read','plugin/install'}:
             if params.get('pluginName') != 'rea-demo' or str(params.get('marketplacePath','')).replace('\\','/') != MARKETPLACE or params.get('remoteMarketplaceName'):
                 raise PluginError('Only the synthetic demo plugin is available')
