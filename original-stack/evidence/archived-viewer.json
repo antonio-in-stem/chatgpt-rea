@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "results": [
+    "original cloud viewer renders archived title and synthetic conversation",
+    "original Back leaves archived viewer",
+    "original Forward returns to archived conversation",
+    "archived conversation reopens after reload"
+  ],
+  "rendererModified": false,
+  "entry": "simulated-original-host-message",
+  "sidebarPreviewVerified": false,
+  "messageSent": false,
+  "sourceReferences": [
+    "app-initial-b8e1c8014bb4.js:174231",
+    "app-initial-b8e1c8014bb4.js:174955",
+    "app-initial-b8e1c8014bb4.js:383407",
+    "app-initial-b8e1c8014bb4.js:442519",
+    "remote-conversation-page-ac36067c3c90.js:2495"
+  ],
+  "adapterTests": 5,
+  "hostAsarSha256": "9fdb8c746a5b351ca68955bdd6fd9fb61cd9d082a7a01bbbf0a40600dc78378d",
+  "limitations": [
+    "Sidebar preview entry/state not verified",
+    "Restore list is not a clickable preview list",
+    "Chat actions offer Archive, not Unarchive, in observed viewer",
+    "Inaccessible/error/retry variants pending",
+    "Not global frontend completion or matched-state visual parity"
+  ],
+  "quotaUsedPercent": 30
+}
