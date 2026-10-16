@@ -395,3 +395,10 @@ Added demo_security_setup.py and integrated original inspect target/setup, works
 36 targeted tests pass. Verify-SecuritySubmission.cjs passed 10 combined UI/state checks: repository navigation and enabled setup, actual Start scan, new report/attached thread in state, setup departure, listing, reload persistence, report detail, View activity with the matching scan ID and fixed demo response in original conversation. Two demo reports were created during first and extended acceptance runs and retained. No screenshots or raw conversation dumps published. Fixed mixed-encoding bytes in this status file while preserving valid UTF-8 text.
 
 Runtime56660, adapter34288, launcher8995; revalidate before reuse. Next remaining Security gaps: deep/diff submission variants, error/recovery states, remediation presentation/actions. Do not claim all Security or all frontend finished. Limit50% used, new implementation stops40%, Rust deferred.
+
+
+## Security submission modes verified — 2026-10-15
+
+Extended existing Verify-SecuritySubmission.cjs without changing renderer or demo provider. Deep passed 11 checks, working-tree diff 11, specific revisions range 14, specific commit 12. Range empty and base-only states disable Start scan; valid head enables it. Each case creates a distinct report/conversation, survives reload, opens report detail and View activity with original matching prompt/fixed reply. Saved mode and diff kind checked; saved base/head and commit values also inspected in completed local state and now enforced by runner. These are synthetic revisions, not Git resolution. Four further local demo reports retained.
+
+Runtime56660/adapter34288 remains same; no restart. Last quota10%, cap50%, new implementation stop40%. Next Security gaps are arbitrary target picker, error/recovery and remediation flows. Mode-submission gap is closed for the described cases, not every possible combination. Rust deferred.

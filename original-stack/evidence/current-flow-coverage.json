@@ -219,6 +219,17 @@
       "screen": "Security scan submission",
       "runner": "Verify-SecuritySubmission.cjs",
       "scope": "10 UI/state checks: repository detail to enabled setup, submit, distinct report and linked thread, list/reload/detail, View activity with original prompt and fixed demo reply. Standard mode only; no real scanning."
+    },
+    {
+      "screen": "Security scan modes",
+      "runner": "Verify-SecuritySubmission.cjs",
+      "arguments": [
+        "demo-profile-host-v1 deep",
+        "demo-profile-host-v1 diff",
+        "demo-profile-host-v1 diff range",
+        "demo-profile-host-v1 diff commit"
+      ],
+      "scope": "Deep 11 checks; working-tree diff 11; range 14 including empty/partial disabled submit; commit 12. Each submitted through original UI, linked conversation, report reload/detail/activity; synthetic revisions only."
     }
   ]
 }
