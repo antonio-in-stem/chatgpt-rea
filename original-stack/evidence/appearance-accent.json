@@ -1,0 +1,18 @@
+{
+  "status": "verified",
+  "runner": "Verify-AppearanceAccent.cjs",
+  "uiChecksPassed": 4,
+  "adapterTestsPassed": 4,
+  "source": "app-shared-737655e1fb23.js:188261,188611-188619",
+  "hostPackageSha256": "5235f4fddd10054dd6754bb745090a4d560dc85a1c45b17bacbf11ded542e0d7",
+  "rendererModified": false,
+  "firstAttempt": "Saved Blue, verifier raced renderer recreation during reload",
+  "secondAttempt": "Green saved/persisted; Blue restored/persisted",
+  "finalCleanup": "Pre-investigation Default restored via original UI and confirmed in demo persistence",
+  "remaining": [
+    "custom color fields",
+    "font",
+    "advanced appearance",
+    "reset/import/export"
+  ]
+}
