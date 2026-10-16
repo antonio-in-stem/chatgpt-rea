@@ -1,0 +1,26 @@
+{
+  "status": "verified-described-scenarios",
+  "runner": "Verify-ProfilePhoto.cjs",
+  "uiChecks": 14,
+  "contractTests": 4,
+  "rendererModified": false,
+  "packageSha256": "28d2f01d6bd8851075757253502e0cadfd2f4a0609c0ec00453893755c65afa0",
+  "source": {
+    "multipart": "app-shared-737655e1fb23.js:166183-166222",
+    "uploadAndPatch": "app-initial-b8e1c8014bb4.js:255652-255687",
+    "editor": "profile-4d7f26c9ae6d.js:1962,6020"
+  },
+  "verified": [
+    "crop and zoom",
+    "crop/editor cancellation discards draft",
+    "editor Save uploads cropped image and associates pointer",
+    "rail image data URL SHA256 matches saved synthetic asset",
+    "reload retains rail image",
+    "reopened editor loads saved square photo"
+  ],
+  "remaining": [
+    "other formats and error UI",
+    "photo shape variants"
+  ],
+  "image": "synthetic generated color stripes; no private photograph"
+}

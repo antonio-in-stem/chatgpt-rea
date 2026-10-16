@@ -4,3 +4,22 @@ function fixture(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-profile-
 test('identity and editable profile share persisted values and avatar',t=>{const call=fixture(t);call('PATCH','/wham/profiles/me',{display_name:'Demo Edited',username:'demo.edited'});const identity=call('GET','/profiles/me'),usage=call('GET','/wham/profiles/me');assert.deepEqual(identity.profile_details,usage.profile);assert.equal(identity.viewer_access.can_edit,true);assert.equal(identity.profile_details.display_name,'Demo Edited');assert.equal(identity.profile_details.profile_picture_url,'data:image/png;base64,DEMO');call('PATCH','/profiles/me',{description:'Local demo',photo_frame_style:'oval'});assert.equal(call('GET','/wham/profiles/me').profile.description,'Local demo');assert.equal(call('GET','/profiles/me').profile_details.username,'demo.edited');});
 test('invalid values and failed writes preserve previous profile',t=>{const call=fixture(t),route='/profiles/me';call('PATCH',route,{display_name:'Kept'});const before=call('GET',route);for(const patch of [{display_name:''},{username:'x'},{username:'UPPER'},{photo_frame_style:'triangle'},{profile_asset_pointer:'external'},[],null])assert.throws(()=>call('PATCH',route,patch));const failing=Object.create(fs);failing.renameSync=()=>{throw Error('disk error');};assert.throws(()=>call('PATCH',route,{display_name:'Lost'},failing));assert.deepEqual(call('GET',route),before);});
 test('origin and explicit profile guard',()=>{assert.equal(handle('GET',new URL('https://example.com/profiles/me')),null);assert.equal(handle('GET',new URL('https://chatgpt.com/other')),null);assert.throws(()=>handle('GET',new URL('https://chatgpt.com/profiles/me')));});
+
+test('photo upload remains staged until profile PATCH and survives new reads',t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'rea-photo-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const settings=path.join(dir,'settings'),picture='data:image/png;base64,DEMO';
+ const call=(method,route,body,headers={},io=fs)=>handle(method,new URL(route,'https://chatgpt.com'),body,settings,io,picture,headers);
+ const png=require('./demo_library_fixtures.cjs').libraryFixture('png').bytes,boundary='----codex-upload-test';
+ const bytes=Buffer.concat([Buffer.from('--'+boundary+'\r\nContent-Disposition: form-data; name="file"; filename="demo.png"\r\nContent-Type: image/png\r\n\r\n'),png,Buffer.from('\r\n--'+boundary+'--\r\n')]);
+ const headers={'Content-Type':'multipart/form-data; boundary='+boundary};
+ const asset=call('POST','/wham/profiles/me/photo',bytes,headers).asset_pointer;
+ assert.equal(call('GET','/profiles/me').profile_details.profile_picture_url,picture);
+ call('PATCH','/wham/profiles/me',JSON.stringify({profile_asset_pointer:asset}));
+ assert.equal(call('GET','/profiles/me').profile_details.profile_picture_url,'data:image/png;base64,'+png.toString('base64'));
+ assert.throws(()=>call('POST','/wham/profiles/me/photo',bytes.subarray(0,-1),headers));
+ assert.throws(()=>call('POST','/wham/profiles/me/photo',bytes,{}));
+ assert.throws(()=>call('PATCH','/profiles/me',JSON.stringify({profile_asset_pointer:'rea-demo-photo-'+'0'.repeat(64)})));
+ const before=fs.readFileSync(settings+'.profile-photos.json');const io=Object.create(fs);io.renameSync=()=>{throw Error('disk error');};
+ assert.throws(()=>call('POST','/wham/profiles/me/photo',bytes,headers,io));assert.deepEqual(fs.readFileSync(settings+'.profile-photos.json'),before);
+ call('PATCH','/profiles/me',JSON.stringify({profile_asset_pointer:null}));assert.equal(call('GET','/profiles/me').profile_details.profile_picture_url,picture);
+});
