@@ -2,6 +2,14 @@
 // This does not implement the cloud task conversation/viewer itself.
 function demoArchivedTasksHttp(method,url,body,settingsPath,fs){
  if(url.origin!=='https://chatgpt.com')return null;
+ // Original iPr consumes offset + limit < total; this demo has no archived ChatGPT chats.
+ if(url.pathname==='/conversations'&&url.searchParams.get('is_archived')==='true'){
+  if(method!=='GET')throw Error('Unsupported archived conversations method');
+  if(!settingsPath)throw Error('Explicit demo state required');
+  const offset=Number(url.searchParams.get('offset')??0),limit=Number(url.searchParams.get('limit')??20);
+  if(!Number.isSafeInteger(offset)||offset<0||!Number.isSafeInteger(limit)||limit<1||limit>100)throw Error('Invalid demo archive pagination');
+  return {items:[],offset,limit,total:0};
+ }
  const route=url.pathname,search=route==='/wham/tasks/search',list=route==='/wham/tasks/list'&&url.searchParams.get('task_filter')==='archived';
  const action=route.match(/^\/wham\/tasks\/(rea-demo-archived-[12])\/(recover|archive)$/);
  if(!list&&!search&&!action)return null;
