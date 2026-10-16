@@ -262,7 +262,10 @@ class ThreadStore:
 
     def _start(self, params):
         from pathlib import PureWindowsPath
-        if params.get("ephemeral"):raise ThreadError("Ephemeral demo sessions are not implemented")
+        ephemeral=params.get("ephemeral") is True
+        if params.get("ephemeral"):
+            expected={"ephemeral":True,"permissions":":read-only","threadSource":"mcp_extension_host"}
+            if not ephemeral or params != expected:raise ThreadError("Only read-only MCP extension demo sessions are supported")
         for key in ("environments","dynamicTools","selectedCapabilityRoots"):
             if params.get(key):raise ThreadError("Unsupported demo start option: "+key)
         config=params.get("config") if params.get("config") is not None else {}
@@ -287,6 +290,9 @@ class ThreadStore:
         for key in ("collaborationMode","initialTurnsPage","turnsBackwardsCursor","itemsBackwardsCursor"):response.pop(key)
         settings={"model":thread["model"],"modelProvider":thread["modelProvider"],"reasoningEffort":effort,"serviceTier":params.get("serviceTier"),"runtimeWorkspaceRoots":roots}
         response.update(settings)
+        # The original MCP bootstrap needs an ID, without sidebar or disk history.
+        # No executor or persistent ephemeral turns are supplied by this demo.
+        if ephemeral:return response,None
         data=copy.deepcopy(self.data)
         # Store frontend preferences as inert demo metadata; no instructions/tools run.
         data["threads"][identifier]={"thread":thread,"archived":False,"settings":settings,"startConfig":copy.deepcopy(config)}

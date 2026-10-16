@@ -1,5 +1,5 @@
 {
-  "scope": "Static recovered frontend contract for original Security workbench; runtime provider not yet implemented",
+  "scope": "Recovered Security workbench contract with original UI read-flow verification; mutations remain pending",
   "sources": [
     "security-route-feb1afe59e86.js:742-810",
     "security-route-feb1afe59e86.js:994-1043",
@@ -119,12 +119,22 @@
     "integration": "demo_transport.py only when explicit ConfigStore is present; existing no-config fixture remains empty",
     "reads": "Five original read tools, one fixed UUID completed scan, one synthetic repository and finding. No scan or remediation executor.",
     "validation": "77 Python tests pass. Checks include filter/pagination outcomes, foreign identifiers, mutation rejection, fresh-copy isolation, transport scope and required fields from recovered JSON protocol. Full JSON Schema validation was not run because jsonschema is absent.",
-    "runtime": "Existing v53 process has not loaded new Python adapter. Restart and original Security UI verification pending."
+    "runtime": "Verify-Security.cjs passed eight original UI observations on 2026-10-15: scan/repository/global findings, empty/populated search, finding detail, back to scans and list after reload."
   },
   "eligibility": {
     "gate": "1598376 (zAo exported as iY, consumed as gr)",
     "plugin": "Original VAo requires installed plugin id startsWith codex-security@, enabled true and availability AVAILABLE; remote host and loading have separate states",
     "implementation": "Added gate to demo bootstrap and inert codex-security@rea-local entry to installed plugin response. No executable plugin installed.",
     "validation": "78 Python tests and original V1 SDK gate tests pass; v54 host build required before runtime validation."
+  },
+  "bootstrapFix": {
+    "source": "app-initial-b8e1c8014bb4.js:70544",
+    "contract": {
+      "ephemeral": true,
+      "permissions": ":read-only",
+      "threadSource": "mcp_extension_host"
+    },
+    "implementation": "ThreadStore returns source-shaped temporary thread/start result without disk persistence or thread/started history notification. Other ephemeral shapes remain rejected.",
+    "verification": "34 targeted thread/security tests pass; original UI reaches provider and renders original detail. No scan executor or renderer modification."
   }
 }

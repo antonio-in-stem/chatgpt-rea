@@ -5,6 +5,23 @@ from unittest.mock import patch
 from demo_threads import THREAD,handle,ThreadError,ThreadStore,PINNED_SECTION
 
 class ThreadTests(unittest.TestCase):
+    def test_mcp_ephemeral_bootstrap_never_persists_or_announces_chat(self):
+        import copy
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"threads.json"
+            store=ThreadStore(path)
+            before=copy.deepcopy(store.data)
+            disk=path.read_bytes() if path.exists() else None
+            params={"ephemeral":True,"permissions":":read-only","threadSource":"mcp_extension_host"}
+            result,event=store.handle("thread/start",params)
+            self.assertIsNone(event)
+            self.assertEqual(result["thread"]["turns"],[])
+            self.assertNotIn(result["thread"]["id"],store.data["threads"])
+            self.assertEqual(store.data,before)
+            self.assertEqual(path.read_bytes() if path.exists() else None,disk)
+            for update in [{"ephemeral":1},{"permissions":":workspace"},{"threadSource":"user"},{"cwd":"C:/other"}]:
+                with self.assertRaises(ThreadError):store.handle("thread/start",{**params,**update})
+
     def test_resume_initial_page_returns_newest_turns_and_continues_history(self):
         import copy
         thread=copy.deepcopy(THREAD)

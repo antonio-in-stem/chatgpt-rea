@@ -199,6 +199,11 @@
       "screen": "Notifications",
       "runner": "Verify-Notifications.cjs",
       "scope": "synthetic tasks category: independent email/push toggles, all off, reload persistence and restoration; delivery and teen safety remain pending"
+    },
+    {
+      "screen": "Security",
+      "runner": "Verify-Security.cjs",
+      "scope": "synthetic scan/repository/findings lists, search empty/populated, finding detail, back and reload; mutation states remain pending"
     }
   ]
 }
