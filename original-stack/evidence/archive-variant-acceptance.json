@@ -8,8 +8,14 @@
     "gate": "3500066563",
     "route": "/archive",
     "cloudDestination": "/remote/:id",
-    "currentDemoGateConfigured": false,
-    "viewerRuntimeVerified": false
+    "currentDemoGateConfigured": true,
+    "viewerRuntimeVerified": false,
+    "exploreExclusion": {
+      "source": "app-initial-b8e1c8014bb4.js:119099-119109,348369",
+      "finding": "fFn excludes builtin:archive from Explore even when its gate is enabled",
+      "intendedEntryVerified": false
+    }
   },
-  "rendererModified": false
+  "rendererModified": false,
+  "packageSha256": "fdbc2da6d129073eb87b86a1b6ea6baa954b988ac92bcf59e23a77ab07ca3922"
 }
