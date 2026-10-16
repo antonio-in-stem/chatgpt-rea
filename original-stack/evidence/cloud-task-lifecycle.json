@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-16",
+  "profile": "demo-export-consumer-v1",
+  "runtimePid": 33988,
+  "runnerExitCode": 0,
+  "checks": 7,
+  "sources": {
+    "statusClassifier": "app-shared-737655e1fb23.js:253092",
+    "listing": "app-shared-737655e1fb23.js:254224",
+    "schedulePolicy": "configuration-schedule-3024a2685e19.js:ai/ti/ri (distributed minified chunk)",
+    "updatePayload": "app-shared-737655e1fb23.js:253151"
+  },
+  "result": {
+    "passed": true,
+    "results": [
+      "cloud fixture appears in original scheduled sidebar",
+      "original Edit saves cloud name without changing schedule",
+      "Pause updates cloud store and original row",
+      "edited name and paused status survive reload",
+      "Resume restores active original row",
+      "original delete confirmation removes only the synthetic cloud task",
+      "cloud removal survives reload"
+    ],
+    "rendererModified": false,
+    "schedulerRegistered": false,
+    "cloudCreationObserved": false,
+    "scheduleOptionsUnavailable": true,
+    "limitations": [
+      "Cloud task initially supplied through demo fixture, not original create flow",
+      "Schedule policy endpoint remains unsupported; editor displays schedule-options error",
+      "Run now, sharing and advanced states not covered"
+    ]
+  },
+  "visual": "Original full window captured and inspected at1280x820 after Resume; rail/avatar/sidebar/task row/cards/toast observed. No matched-reference pixel parity claimed.",
+  "nextContract": {
+    "query": "Optional service_account_id for team ownership",
+    "observedConsumers": [
+      "minute_schedule_available boolean",
+      "max_iterations_per_hour integer, -1 unlimited"
+    ],
+    "method": "GET",
+    "runtime": "Unsupported; original Edit displays Could not load schedule options",
+    "path": "/automations/schedule_policy",
+    "filterGap": "finished currently always empty; original M8 classifies non-local, non-condition-watch tasks with no next_run_times as completed"
+  },
+  "quotaUsedPercent": 37,
+  "rendererModified": false,
+  "schedulerRegistered": false
+}
