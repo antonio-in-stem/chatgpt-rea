@@ -8,7 +8,7 @@ from demo_plugins import PluginStore, PluginError, PLUGIN_ID, MARKETPLACE
 from demo_transport import handle_message
 
 class PluginTests(unittest.TestCase):
-    def test_remote_catalog_read_search_and_rejected_mutations(self):
+    def test_remote_catalog_read_search_and_boundaries(self):
         with tempfile.TemporaryDirectory() as directory:
             store=PluginStore(ConfigStore(Path(directory)/'config.json',{}))
             params={'pluginName':'plugin_rea_catalog_demo','remoteMarketplaceName':'chatgpt-workspace'}
@@ -26,11 +26,30 @@ class PluginTests(unittest.TestCase):
             self.assertIsNone(second['nextCursor'])
             self.assertEqual(store.handle('plugin/search',{'searchTerm':'no-such-demo'})['data'],[])
             self.assertEqual(store.handle('plugin/search',{'searchTerm':'catalog','scope':'workspace'})['data'],[])
-            for method in ('plugin/install','plugin/uninstall'):
-                with self.assertRaises(PluginError):store.handle(method,params)
+            with self.assertRaises(PluginError):store.handle('plugin/install',{**params,'pluginName':'unknown'})
+            with self.assertRaises(PluginError):store.handle('plugin/uninstall',{'pluginId':'unknown'})
             for params in ({'searchTerm':5},{'searchTerm':'x','cursor':'unknown'},{'searchTerm':'x','limit':0}):
                 with self.assertRaises(PluginError):store.handle('plugin/search',params)
             self.assertEqual(list(Path(directory).iterdir()),[])
+
+    def test_remote_install_uninstall_persistence_and_local_isolation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config=ConfigStore(Path(directory)/'config.json',{})
+            local={'pluginName':'rea-demo','marketplacePath':MARKETPLACE}
+            remote={'pluginName':'plugin_rea_catalog_demo','remoteMarketplaceName':'chatgpt-workspace'}
+            store=PluginStore(config);store.handle('plugin/install',local)
+            self.assertEqual(store.handle('plugin/install',remote),{'authPolicy':'ON_USE','appsNeedingAuth':[]})
+            store=PluginStore(config)
+            self.assertTrue(store.handle('plugin/read',remote)['plugin']['summary']['installed'])
+            ids=[p['id'] for m in store.handle('plugin/installed',{})['marketplaces'] for p in m['plugins']]
+            self.assertIn('rea-catalog-demo@chatgpt-workspace',ids);self.assertIn(PLUGIN_ID,ids)
+            with patch.object(Path,'replace',side_effect=OSError('disk full')):
+                with self.assertRaises(OSError):store.handle('plugin/uninstall',{'pluginId':'rea-catalog-demo@chatgpt-workspace'})
+            self.assertTrue(PluginStore(config).remote_installed)
+            store.handle('plugin/uninstall',{'pluginId':'plugin_rea_catalog_demo'})
+            store=PluginStore(config);self.assertTrue(store.installed);self.assertFalse(store.remote_installed)
+            store.handle('plugin/install',remote);store.handle('plugin/uninstall',{'pluginId':PLUGIN_ID})
+            self.assertTrue(PluginStore(config).remote_installed);self.assertFalse(PluginStore(config).installed)
 
     def test_skill_refresh_after_inert_install_is_empty_and_scoped(self):
         reply,_=handle_message(json.dumps({'id':1,'method':'skills/list','params':{'cwds':['C:/demo/one','C:/demo/two'],'forceReload':True}}))

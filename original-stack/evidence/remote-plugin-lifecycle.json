@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "results": [
+    "original install completes and offers Try now",
+    "installation persists without changing local plugin",
+    "installed remote detail reopens after reload",
+    "original uninstall restores Install plugin",
+    "uninstallation persists without changing local plugin",
+    "uninstalled remote detail reopens after reload"
+  ],
+  "rendererModified": false,
+  "pluginCodeExecuted": false,
+  "sourceReferences": [
+    "app-initial-b8e1c8014bb4.js:113829",
+    "app-initial-b8e1c8014bb4.js:114113",
+    "plugin-detail-page-fadbbdbd4e39.js:2721"
+  ],
+  "adapterTests": 5,
+  "limitations": [
+    "Remote error/retry/loading variants not verified",
+    "Remote toggle and Try now action not verified",
+    "Not full frontend completion or matched-state visual parity"
+  ],
+  "quotaUsedPercent": 27
+}
